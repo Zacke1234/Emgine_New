@@ -76,7 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLM_FORCE_XYZW_ONLY</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\KHR;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\glad\;$(SolutionDir)imgui\;$(SolutionDir)Emgine\code\Camera\;$(SolutionDir)Emgine\code\Physics\;$(SolutionDir)Emgine\code\Shader\;$(SolutionDir)Emgine\code\Texture\;$(SolutionDir)Emgine\code\Mesh\;$(SolutionDir)Emgine\code\UI\;$(SolutionDir)Emgine\code\Util\;$(SolutionDir)Emgine\code\Object\;$(SolutionDir)Emgine\code\Message\;$(SolutionDir)Emgine\code\;$(SolutionDir)Emgine\resource\meshes\;$(SolutionDir)Emgine\resource\materials\;$(SolutionDir)Emgine\resource\textures\;$(SolutionDir)Emgine\code\Patterns\Observer\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\KHR;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\glad\;$(SolutionDir)Emgine\code\Camera\;$(SolutionDir)Emgine\code\Physics\;$(SolutionDir)Emgine\code\Shader\;$(SolutionDir)Emgine\code\Texture\;$(SolutionDir)Emgine\code\Mesh\;$(SolutionDir)Emgine\code\UI\;$(SolutionDir)Emgine\code\Util\;$(SolutionDir)Emgine\code\Object\;$(SolutionDir)Emgine\code\Message\;$(SolutionDir)Emgine\code\;$(SolutionDir)Emgine\resource\meshes\;$(SolutionDir)Emgine\resource\materials\;$(SolutionDir)Emgine\resource\textures\;$(SolutionDir)Emgine\code\Patterns\Observer\;$(SolutionDir)imgui\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <FloatingPointModel>Strict</FloatingPointModel>
       <FloatingPointExceptions>true</FloatingPointExceptions>
@@ -159,12 +159,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Downloads\imgui-master\imgui-master\backends\imgui_impl_glfw.cpp" />
-    <ClCompile Include="..\..\..\..\Downloads\imgui-master\imgui-master\backends\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="..\..\..\..\Downloads\imgui-master\imgui-master\imgui.cpp" />
     <ClCompile Include="..\Dependencies\glad\glad.c" />
+    <ClCompile Include="..\imgui\imgui.cpp" />
     <ClCompile Include="..\imgui\imgui_demo.cpp" />
     <ClCompile Include="..\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\imgui\imgui_widgets.cpp" />
     <ClCompile Include="code\Camera\Camera.cpp" />
@@ -196,23 +196,18 @@
     <ClCompile Include="code\Util\GLChecking.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Downloads\glad\include\KHR\khrplatform.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Downloads\imgui-docking\imgui-docking\backends\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="..\..\..\..\Downloads\imgui-master\imgui-master\backends\imgui_impl_glfw.h" />
-    <ClInclude Include="..\..\..\..\Downloads\imgui-master\imgui-master\backends\imgui_impl_opengl3.h" />
-    <ClInclude Include="..\..\..\..\Downloads\imgui-master\imgui-master\imgui.h" />
     <ClInclude Include="..\Dependencies\GLFW\include\glfw3.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Dependencies\KHR\khrplatform.h" />
     <ClInclude Include="..\imgui\imconfig.h" />
+    <ClInclude Include="..\imgui\imgui.h" />
+    <ClInclude Include="..\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="..\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="..\imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="..\imgui\imgui_internal.h" />
     <ClInclude Include="..\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\imgui\imstb_textedit.h" />
