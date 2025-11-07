@@ -248,7 +248,7 @@ void MeshLoader::ParseFaceIndices(const std::string& string, Face& face, int ver
 //ofstream fileSize("out.bin", std::ios::binary);
 
 
-filesystem::path filePath = "C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\meshes"; //
+filesystem::path filePath = "C:\\Users\\zackarias.hager\\source\\repos\\Emgine\\Emgine\\resource\\meshes\\fish.obj"; //
 size_t fileSize = filesystem::file_size(filePath);
 
 void MeshLoader::WriteToBinary(std::ostream& f)
