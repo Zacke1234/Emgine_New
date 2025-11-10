@@ -189,7 +189,10 @@ Mesh* Object::CreateMesh(Mesh* mesh)
 {
 	
 	mesh = new Mesh();
-	
+	mesh = myMesh;
+	Position = glm::vec3(0, 0, 0);
+	Rotation = glm::vec3(0, 0, 0);
+	Scale = glm::vec3(1, 1, 1);
 	return mesh;
 }
 
@@ -230,7 +233,7 @@ void Object::UpdateTransform()
 void Object::DrawObject(Camera* aCamera, Shader* myShader)
 {
 		
-		
+		//Mesh* newMesh = new Mesh();
 		//std::cout << "draw object in Object" << "\n";
 		if (IsTransformValid == false)
 		{

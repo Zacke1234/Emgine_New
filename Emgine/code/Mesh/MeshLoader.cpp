@@ -54,6 +54,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 		std::istringstream iss(line);
 		std::string prefix;
 		iss >> prefix;
+		
 		if (prefix == "o")
 		{
 			/*iss >> name;
@@ -126,6 +127,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 	}
 
 	
+	
 
 	file.close();
 	
@@ -192,6 +194,11 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 		}
 		
 	}
+	temp_faces.clear();
+	temp_normals.clear();
+	temp_position.clear();
+	temp_uvs.clear();
+	temp_vertices.clear();
 	/*WriteToBinary(fileName, &file);
 	ReadFromBinary(fileName, *file);*/
 	return true;
@@ -261,11 +268,14 @@ void MeshLoader::WriteToBinary(std::ostream& f, std::string filePath)
 	{
 		cout << bitset<8>(fileSize[&i]) << endl;
 	}*/
-	f.write((char*)&fileSize, sizeof(size_t));
+	//f.write((char*)&fileSize, sizeof(fileSize));
+	//char* data;
+	//data = new char[fileSize + 1];
+	//name = data;
 	f.write((char*)name.c_str(), fileSize);
-	fileSize = type.size();
-	f.write((char*)&fileSize, sizeof(size_t));
-	f.write((char*)type.c_str(), fileSize);
+	//fileSize = type.size();
+	//f.write((char*)&fileSize, sizeof(fileSize));
+	//f.write((char*)type.c_str(), fileSize);
 	//BinaryFile->WriteFile(this);
 	//std::cerr << name << std::endl;
 	
@@ -291,11 +301,11 @@ void MeshLoader::ReadFromBinary(std::istream& f, std::string filePath)
 	data = new char[fileSize + 1];
 	f.read(data, fileSize);
 	data[fileSize] = '\0';
-	type = data;
+	//type = data;
 	
-
+	
 	//std::cerr << data << std::endl;
-	delete data; // memory clearing
+	delete[] data; // memory clearing
 
 	
 
@@ -309,6 +319,11 @@ void Mesh::InitialiseMesh()
 {
 	//std::cout << "initialise object file" << "\n";
 	
+	/*if (data.size() != NULL)
+	{
+		data.clear();
+		elements.clear();
+	}*/
 	
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
@@ -335,6 +350,16 @@ void Mesh::InitialiseMesh()
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	
 	glBindVertexArray(0);
+	//data.clear();
+	//elements.clear();
+	//numberVertices = 0;
+	//VAO = 0;
+	//VBO = 0;
+	//EBO = 0;
+	//vertexbuffer = 0;
+	//faces.clear();
+	//vertices.clear();
+	
 }
 
 void BinaryFile::WriteFile(MeshLoader obj) {

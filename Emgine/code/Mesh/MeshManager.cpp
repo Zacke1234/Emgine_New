@@ -1,6 +1,6 @@
 #include "MeshManager.h"
 #include <cassert>
-#include <MeshLoader.h>
+
 
 
 #pragma once
@@ -44,14 +44,16 @@ Mesh* MeshManager::LoadMesh(std::string fromPath, std::string name)
 	write.close();
 	read.close();
 
-	Mesh* mesh = new Mesh();
-	
-	if (!meshLoader->ObjParser("C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\bins\\" + name + ".bin", mesh)) // herein lies the problem....
-	{
-		std::cout << "Something is wrong with" << name << " from path: " << fromPath + name << "\n";
-		delete mesh;
-		return nullptr;
-	}
+	Mesh* mesh = new Mesh;
+	mesh->name = name;
+	meshLoader->ObjParser("C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\bins\\" + name + ".bin", mesh);
+	//if (!meshLoader->ObjParser("C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\bins\\" + name + ".bin", mesh)) // herein lies the problem....
+	//{
+	//	std::cout << "Something is wrong with" << name << " from path: " << fromPath + name << "\n";
+	//	//mesh = new Mesh();
+	//	
+	//	//return nullptr;
+	//}
 
 	msg = "Mesh loaded in";
 	//message->SendMessage(msg, 0);
@@ -70,6 +72,7 @@ Mesh* MeshManager::Create(std::string name, std::string path_end)
 	std::cout << "Mesh loaded in: " << name << " from path: " << path + path_end << "\n";
 	MeshCache.emplace(name, mesh);
 	std::cout << "Mesh created: " << name << " from path: " << path + path_end << "\n";
+	
 	
 	return mesh;
 }
