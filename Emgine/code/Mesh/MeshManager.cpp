@@ -35,8 +35,8 @@ Mesh* MeshManager::LoadMesh(std::string fromPath, std::string name)
 	std::ofstream write("C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\bins\\" + name + ".bin", std::ios::binary); // ./out.bin
 	std::ifstream read(fromPath);
 	
-	meshLoader->ReadFromBinary(read);
-	meshLoader->WriteToBinary(write);
+	meshLoader->ReadFromBinary(read, fromPath);
+	meshLoader->WriteToBinary(write, fromPath);
 	
 	
 	

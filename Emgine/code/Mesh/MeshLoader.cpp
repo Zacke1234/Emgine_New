@@ -248,12 +248,12 @@ void MeshLoader::ParseFaceIndices(const std::string& string, Face& face, int ver
 //ofstream fileSize("out.bin", std::ios::binary);
 
 
-filesystem::path filePath = "C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\meshes\\cube.obj"; //
-size_t fileSize = filesystem::file_size(filePath);
+//filesystem::path filePath = "C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\meshes\\cube.obj"; //
+//
 
-void MeshLoader::WriteToBinary(std::ostream& f)
+void MeshLoader::WriteToBinary(std::ostream& f, std::string filePath)
 {
-	
+	size_t fileSize = filesystem::file_size(filePath);
 
 	std::cerr << "Write to binary" << std::endl;
 	
@@ -273,9 +273,9 @@ void MeshLoader::WriteToBinary(std::ostream& f)
 	
 }
 
-void MeshLoader::ReadFromBinary(std::istream& f)
+void MeshLoader::ReadFromBinary(std::istream& f, std::string filePath)
 {
-	
+	size_t fileSize = filesystem::file_size(filePath);
 	char *data;
 	
 	std::cerr << "read from binary" << std::endl;
@@ -344,7 +344,7 @@ void BinaryFile::WriteFile(MeshLoader obj) {
 		std::cerr << "File error writing: " << FileName << ">\n";
 		exit(1);
 	}
-	obj.WriteToBinary(File);
+	//obj.WriteToBinary(File, );
 	File.close();
 }
 
@@ -355,6 +355,6 @@ void BinaryFile::ReadFile(MeshLoader obj) {
 		std::cerr << "File error reading: " << FileName << ">\n";
 		exit(1);
 	}
-	obj.ReadFromBinary(File);
+	//obj.ReadFromBinary(File);
 	File.close();
 }

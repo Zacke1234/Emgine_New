@@ -54,8 +54,8 @@ public:
 	bool ObjParser(std::string fileName, Mesh* mesh);
 	void ParseFaceIndices(const std::string& string, Face& face, int vertexIndex);
 
-	void WriteToBinary(std::ostream& f);
-	void ReadFromBinary(std::istream& f);
+	void WriteToBinary(std::ostream& f, std::string filePath);
+	void ReadFromBinary(std::istream& f, std::string filePath);
 	// size_t fileSize, std::filesystem::path filePath
 	/*MessageQueueComponent1* c1 = new MessageQueueComponent1;
 	MessageQueueComponent2* c2 = new MessageQueueComponent2;
