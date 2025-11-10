@@ -241,7 +241,9 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 				shader->DefaultShader,
 				NULL,
 				newLightData
+
 			);
+			LightObject::LightEntities[LightObject::SelectedLightEntity]->SetDirectional(newLightData);
 			
 		}
 		else{
@@ -252,7 +254,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 				NULL,
 				newLightData
 			);
-			
+			LightObject::LightEntities[LightObject::SelectedLightEntity]->SetDirectional(newLightData);
 		}
 	}
 	
