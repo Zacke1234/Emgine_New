@@ -206,7 +206,9 @@ int static update_ui(UI* myUI, ShaderManager* myShader, ObjectManager* objManage
 {
 	myUI->RenderUI(myShader, objManager);
 	//test = glm::scale(test, Object::Entities[Object::SelectedEntity]->Scale);
-	//if (Object::Entities[0] == NULL)
+	if (Object::Entities.size() >= 0) {
+		return 0;
+	}
 	Object::Entities[Object::SelectedEntity]->Position = glm::vec3(myUI->xPos, myUI->yPos, myUI->zPos);
 	Object::Entities[Object::SelectedEntity]->Rotation = glm::vec3(
 		glm::radians(myUI->xRot),
@@ -254,8 +256,8 @@ int main()
 
 	
 	// Object Creation
-	Mesh* fish = myMeshManager->Create("Fish", "fish.obj");
-	Mesh* cube = myMeshManager->Create("Cube", "cube.obj");
+	//Mesh* fish = myMeshManager->Create("Fish", "fish.obj");
+	//Mesh* cube = myMeshManager->Create("Cube", "cube.obj");
 
 	//myObjectManager->CreateLight( // this also pushes to Object::Entities and LightObject::lightEntities
 	//	"lightObj",
@@ -277,25 +279,25 @@ int main()
 	//	NULL,
 	//	//myLightingManager->CreatePointLight(glm::vec3(0, 5, 0), glm::vec3(1, 1, 1), 1.0f)
 	//);
-	myObjectManager->Create("Cube",
-		cube, // this doesnt get added to the mech cache? and the vertices are copied from the fish obj, this does not happen in the UI though
-		wall,
-		myShaderManager->DefaultShader,
-		MyColliderManager->Create(cubeColl)
-	);
+	//myObjectManager->Create("Cube",
+	//	cube, // this doesnt get added to the mech cache? and the vertices are copied from the fish obj, this does not happen in the UI though
+	//	wall,
+	//	myShaderManager->DefaultShader,
+	//	MyColliderManager->Create(cubeColl)
+	//);
 
 
 
-	//myObjectManager->Find("cubeObj");
+	////myObjectManager->Find("cubeObj");
 
-	myObjectManager->Create( // this also pushes to Object::Entities
-		"Fish",
-		fish,
-		wall,
-		myShaderManager->DefaultShader,
-		MyColliderManager->Create(sphereColl)
+	//myObjectManager->Create( // this also pushes to Object::Entities
+	//	"Fish",
+	//	fish,
+	//	wall,
+	//	myShaderManager->DefaultShader,
+	//	MyColliderManager->Create(sphereColl)
 
-	);
+	//);
 
 
 	glEnable(GL_DEPTH_TEST);
