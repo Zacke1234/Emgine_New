@@ -327,7 +327,8 @@ int main()
 		//	lastFrame = currentFrame;
 		//	//Phys->Simulate(deltatime);
 		//}
-		
+		myShaderManager->DefaultShader->UseShader();
+		myLighting->Use(myCamera, myShaderManager->DefaultShader);
 		
 		for (auto& lObjs : LightObject::LightEntities)
 		{
@@ -338,8 +339,7 @@ int main()
 			
 
 		}
-		myShaderManager->DefaultShader->UseShader();
-		myLighting->Use(myCamera, myShaderManager->DefaultShader);
+		
 		//myLightData->InitialiseLightData(myShaderManager->DefaultShader, myLightData);
 		//messageUI->RenderUI();
 		//myLightData->InitialiseLightData(myCamera, myShaderManager->DefaultShader);

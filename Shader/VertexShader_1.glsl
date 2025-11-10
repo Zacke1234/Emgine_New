@@ -56,10 +56,10 @@ void main()
      vs_out.TexCoord = aTexCoord;
      vs_out.FragPosLightSpace = lightSpaceMatrix * vec4(vs_out.FragPos, 1.0);
      // lightSpaceMatrix
-     gl_Position = projection * view  * transform * vec4(vs_out.FragPos, 1.0); 
+   
      viewPos = vec3(view * transform * vec4(aPos, 1.0));
    
-   
+     gl_Position = projection * view * transform * vec4(vs_out.FragPos, 1.0); 
    
    
    

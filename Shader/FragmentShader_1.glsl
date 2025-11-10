@@ -10,9 +10,10 @@ in vec4 FragPosLightSpace;
 
 out vec4 FragColor;
   
-uniform vec3 objectColor;
+uniform vec3 specularStrength;
+uniform vec3 objColor;
 uniform vec3 lightColor;
-uniform float ambientStrength;
+uniform vec3 ambientStrength;
 uniform sampler2D ourTexture;
 uniform vec3 lightPosition;
 uniform sampler2D depthMap;
@@ -80,6 +81,7 @@ struct Material {
     sampler2D diffuse;
     sampler2D specular;
     float shininess;
+    vec3 objectColor;
 };
 uniform Material material;
 
@@ -196,7 +198,7 @@ void main()
     vec3 lightDir = normalize(LightPos - FragPos);
     
 
-    float diff = max(dot(lightDir, norm), 0.0);
+    float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * vec3(texture(material.diffuse, TexCoord));  
     //vec3 diffuse = diff * lightColor; 
     
@@ -208,7 +210,7 @@ void main()
     float spec = pow(max(dot(norm, halfwayDir), 0.0), 64.0);
     //float spec = 0.0;
     vec3 specular = spec * vec3(texture(material.specular, TexCoord));
-    //vec3 specular = spec * lightColor;
+    //vec3 specular = specularStrength * spec * lightColor;
      vec3 result = (ambient + (1.0 - shadow) * (diffuse + specular));
    //vec3 result = CalculateDirLight(DLight, norm, viewDir);
     

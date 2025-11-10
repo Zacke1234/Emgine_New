@@ -17,7 +17,7 @@ struct LightData {
 			Null, Point, Directional, Spot
 		};
 		float ambientStrength = 0.1f;
-		glm::vec3 lightPos;
+		glm::vec3 lightPos = { 0,0,0 };
 		enum LightType PointLight = Point;
 		enum LightType DirLight = Directional;
 		enum LightType SpotLight = Spot;

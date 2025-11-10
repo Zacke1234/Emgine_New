@@ -24,9 +24,8 @@ glm::vec3 pointLightPositions[] = {
 	glm::vec3(-4.0f,  2.0f, -12.0f),
 	glm::vec3(0.0f,  0.0f, -3.0f)
 };
-std::string temp1 = "PLight[";
-std::string temp2 = "PLight[";
-std::string temp3 = "PLight[";
+
+
 
 
 int PointLightShaderSetting(Shader* shader)
@@ -36,6 +35,7 @@ int PointLightShaderSetting(Shader* shader)
 	
 	for (int lObjs = 1; lObjs <= LightObject::LightEntities.size(); lObjs++)
 	{
+		
 		//std::string PlightPos = "Plight["+lObjs + "].position";
 		//
 		//std::cout << lObjs <<< "\n";
@@ -45,17 +45,19 @@ int PointLightShaderSetting(Shader* shader)
 		shader->SetFloat("PLight[" + number + "].linear", 0.09f);
 		shader->SetFloat("PLight[" + number + "].quadratic", 0.032f);
 	
-		temp1.append(number);
-		temp2.append(number);
-		temp3.append(number);
-		
+		std::string temp1 = "PLight[";  temp1.append(number);
+		std::string temp2 = "PLight["; temp2.append(number);
+		std::string temp3 = "PLight["; temp3.append(number);
+		std::string temp4 = "PLight["; temp4.append(number);
 		
 		std::string tempAmb = "].ambient";
 		std::string tempDiff = "].diffuse";
 		std::string tempSpec = "].specular";
+		std::string tempPos = "].position";
 		std::string ambient = temp1.append(tempAmb);
 		std::string diffuse = temp2.append(tempDiff);
 		std::string specular = temp3.append(tempSpec);
+		std::string position = temp4.append(tempPos);
 
 	
 		shader->SetVec3(ambient.c_str(), glm::vec3(0.05f, 0.05f, 0.05f)); // it appends the number at the start as well as in the middle field. SOLVED!
@@ -64,12 +66,19 @@ int PointLightShaderSetting(Shader* shader)
 
 		shader->SetVec3(specular.c_str(), glm::vec3(1.0f, 1.0f, 1.0f));
 
+		shader->SetVec3(position.c_str(), glm::vec3(0,0,0));
+
 		shader->SetInt("NR_POINT_LIGHTS", lObjs);
 		
 		
 	}
 
 	
+	return 0;
+}
+
+int SpotLightShaderSetting(Shader* shader)
+{
 	return 0;
 }
 
@@ -82,6 +91,7 @@ void Lighting::Use(Camera* aCamera, Shader* shader)
 {
 	
 	shader->SetVec3("viewPos", aCamera->myPosition);
+	shader->SetVec3("specularStrength", glm::vec3(1.5f, 1.5, 1.5));
 	//glUniformMatrix4fv(lightSpaceMatrixLocation, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 
 	
@@ -89,6 +99,7 @@ void Lighting::Use(Camera* aCamera, Shader* shader)
 
 void LightData::InitialiseLightData(Shader* shader, LightData* aLightData, Camera* aCamera)
 {
+	
 	switch (aLightData->LightVar)
 	{
 	case 0:
@@ -108,16 +119,17 @@ void LightData::InitialiseLightData(Shader* shader, LightData* aLightData, Camer
 		shader->SetVec3("PLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
 		shader->SetVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-		shader->SetVec3("PLight.position", aLightData->lightPos);
-		shader->SetVec3("objectColor", glm::vec3(1.0f, 0.0f, 1.0f));
+		
+		shader->SetVec3("material.objectColor", glm::vec3(1.0f, 0.0f, 1.0f));
 		shader->SetFloat("ambientStrength", ambientStrength);
 
 		shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
 		PointLightShaderSetting(shader);
-		shader->SetVec3("material.ambient", glm::vec3(1.0f, 0.5, 0.31));
+		shader->SetVec3("material.ambient", glm::vec3(0.5f, 0.5, 0.5));
 		shader->SetInt("material.diffuse", 1);
 		shader->SetInt("material.specular", 1);
 		shader->SetFloat("material.shininess", 32.0f);
+		
 		break;
 	case 2:
 		//std::cout << "Directional light" << std::endl;
@@ -128,11 +140,11 @@ void LightData::InitialiseLightData(Shader* shader, LightData* aLightData, Camer
 
 		shader->SetVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 		//shader->SetVec3("DLight.position", aLightData->lightPos);
-		shader->SetVec3("objectColor", glm::vec3(1.0f, 0.0f, 1.0f));
+		shader->SetVec3("material.objectColor", glm::vec3(1.0f, 0.0f, 1.0f));
 		shader->SetFloat("ambientStrength", ambientStrength);
 		//shader->SetVec3("viewPos", aCamera->myPosition);
 		shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
-		shader->SetVec3("material.ambient", glm::vec3(1.0f, 0.5, 0.61));
+		shader->SetVec3("material.ambient", glm::vec3(0.5f, 0.5, 0.5));
 		shader->SetInt("material.diffuse", 1);
 		shader->SetInt("material.specular", 1);
 		shader->SetFloat("material.shininess", 32.0f);
@@ -143,13 +155,13 @@ void LightData::InitialiseLightData(Shader* shader, LightData* aLightData, Camer
 		shader->SetVec3("Slight.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
 		shader->SetVec3("Slight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
-		shader->SetVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		shader->SetVec3("material.lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 		shader->SetVec3("Slight.position", aLightData->lightPos);
 		shader->SetVec3("objectColor", glm::vec3(1.0f, 0.0f, 1.0f));
 		shader->SetFloat("ambientStrength", ambientStrength);
 		//shader->SetVec3("viewPos", aCamera->myPosition);
 		shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
-		shader->SetVec3("material.ambient", glm::vec3(1.0f, 1.5, 0.31));
+		shader->SetVec3("material.ambient", glm::vec3(0.5f, 0.5, 0.5));
 		shader->SetInt("material.diffuse", 1);
 		shader->SetInt("material.specular", 1);
 		shader->SetFloat("material.shininess", 32.0f);
