@@ -135,7 +135,7 @@ void LightData::InitialiseLightData(Shader* shader, LightData* aLightData, Camer
 		shader->SetVec3("material.ambient", glm::vec3(1.0f, 0.5, 0.61));
 		shader->SetInt("material.diffuse", 1);
 		shader->SetInt("material.specular", 1);
-		shader->SetFloat("material.shininess", 100.0f);
+		shader->SetFloat("material.shininess", 32.0f);
 		break;
 	case 3:
 		//std::cout << "Spot light" << std::endl;

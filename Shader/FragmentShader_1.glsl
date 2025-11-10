@@ -110,7 +110,7 @@ in VS_OUT {
 
         return shadow;
     }
-    out vec2 TexCoords;
+    //out vec2 TexCoords;
 
      vec3 CalculateDirLight(DirectionalLight light, vec3 normal, vec3 viewDir)
      {
@@ -164,9 +164,9 @@ in VS_OUT {
         float epsilon = light.cutOff - light.outerCutOff;
         float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
         // combine results
-        vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoords));
-        vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, TexCoords));
-        vec3 specular = light.specular * spec * vec3(texture(material.specular, TexCoords));
+        vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoord));
+        vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, TexCoord));
+        vec3 specular = light.specular * spec * vec3(texture(material.specular, TexCoord));
         ambient *= attenuation * intensity;
         diffuse *= attenuation * intensity;
         specular *= attenuation * intensity;
@@ -185,15 +185,15 @@ void main()
 //   output += CalcSpotLight(Slight[0], normalize(Normal), FragPos, normalize(viewPos - FragPos));
     
     vec3 lightColor = vec3(1.0);
-    float shadow = ShadowCalculation(fs_in.FragPosLightSpace);
+    float shadow = ShadowCalculation(FragPosLightSpace);
     // ambient
     vec3 ambient = material.ambient * lightColor;    
     
      // diffuse 
-    vec3 norm = normalize(fs_in.Normal);
+    vec3 norm = normalize(Normal);
     //vec3 norm = normalize(Normal);
     //vec3 norm = normalize(Normal * 2.0 - 1.0); 
-    vec3 lightDir = normalize(LightPos - fs_in.FragPos);
+    vec3 lightDir = normalize(LightPos - FragPos);
     
 
     float diff = max(dot(lightDir, norm), 0.0);
@@ -202,7 +202,7 @@ void main()
     
     // specular
     float specularStrength = 0.5;
-    vec3 viewDir = normalize(viewPos - fs_in.FragPos); // the viewer is always at (0,0,0) in view-space, so viewDir is (0,0,0) - Position => -Position
+    vec3 viewDir = normalize(viewPos - FragPos); // the viewer is always at (0,0,0) in view-space, so viewDir is (0,0,0) - Position => -Position
     vec3 halfwayDir = normalize(lightDir + viewDir);
     vec3 reflectDir = reflect(-lightDir, norm);  
     float spec = pow(max(dot(norm, halfwayDir), 0.0), 64.0);
@@ -244,12 +244,12 @@ void main()
     //specular *= attenuation;   
     // rendering
     // texture(depthMap, TexCoord).r;
-    vec3 color = texture(diffuseTexture, fs_in.TexCoord).rgb;
+    vec3 color = texture(diffuseTexture, TexCoord).rgb;
     vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular)) * color;
-    float depthValue = texture(depthMap, fs_in.TexCoord).r;
+    float depthValue = texture(depthMap, TexCoord).r;
     // texture(ourTexture, TexCoord) * 
     //FragColor = texture(ourTexture, TexCoord) * vec4(vec3(depthValue), 1.0) * vec4(result, 1.0);  // depthvValue
     //FragColor = vec4(vec3(depthValue), 1.0) * vec4(result, 1.0) * vec4(output, 1.0);  // depthvValue
-    FragColor = vec4(vec3(depthValue), 1.0);
+    FragColor = vec4(vec3(result), 1.0);
     //FragColor = vec4(lighting, depthValue);
 } 

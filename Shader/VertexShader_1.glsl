@@ -2,9 +2,9 @@
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoord;
-layout (location = 3) in vec2 aTexCoords;
-layout (location = 4) in vec3 aTangent;
-layout (location = 5) in vec3 aBitangent;  
+//layout (location = 3) in vec2 aTexCoords;
+layout (location = 3) in vec3 aTangent;
+layout (location = 4) in vec3 aBitangent;  
 
 //layout (location = 3) in vec3 aColor;
 
@@ -31,32 +31,33 @@ out VS_OUT {
     vec3 FragPos;
     vec2 TexCoord;
     mat3 TBN;
-    vec4 FragPosLightSpace;
     vec3 Normal;
+    vec4 FragPosLightSpace;
+    
 } vs_out;  
      
 
 void main()
 { 
-// mip map
+    // mip map
    vec3 T = normalize(vec3(transform * vec4(aTangent,   0.0)));
    vec3 B = normalize(vec3(transform * vec4(aBitangent, 0.0)));
    vec3 N = normalize(vec3(transform * vec4(aNormal,    0.0)));
    mat3 TBN = mat3(T, B, N);
 
-   //mip mapping
+     //mip mapping
      // obtain normal from normal map in range [0,1]
-    //normal = texture(normalMap, fs_in.TexCoords).rgb;
-    // transform normal vector to range [-1,1]
-    vs_out.Normal = normalize(vs_out.Normal * 2.0 - 1.0); 
-     //vs_out.FragPos = vec3(transform * vec4(aPos, 1.0));
-    //vs_out.TBN = mat3(T, B, N);
+     //normal = texture(normalMap, fs_in.TexCoord).rgb;
+     // transform normal vector to range [-1,1]
+     vs_out.Normal = normalize(vs_out.Normal * 2.0 - 1.0); 
+     vs_out.FragPos = vec3(transform * vec4(aPos, 1.0));
+     vs_out.TBN = mat3(T, B, N);
      vs_out.Normal = transpose(inverse(mat3(transform))) * aNormal;
      vs_out.TexCoord = aTexCoord;
      vs_out.FragPosLightSpace = lightSpaceMatrix * vec4(vs_out.FragPos, 1.0);
-    // lightSpaceMatrix
-    gl_Position = projection * view  * transform * vec4(vs_out.FragPos, 1.0); 
-    viewPos = vec3(view * transform * vec4(aPos, 1.0));
+     // lightSpaceMatrix
+     gl_Position = projection * view  * transform * vec4(vs_out.FragPos, 1.0); 
+     viewPos = vec3(view * transform * vec4(aPos, 1.0));
    
    
    
