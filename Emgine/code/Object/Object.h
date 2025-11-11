@@ -100,7 +100,7 @@ public:
 	Mesh* myMesh;
 	
 	
-	
+	LightData* myLightData;
 private: 
 	
 	Texture* myTexture;
@@ -127,7 +127,7 @@ public:
 	
 	LightObject(std::string _namn, Mesh* Mesh, Texture* aTexture, Shader* aShader, Collider* coll, LightData* myLightData);
 	static std::vector<LightObject*> LightEntities;
-	LightData* myLightData;
+	
 
 	void SetLightData(LightData& lightdata);
 	

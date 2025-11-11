@@ -27,6 +27,7 @@ inline void CheckOpenGLError(const char* stmt, const char* fname, int line)
 #pragma once
 float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
 
+
 Texture::Texture(const char* aPath)
 {
 	msg = "";
@@ -37,65 +38,27 @@ Texture::Texture(const char* aPath)
 	Height = 1080;
 	
 	unsigned char* data = stbi_load(aPath, &Width, &Height, &Channels, 0);
-	GL_CHECK(glGenTextures(1, &TextureObject));
-	GL_CHECK(glBindTexture(GL_TEXTURE_2D, TextureObject));
-	GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
-	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
-	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
-	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
-	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
-	//Shadows
 	
+	glGenTextures(1, &TextureObject);
+	glBindTexture(GL_TEXTURE_2D, TextureObject);
+	// set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	if (data != NULL)
 	{
-		GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
-		GL_CHECK(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, TextureObject, 0));
-		GL_CHECK(glDrawBuffer(GL_NONE));
-		GL_CHECK(glReadBuffer(GL_NONE));
-		GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
-		//std::cout << "data = true" << "\n";
-		GL_CHECK(glGenFramebuffers(1, &depthMapFBO));
-		GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
-		GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
-		// 2
-		GL_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-		GL_CHECK(glBindTexture(GL_TEXTURE_2D, TextureObject));
-
-		/*glDrawBuffer(GL_NONE);
-		glReadBuffer(GL_NONE);*/
 		
-		GL_CHECK(glCullFace(GL_FRONT));
-		GL_CHECK(glCullFace(GL_BACK));
-		GL_CHECK(glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor));
-		GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
-		GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
-		GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
-		GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-		GL_CHECK(glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor));
-		GL_CHECK(glGenerateMipmap(GL_TEXTURE_2D));
-
-		
-
-		//glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-		
-		GL_CHECK(glClear(GL_DEPTH_BUFFER_BIT));
-		// configure shader and matrices
-		// render scene
-		
-		//
-		//glViewport(0, 0, Width, Height);
-		
-
-		
-
-
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Width, Height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
 		msg = "Texture loaded in";
-		//message->SendMessage(msg, 0);
+		
 	}
 	
 	stbi_image_free(data);
-	GL_CHECK(glBindTexture(GL_TEXTURE_2D, 0));
+	
 }
 
 

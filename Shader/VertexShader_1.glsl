@@ -9,12 +9,12 @@ layout (location = 4) in vec3 aBitangent;
 //layout (location = 3) in vec3 aColor;
 
 out vec3 viewPos;
-out vec2 TexCoord;
-out vec3 Normal;
+
+
 out vec3 LightPos;
 out vec3 ourColor;
-out vec3 FragPos;
-out vec4 FragPosLightSpace;
+
+
 
 
 uniform vec3 lightPos; // we now define the uniform in the vertex shader and pass the 'view space' lightpos to the fragment shader. lightPos is currently in world space.
@@ -47,7 +47,7 @@ void main()
 
      //mip mapping
      // obtain normal from normal map in range [0,1]
-     //normal = texture(normalMap, fs_in.TexCoord).rgb;
+     //vs_out.Normal = texture(normalMap, fs_in.TexCoord).rgb;
      // transform normal vector to range [-1,1]
      vs_out.Normal = normalize(vs_out.Normal * 2.0 - 1.0); 
      vs_out.FragPos = vec3(transform * vec4(aPos, 1.0));

@@ -317,40 +317,12 @@ int main()
 
 		//myMemory->LoadInMemory(myShaderManager->DefaultShader, myCamera, myLighting, myObjectManager, myUI, myMeshManager, fish, cubeColl);
 
-		//myLightData->InitialiseLightData(myShaderManager->DefaultShader, myLightData);
-		
-		
-		//if (Phys->TimeTicking)
-		//{
-		//	double currentFrame = glfwGetTime();
-		//	deltatime = currentFrame - lastFrame;
-		//	lastFrame = currentFrame;
-		//	//Phys->Simulate(deltatime);
-		//}
+	
 		myShaderManager->DefaultShader->UseShader();
 		myLighting->Use(myCamera, myShaderManager->DefaultShader);
 		
-		for (auto& lObjs : LightObject::LightEntities)
-		{
-			//std::string number = sizeof(lObjs);
-			
-			LightObject::LightEntities[LightObject::SelectedLightEntity]->myLightData->InitialiseLightData(myShaderManager->DefaultShader, LightObject::LightEntities[LightObject::SelectedLightEntity]->myLightData, myCamera);
-			LightObject::LightEntities[LightObject::SelectedLightEntity]->myLightData->lightPos = lObjs->Position;
-			
-
-		}
 		
-		//myLightData->InitialiseLightData(myShaderManager->DefaultShader, myLightData);
-		//messageUI->RenderUI();
-		//myLightData->InitialiseLightData(myCamera, myShaderManager->DefaultShader);
-		
-		
-		
-		/*for (auto& c : Collider::)
-		{
-			c->SetTheCollision();
-		}*/
-
+	
 		
 		//Drawcall objects
 		for (auto& o : Object::Entities)
@@ -367,12 +339,6 @@ int main()
 		update_camera(myCamera, myUI, window);
 		
 
-		/*ImGui::End();
-
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());*/
-
-
 		// swaps front and back buffers
 		glfwSwapBuffers(window);
 
@@ -383,7 +349,6 @@ int main()
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
-	//myMessage->~Message();
 	//myMemory->ClearMemory(myShaderManager->DefaultShader, myCamera, myLighting, myObjectManager, myUI, myMeshManager, MeshMesh, cubeColl);
 	//delete myMemory;
 	glfwTerminate();

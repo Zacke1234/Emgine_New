@@ -4,11 +4,15 @@ class LightingManager
 {
 public: 
 
-	Lighting* DefaultLighting;
+	LightData* DefaultLighting;
 
-	LightData* CreateData(LightData* lightData);
-	Lighting* Create(Lighting* lighting);
+	LightData* InitDefaultLighting();
+	LightData* Create(std::string name = "newLight", Shader* shader = NULL, LightData* light = NULL);
+	LightData* InitialiseLightData(Shader* shader, LightData* aLightData);
 	void Destroy(Lighting* light, LightData* lightData);
 	
+	LightData* SetDirectional(LightData* aLightData, Object* test);
+	LightData* SetPoint(LightData* aLightData, Object* test = NULL);
+	LightData* SetSpot(LightData* aLightData, Object* test);
 };
 

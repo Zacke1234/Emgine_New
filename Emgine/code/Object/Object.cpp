@@ -161,6 +161,7 @@ void LightObject::SetLightData(LightData& lightdata)
 	myLightData->lightPos = this->Position;
 	
 }
+
 void LightObject::SetDirectional(LightData* aLightData)
 {
 	std::cout << "Directional light" << std::endl;

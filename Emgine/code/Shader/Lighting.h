@@ -18,16 +18,18 @@ struct LightData {
 		};
 		float ambientStrength = 0.1f;
 		glm::vec3 lightPos = { 0,0,0 };
+		glm::vec3 lightDir = { 0,0,0 };
 		enum LightType PointLight = Point;
 		enum LightType DirLight = Directional;
 		enum LightType SpotLight = Spot;
 		enum LightType LightVar;
 		
+		std::string Name;
 private:
 	
 
 public:
-	void InitialiseLightData(Shader* shader, LightData* aLightData, Camera* aCamera);
+
 
 	
 };
@@ -45,7 +47,6 @@ public:
 	//LightData* myLightData
 	
 
-	
 	
 };
 

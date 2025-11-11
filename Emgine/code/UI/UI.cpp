@@ -10,7 +10,7 @@
 #pragma once
 
 CubeCollider* cubeColl2;
-Lighting* light;
+//Lighting* light;
 MeshManager* meshmang;
 ObjectManager* objectMang;
 ShaderManager* shaderMang;
@@ -18,6 +18,7 @@ ColliderManager* colliderMang;
 TextureManager* textureMang;
 LightingManager* lightMang;
 LightData* newLightData;
+//Lighting* myLighting;
 
 int uiLightList(UI* ui)
 {
@@ -81,12 +82,13 @@ int classes() {
 	glm::vec3 scale = { 1,1,1 };
 	
 	cubeColl2 = new CubeCollider(center, extents, pos);
-	newLightData = new LightData();
+	//newLightData = new LightData();
 	shaderMang = new ShaderManager();
 	colliderMang = new ColliderManager();
 	textureMang = new TextureManager();
 	meshmang = new MeshManager();
 	lightMang = new LightingManager();
+	
 	
 	return 0;
 }
@@ -240,40 +242,50 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 				textureMang->Create(std::string(nameBuffer + tex), textureBuffer),
 				shader->DefaultShader,
 				NULL,
-				newLightData
+				lightMang->Create("Light", shader->DefaultShader, newLightData)
 
 			);
-			LightObject::LightEntities[LightObject::SelectedLightEntity]->SetDirectional(newLightData);
+			
 			
 		}
-		else{
+		if (nameBuffer[0] != '\0' && nameBuffer != NULL)
+		{
 			objectmanager->CreateLight(nameBuffer,
-				meshmang->Create(nameBuffer, meshBuffer),
+				meshmang->Create("Cube", "cube.obj"),
 				textureMang->Create(std::string(nameBuffer + tex), textureBuffer),
 				shader->DefaultShader,
 				NULL,
-				newLightData
+				lightMang->Create(nameBuffer, shader->DefaultShader, newLightData)
 			);
-			LightObject::LightEntities[LightObject::SelectedLightEntity]->SetDirectional(newLightData);
+			
 		}
+		//std::cout << "didnt work" << std::endl;
 	}
-	
+	bool SelectedLight = Object::Entities[Object::SelectedEntity]->ObjType == 1;
+
 	if (ImGui::Combo("Light type", &SelectedItem, Items, IM_ARRAYSIZE(Items)))
 	{
-		if (Object::Entities[Object::SelectedEntity]->ObjType == 1)
+		if (SelectedLight)
 		{
 			//std::cout << "Selected entity is light" << std::endl; // Yes finally!!
 			if (SelectedItem == 0)
-			{
-				LightObject::LightEntities[LightObject::SelectedLightEntity]->SetDirectional(newLightData);
+			{	 
+				
+				lightMang->SetDirectional(newLightData, Object::Entities[Object::SelectedEntity]);
+				lightMang->InitialiseLightData(shader->DefaultShader, newLightData);
+				//LightObject::LightEntities[LightObject::SelectedLightEntity]->SetDirectional(newLightData);
 			}
 			if (SelectedItem == 1)
 			{
-				LightObject::LightEntities[LightObject::SelectedLightEntity]->SetPoint(newLightData);
+				lightMang->SetPoint(newLightData, Object::Entities[Object::SelectedEntity]);
+				lightMang->InitialiseLightData(shader->DefaultShader, newLightData);
+				//LightObject::LightEntities[LightObject::SelectedLightEntity]->SetPoint(newLightData);
 			}
 			if (SelectedItem == 2)
 			{
-				LightObject::LightEntities[LightObject::SelectedLightEntity]->SetSpot(newLightData);
+				lightMang->SetSpot(newLightData, Object::Entities[Object::SelectedEntity]);
+				lightMang->InitialiseLightData(shader->DefaultShader, newLightData);
+				//LightObject::LightEntities[LightObject::SelectedLightEntity]->SetSpot(newLightData);
 			}
 		};
 			
