@@ -39,7 +39,6 @@ uniform NullLight NoLight;
 
 struct DirectionalLight {
     
-    int lights;
     vec3 direction;
     
     vec3 ambient;
@@ -245,7 +244,7 @@ void main()
     // texture(depthMap, TexCoord).r;
     //vec3 color = texture(diffuseTexture, TexCoord).rgb;
     vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular));
-//    vec3 lighting = CalculateDirLight(DLight[0], norm, viewDir);
+    //lighting += CalculatePointLight(PLight[1], norm, FragPos, viewDir);
 ////    
 //        for(int i = 0; i < NR_POINT_LIGHTS; i++)
 //        {
@@ -264,7 +263,7 @@ void main()
 //       {
 //       lighting += CalcSpotLight(Slight[i], norm, FragPos, viewDir);
 //       }
-       
+//       
     float depthValue = texture(depthMap, TexCoord).r;
     // texture(ourTexture, TexCoord) * 
     //FragColor = vec4(result, 1.0);  // depthvValue

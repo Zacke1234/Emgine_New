@@ -9,29 +9,32 @@
 
 struct LightData {
 
-	/*	glm::vec3 PointLight;
-		glm::vec3 DirectionalLight;
-		glm::vec3 SpotLight;*/
-		//int lightType = 0; // 0 = point, 1 = directional, 2 = spot.
+	
 		enum LightType {
 			Null, Point, Directional, Spot
 		};
 		float ambientStrength = 0.1f;
 		glm::vec3 lightPos = { 0,0,0 };
 		glm::vec3 lightDir = { 0,0,0 };
+		glm::vec2 TexCoord = { 0,0 };
+		glm::vec3 ambient = { 0,0,0 };
+		glm::vec3 diffuse = { 0,0,0 };
+		glm::vec3 specular = {0,0,0};
+		float linear = 0; 
+		float quadtric = 0; 
+
+		float cutOff;
+		float outerCutOff;
+
+		float constant;
+
 		enum LightType PointLight = Point;
 		enum LightType DirLight = Directional;
 		enum LightType SpotLight = Spot;
 		enum LightType LightVar;
 		
 		std::string Name;
-private:
-	
 
-public:
-
-
-	
 };
 
 

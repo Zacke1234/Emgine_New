@@ -258,7 +258,8 @@ int main()
 
 	
 	// Object Creation
-	Mesh* fish = myMeshManager->Create("Fish", "fish.obj");
+	Mesh* fish = myMeshManager->Create("fish", "fish.obj");
+	Mesh* quadplane = myMeshManager->Create("quadplane", "quadplane.obj");
 	Mesh* cube = myMeshManager->Create("Cube", "cube.obj");
 
 	//myObjectManager->CreateLight( // this also pushes to Object::Entities and LightObject::lightEntities
