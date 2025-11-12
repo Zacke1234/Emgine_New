@@ -51,6 +51,10 @@ public:
 
 	glm::vec3 myPosition;
 	
+	glm::mat4 GetViewMatrix()
+	{
+		return glm::lookAt(myPosition, myPosition + myFront, myUp);
+	}
 
 private:
 	glm::vec3 myDirection;

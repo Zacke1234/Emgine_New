@@ -60,7 +60,7 @@ SphereCollider* sphereColl;
 LightingManager* myLightingManager;
 //Threading* myThreading;
 Thread* myThread; 
-
+LightData* newLightdata;
 
 
 int message_stuff() { // message passing between meshmanager and objectmanager
@@ -141,11 +141,13 @@ int init_managers() {
 	myShaderManager = new ShaderManager();
 	myTextureManager = new TextureManager();
 	MyColliderManager = new ColliderManager();
-	
+	newLightdata = new LightData();
+	myLightingManager->InitDefaultLighting();
+	myShaderManager->InitDefaultShader();
 	//TODO: init shader, collider, and rigidbodymanager
 	myObjectManager = new ObjectManager;
 	return 0;
-}
+} 
 
 int init_camera() {
 	//init camera
@@ -236,8 +238,8 @@ int main()
 	myCamera->myPosition = glm::vec3(0, 3, 0);
 
 	//Create Textures
-	Texture* wall = myTextureManager->Create("Wall", "wall.jpg");
-
+	Texture* wall = myTextureManager->Create("wall", "wall.jpg");
+	Texture* defaultTex = myTextureManager->Create("default", "Default 1.png");
 	//myTextureManager->Create("Default", "Default 1.png");
 	
 	//Message calling
@@ -250,7 +252,7 @@ int main()
 
 	init_lightning();
 	
-	myShaderManager->InitDefaultShader();
+	
 	
 	myUI = new UI(window);
 
@@ -290,11 +292,19 @@ int main()
 
 	myObjectManager->Create("Cube",
 		cube, // this doesnt get added to the mech cache? and the vertices are copied from the fish obj, this does not happen in the UI though
-		wall,
+		defaultTex,
 		myShaderManager->DefaultShader,
 		MyColliderManager->Create(cubeColl)
 	);
 
+	
+	//myObjectManager->CreateLight("SceneLight",
+	//	NULL, // this doesnt get added to the mech cache? and the vertices are copied from the fish obj, this does not happen in the UI though
+	//	defaultTex,
+	//	myShaderManager->DefaultShader,
+	//	NULL,
+	//	myLightingManager->Create("SceneLight", myShaderManager->DefaultShader, myLightingManager->DefaultLighting)
+	//);
 
 
 	////myObjectManager->Find("cubeObj");
@@ -308,7 +318,7 @@ int main()
 		
 		GL_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 		GL_CHECK(glClearColor(0.1f, 0.1f, 0.1f, 1.0f));
-
+		
 		
 		//myThread->DoWork(deltatime);
 		
@@ -328,7 +338,7 @@ int main()
 		for (auto& o : Object::Entities)
 		{
 			
-			o->Draw(myCamera, myShaderManager->DefaultShader); // draws the cubes
+			o->Draw(myCamera, myShaderManager->DefaultShader); 
 			
 		}
 		

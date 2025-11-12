@@ -1,8 +1,11 @@
 #include "TextureManager.h"
+#include <filesystem>
 #include <iostream>
 Texture* TextureManager::Create(std::string name, std::string path_end)
 {
-	std::string path = "C:\\Users\\zackarias.hager\\source\\repos\\Emgine\\Emgine\\resource\\textures\\";
+	std::string path = "C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\textures\\";
+	
+	// C:\Users\zackarias.hager\Emgine_New\Emgine\resource\textures
 	Texture* new_texture = new Texture((path + path_end).c_str());
 	new_texture->name = name;
 	textures.push_back(new_texture);

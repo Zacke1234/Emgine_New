@@ -256,6 +256,7 @@ void Object::DrawObject(Camera* aCamera, Shader* myShader)
 			GL_CHECK(glActiveTexture(GL_TEXTURE0));
 			GL_CHECK(glBindTexture(GL_TEXTURE_2D, myTexture->TextureObject));
 
+			
 			GL_CHECK(glActiveTexture(GL_TEXTURE1));
 			GL_CHECK(glBindTexture(GL_TEXTURE_2D, myTexture->TextureObject));
 		}

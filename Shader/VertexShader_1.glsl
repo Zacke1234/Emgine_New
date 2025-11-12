@@ -15,7 +15,11 @@ out vec3 LightPos;
 out vec3 ourColor;
 
 
-
+ vec3 FragPos;
+    vec2 TexCoord;
+    mat3 TBN;
+    vec3 Normal;
+    vec4 FragPosLightSpace;
 
 uniform vec3 lightPos; // we now define the uniform in the vertex shader and pass the 'view space' lightpos to the fragment shader. lightPos is currently in world space.
 uniform mat4 view;
@@ -24,17 +28,17 @@ uniform mat4 projection;
 uniform mat4 lightSpaceMatrix;
 
 
-
+varying vec3 Color;
 
 // mip mapping
-out VS_OUT {
-    vec3 FragPos;
-    vec2 TexCoord;
-    mat3 TBN;
-    vec3 Normal;
-    vec4 FragPosLightSpace;
-    
-} vs_out;  
+//out VS_OUT {
+//    vec3 FragPos;
+//    vec2 TexCoord;
+//    mat3 TBN;
+//    vec3 Normal;
+//    vec4 FragPosLightSpace;
+//    
+//} vs_out;  
      
 
 void main()
@@ -47,19 +51,19 @@ void main()
 
      //mip mapping
      // obtain normal from normal map in range [0,1]
-     //vs_out.Normal = texture(normalMap, fs_in.TexCoord).rgb;
+     //Normal = texture(normalMap, fs_in.TexCoord).rgb;
      // transform normal vector to range [-1,1]
-     vs_out.Normal = normalize(vs_out.Normal * 2.0 - 1.0); 
-     vs_out.FragPos = vec3(transform * vec4(aPos, 1.0));
-     vs_out.TBN = mat3(T, B, N);
-     vs_out.Normal = transpose(inverse(mat3(transform))) * aNormal;
-     vs_out.TexCoord = aTexCoord;
-     vs_out.FragPosLightSpace = lightSpaceMatrix * vec4(vs_out.FragPos, 1.0);
+     Normal = normalize(Normal * 2.0 - 1.0); 
+     FragPos = vec3(transform * vec4(aPos, 1.0));
+     TBN = mat3(T, B, N);
+     Normal = transpose(inverse(mat3(transform))) * aNormal;
+     TexCoord = aTexCoord;
+     FragPosLightSpace = lightSpaceMatrix * vec4(FragPos, 1.0);
      // lightSpaceMatrix
    
      viewPos = vec3(view * transform * vec4(aPos, 1.0));
-   
-     gl_Position = projection * view * transform * vec4(vs_out.FragPos, 1.0); 
+     //gl_FragColor = texture2D(ourColor, TexCoord) * vec4(Color, 1.0);
+     gl_Position = projection * view * transform * vec4(FragPos, 1.0); 
    
    
    
@@ -69,7 +73,7 @@ void main()
 }
 
 
-// //vs_out.Normal = transpose(inverse(mat3(transform))) * aNormal;
+// //Normal = transpose(inverse(mat3(transform))) * aNormal;
 
 
 
