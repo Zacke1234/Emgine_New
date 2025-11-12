@@ -4,7 +4,7 @@
 #include "stb_image.h"
 #include <iostream>
 #include "glm.hpp"
-
+#define STB_IMAGE_IMPLEMENTATION
 inline void CheckOpenGLError(const char* stmt, const char* fname, int line)
 {
 	GLenum err = glGetError();
@@ -39,7 +39,7 @@ Texture::Texture(const char* aPath)
 	
 	unsigned char* data = stbi_load(aPath, &Width, &Height, &Channels, 0);
 	
-	GL_CHECK(glEnable(GL_TEXTURE_2D));
+	//GL_CHECK(glEnable(GL_TEXTURE_2D));
 	GL_CHECK(glGenTextures(1, &TextureObject));
 	GL_CHECK(glBindTexture(GL_TEXTURE_2D, TextureObject));
 
@@ -57,6 +57,15 @@ Texture::Texture(const char* aPath)
 		GL_CHECK(glGenerateMipmap(GL_TEXTURE_2D));
 		msg = "Texture loaded in";
 		
+	}
+	else
+	{
+		std::cout
+			<< "unable to load image: "
+			<< stbi_failure_reason()
+			<< "\n";
+		//throw;
+			
 	}
 	
 	stbi_image_free(data);

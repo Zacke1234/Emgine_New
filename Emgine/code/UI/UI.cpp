@@ -306,7 +306,10 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 
 	if (ImGui::Button("Change Texture"))
 	{
-		texture = new Texture(textureBuffer);
+		std::string test = "C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\textures\\";
+		test.append(textureBuffer);
+		
+		texture = new Texture(test.c_str());
 		Object::Entities[Object::SelectedEntity]->SetTexture(*texture);
 	}
 

@@ -104,5 +104,5 @@ void Shader::SetFloat(const std::string texcord, float aTexcord)
 }
 void Shader::SetInt(const std::string depth, int aInt)
 {
-	glUniform1i(glGetUniformLocation(ShaderProgram, depth.c_str()), aInt);
+	GL_CHECK(glUniform1i(glGetUniformLocation(ShaderProgram, depth.c_str()), aInt));
 }

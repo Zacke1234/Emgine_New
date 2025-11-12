@@ -16,7 +16,7 @@ out vec3 ourColor;
 
 
  vec3 FragPos;
-    vec2 TexCoord;
+   out vec2 TexCoord;
     mat3 TBN;
     vec3 Normal;
     vec4 FragPosLightSpace;
@@ -28,7 +28,7 @@ uniform mat4 projection;
 uniform mat4 lightSpaceMatrix;
 
 
-varying vec3 Color;
+
 
 // mip mapping
 //out VS_OUT {

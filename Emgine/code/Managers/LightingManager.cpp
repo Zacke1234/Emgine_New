@@ -264,6 +264,11 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 		shader->SetVec3("PLight[3].ambient", glm::vec3(0.05f, 0.05f, 0.05f));
 		shader->SetVec3("PLight[3].diffuse", glm::vec3(0.8f, 0.8f, 0.8f));
 		shader->SetVec3("PLight[3].specular", glm::vec3(1.0f, 1.0f, 1.0f));
+
+		shader->SetVec3("NoLight.ambient", glm::vec3(1.05f, 1.05f, 1.05f));
+		shader->SetVec3("NoLight.diffuse", glm::vec3(1.8f, 1.8f, 1.8f));
+		shader->SetVec3("NoLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+
 		shader->SetFloat("PLight[3].constant", 1.0f);
 		shader->SetFloat("PLight[3].linear", 0.09f);
 		shader->SetFloat("PLight[3].quadratic", 0.032f);
@@ -277,9 +282,9 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 		shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
 
 		shader->SetVec3("material.ambient", glm::vec3(1.0f, 1.0, 1.0));
-		shader->SetInt("material.diffuse", 0);
+		shader->SetInt("material.diffuse", 1);
 		shader->SetInt("material.specular", 1.01);
-		shader->SetFloat("material.shininess", 1.01f);
+		shader->SetFloat("material.shininess", 64.0f);
 
 		break;
 	case 2:

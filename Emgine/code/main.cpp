@@ -311,7 +311,7 @@ int main()
 
 	
 
-	glEnable(GL_DEPTH_TEST);
+	GL_CHECK(glEnable(GL_DEPTH_TEST));
 	// loops until user closes window
 	while (!glfwWindowShouldClose(window))
 	{
@@ -328,7 +328,7 @@ int main()
 		//myMemory->LoadInMemory(myShaderManager->DefaultShader, myCamera, myLighting, myObjectManager, myUI, myMeshManager, fish, cubeColl);
 
 	
-		myShaderManager->DefaultShader->UseShader();
+				myShaderManager->DefaultShader->UseShader();
 		myLighting->Use(myCamera, myShaderManager->DefaultShader);
 		
 		

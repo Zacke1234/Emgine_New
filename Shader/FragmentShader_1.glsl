@@ -28,6 +28,15 @@ layout (std140) uniform Test
     vec3 ambient;
 };
 
+struct NullLight {
+    vec3 position;
+
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+uniform NullLight NoLight;
+
 struct DirectionalLight {
     
     int lights;
@@ -90,7 +99,7 @@ struct Material {
 uniform Material material;
 
 //in VS_OUT {
-//    vec3 FragPos;
+//    vec3 FragPos; 
 //    vec2 TexCoord;
 //    mat3 TBN;
 //    vec3 Normal;
@@ -193,8 +202,8 @@ void main()
     vec3 lightColor = vec3(1.0);
     float shadow = ShadowCalculation(FragPosLightSpace);
     // ambient
-    vec3 ambient = material.ambient * vec3(texture(material.diffuse, TexCoord));    
-    
+    vec3 ambient = NoLight.ambient * vec3(texture(material.diffuse, TexCoord));    
+    //    vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoords));
      // diffuse 
     vec3 norm = normalize(Normal);
     //vec3 norm = normalize(Normal);
@@ -203,7 +212,7 @@ void main()
     
 
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * vec3(texture(material.diffuse, TexCoord));  
+    vec3 diffuse = NoLight.diffuse * diff * vec3(texture(material.diffuse, TexCoord));  
     //vec3 diffuse = diff * lightColor; 
     
     // specular
@@ -211,9 +220,11 @@ void main()
     vec3 viewDir = normalize(viewPos - FragPos); // the viewer is always at (0,0,0) in view-space, so viewDir is (0,0,0) - Position => -Position
     vec3 halfwayDir = normalize(lightDir + viewDir);
     vec3 reflectDir = reflect(-lightDir, norm);  
-    float spec = pow(max(dot(norm, halfwayDir), 0.0), 64.0);
+    float spec = pow(max(dot(norm, halfwayDir), 0.0), material.shininess);
     //float spec = 0.0;
-    vec3 specular = spec * vec3(texture(material.specular, TexCoord));
+    //vec3 specular = NullLight.spec * spec * vec3(texture(material.specular, TexCoord));
+    vec3 specular = NoLight.specular * spec * (vec3(1.0) - vec3(texture(material.specular, TexCoord)));
+    //  vec3 specular = light.specular * spec * (vec3(1.0) - vec3(texture(material.specular, TexCoords)));
     //vec3 specular = specularStrength * spec * lightColor;
      //vec3 result = (ambient + (1.0 - shadow) * (diffuse + specular));
      vec3 result = (ambient + diffuse + specular);
