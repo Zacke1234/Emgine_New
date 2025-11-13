@@ -34,6 +34,8 @@ public:
 	float xRot = 0;
 	float zRot = 0;
 
+	float lightConstant;
+
 	float yScale = 1;
 	float xScale = 1;
 	float zScale = 1;

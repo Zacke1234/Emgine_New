@@ -207,7 +207,7 @@ int static update_camera(Camera* cam, UI* myUI, GLFWwindow* window)
 int static update_ui(UI* myUI, ShaderManager* myShader, ObjectManager* objManager)
 {
 	
-	
+	bool SelectedLight = Object::Entities[Object::SelectedEntity]->ObjType == 1;
 	//glm::vec3 v(selectedobj->Rotation);
 	
 
@@ -222,7 +222,12 @@ int static update_ui(UI* myUI, ShaderManager* myShader, ObjectManager* objManage
 		glm::radians(myUI->yRot),
 		glm::radians(myUI->zRot));
 	Object::Entities[Object::SelectedEntity]->Scale = glm::vec3(myUI->xScale, myUI->yScale, myUI->zScale);
+	if (SelectedLight)
+	{
+		Object::Entities[Object::SelectedEntity]->myLightData->constant = myUI->lightConstant;
+	}
 	
+	//newLightData->lightPos = SelectedLight->Position;
 	return 0;
 }
 
@@ -325,7 +330,7 @@ int main()
 		GL_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 		GL_CHECK(glClearColor(0.1f, 0.1f, 0.1f, 1.0f));
 		
-		
+	
 		//myThread->DoWork(deltatime);
 		
 		// poll for and process events ?
@@ -336,9 +341,14 @@ int main()
 	
 				myShaderManager->DefaultShader->UseShader();
 		myLighting->Use(myCamera, myShaderManager->DefaultShader);
-		
+		myLightingManager->InitDefaultLighting();
 		
 	
+		for (auto& lightObj : LightObject::LightEntities)
+		{
+
+			myLightingManager->InitialiseLightData(myShaderManager->DefaultShader, lightObj->myLightData);
+		}
 		
 		//Drawcall objects
 		for (auto& o : Object::Entities)

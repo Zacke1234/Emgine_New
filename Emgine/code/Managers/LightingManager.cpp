@@ -179,7 +179,7 @@ LightData* LightingManager::Create(std::string name, Shader* shader, LightData* 
 	
 	//SetPoint(light, NULL);
 	SetDirectional(light, NULL);
-	InitialiseLightData(shader, light);
+	//InitialiseLightData(shader, light);
 	
 	return light;
 }
@@ -244,45 +244,49 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 
 		//PointLightShaderSetting(shader, aLightData);
 
-		shader->SetVec3("PLight[0].position", aLightData->lightPos);
-		shader->SetVec3("PLight[0].ambient", aLightData->ambient);
-		shader->SetVec3("PLight[0].diffuse", aLightData->diffuse);
-		shader->SetVec3("PLight[0].specular", aLightData->specular);
-		shader->SetFloat("PLight[0].constant", aLightData->constant);
-		shader->SetFloat("PLight[0].linear", aLightData->linear);
-		shader->SetFloat("PLight[0].quadratic", aLightData->quadtric);
-		// point light 2
-		shader->SetVec3("PLight[1].position", aLightData->lightPos);
-		shader->SetVec3("PLight[1].ambient", aLightData->ambient);
-		shader->SetVec3("PLight[1].diffuse", aLightData->diffuse);
-		shader->SetVec3("PLight[1].specular", aLightData->specular);
-		shader->SetFloat("PLight[1].constant", aLightData->constant);
-		shader->SetFloat("PLight[1].linear", aLightData->linear);
-		shader->SetFloat("PLight[1].quadratic", aLightData->quadtric);
-		// point light 3
-		shader->SetVec3("PLight[2].position", aLightData->lightPos);
-		shader->SetVec3("PLight[2].ambient", aLightData->ambient);
-		shader->SetVec3("PLight[2].diffuse", aLightData->diffuse);
-		shader->SetVec3("PLight[2].specular", aLightData->specular);
-		shader->SetFloat("PLight[2].constant", aLightData->constant);
-		shader->SetFloat("PLight[2].linear", aLightData->linear);
-		shader->SetFloat("PLight[2].quadratic", aLightData->quadtric);
-		// point light 4
-		shader->SetVec3("PLight[3].position", aLightData->lightPos);
-		shader->SetVec3("PLight[3].ambient", aLightData->ambient);
-		shader->SetVec3("PLight[3].diffuse", aLightData->diffuse);
-		shader->SetVec3("PLight[3].specular", aLightData->specular);
-		//
-		shader->SetFloat("PLight[3].constant", aLightData->constant);
-		shader->SetFloat("PLight[3].linear", aLightData->linear);
-		shader->SetFloat("PLight[3].quadratic", aLightData->quadtric);
+		//shader->SetVec3("PLight[0].position", pointLightPositions[0]);
+		//shader->SetVec3("PLight[0].ambient", aLightData->ambient);
+		//shader->SetVec3("PLight[0].diffuse", aLightData->diffuse);
+		//shader->SetVec3("PLight[0].specular", aLightData->specular);
+		//shader->SetFloat("PLight[0].constant", aLightData->constant);
+		//shader->SetFloat("PLight[0].linear", aLightData->linear);
+		//shader->SetFloat("PLight[0].quadratic", aLightData->quadtric);
+		//// point light 2
+		//shader->SetVec3("PLight[1].position", pointLightPositions[1]);
+		//shader->SetVec3("PLight[1].ambient", aLightData->ambient);
+		//shader->SetVec3("PLight[1].diffuse", aLightData->diffuse);
+		//shader->SetVec3("PLight[1].specular", aLightData->specular);
+		//shader->SetFloat("PLight[1].constant", aLightData->constant);
+		//shader->SetFloat("PLight[1].linear", aLightData->linear);
+		//shader->SetFloat("PLight[1].quadratic", aLightData->quadtric);
+		//// point light 3
+		//shader->SetVec3("PLight[2].position", pointLightPositions[2]);
+		//shader->SetVec3("PLight[2].ambient", aLightData->ambient);
+		//shader->SetVec3("PLight[2].diffuse", aLightData->diffuse);
+		//shader->SetVec3("PLight[2].specular", aLightData->specular);
+		//shader->SetFloat("PLight[2].constant", aLightData->constant);
+		//shader->SetFloat("PLight[2].linear", aLightData->linear);
+		//shader->SetFloat("PLight[2].quadratic", aLightData->quadtric);
+		//// point light 4
+		//shader->SetVec3("PLight[3].position", pointLightPositions[3]);
+		//shader->SetVec3("PLight[3].ambient", aLightData->ambient);
+		//shader->SetVec3("PLight[3].diffuse", aLightData->diffuse);
+		//shader->SetVec3("PLight[3].specular", aLightData->specular);
+		////
+		//shader->SetFloat("PLight[3].constant", aLightData->constant);
+		//shader->SetFloat("PLight[3].linear", aLightData->linear);
+		//shader->SetFloat("PLight[3].quadratic", aLightData->quadtric);
 		//
 		
-		shader->SetVec3("NoLight.ambient", glm::vec3(1.05f, 1.05f, 1.05f));
-		shader->SetVec3("NoLight.diffuse", glm::vec3(1.8f, 1.8f, 1.8f));
-		shader->SetVec3("NoLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+		shader->SetVec3("baseLight.ambient", aLightData->ambient);
+		shader->SetVec3("baseLight.diffuse", aLightData->diffuse);
+		shader->SetVec3("baseLight.specular", aLightData->specular);
 
-		shader->SetVec3("NoLight.direction", aLightData->lightDir);
+		shader->SetVec3("baseLight.position", aLightData->lightDir);
+
+		shader->SetFloat("baseLight.constant", aLightData->constant);
+		shader->SetFloat("baseLight.linear", aLightData->linear);
+		shader->SetFloat("baseLight.quadratic", aLightData->quadtric);
 
 		shader->SetVec3("lightColor", glm::vec3(0.0f, 0.01, 0.0f));
 
@@ -292,13 +296,13 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 		shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
 
 		shader->SetVec3("material.ambient", glm::vec3(1.0f, 1.0, 1.0));
-		shader->SetInt("material.diffuse", 2);
+		shader->SetInt("material.diffuse", 0);
 		shader->SetInt("material.specular", 1.01);
 		shader->SetFloat("material.shininess", 64.0f);
 
 		break;
 	case 2:
-		DirectionalLightSetting(shader, aLightData);
+		//DirectionalLightSetting(shader, aLightData);
 		//std::cout << "Directional light" << std::endl;
 
 		shader->SetVec3("lightColor", glm::vec3(0.0f, 0.01, 0.0f));
@@ -312,16 +316,30 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 		shader->SetInt("material.specular", 1);
 		shader->SetFloat("material.shininess", 32.0f);
 
-		shader->SetVec3("NoLight.ambient", glm::vec3(1.05f, 1.05f, 1.05f));
-		shader->SetVec3("NoLight.diffuse", glm::vec3(1.8f, 1.8f, 1.8f));
-		shader->SetVec3("NoLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+		shader->SetVec3("baseLight.ambient", aLightData->ambient);
+		shader->SetVec3("baseLight.diffuse", aLightData->diffuse);
+		shader->SetVec3("baseLight.specular", aLightData->specular);
 
-		shader->SetVec3("NoLight.direction", aLightData->lightDir);
+		shader->SetVec3("baseLight.direction", aLightData->lightDir);
 
 		break;
 	case 3:
 		//std::cout << "Spot light" << std::endl;
-		SpotLightShaderSetting(shader, aLightData);
+		//SpotLightShaderSetting(shader, aLightData);
+
+		shader->SetVec3("baseLight.position", aLightData->lightPos);
+		shader->SetVec3("baseLight.direction", aLightData->lightDir);
+		shader->SetFloat("baseLight.cutOff", aLightData->cutOff);
+		shader->SetFloat("baseLight.outerCutOff", aLightData->outerCutOff);
+		shader->SetFloat("baseLight.constant", aLightData->constant);
+		shader->SetFloat("baseLight.linear", aLightData->linear);
+		shader->SetFloat("baseLight.quadratic", aLightData->quadtric);
+
+		shader->SetVec3("baseLight.ambient", aLightData->ambient);
+		shader->SetVec3("baseLight.diffuse", aLightData->diffuse);
+		shader->SetVec3("baseLight.specular", aLightData->specular);
+		// gotta take in and set materials from and into glsl and the meshes/objects.
+
 		shader->SetVec3("material.lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 		shader->SetVec3("material.objectColor", glm::vec3(0.5f, 0.6f, 0.2f));
 
@@ -339,14 +357,7 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 		break;
 	}
 
-	//for (int l = 0; l < LightObject::LightEntities.size(); l++)
-	//{	
-	//	//LightObject::SelectedEntity = l;
-	//	//std::string number = sizeof(lObjs);
-
-	//	// I want to find each light entity and be able to tell if each one is a certain type of light, directional, spot, pointlight.
-	//	//LightObject::LightEntities[l]->myLightData-
-	//	
+	
 
 
 

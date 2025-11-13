@@ -8,7 +8,7 @@
 
 
 struct LightData {
-
+public:
 	
 		enum LightType {
 			Null, Point, Directional, Spot

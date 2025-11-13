@@ -22,18 +22,11 @@ LightData* newLightData;
 bool SelectedLight;
 int uiLightList(UI* ui)
 {
-	//for (int i = 0; i < LightObject::LightEntities.size(); i++)
-	//{
-	//	
-	//	if (Object::Entities[Object::SelectedEntity]->ObjType == 1)
-	//	{
-	//		LightObject::SelectedLightEntity = i;
-	//		
-	//	}
-	//	
-	//	//LightObject::LightEntities[LightObject::SelectedLightEntity]->SetName("test");
-	//}
-	//std::cout << LightObject::SelectedLightEntity << std::endl;
+	if (SelectedLight)
+	{
+		Object::Entities[Object::SelectedEntity]->myLightData->lightPos = Object::Entities[Object::SelectedEntity]->Position;
+	}
+	
 	return 0;
 }
 
@@ -122,8 +115,8 @@ UI::UI(GLFWwindow* window) // unitilized
 
 void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 {
-	
-
+	SelectedLight = Object::Entities[Object::SelectedEntity]->ObjType == 1;
+	uiLightList(this);
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
@@ -156,7 +149,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 	std::string tex = "_tex";
 	//ImGui::Text("Change camera speed");
 	//ImGui::InputFloat("Camera speed", &speed, 1.0f, 1.0f, "%.1f"); // supposed to change speed of camera cause
-	uiLightList(this);
+	
 	
 
 	if (ImGui::Button("Create new mesh"))
@@ -232,13 +225,14 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 
 	}
 
+	
 	if (ImGui::Button("Create new light"))
 	{
 
 		if (nameBuffer[0] == '\0' && nameBuffer != NULL)
 		{
 			objectmanager->CreateLight("Light",
-				meshmang->Create("Cube", "cube.obj"),
+				NULL,
 				textureMang->Create(std::string(nameBuffer + tex), textureBuffer),
 				shader->DefaultShader,
 				NULL,
@@ -251,7 +245,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 		if (nameBuffer[0] != '\0' && nameBuffer != NULL)
 		{
 			objectmanager->CreateLight(nameBuffer,
-				meshmang->Create("Cube", "cube.obj"),
+				NULL,
 				textureMang->Create(std::string(nameBuffer + tex), textureBuffer),
 				shader->DefaultShader,
 				NULL,
@@ -260,6 +254,11 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 			
 		}
 		//std::cout << "didnt work" << std::endl;
+	}
+	if (LightObject::LightEntities.size() > 0)
+	{
+		ImGui::DragFloat("Light constant", &lightConstant, step, step_fast);
+		//uiLightList(this);
 	}
 
 	if (ImGui::Button("Delete Object"))
@@ -270,30 +269,31 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 	/*if (Object::Entities[Object::SelectedEntity] != NULL) {
 		 
 	}*/
-	SelectedLight = Object::Entities[Object::SelectedEntity]->ObjType == 1;
-
+	
+	
 	if (ImGui::Combo("Light type", &SelectedItem, Items, IM_ARRAYSIZE(Items)))
 	{
 		if (SelectedLight)
 		{
+			
 			//std::cout << "Selected entity is light" << std::endl; // Yes finally!!
 			if (SelectedItem == 0)
 			{	 
 				
 				lightMang->SetDirectional(newLightData, Object::Entities[Object::SelectedEntity]);
-				lightMang->InitialiseLightData(shader->DefaultShader, newLightData);
+				//lightMang->InitialiseLightData(shader->DefaultShader, newLightData);
 				//LightObject::LightEntities[LightObject::SelectedLightEntity]->SetDirectional(newLightData);
 			}
 			if (SelectedItem == 1)
 			{
 				lightMang->SetPoint(newLightData, Object::Entities[Object::SelectedEntity]);
-				lightMang->InitialiseLightData(shader->DefaultShader, newLightData);
+				//lightMang->InitialiseLightData(shader->DefaultShader, newLightData);
 				//LightObject::LightEntities[LightObject::SelectedLightEntity]->SetPoint(newLightData);
 			}
 			if (SelectedItem == 2)
 			{
 				lightMang->SetSpot(newLightData, Object::Entities[Object::SelectedEntity]);
-				lightMang->InitialiseLightData(shader->DefaultShader, newLightData);
+				//lightMang->InitialiseLightData(shader->DefaultShader, newLightData);
 				//LightObject::LightEntities[LightObject::SelectedLightEntity]->SetSpot(newLightData);
 			}
 		};
