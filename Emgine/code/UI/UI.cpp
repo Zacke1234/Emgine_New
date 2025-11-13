@@ -24,12 +24,17 @@ int uiLightList(UI* myUI)
 {
 	if (SelectedLight)
 	{
+		if (LightObject::LightEntities.size() <= 0) {
+			return 0;
+		}
 		Object::Entities[Object::SelectedEntity]->myLightData->lightPos = Object::Entities[Object::SelectedEntity]->Position;
 		Object::Entities[Object::SelectedEntity]->myLightData->lightDir = glm::vec3(
 			glm::radians(myUI->xRot),
 			glm::radians(myUI->yRot),
 			glm::radians(myUI->zRot));
 		Object::Entities[Object::SelectedEntity]->myLightData->constant = myUI->lightConstant;
+		Object::Entities[Object::SelectedEntity]->myLightData->cutOff = myUI->cutoff;
+		Object::Entities[Object::SelectedEntity]->myLightData->outerCutOff = myUI->outerCutOff;
 	}
 	
 	return 0;
@@ -263,9 +268,11 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 	if (LightObject::LightEntities.size() > 0)
 	{
 		ImGui::DragFloat("Light constant", &lightConstant, step, step_fast);
+		ImGui::DragFloat("Light cut off", &cutoff, step, step_fast);
+		ImGui::DragFloat("Light outer cut off", &outerCutOff, step, step_fast);
+		
 
 		//ImGui::DragScalar("Light direction", ImGuiDataType_Float, &lightVector, step, NULL, NULL, "%.4f");
-		;
 		//uiLightList(this);
 	}
 

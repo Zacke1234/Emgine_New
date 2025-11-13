@@ -26,6 +26,7 @@ public:
 	const char* Items[3] = {"Directional", "Point", "Spot"};
 	int SelectedItem = 0;
 
+	// POSITION AND ROTATION
 	float yPos = 0;
 	float xPos = 0;
 	float zPos = 0;
@@ -34,12 +35,17 @@ public:
 	float xRot = 0;
 	float zRot = 0;
 
-	float lightConstant;
-	glm::vec3 lightVector;
-
 	float yScale = 1;
 	float xScale = 1;
 	float zScale = 1;
+
+	// LIGHTING IN UI
+	float lightConstant;
+	glm::vec3 lightVector;
+	float cutoff;
+	float outerCutOff;
+	
+	// BUFFERS
 	char textureBuffer[255]{};
 	char textureNameBuffer[255]{};
 	char nameBuffer[255]{};
@@ -49,10 +55,6 @@ public:
 	float test[255];
 	float step = 0.1;
 	float step_fast = 0.1;
-	
-	int SetLightType;
-	int GetObjectType;
-
 	int step2 = 1;
 	int step2_fast = 100;
 
@@ -63,7 +65,7 @@ public:
 	char charMesh;
 
 	bool check;
-
+	
 	float fov = 70.0f;
 	float sens = 0.1f;
 	float speed = 10.0f;

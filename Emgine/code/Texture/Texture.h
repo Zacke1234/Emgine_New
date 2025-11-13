@@ -4,7 +4,12 @@
 #include <string>
 #include <glad.h>
 
-
+struct Material {
+	
+	unsigned int diffuse;
+	unsigned int specular;
+	float shininess;
+};
 
 class Texture
 {
@@ -23,6 +28,7 @@ public:
 	unsigned int TextureObject = 0;
 	unsigned int depthMapFBO = 0;
 
+	
 	
 };
 

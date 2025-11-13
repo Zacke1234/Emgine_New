@@ -41,12 +41,7 @@ struct Mesh{
 	unsigned int EBO = 0;
 	size_t indexCount = 0, vertexCount = 0;
 
-	struct Material {
-		glm::vec3 ambient;
-		glm::vec3 diffuse;
-		glm::vec3 specular;
-		float shininess;
-	};
+
 	
 
 

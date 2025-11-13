@@ -347,7 +347,7 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 
 		//shader->SetVec3("viewPos", aCamera->myPosition);
 		shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
-		shader->SetVec3("material.ambient", glm::vec3(0.2f, 0.2, 0.2));
+		// shader->SetVec3("material.ambient", glm::vec3(0.2f, 0.2, 0.2)); materials dont have an ambient!
 		shader->SetInt("material.diffuse", 1);
 		shader->SetInt("material.specular", 1);
 		shader->SetFloat("material.shininess", 32.0f);

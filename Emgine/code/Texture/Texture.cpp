@@ -27,7 +27,7 @@ inline void CheckOpenGLError(const char* stmt, const char* fname, int line)
 #pragma once
 float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
 
-
+Material* mat = new Material();
 Texture::Texture(const char* aPath)
 {
 	msg = "";
@@ -40,8 +40,12 @@ Texture::Texture(const char* aPath)
 	unsigned char* data = stbi_load(aPath, &Width, &Height, &Channels, 0);
 	
 	//GL_CHECK(glEnable(GL_TEXTURE_2D));
+	
 	GL_CHECK(glGenTextures(1, &TextureObject));
 	GL_CHECK(glBindTexture(GL_TEXTURE_2D, TextureObject));
+
+
+	//GL_CHECK(glBindTexture(GL_TEXTURE_2D, mat->diffuse));
 
 	// set the texture wrapping parameters
 	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));	// set texture wrapping to GL_REPEAT (default wrapping method)

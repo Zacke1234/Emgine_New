@@ -28,10 +28,10 @@ uniform sampler2D diffuseTexture;
 // mip mapping
 vec3 rgb_normal = Normal * 0.5 + 0.5; // transforms from [-1,1] to [0,1] 
 
-layout (std140) uniform Test
-{
-    vec3 ambient;
-};
+//layout (std140) uniform Test
+//{
+//    vec3 ambient;
+//};
 
 struct BasicLight {
 // dir
@@ -49,7 +49,7 @@ struct BasicLight {
     float quadratic;
     // spot
     float cutOff;
-float outerCutOff;
+    float outerCutOff;
 };
 uniform BasicLight baseLight;
 
