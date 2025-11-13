@@ -44,8 +44,8 @@ public:
 	char meshBuffer[255];
 	char buf_fov[2];
 	float test[255];
-	float step = 0;
-	float step_fast = 0;
+	float step = 0.1;
+	float step_fast = 0.1;
 	
 	int SetLightType;
 	int GetObjectType;

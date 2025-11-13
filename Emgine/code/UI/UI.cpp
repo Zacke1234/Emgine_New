@@ -19,7 +19,7 @@ TextureManager* textureMang;
 LightingManager* lightMang;
 LightData* newLightData;
 //Lighting* myLighting;
-
+bool SelectedLight;
 int uiLightList(UI* ui)
 {
 	//for (int i = 0; i < LightObject::LightEntities.size(); i++)
@@ -261,7 +261,16 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 		}
 		//std::cout << "didnt work" << std::endl;
 	}
-	bool SelectedLight = Object::Entities[Object::SelectedEntity]->ObjType == 1;
+
+	if (ImGui::Button("Delete Object"))
+	{
+		objectmanager->Destroy(Object::Entities[Object::SelectedEntity]);
+
+	}
+	/*if (Object::Entities[Object::SelectedEntity] != NULL) {
+		 
+	}*/
+	SelectedLight = Object::Entities[Object::SelectedEntity]->ObjType == 1;
 
 	if (ImGui::Combo("Light type", &SelectedItem, Items, IM_ARRAYSIZE(Items)))
 	{
@@ -330,24 +339,25 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 	
 	
 
-	uiObjectList(this);
+	//if (this == NULL){}
+		uiObjectList(this);
 
 	
 	//ImGui::InputText("texture file", buf, sizeof(buf) - 1);
 
 	ImGui::Text("");
 
-	ImGui::InputFloat("X pos", &xPos, step, step_fast);
-	ImGui::InputFloat("Y pos", &yPos, step, step_fast);
-	ImGui::InputFloat("Z pos", &zPos, step, step_fast);
+	ImGui::DragFloat("X pos", &xPos, step, step_fast);
+	ImGui::DragFloat("Y pos", &yPos, step, step_fast);
+	ImGui::DragFloat("Z pos", &zPos, step, step_fast);
 	ImGui::Text("");
-	ImGui::InputFloat("X rotate", &xRot, step, step_fast);
-	ImGui::InputFloat("Y rotate", &yRot, step, step_fast);
-	ImGui::InputFloat("Z rotate", &zRot, step, step_fast);
+	ImGui::DragFloat("X rotate", &xRot, step, step_fast);
+	ImGui::DragFloat("Y rotate", &yRot, step, step_fast);
+	ImGui::DragFloat("Z rotate", &zRot, step, step_fast);
 	ImGui::Text("");
-	ImGui::InputFloat("X scale", &xScale, step, step_fast);
-	ImGui::InputFloat("Y scale", &yScale, step, step_fast);
-	ImGui::InputFloat("Z scale", &zScale, step, step_fast);
+	ImGui::DragFloat("X scale", &xScale, step, step_fast);
+	ImGui::DragFloat("Y scale", &yScale, step, step_fast);
+	ImGui::DragFloat("Z scale", &zScale, step, step_fast);
 
 	//ImGui_ImplGlfw_Shutdown();
 	ImGui::End();

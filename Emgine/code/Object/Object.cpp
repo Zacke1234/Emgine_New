@@ -234,7 +234,11 @@ void Object::UpdateTransform()
 
 void Object::DrawObject(Camera* aCamera, Shader* myShader)
 {
-		
+		if (myMesh == NULL)
+		{
+			std::cout << "No mesh to draw in Object: " << namn << "\n";
+			return;
+		}
 		//Mesh* newMesh = new Mesh();
 		//std::cout << "draw object in Object" << "\n";
 		if (IsTransformValid == false)

@@ -11,7 +11,13 @@ Object* ObjectManager::Create(std::string _namn = "new_object", Mesh* Mesh = NUL
 }
 
 void ObjectManager::Destroy(Object* obj) {
-	Destroy(obj);
+	
+	/*obj->myMesh = NULL;
+	obj->myCollider = NULL;*/
+	
+	//  room.erase(room.begin()+2);
+	//Object::Entities.erase(obj->Entities.at());
+	//Object::Entities.pop_back();
 }
 
 LightObject* ObjectManager::CreateLight(std::string aName = "new_lightObject", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL, LightData* aLightData = NULL)

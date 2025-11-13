@@ -20,6 +20,11 @@ uniform sampler2D depthMap;
 uniform sampler2D shadowMap;
 uniform sampler2D normalMap; 
 uniform sampler2D diffuseTexture;
+
+//enum LightType {
+//    Null, Point, Directional, Spot
+//};
+
 // mip mapping
 vec3 rgb_normal = Normal * 0.5 + 0.5; // transforms from [-1,1] to [0,1] 
 
@@ -196,6 +201,11 @@ uniform Material material;
 void main()
 {
     
+//    switch(LightType)
+//    {
+//    
+//    }
+
     vec3 output = vec3(0.0);
 //
 //   output += CalculatePointLight(PLight[0], normalize(Normal), FragPos, normalize(viewPos - FragPos));

@@ -22,7 +22,8 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 {
 	string message = "ObjLoaderStart";
 	//Message* mess = new Message(message);
-	 
+	 // if bin file, return?
+	
 	
 	if (INmesh == nullptr)
 	{
