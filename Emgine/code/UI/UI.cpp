@@ -20,11 +20,16 @@ LightingManager* lightMang;
 LightData* newLightData;
 //Lighting* myLighting;
 bool SelectedLight;
-int uiLightList(UI* ui)
+int uiLightList(UI* myUI)
 {
 	if (SelectedLight)
 	{
 		Object::Entities[Object::SelectedEntity]->myLightData->lightPos = Object::Entities[Object::SelectedEntity]->Position;
+		Object::Entities[Object::SelectedEntity]->myLightData->lightDir = glm::vec3(
+			glm::radians(myUI->xRot),
+			glm::radians(myUI->yRot),
+			glm::radians(myUI->zRot));
+		Object::Entities[Object::SelectedEntity]->myLightData->constant = myUI->lightConstant;
 	}
 	
 	return 0;
@@ -258,6 +263,9 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 	if (LightObject::LightEntities.size() > 0)
 	{
 		ImGui::DragFloat("Light constant", &lightConstant, step, step_fast);
+
+		//ImGui::DragScalar("Light direction", ImGuiDataType_Float, &lightVector, step, NULL, NULL, "%.4f");
+		;
 		//uiLightList(this);
 	}
 

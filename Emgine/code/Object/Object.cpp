@@ -236,7 +236,7 @@ void Object::DrawObject(Camera* aCamera, Shader* myShader)
 {
 		if (myMesh == NULL)
 		{
-			std::cout << "No mesh to draw in Object: " << namn << "\n";
+			//std::cout << "No mesh to draw in Object: " << namn << "\n";
 			return;
 		}
 		//Mesh* newMesh = new Mesh();

@@ -17,9 +17,9 @@ public:
 		glm::vec3 lightPos = { 0,0,0 };
 		glm::vec3 lightDir = { 0,0,0 };
 		glm::vec2 TexCoord = { 0,0 };
-		glm::vec3 ambient = { 0,0,0 };
-		glm::vec3 diffuse = { 0,0,0 };
-		glm::vec3 specular = {0,0,0};
+		glm::vec3 ambient = { 1,1,1 };
+		glm::vec3 diffuse = { 1,1,1 };
+		glm::vec3 specular = {1,1,1};
 		float linear = 0; 
 		float quadtric = 0; 
 

@@ -353,7 +353,7 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 		shader->SetFloat("material.shininess", 32.0f);
 		break;
 	default:
-		std::cout << "Default" << std::endl;
+		//std::cout << "Default" << std::endl;
 		break;
 	}
 

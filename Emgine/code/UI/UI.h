@@ -35,6 +35,7 @@ public:
 	float zRot = 0;
 
 	float lightConstant;
+	glm::vec3 lightVector;
 
 	float yScale = 1;
 	float xScale = 1;
@@ -56,7 +57,7 @@ public:
 	int step2_fast = 100;
 
 	char textureFile;
-
+	
 	char name;
 
 	char charMesh;
