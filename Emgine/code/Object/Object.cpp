@@ -23,6 +23,7 @@ vector<LightObject*> LightObject::LightEntities;
 
 Object::Object(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL)
 {
+	
 	ObjType = Type_Mesh;
 		// Name
 	if (_namn != "new_object")

@@ -29,11 +29,15 @@ layout (std140) uniform Test
 };
 
 struct NullLight {
-    vec3 position;
+// dir
+    vec3 direction;
 
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+    // point
+
+    // spot
 };
 uniform NullLight NoLight;
 
@@ -46,7 +50,7 @@ struct DirectionalLight {
     vec3 specular;
 };
 #define NR_DIR_LIGHTS 1
-uniform DirectionalLight DLight[NR_DIR_LIGHTS]; 
+uniform DirectionalLight DLight; 
 
 
 struct PointLight{
@@ -60,7 +64,7 @@ struct PointLight{
     float quadratic;
 };
 #define NR_POINT_LIGHTS 4
-uniform PointLight PLight[NR_POINT_LIGHTS];
+uniform PointLight PLight;
 
 struct SpotLight{
 vec3 position;
@@ -78,7 +82,7 @@ vec3 specular;
 
 };
 #define NR_SPOT_LIGHTS 4
-uniform SpotLight Slight[NR_SPOT_LIGHTS];
+uniform SpotLight Slight;
 
 int test = 0;
 
@@ -110,7 +114,7 @@ uniform Material material;
     float ShadowCalculation(vec4 fragPosLightSpace)
     {
         vec3 norm = normalize(Normal);
-        vec3 lightDir = normalize(LightPos - FragPos);
+        vec3 lightDir = normalize(NoLight.direction - FragPos);
         float bias = max(0.05 * (1.0 - dot(norm, lightDir)), 0.005);
         //float bias = 0.005;
         vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
@@ -207,7 +211,7 @@ void main()
     vec3 norm = normalize(Normal);
     //vec3 norm = normalize(Normal);
     //vec3 norm = normalize(Normal * 2.0 - 1.0); 
-    vec3 lightDir = normalize(LightPos - FragPos);
+    vec3 lightDir = normalize(NoLight.direction - FragPos);
     
 
     float diff = max(dot(norm, lightDir), 0.0);

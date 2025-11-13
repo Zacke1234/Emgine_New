@@ -203,9 +203,14 @@ int static update_camera(Camera* cam, UI* myUI, GLFWwindow* window)
 	return 0;
 }
 
-
+//Object* selectedobj = Object::Entities[Object::SelectedEntity];
 int static update_ui(UI* myUI, ShaderManager* myShader, ObjectManager* objManager)
 {
+	
+	
+	//glm::vec3 v(selectedobj->Rotation);
+	
+
 	myUI->RenderUI(myShader, objManager);
 	//test = glm::scale(test, Object::Entities[Object::SelectedEntity]->Scale);
 	if (Object::Entities.size() <= 0) {

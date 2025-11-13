@@ -15,11 +15,11 @@ out vec3 LightPos;
 out vec3 ourColor;
 
 
- vec3 FragPos;
+out vec3 FragPos;
    out vec2 TexCoord;
-    mat3 TBN;
-    vec3 Normal;
-    vec4 FragPosLightSpace;
+    out mat3 TBN;
+    out vec3 Normal;
+    out vec4 FragPosLightSpace;
 
 uniform vec3 lightPos; // we now define the uniform in the vertex shader and pass the 'view space' lightpos to the fragment shader. lightPos is currently in world space.
 uniform mat4 view;

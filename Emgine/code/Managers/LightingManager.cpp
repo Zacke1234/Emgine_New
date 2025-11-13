@@ -177,7 +177,8 @@ LightData* LightingManager::Create(std::string name, Shader* shader, LightData* 
 	light = new LightData();
 	light->Name = name;
 	
-	SetPoint(light, NULL);
+	//SetPoint(light, NULL);
+	SetDirectional(light, NULL);
 	InitialiseLightData(shader, light);
 	
 	return light;
@@ -189,7 +190,7 @@ LightData* LightingManager::SetDirectional(LightData* aLightData, Object* test)
 
 		aLightData = test->Entities[test->SelectedEntity]->myLightData;
 	}
-	
+	aLightData->lightDir = { -0.2f, -1.0f, -0.3f };
 	std::cout << "Directional light" << std::endl;
 	aLightData->LightVar = aLightData->DirLight;
 	return aLightData;
@@ -276,22 +277,22 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 		shader->SetFloat("PLight[3].linear", aLightData->linear);
 		shader->SetFloat("PLight[3].quadratic", aLightData->quadtric);
 		//
+		
 		shader->SetVec3("NoLight.ambient", glm::vec3(1.05f, 1.05f, 1.05f));
 		shader->SetVec3("NoLight.diffuse", glm::vec3(1.8f, 1.8f, 1.8f));
 		shader->SetVec3("NoLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
-		
-
+		shader->SetVec3("NoLight.direction", aLightData->lightDir);
 
 		shader->SetVec3("lightColor", glm::vec3(0.0f, 0.01, 0.0f));
 
-		shader->SetVec3("material.objectColor", glm::vec3(1.0f, 1.0,1.0));
+		shader->SetVec3("material.objectColor", glm::vec3(1.0f, 1.0, 1.0));
 
 
 		shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
 
 		shader->SetVec3("material.ambient", glm::vec3(1.0f, 1.0, 1.0));
-		shader->SetInt("material.diffuse", 1);
+		shader->SetInt("material.diffuse", 2);
 		shader->SetInt("material.specular", 1.01);
 		shader->SetFloat("material.shininess", 64.0f);
 
@@ -300,16 +301,23 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 		DirectionalLightSetting(shader, aLightData);
 		//std::cout << "Directional light" << std::endl;
 
-		shader->SetVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		shader->SetVec3("lightColor", glm::vec3(0.0f, 0.01, 0.0f));
 		//shader->SetVec3("DLight.position", aLightData->lightPos);
 		shader->SetVec3("material.objectColor", glm::vec3(1.0f, 1.0f, 1.0f));
 
 		//shader->SetVec3("viewPos", aCamera->myPosition);
 		shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
 		shader->SetVec3("material.ambient", glm::vec3(0.5f, 0.5, 0.5));
-		shader->SetInt("material.diffuse", 2);
-		shader->SetInt("material.specular", 3);
-		shader->SetFloat("material.shininess", 0.0f);
+		shader->SetInt("material.diffuse", 0);
+		shader->SetInt("material.specular", 1);
+		shader->SetFloat("material.shininess", 32.0f);
+
+		shader->SetVec3("NoLight.ambient", glm::vec3(1.05f, 1.05f, 1.05f));
+		shader->SetVec3("NoLight.diffuse", glm::vec3(1.8f, 1.8f, 1.8f));
+		shader->SetVec3("NoLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+
+		shader->SetVec3("NoLight.direction", aLightData->lightDir);
+
 		break;
 	case 3:
 		//std::cout << "Spot light" << std::endl;
