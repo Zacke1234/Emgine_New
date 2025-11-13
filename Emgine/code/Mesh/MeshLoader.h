@@ -81,14 +81,14 @@ public:
 class BinaryFile
 {
 private:
+	
+public:
 	std::string FileName;
 	std::fstream File;
-public:
-	
 	BinaryFile(std::string FileName) : FileName(FileName) {};
-	void WriteFile(MeshLoader obj);
+	void WriteFile();
 
-	void ReadFile(MeshLoader obj);
-	
+	void ReadFile();
+	void hexdump(void* pointer, int buflen);
 };
 

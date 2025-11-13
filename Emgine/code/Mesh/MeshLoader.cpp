@@ -6,6 +6,7 @@
 #include "Texture.h"
 #include <Object.h>
 #include "MeshManager.h"
+#include <bitset>
 using namespace std;
 
 // do breakpoints
@@ -20,6 +21,10 @@ MeshLoader::MeshLoader()
 bool runOnce = false;
 bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 {
+	BinaryFile bin((name + ".bin").c_str());
+
+	
+
 	string message = "ObjLoaderStart";
 	//Message* mess = new Message(message);
 	 // if bin file, return?
@@ -36,10 +41,11 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 	Mesh& mesh = *INmesh;
 
 	std::ifstream file(fileName);
-	
+	bin.FileName = fileName;
 
 	std::vector<Vertex> vertices;
 	std::vector<Face> faces;
+	//printf("%s", file.binary);
 
 	
 	
@@ -127,7 +133,9 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 		
 	}
 
-	
+	//bin.ReadFile();
+	//bin.WriteFile();
+
 	
 
 	file.close();
@@ -195,6 +203,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 		}
 		
 	}
+	
 	temp_faces.clear();
 	temp_normals.clear();
 	temp_position.clear();
@@ -265,10 +274,7 @@ void MeshLoader::WriteToBinary(std::ostream& f, std::string filePath)
 
 	std::cerr << "Write to binary" << std::endl;
 	
-	/*for (int i = 0; i < fileSize; ++i)
-	{
-		cout << bitset<8>(fileSize[&i]) << endl;
-	}*/
+	
 	//f.write((char*)&fileSize, sizeof(fileSize));
 	//char* data;
 	//data = new char[fileSize + 1];
@@ -279,8 +285,11 @@ void MeshLoader::WriteToBinary(std::ostream& f, std::string filePath)
 	//f.write((char*)type.c_str(), fileSize);
 	//BinaryFile->WriteFile(this);
 	//std::cerr << name << std::endl;
-	
-
+	/*
+	for (int i = 0; i < name.size(); ++i)
+	{
+		cout << bitset<8>(fileSize[&i]) << endl;
+	}*/
 	
 }
 
@@ -312,6 +321,31 @@ void MeshLoader::ReadFromBinary(std::istream& f, std::string filePath)
 
 	
 
+}
+
+void BinaryFile::hexdump(void* pointer, int buflen)
+{
+	unsigned char* buf = (unsigned char*)pointer;
+	int i, j;
+	for (i = 0; i < buflen; i += 16) {
+		printf("%06x: ", i);
+		for (j = 0; j < 16; j++)
+		{
+			if (i + j < buflen)
+				printf("%02x", buf[i + j]);
+			else
+				printf("  ");
+		}
+		printf(" ");
+		for (j = 0; j < 16; j++) {
+			if (i + j < buflen)
+				printf("%c", isprint(buf[i + j]) ? buf[i + j] : '.');
+		}
+		printf("\n");
+	/*	if (i >= buflen)
+			return;*/
+		
+	}
 }
 
 
@@ -369,7 +403,7 @@ void Mesh::InitialiseMesh()
 	
 }
 
-void BinaryFile::WriteFile(MeshLoader obj) {
+void BinaryFile::WriteFile() {
 	File.open(FileName, std::ios::binary | std::ios::out);
 	if (!File)
 	{
@@ -380,8 +414,34 @@ void BinaryFile::WriteFile(MeshLoader obj) {
 	File.close();
 }
 
-void BinaryFile::ReadFile(MeshLoader obj) {
+void BinaryFile::ReadFile() {
 	File.open(FileName, std::ios::binary | std::ios::in);
+	//file.open(fileName, ios::in | ios::binary);
+	if (File.is_open())
+	{	// get the starting position
+		streampos start = File.tellg();
+
+		// go to the end
+		File.seekg(0, std::ios::end);
+
+		// get the ending position
+		streampos end = File.tellg();
+
+		// go back to the start
+		File.seekg(0, std::ios::beg);
+
+		// create a vector to hold the data that
+		// is resized to the total size of the file
+		std::vector<char> contents;
+		contents.resize(static_cast<size_t>(end - start));
+
+		//read it in
+		File.read(&contents[0], contents.size());
+
+		//print it out 
+		hexdump(contents.data(), contents.size());
+		//return true;
+	}
 	if (!File)
 	{
 		std::cerr << "File error reading: " << FileName << ">\n";

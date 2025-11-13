@@ -25,10 +25,7 @@ MeshManager::~MeshManager()
 
 Mesh* MeshManager::LoadMesh(std::string fromPath, std::string name)
 {
-	BinaryFile bin((name + ".bin").c_str());
-
-	/*bin.ReadFile(*meshLoader);
-	bin.WriteFile(*meshLoader);*/
+	
 
 	
 	
