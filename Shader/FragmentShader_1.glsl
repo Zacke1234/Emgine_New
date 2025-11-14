@@ -197,7 +197,7 @@ uniform Material material;
         ambient *= attenuation * intensity;
         diffuse *= attenuation * intensity;
         specular *= attenuation * intensity;
-        return (ambient + diffuse + specular);
+        return (ambient +  diffuse + specular);
 
        
      }
@@ -246,7 +246,7 @@ void main()
      //vec3 result = (ambient + (1.0 - shadow) * (diffuse + specular));
      //vec3 result = (ambient + diffuse + specular);
     
-
+     float shadow = ShadowCalculation(FragPosLightSpace);
        // have to do this differently
     // obtain normal from normal map in range [0,1]
     
@@ -262,7 +262,9 @@ void main()
     // texture(depthMap, TexCoord).r;
     //vec3 color = texture(diffuseTexture, TexCoord).rgb;
     //vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular));
-    vec3 lighting = CalculatePointLight(norm, FragPos, viewDir);
+    vec3 lighting = shadow * CalculateDirLight(norm, viewDir);
+    lighting += CalculatePointLight(norm, FragPos, viewDir);
+    lighting += CalcSpotLight(norm, FragPos, viewDir);
 ////    
 //        for(int i = 0; i < NR_POINT_LIGHTS; i++)
 //        {
