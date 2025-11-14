@@ -15,9 +15,22 @@ void ObjectManager::Destroy(Object* obj) {
 	/*obj->myMesh = NULL;
 	obj->myCollider = NULL;*/
 	
+	for (int i = Object::Entities.size() - 1; i >= 0; i--)
+	{
+		if (Object::Entities[i]) // crashes if i delete the last object int the list
+		{
+			Object::SelectedEntity = i;
+			obj->Entities.erase(std::remove(obj->Entities.begin(), obj->Entities.end(), obj), obj->Entities.end());
+			//++i;
+			std::cout << "Object destroyed\n";
+			
+		}
+	}
+	//
 	//  room.erase(room.begin()+2);
 	//Object::Entities.erase(obj->Entities.at());
 	//Object::Entities.pop_back();
+	
 }
 
 LightObject* ObjectManager::CreateLight(std::string aName = "new_lightObject", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL, LightData* aLightData = NULL)

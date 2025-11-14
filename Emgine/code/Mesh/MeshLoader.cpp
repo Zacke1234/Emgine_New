@@ -133,7 +133,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 		
 	}
 
-	bin.ReadFile();
+	//bin.ReadFile();
 	//bin.WriteFile();
 
 	

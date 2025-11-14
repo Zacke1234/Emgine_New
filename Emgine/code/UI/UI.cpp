@@ -12,7 +12,6 @@
 CubeCollider* cubeColl2;
 //Lighting* light;
 MeshManager* meshmang;
-ObjectManager* objectMang;
 ShaderManager* shaderMang;
 ColliderManager* colliderMang;
 TextureManager* textureMang;
@@ -20,22 +19,24 @@ LightingManager* lightMang;
 LightData* newLightData;
 //Lighting* myLighting;
 bool SelectedLight;
-int uiLightList(UI* myUI)
+int uiLightList(UI* myUI, ObjectManager* objectmanager)
 {
-	if (SelectedLight)
-	{
-		if (LightObject::LightEntities.size() <= 0) {
-			return 0;
+	if (Object::Entities.size() > 0) {
+		SelectedLight = Object::Entities[Object::SelectedEntity]->ObjType == 1;
+		if (SelectedLight)
+		{
+
+			Object::Entities[Object::SelectedEntity]->myLightData->lightPos = Object::Entities[Object::SelectedEntity]->Position;
+			Object::Entities[Object::SelectedEntity]->myLightData->lightDir = glm::vec3(
+				glm::radians(myUI->xRot),
+				glm::radians(myUI->yRot),
+				glm::radians(myUI->zRot));
+			Object::Entities[Object::SelectedEntity]->myLightData->constant = myUI->lightConstant;
+			Object::Entities[Object::SelectedEntity]->myLightData->cutOff = myUI->cutoff;
+			Object::Entities[Object::SelectedEntity]->myLightData->outerCutOff = myUI->outerCutOff;
 		}
-		Object::Entities[Object::SelectedEntity]->myLightData->lightPos = Object::Entities[Object::SelectedEntity]->Position;
-		Object::Entities[Object::SelectedEntity]->myLightData->lightDir = glm::vec3(
-			glm::radians(myUI->xRot),
-			glm::radians(myUI->yRot),
-			glm::radians(myUI->zRot));
-		Object::Entities[Object::SelectedEntity]->myLightData->constant = myUI->lightConstant;
-		Object::Entities[Object::SelectedEntity]->myLightData->cutOff = myUI->cutoff;
-		Object::Entities[Object::SelectedEntity]->myLightData->outerCutOff = myUI->outerCutOff;
 	}
+	
 	
 	return 0;
 }
@@ -125,8 +126,11 @@ UI::UI(GLFWwindow* window) // unitilized
 
 void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 {
-	SelectedLight = Object::Entities[Object::SelectedEntity]->ObjType == 1;
-	uiLightList(this);
+
+	
+	
+	
+	uiLightList(this, objectmanager);
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
@@ -278,7 +282,10 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 
 	if (ImGui::Button("Delete Object"))
 	{
-		objectmanager->Destroy(Object::Entities[Object::SelectedEntity]);
+		if (Object::Entities.size() > 0) {
+			objectmanager->Destroy(Object::Entities[Object::SelectedEntity]);
+		}
+		
 
 	}
 	/*if (Object::Entities[Object::SelectedEntity] != NULL) {

@@ -213,17 +213,18 @@ int static update_ui(UI* myUI, ShaderManager* myShader, ObjectManager* objManage
 
 	myUI->RenderUI(myShader, objManager);
 	//test = glm::scale(test, Object::Entities[Object::SelectedEntity]->Scale);
-	if (Object::Entities.size() <= 0) {
-		return 0;
-	}
-	Object::Entities[Object::SelectedEntity]->Position = glm::vec3(myUI->xPos, myUI->yPos, myUI->zPos);
-	Object::Entities[Object::SelectedEntity]->Rotation = glm::vec3(
-		glm::radians(myUI->xRot),
-		glm::radians(myUI->yRot),
-		glm::radians(myUI->zRot));
-	Object::Entities[Object::SelectedEntity]->Scale = glm::vec3(myUI->xScale, myUI->yScale, myUI->zScale);
-
 	
+	if (Object::Entities.size() > 0) {
+		Object::Entities[Object::SelectedEntity]->Position = glm::vec3(myUI->xPos, myUI->yPos, myUI->zPos);
+		Object::Entities[Object::SelectedEntity]->Rotation = glm::vec3(
+			glm::radians(myUI->xRot),
+			glm::radians(myUI->yRot),
+			glm::radians(myUI->zRot));
+		Object::Entities[Object::SelectedEntity]->Scale = glm::vec3(myUI->xScale, myUI->yScale, myUI->zScale);
+	}
+
+
+	//
 	
 	//newLightData->lightPos = SelectedLight->Position;
 	return 0;
