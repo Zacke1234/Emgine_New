@@ -3,18 +3,25 @@
 #pragma once
 #include <string>
 #include <glad.h>
+#include <vector>
+#include "Shader.h"
+#include <glm.hpp>
 
 struct Material {
 	
-	unsigned int diffuse;
-	unsigned int specular;
+	int diffuse;
+	int specular;
 	float shininess;
+	glm::vec3 color;
 };
 
 class Texture
 {
 public:
-	Texture(const char* aPath);
+	Material* myMaterial = new Material();
+	Texture(const char* aPath, Material* mat);
+
+	
 
 	bool IsValid() const { return TextureObject != 0; };
 

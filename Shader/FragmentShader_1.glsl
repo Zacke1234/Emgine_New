@@ -61,7 +61,7 @@ struct DirectionalLight {
     vec3 diffuse;
     vec3 specular;
 };
- 
+uniform DirectionalLight dirLight;
 
 
 struct PointLight{
@@ -74,6 +74,7 @@ struct PointLight{
     float linear;
     float quadratic;
 };
+uniform PointLight pointLight;
 
 
 struct SpotLight{
@@ -102,7 +103,7 @@ vec3 CalculatePointLight( vec3 norm, vec3 fragPos, vec3 viewDir);
 vec3 CalcSpotLight( vec3 normal, vec3 fragPos, vec3 viewDir);
 
 struct Material {
-    vec3 ambient;
+    
     sampler2D diffuse;
     sampler2D specular;
     float shininess;

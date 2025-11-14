@@ -43,6 +43,7 @@ Object::Object(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTe
 	if (aTexture)
 	{
 		SetTexture(*aTexture);
+		SetMaterial(*aTexture->myMaterial);
 	}
 	else {
 		std::cout << "No texture assigned to object: " << _namn << "\n";
@@ -61,6 +62,8 @@ Object::Object(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTe
 	else {
 		std::cout << "No collider assigned to object: " << _namn << "\n";
 	}
+
+	
 	/*if (*Objtype != Type_Mesh)
 	{
 		std::cout << "This is not a mesh " << _namn << "\n";
@@ -154,6 +157,10 @@ void Object::SetCollider(Collider& aCollider)
 	myCollider->position = this->Position;
 	myCollider->isKinematic = false;
 	myCollider->scale = Scale;
+}
+void Object::SetMaterial(Material& material)
+{
+	myTexture->myMaterial = &material;
 }
 void LightObject::SetLightData(LightData& lightdata)
 {

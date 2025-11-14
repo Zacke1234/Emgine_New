@@ -290,15 +290,13 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 
 		shader->SetVec3("lightColor", glm::vec3(0.0f, 0.01, 0.0f));
 
-		shader->SetVec3("material.objectColor", glm::vec3(1.0f, 1.0, 1.0));
+		
 
 
 		shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
 
-		shader->SetVec3("material.ambient", glm::vec3(1.0f, 1.0, 1.0));
-		shader->SetInt("material.diffuse", 0);
-		shader->SetInt("material.specular", 1.01);
-		shader->SetFloat("material.shininess", 64.0f);
+		
+		
 
 		break;
 	case 2:
@@ -306,15 +304,13 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 		//std::cout << "Directional light" << std::endl;
 
 		shader->SetVec3("lightColor", glm::vec3(0.0f, 0.01, 0.0f));
-		//shader->SetVec3("DLight.position", aLightData->lightPos);
+
 		shader->SetVec3("material.objectColor", glm::vec3(1.0f, 1.0f, 1.0f));
 
-		//shader->SetVec3("viewPos", aCamera->myPosition);
+
 		shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
-		shader->SetVec3("material.ambient", glm::vec3(0.5f, 0.5, 0.5));
-		shader->SetInt("material.diffuse", 0);
-		shader->SetInt("material.specular", 1);
-		shader->SetFloat("material.shininess", 32.0f);
+	
+		
 
 		shader->SetVec3("baseLight.ambient", aLightData->ambient);
 		shader->SetVec3("baseLight.diffuse", aLightData->diffuse);
@@ -341,16 +337,11 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 		// gotta take in and set materials from and into glsl and the meshes/objects.
 
 		shader->SetVec3("material.lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-		shader->SetVec3("material.objectColor", glm::vec3(0.5f, 0.6f, 0.2f));
+		
 
-		shader->SetVec3("objectColor", glm::vec3(1.0f, 0.0f, 1.0f));
-
-		//shader->SetVec3("viewPos", aCamera->myPosition);
 		shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
-		// shader->SetVec3("material.ambient", glm::vec3(0.2f, 0.2, 0.2)); materials dont have an ambient!
-		shader->SetInt("material.diffuse", 1);
-		shader->SetInt("material.specular", 1);
-		shader->SetFloat("material.shininess", 32.0f);
+	
+		
 		break;
 	default:
 		//std::cout << "Default" << std::endl;

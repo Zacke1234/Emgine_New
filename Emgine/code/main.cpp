@@ -301,7 +301,7 @@ int main()
 	);
 
 	myObjectManager->Create("Cube",
-		cube, // this doesnt get added to the mech cache? and the vertices are copied from the fish obj, this does not happen in the UI though
+		cube, 
 		defaultTex,
 		myShaderManager->DefaultShader,
 		MyColliderManager->Create(cubeColl)
@@ -354,7 +354,7 @@ int main()
 		{
 			
 			o->Draw(myCamera, myShaderManager->DefaultShader); 
-			
+			myTextureManager->InitializeTexture(myShaderManager->DefaultShader, o->myTexture->myMaterial);
 		}
 		
 		// render UI (after/ON TOP OF drawcall)

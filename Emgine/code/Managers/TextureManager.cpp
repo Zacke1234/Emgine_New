@@ -1,12 +1,12 @@
 #include "TextureManager.h"
 #include <filesystem>
 #include <iostream>
-Texture* TextureManager::Create(std::string name, std::string path_end)
+Texture* TextureManager::Create(std::string name, std::string path_end, Material* mat)
 {
 	std::string path = "C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\textures\\";
-	
+	mat = new Material();
 	// C:\Users\zackarias.hager\Emgine_New\Emgine\resource\textures
-	Texture* new_texture = new Texture((path + path_end).c_str());
+	Texture* new_texture = new Texture((path + path_end).c_str(), mat);
 	new_texture->name = name;
 	textures.push_back(new_texture);
 	std::cout << "Texture created: " << name << " from path: " << path + path_end << "\n";
@@ -25,4 +25,14 @@ Texture* TextureManager::Find(std::string name) {
 		}
 	std::cout << "Texture not found: " << name << "\n";
 	return nullptr;
+}
+
+Material TextureManager::InitializeTexture(Shader* shader, Material* mat)
+{
+	shader->SetInt("material.diffuse", mat->diffuse);
+	shader->SetInt("material.specular", mat->specular);
+	shader->SetFloat("material.shininess", mat->shininess);
+	shader->SetVec3("material.objectColor", mat->color);
+	return *mat;
+
 }

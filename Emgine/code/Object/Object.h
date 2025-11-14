@@ -51,6 +51,7 @@ public:
 	void SetTexture(Texture& aTexture);
 	void SetShader(Shader& aShader);
 	void SetCollider(Collider& collider);
+	void SetMaterial(Material& material);
 	void SetName(std::string name);
 
 	//void SetLighting(Lighting& lighting);
@@ -99,11 +100,12 @@ public:
 	CubeCollider* myCubeColl;
 	Mesh* myMesh;
 	
+	Texture* myTexture;
 	
 	LightData* myLightData;
 private: 
 	
-	Texture* myTexture;
+	
 	Shader* MyShader;
 	Cube* myCube;
 	

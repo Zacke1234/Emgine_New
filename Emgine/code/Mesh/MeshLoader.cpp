@@ -325,10 +325,12 @@ void MeshLoader::ReadFromBinary(std::istream& f, std::string filePath)
 
 void BinaryFile::hexdump(void* pointer, int buflen)
 {
+	File.open(FileName, std::ios::binary | std::ios::out);
 	unsigned char* buf = (unsigned char*)pointer;
 	int i, j;
 	for (i = 0; i < buflen; i += 16) {
 		printf("%06x: ", i);
+
 		for (j = 0; j < 16; j++)
 		{
 			if (i + j < buflen)
@@ -341,6 +343,7 @@ void BinaryFile::hexdump(void* pointer, int buflen)
 			if (i + j < buflen)
 				printf("%c", isprint(buf[i + j]) ? buf[i + j] : '.');
 		}
+
 		printf("\n");
 	/*	if (i >= buflen)
 			return;*/

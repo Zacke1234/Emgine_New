@@ -44,6 +44,13 @@ public:
 	glm::vec3 lightVector;
 	float cutoff;
 	float outerCutOff;
+	glm::vec3 lightAmbient;
+
+	// MATERIALS
+	int matDiffuse = 1;
+	int matSpecular = 1;
+	int matShininess = 1;
+	glm::vec3 matColor;
 	
 	// BUFFERS
 	char textureBuffer[255]{};
@@ -77,6 +84,7 @@ private:
 	Object* virtobj;
 	Shader* shade;
 	Texture* texture;
+	Material* material;
 	Camera* camera;
 	CubeCollider* cubeCollider;
 	Collider* newCollider;

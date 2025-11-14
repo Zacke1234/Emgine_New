@@ -19,6 +19,7 @@ LightingManager* lightMang;
 LightData* newLightData;
 //Lighting* myLighting;
 bool SelectedLight;
+bool selectedMaterial;
 int uiLightList(UI* myUI, ObjectManager* objectmanager)
 {
 	if (Object::Entities.size() > 0) {
@@ -38,6 +39,21 @@ int uiLightList(UI* myUI, ObjectManager* objectmanager)
 	}
 	
 	
+	return 0;
+}
+
+int uiMaterialList(UI* myUI)
+{
+	if (Object::Entities.size() > 0) {
+		selectedMaterial = Object::Entities[Object::SelectedEntity]->myTexture != nullptr;
+		if (selectedMaterial)
+		{
+			Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->diffuse = myUI->matDiffuse;
+			Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->specular = myUI->matSpecular;
+			Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->shininess = myUI->matShininess;
+			Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->color = myUI->matColor;
+		}
+	}
 	return 0;
 }
 
@@ -173,7 +189,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 			objectmanager->Create(
 				"Mesh", // Name
 				meshmang->Create("Mesh", meshBuffer),
-				textureMang->Create(std::string(nameBuffer + tex), "Default 1.png"),
+				textureMang->Create(std::string(nameBuffer + tex), "Default 1.png", material),
 				shader->DefaultShader,
 				colliderMang->Create(cubeColl2)
 			);
@@ -183,7 +199,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 			objectmanager->Create(
 				"Mesh", // Name
 				meshmang->Create("fish", "fish.obj"),
-				textureMang->Create(std::string(nameBuffer + tex), "Default 1.png"),
+				textureMang->Create(std::string(nameBuffer + tex), "Default 1.png", material),
 				shader->DefaultShader,
 				colliderMang->Create(cubeColl2)
 			);
@@ -216,7 +232,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 			
 			objectmanager->Create("Cube",
 				meshmang->Create("Cube", "cube.obj"),
-				textureMang->Create(std::string("Cube" + tex), "Default 1.png"),
+				textureMang->Create(std::string("Cube" + tex), "Default 1.png", material),
 				shader->DefaultShader,
 				colliderMang->Create(cubeColl2)
 			);
@@ -225,7 +241,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 		{
 			objectmanager->Create(nameBuffer,
 				meshmang->Create(nameBuffer, "cube.obj"),
-				textureMang->Create(std::string(nameBuffer + tex), textureBuffer),
+				textureMang->Create(std::string(nameBuffer + tex), textureBuffer, material),
 				shader->DefaultShader,
 				colliderMang->Create(cubeColl2)
 			);
@@ -238,6 +254,16 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 		
 
 	}
+	uiMaterialList(this);
+	if(Object::Entities.size() > 0)
+	{
+		ImGui::Text("Material properties");
+		
+		ImGui::DragInt("Diffuse", &matDiffuse,step, 0, 100);
+		ImGui::DragInt("Specular", &matSpecular, step, 0, 100);
+		ImGui::DragInt("Shininess", &matShininess, step, 0, 100);
+		ImGui::DragFloat3("Color", &matColor[0], step, step);
+	}
 
 	
 	if (ImGui::Button("Create new light"))
@@ -247,7 +273,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 		{
 			objectmanager->CreateLight("Light",
 				NULL,
-				textureMang->Create(std::string(nameBuffer + tex), textureBuffer),
+				textureMang->Create(std::string(nameBuffer + tex), textureBuffer, material),
 				shader->DefaultShader,
 				NULL,
 				lightMang->Create("Light", shader->DefaultShader, newLightData)
@@ -260,7 +286,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 		{
 			objectmanager->CreateLight(nameBuffer,
 				NULL,
-				textureMang->Create(std::string(nameBuffer + tex), textureBuffer),
+				textureMang->Create(std::string(nameBuffer + tex), textureBuffer, material),
 				shader->DefaultShader,
 				NULL,
 				lightMang->Create(nameBuffer, shader->DefaultShader, newLightData)
@@ -271,10 +297,11 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 	}
 	if (LightObject::LightEntities.size() > 0)
 	{
+		ImGui::Text("Light properties");
 		ImGui::DragFloat("Light constant", &lightConstant, step, step_fast);
 		ImGui::DragFloat("Light cut off", &cutoff, step, step_fast);
 		ImGui::DragFloat("Light outer cut off", &outerCutOff, step, step_fast);
-		
+		ImGui::DragFloat3("Ambient", &lightAmbient[0], step, step);
 
 		//ImGui::DragScalar("Light direction", ImGuiDataType_Float, &lightVector, step, NULL, NULL, "%.4f");
 		//uiLightList(this);
@@ -340,7 +367,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 		std::string test = "C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\textures\\";
 		test.append(textureBuffer);
 		
-		texture = new Texture(test.c_str());
+		texture = new Texture(test.c_str(), material);
 		Object::Entities[Object::SelectedEntity]->SetTexture(*texture);
 	}
 

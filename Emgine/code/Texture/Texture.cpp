@@ -27,8 +27,7 @@ inline void CheckOpenGLError(const char* stmt, const char* fname, int line)
 #pragma once
 float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
 
-Material* mat = new Material();
-Texture::Texture(const char* aPath)
+Texture::Texture(const char* aPath, Material* mat)
 {
 	msg = "";
 	//std::cout << "texture" << "\n";
@@ -75,5 +74,7 @@ Texture::Texture(const char* aPath)
 	stbi_image_free(data);
 	
 }
+
+
 
 
