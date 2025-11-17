@@ -308,13 +308,13 @@ int main()
 	);
 
 	
-	//myObjectManager->CreateLight("SceneLight",
-	//	NULL, // this doesnt get added to the mech cache? and the vertices are copied from the fish obj, this does not happen in the UI though
-	//	defaultTex,
-	//	myShaderManager->DefaultShader,
-	//	NULL,
-	//	myLightingManager->Create("SceneLight", myShaderManager->DefaultShader, myLightingManager->DefaultLighting)
-	//);
+	myObjectManager->CreateLight("SceneLight",
+		NULL, 
+		defaultTex,
+		myShaderManager->DefaultShader,
+		NULL,
+		myLightingManager->Create("SceneLight", myShaderManager->DefaultShader, myLightingManager->DefaultLighting)
+	);
 
 
 	////myObjectManager->Find("cubeObj");

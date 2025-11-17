@@ -36,6 +36,12 @@ int uiLightList(UI* myUI, ObjectManager* objectmanager)
 			Object::Entities[Object::SelectedEntity]->myLightData->constant = myUI->lightConstant;
 			Object::Entities[Object::SelectedEntity]->myLightData->cutOff = myUI->cutoff;
 			Object::Entities[Object::SelectedEntity]->myLightData->outerCutOff = myUI->outerCutOff;
+			Object::Entities[Object::SelectedEntity]->myLightData->ambient = myUI->lightAmbient;
+			Object::Entities[Object::SelectedEntity]->myLightData->diffuse = myUI->lightDiffuse;
+			Object::Entities[Object::SelectedEntity]->myLightData->linear = myUI->lightLinear;
+			Object::Entities[Object::SelectedEntity]->myLightData->quadtric = myUI->lightQuadratic;
+			Object::Entities[Object::SelectedEntity]->myLightData->specular = myUI->lightspecular;
+			
 		}
 	}
 	
@@ -91,10 +97,24 @@ int uiObjectList(UI* ui)
 				ui->matShininess = Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->shininess;
 				ui->matSpecular = Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->specular;
 				ui->matDiffuse = Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->diffuse;
-
+				
 
 
 				//myUI->matColor = Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->color;
+			}
+
+			if (Object::Entities[Object::SelectedEntity]->ObjType == 1)
+			{
+				ui->lightAmbient = Object::Entities[Object::SelectedEntity]->myLightData->ambient;
+				ui->lightDiffuse = Object::Entities[Object::SelectedEntity]->myLightData->diffuse;
+				ui->lightspecular = Object::Entities[Object::SelectedEntity]->myLightData->specular;
+
+				ui->lightLinear = Object::Entities[Object::SelectedEntity]->myLightData->linear;
+				ui->lightQuadratic = Object::Entities[Object::SelectedEntity]->myLightData->quadtric;
+				ui->lightConstant = Object::Entities[Object::SelectedEntity]->myLightData->constant;
+				ui->cutoff = Object::Entities[Object::SelectedEntity]->myLightData->cutOff;
+				ui->outerCutOff = Object::Entities[Object::SelectedEntity]->myLightData->outerCutOff;
+				
 			}
 			
 			/*if (ImGui::Button(LightObject::Entities[i]->namn.c_str()))
@@ -316,13 +336,16 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 	if (LightObject::LightEntities.size() > 0)
 	{
 		ImGui::Text("Light properties");
+		
+		ImGui::DragFloat3("Ambient", &lightAmbient[0], step, step);
+		ImGui::DragFloat3("Specular", &lightspecular[0], step, step);
+		ImGui::DragFloat3("Diffuse", &lightDiffuse[0], step, step);		//ImGui::DragScalar("Light direction", ImGuiDataType_Float, &lightVector, step, NULL, NULL, "%.4f");
 		ImGui::DragFloat("Light constant", &lightConstant, step, step_fast);
 		ImGui::DragFloat("Light cut off", &cutoff, step, step_fast);
 		ImGui::DragFloat("Light outer cut off", &outerCutOff, step, step_fast);
-		ImGui::DragFloat3("Ambient", &lightAmbient[0], step, step);
+		ImGui::DragFloat("Light linear", &lightLinear, step, step_fast);
+		ImGui::DragFloat("Light quadratic", &lightQuadratic, step, step_fast);
 		
-		//ImGui::DragScalar("Light direction", ImGuiDataType_Float, &lightVector, step, NULL, NULL, "%.4f");
-		//uiLightList(this);
 	}
 
 	if (ImGui::Button("Delete Object"))

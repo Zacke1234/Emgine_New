@@ -41,10 +41,14 @@ public:
 
 	// LIGHTING IN UI
 	float lightConstant;
-	glm::vec3 lightVector;
+	glm::vec3 lightspecular;
 	float cutoff;
 	float outerCutOff;
 	glm::vec3 lightAmbient;
+	glm::vec3 lightDiffuse;
+	float lightLinear;
+	float lightQuadratic;
+
 
 	// MATERIALS
 	int matDiffuse = 1;

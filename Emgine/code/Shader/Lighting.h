@@ -22,7 +22,7 @@ public:
 		glm::vec3 specular = {1,1,1};
 		float linear = 0; 
 		float quadtric = 0; 
-
+		
 		float cutOff;
 		float outerCutOff;
 

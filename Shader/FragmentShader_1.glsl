@@ -92,6 +92,7 @@ vec3 diffuse;
 vec3 specular;
 
 };
+uniform SpotLight spotLight;
 
 
 int test = 0;
@@ -263,9 +264,9 @@ void main()
     // texture(depthMap, TexCoord).r;
     //vec3 color = texture(diffuseTexture, TexCoord).rgb;
     //vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular));
-    vec3 lighting = shadow * CalculateDirLight(norm, viewDir);
-    lighting += CalculatePointLight(norm, FragPos, viewDir);
-    lighting += CalcSpotLight(norm, FragPos, viewDir);
+    vec3 lighting = CalculateDirLight(norm, viewDir) + CalculatePointLight(norm, FragPos, viewDir) + CalcSpotLight(norm, FragPos, viewDir);
+//    lighting += CalculatePointLight(norm, FragPos, viewDir);
+//    lighting += CalcSpotLight(norm, FragPos, viewDir);
 ////    
 //        for(int i = 0; i < NR_POINT_LIGHTS; i++)
 //        {

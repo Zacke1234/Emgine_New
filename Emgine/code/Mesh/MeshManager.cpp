@@ -26,14 +26,14 @@ MeshManager::~MeshManager()
 Mesh* MeshManager::LoadMesh(std::string fromPath, std::string name)
 {
 	
-
+	std::string Binary = "C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\bins\\" + name + ".bin";
 	
 	
 	std::ofstream write("C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\bins\\" + name + ".bin", std::ios::binary); // ./out.bin
 	std::ifstream read(fromPath);
 	
 	meshLoader->ReadFromBinary(read, fromPath);
-	meshLoader->WriteToBinary(write, fromPath);
+	meshLoader->WriteToBinary(write, Binary);
 	
 	
 	
@@ -43,7 +43,7 @@ Mesh* MeshManager::LoadMesh(std::string fromPath, std::string name)
 
 	Mesh* mesh = new Mesh;
 	mesh->name = name;
-	meshLoader->ObjParser("C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\bins\\" + name + ".bin", mesh);
+	meshLoader->ObjParser(fromPath, mesh);
 	//if (!meshLoader->ObjParser("C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\bins\\" + name + ".bin", mesh)) // herein lies the problem....
 	//{
 	//	std::cout << "Something is wrong with" << name << " from path: " << fromPath + name << "\n";
