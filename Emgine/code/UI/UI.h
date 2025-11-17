@@ -50,7 +50,7 @@ public:
 	int matDiffuse = 1;
 	int matSpecular = 1;
 	int matShininess = 1;
-	glm::vec3 matColor;
+	glm::vec3 matColor = {1,1,1};
 	
 	// BUFFERS
 	char textureBuffer[255]{};

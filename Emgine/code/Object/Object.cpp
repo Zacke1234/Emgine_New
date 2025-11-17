@@ -161,6 +161,12 @@ void Object::SetCollider(Collider& aCollider)
 void Object::SetMaterial(Material& material)
 {
 	myTexture->myMaterial = &material;
+	myTexture->myMaterial->color = { 1,1,1 };
+	myTexture->myMaterial->shininess = 1;
+	myTexture->myMaterial->specular = 1;
+	myTexture->myMaterial->diffuse = 1;
+	
+	
 }
 void LightObject::SetLightData(LightData& lightdata)
 {

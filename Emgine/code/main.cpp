@@ -352,10 +352,11 @@ int main()
 		//Drawcall objects
 		for (auto& o : Object::Entities)
 		{
-			
-			o->Draw(myCamera, myShaderManager->DefaultShader); 
 			myTextureManager->InitializeTexture(myShaderManager->DefaultShader, o->myTexture->myMaterial);
+			o->Draw(myCamera, myShaderManager->DefaultShader); 
+			
 		}
+	
 		
 		// render UI (after/ON TOP OF drawcall)
 		update_ui(myUI, myShaderManager, myObjectManager);

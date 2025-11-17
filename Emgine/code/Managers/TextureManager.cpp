@@ -1,6 +1,7 @@
 #include "TextureManager.h"
 #include <filesystem>
 #include <iostream>
+
 Texture* TextureManager::Create(std::string name, std::string path_end, Material* mat)
 {
 	std::string path = "C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\textures\\";
@@ -8,14 +9,14 @@ Texture* TextureManager::Create(std::string name, std::string path_end, Material
 	// C:\Users\zackarias.hager\Emgine_New\Emgine\resource\textures
 	Texture* new_texture = new Texture((path + path_end).c_str(), mat);
 	new_texture->name = name;
-	textures.push_back(new_texture);
+	Texture::textures.push_back(new_texture);
 	std::cout << "Texture created: " << name << " from path: " << path + path_end << "\n";
 	return new_texture;
 }
 
 
 Texture* TextureManager::Find(std::string name) {
-	for (Texture* texture : textures)
+	for (Texture* texture : Texture::textures)
 		{
 		if (texture->name == name)
 			{

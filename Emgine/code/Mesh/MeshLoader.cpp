@@ -275,16 +275,16 @@ void MeshLoader::WriteToBinary(std::ostream& f, std::string filePath)
 	std::cerr << "Write to binary" << std::endl;
 	
 	
-	//f.write((char*)&fileSize, sizeof(fileSize));
-	//char* data;
-	//data = new char[fileSize + 1];
-	//name = data;
+	f.write((char*)&fileSize, sizeof(fileSize));
+	char* data;
+	data = new char[fileSize + 1];
+	name = data;
 	f.write((char*)name.c_str(), fileSize);
-	//fileSize = type.size();
-	//f.write((char*)&fileSize, sizeof(fileSize));
-	//f.write((char*)type.c_str(), fileSize);
+	fileSize = type.size();
+	f.write((char*)&fileSize, sizeof(fileSize));
+	f.write((char*)type.c_str(), fileSize);
 	//BinaryFile->WriteFile(this);
-	//std::cerr << name << std::endl;
+	std::cerr << name << std::endl;
 	/*
 	for (int i = 0; i < name.size(); ++i)
 	{

@@ -152,7 +152,7 @@ uniform Material material;
           vec3 ambient = baseLight.ambient * vec3(texture(material.diffuse, TexCoord));
           vec3 diffuse = baseLight.diffuse * diff * vec3(texture(material.diffuse, TexCoord));
           vec3 specular = baseLight.specular * spec * vec3(texture(material.specular, TexCoord));
-          return (ambient + diffuse + specular);
+          return (ambient + diffuse + specular) * material.objectColor;
      }
 
      vec3 CalculatePointLight( vec3 normal, vec3 fragPos, vec3 viewDir)
@@ -173,7 +173,7 @@ uniform Material material;
          ambient  *= attenuation;
          diffuse  *= attenuation;
          specular *= attenuation;
-         return (ambient + diffuse + specular);
+         return (ambient + diffuse + specular) * material.objectColor;
      }
 
      vec3 CalcSpotLight(vec3 normal, vec3 fragPos, vec3 ViewDir)
@@ -198,7 +198,7 @@ uniform Material material;
         ambient *= attenuation * intensity;
         diffuse *= attenuation * intensity;
         specular *= attenuation * intensity;
-        return (ambient +  diffuse + specular);
+        return (ambient +  diffuse + specular) * material.objectColor;
 
        
      }

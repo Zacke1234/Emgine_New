@@ -21,8 +21,9 @@ public:
 	Material* myMaterial = new Material();
 	Texture(const char* aPath, Material* mat);
 
-	
+	static std::vector<Texture*> textures;
 
+	//vector<Object*> Object::Entities;
 	bool IsValid() const { return TextureObject != 0; };
 
 	std::string msg;

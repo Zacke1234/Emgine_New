@@ -3,7 +3,7 @@
 #include <vector>
 #include <glfw3.h>
 #include <gtc/type_ptr.hpp>
-
+#pragma once
 
 
 

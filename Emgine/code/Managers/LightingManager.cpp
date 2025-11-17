@@ -1,4 +1,5 @@
 #include "LightingManager.h"
+#pragma once
 std::vector<LightData*> lightsList;
 //LightObject::LightEntities.size();
 //Camera* Cameron = new Camera();

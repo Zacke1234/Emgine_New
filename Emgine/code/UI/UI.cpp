@@ -24,6 +24,7 @@ int uiLightList(UI* myUI, ObjectManager* objectmanager)
 {
 	if (Object::Entities.size() > 0) {
 		SelectedLight = Object::Entities[Object::SelectedEntity]->ObjType == 1;
+
 		if (SelectedLight)
 		{
 
@@ -44,22 +45,25 @@ int uiLightList(UI* myUI, ObjectManager* objectmanager)
 
 int uiMaterialList(UI* myUI)
 {
-	if (Object::Entities.size() > 0) {
-		selectedMaterial = Object::Entities[Object::SelectedEntity]->myTexture != nullptr;
-		if (selectedMaterial)
-		{
-			Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->diffuse = myUI->matDiffuse;
-			Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->specular = myUI->matSpecular;
-			Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->shininess = myUI->matShininess;
-			Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->color = myUI->matColor;
-		}
+	
+	selectedMaterial = Object::Entities[Object::SelectedEntity]->myTexture != nullptr;
+	if (Object::Entities.size() > 0 && selectedMaterial) {
+		
+		Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->diffuse = myUI->matDiffuse;
+				Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->specular = myUI->matSpecular;
+				Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->shininess = myUI->matShininess;
+				Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->color = myUI->matColor;
 	}
+	
+	
+	
+
 	return 0;
 }
 
 int uiObjectList(UI* ui) 
 {
-	
+	selectedMaterial = Object::Entities[Object::SelectedEntity]->myTexture != nullptr;
 	
 	for (int i = 0; i < Object::Entities.size(); i++)
 	{
@@ -80,6 +84,18 @@ int uiObjectList(UI* ui)
 			ui->xScale = Object::Entities[i]->Scale[0];
 			ui->yScale = Object::Entities[i]->Scale[1];
 			ui->zScale = Object::Entities[i]->Scale[2];
+
+			if (selectedMaterial)
+			{
+				ui->matColor = Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->color;
+				ui->matShininess = Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->shininess;
+				ui->matSpecular = Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->specular;
+				ui->matDiffuse = Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->diffuse;
+
+
+
+				//myUI->matColor = Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->color;
+			}
 			
 			/*if (ImGui::Button(LightObject::Entities[i]->namn.c_str()))
 			{
@@ -146,7 +162,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 	
 	
 	
-	uiLightList(this, objectmanager);
+	
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
@@ -263,6 +279,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 		ImGui::DragInt("Specular", &matSpecular, step, 0, 100);
 		ImGui::DragInt("Shininess", &matShininess, step, 0, 100);
 		ImGui::DragFloat3("Color", &matColor[0], step, step);
+		
 	}
 
 	
@@ -295,6 +312,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 		}
 		//std::cout << "didnt work" << std::endl;
 	}
+	uiLightList(this, objectmanager);
 	if (LightObject::LightEntities.size() > 0)
 	{
 		ImGui::Text("Light properties");
@@ -302,7 +320,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 		ImGui::DragFloat("Light cut off", &cutoff, step, step_fast);
 		ImGui::DragFloat("Light outer cut off", &outerCutOff, step, step_fast);
 		ImGui::DragFloat3("Ambient", &lightAmbient[0], step, step);
-
+		
 		//ImGui::DragScalar("Light direction", ImGuiDataType_Float, &lightVector, step, NULL, NULL, "%.4f");
 		//uiLightList(this);
 	}

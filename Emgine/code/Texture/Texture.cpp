@@ -26,7 +26,7 @@ inline void CheckOpenGLError(const char* stmt, const char* fname, int line)
 
 #pragma once
 float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
-
+std::vector<Texture*> Texture::textures;
 Texture::Texture(const char* aPath, Material* mat)
 {
 	msg = "";
