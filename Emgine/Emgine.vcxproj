@@ -70,13 +70,16 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PublicIncludeDirectories>$(ProjectDir);$(PublicIncludeDirectories)</PublicIncludeDirectories>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLM_FORCE_XYZW_ONLY</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\KHR;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\glad\;$(SolutionDir)Emgine\code\Camera\;$(SolutionDir)Emgine\code\Physics\;$(SolutionDir)Emgine\code\Shader\;$(SolutionDir)Emgine\code\Texture\;$(SolutionDir)Emgine\code\Mesh\;$(SolutionDir)Emgine\code\UI\;$(SolutionDir)Emgine\code\Util\;$(SolutionDir)Emgine\code\Object\;$(SolutionDir)Emgine\code\Message\;$(SolutionDir)Emgine\code\;$(SolutionDir)Emgine\resource\meshes\;$(SolutionDir)Emgine\resource\materials\;$(SolutionDir)Emgine\resource\textures\;$(SolutionDir)Emgine\code\Patterns\Observer\;$(SolutionDir)imgui\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\KHR;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\glad\;$(SolutionDir)imgui\;$(ProjectDir)code\;$(ProjectDir)resources\bins;$(ProjectDir)code\Texture;$(ProjectDir)code\Object;$(ProjectDir)code\Camera;$(ProjectDir)code\Managers;$(ProjectDir)code\Patterns\Observer;$(ProjectDir)code\UI;$(ProjectDir)code\Util;$(ProjectDir)code\Message;$(ProjectDir)code\Physics;$(ProjectDir)code\Mesh;$(ProjectDir)code\Shader;$(ProjectDir)resources\meshes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <FloatingPointModel>Strict</FloatingPointModel>
       <FloatingPointExceptions>true</FloatingPointExceptions>

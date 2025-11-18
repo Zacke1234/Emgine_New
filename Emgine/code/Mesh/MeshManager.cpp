@@ -25,21 +25,24 @@ MeshManager::~MeshManager()
 
 Mesh* MeshManager::LoadMesh(std::string fromPath, std::string name)
 {
-	
-	std::string Binary = "C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\bins\\" + name + ".bin";
-	
-	
+	size_t fileSize = std::filesystem::file_size(fromPath);
+	std::string Binary = "resource\\bins\\" + name + ".bin";
+
+	//char* data = new char;
+	//
 	std::ofstream write("C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\bins\\" + name + ".bin", std::ios::binary); // ./out.bin
-	std::ifstream read(fromPath);
+	std::fstream read(fromPath);
 	
-	meshLoader->ReadFromBinary(read, fromPath);
-	meshLoader->WriteToBinary(write, Binary);
+	meshLoader->ReadFromBinary(read, write, fromPath);
+	
+	//meshLoader->ReadFile(fromPath, Binary, write, read);
+	
+	/*BinaryFile bin((fromPath).c_str());
+	bin.ReadFile(fromPath, Binary, write, read);*/
+	//bin.WriteFile();
 	
 	
 	
-	
-	write.close();
-	read.close();
 
 	Mesh* mesh = new Mesh;
 	mesh->name = name;
@@ -62,7 +65,7 @@ Mesh* MeshManager::LoadMesh(std::string fromPath, std::string name)
 
 Mesh* MeshManager::Create(std::string name, std::string path_end)
 {
-	std::string path = "C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\meshes\\";
+	std::string path = "resource\\meshes\\";
 	Mesh* mesh = new Mesh();
 	mesh->name = name;
 	mesh = LoadMesh((path + path_end).c_str(), name);

@@ -21,6 +21,8 @@ public:
 
 	void SetInt(const std::string depth, int OutInt);
 
+	void SetUniformBlock(const std::string blockName, unsigned int bindingPoint);
+
 	std::string LoadShader(const char* aPath);
 
 	unsigned int ShaderProgram;

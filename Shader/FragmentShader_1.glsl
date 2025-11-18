@@ -21,18 +21,6 @@ uniform sampler2D shadowMap;
 uniform sampler2D normalMap; 
 uniform sampler2D diffuseTexture;
 
-//enum LightType {
-//    Null, Point, Directional, Spot
-//};
-
-// mip mapping
-vec3 rgb_normal = Normal * 0.5 + 0.5; // transforms from [-1,1] to [0,1] 
-
-//layout (std140) uniform Test
-//{
-//    vec3 ambient;
-//};
-
 struct BasicLight {
 // dir
     vec3 direction;
@@ -52,6 +40,13 @@ struct BasicLight {
     float outerCutOff;
 };
 uniform BasicLight baseLight;
+
+// mip mapping
+vec3 rgb_normal = Normal * 0.5 + 0.5; // transforms from [-1,1] to [0,1] 
+
+//layout (location = 1) out BasicLight baseLight;
+
+
 
 struct DirectionalLight {
     
@@ -74,6 +69,7 @@ struct PointLight{
     float linear;
     float quadratic;
 };
+
 uniform PointLight pointLight;
 
 

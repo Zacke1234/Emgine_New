@@ -20,13 +20,13 @@ public:
 		glm::vec3 ambient = { 1,1,1 };
 		glm::vec3 diffuse = { 1,1,1 };
 		glm::vec3 specular = {1,1,1};
-		float linear = 0; 
-		float quadtric = 0; 
+		float linear = 1; 
+		float quadtric = 1; 
 		
-		float cutOff;
-		float outerCutOff;
+		float cutOff = 1;
+		float outerCutOff = 1;
 
-		float constant;
+		float constant = 1;
 
 		enum LightType PointLight = Point;
 		enum LightType DirLight = Directional;

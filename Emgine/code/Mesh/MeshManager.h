@@ -2,6 +2,7 @@
 #include "MeshLoader.h"
 #include <string>
 #include "vector"
+#include <filesystem>
 #include <Message.h>
 #include <map>
 #include "Cube.h"

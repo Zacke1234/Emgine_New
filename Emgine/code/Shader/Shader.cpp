@@ -106,3 +106,8 @@ void Shader::SetInt(const std::string depth, int aInt)
 {
 	GL_CHECK(glUniform1i(glGetUniformLocation(ShaderProgram, depth.c_str()), aInt));
 }
+
+void Shader::SetUniformBlock(const std::string blockName, unsigned int bindingPoint)
+{
+	
+}

@@ -40,14 +40,14 @@ public:
 	float zScale = 1;
 
 	// LIGHTING IN UI
-	float lightConstant;
-	glm::vec3 lightspecular;
-	float cutoff;
-	float outerCutOff;
-	glm::vec3 lightAmbient;
-	glm::vec3 lightDiffuse;
-	float lightLinear;
-	float lightQuadratic;
+	float lightConstant = 1;
+	glm::vec3 lightspecular = { 1,1,1 };
+	float cutoff = 1;
+	float outerCutOff = 1;
+	glm::vec3 lightAmbient = { 1,1,1 };
+	glm::vec3 lightDiffuse = { 1,1,1 };
+	float lightLinear = 1;
+	float lightQuadratic = 1;
 
 
 	// MATERIALS

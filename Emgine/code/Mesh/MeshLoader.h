@@ -8,6 +8,7 @@
 #include <list>
 #include "fstream"
 #include <vec3.hpp>
+#include <string>
 
 
 
@@ -58,8 +59,8 @@ public:
 	bool ObjParser(std::string fileName, Mesh* mesh);
 	void ParseFaceIndices(const std::string& string, Face& face, int vertexIndex);
 
-	void WriteToBinary(std::ostream& f, std::string filePath);
-	void ReadFromBinary(std::istream& f, std::string filePath);
+	void WriteToBinary(std::string filePath, std::string data1);
+	void ReadFromBinary(std::fstream& filePath, std::ofstream& filepathOut, std::string fileString);
 	// size_t fileSize, std::filesystem::path filePath
 	/*MessageQueueComponent1* c1 = new MessageQueueComponent1;
 	MessageQueueComponent2* c2 = new MessageQueueComponent2;
@@ -80,6 +81,7 @@ public:
 	std::vector<Face> temp_faces;
 	std::vector<glm::vec3> temp_position;
 	std::string face_result;
+	
 };
 
 class BinaryFile
@@ -92,7 +94,7 @@ public:
 	BinaryFile(std::string FileName) : FileName(FileName) {};
 	void WriteFile();
 
-	void ReadFile();
-	void hexdump(void* pointer, int buflen);
+	
+	
 };
 

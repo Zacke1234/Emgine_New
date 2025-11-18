@@ -43,7 +43,7 @@ Texture::Texture(const char* aPath, Material* mat)
 	GL_CHECK(glGenTextures(1, &TextureObject));
 	GL_CHECK(glBindTexture(GL_TEXTURE_2D, TextureObject));
 
-
+	
 	//GL_CHECK(glBindTexture(GL_TEXTURE_2D, mat->diffuse));
 
 	// set the texture wrapping parameters

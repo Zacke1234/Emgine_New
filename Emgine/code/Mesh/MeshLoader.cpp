@@ -3,10 +3,11 @@
 #include <iostream>
 #include <sstream>
 #include <filesystem>
-#include "Texture.h"
+#include <Texture.h>
 #include <Object.h>
 #include "MeshManager.h"
 #include <bitset>
+#include<cassert>
 using namespace std;
 
 // do breakpoints
@@ -41,7 +42,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 	Mesh& mesh = *INmesh;
 
 	std::ifstream file(fileName);
-	bin.FileName = fileName;
+	//bin.FileName = fileName;
 
 	std::vector<Vertex> vertices;
 	std::vector<Face> faces;
@@ -268,88 +269,70 @@ void MeshLoader::ParseFaceIndices(const std::string& string, Face& face, int ver
 //filesystem::path filePath = "C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\meshes\\cube.obj"; //
 //
 
-void MeshLoader::WriteToBinary(std::ostream& f, std::string filePath)
+void MeshLoader::WriteToBinary(std::string name, string data1)
 {
-	size_t fileSize = filesystem::file_size(filePath);
+	
+	std::string test;
+	std::ofstream write("resource\\bins\\" + name + ".bin", ios::out |  std::ios::binary ); // ./out.bin
+	//ofstream file(filePath, std::ios::binary);
 
-	std::cerr << "Write to binary" << std::endl;
-	
-	
-	f.write((char*)&fileSize, sizeof(fileSize));
-	char* data;
-	data = new char[fileSize + 1];
-	name = data;
-	f.write((char*)name.c_str(), fileSize);
-	fileSize = type.size();
-	f.write((char*)&fileSize, sizeof(fileSize));
-	f.write((char*)type.c_str(), fileSize);
-	//BinaryFile->WriteFile(this);
-	std::cerr << name << std::endl;
-	/*
-	for (int i = 0; i < name.size(); ++i)
+	if (!write)
 	{
-		cout << bitset<8>(fileSize[&i]) << endl;
-	}*/
-	
+		std::cerr << "File error writing to binary " << ">\n";
+		//exit(1);
+		return;
+	}
+
+	size_t fileSize = data1.length();
+	//= filesystem::file_size(filePath);
+
+	write.write(reinterpret_cast<const char*>(&fileSize), sizeof(fileSize));
+	write.write(data1.c_str(), fileSize);
+	write.close();
 }
 
-void MeshLoader::ReadFromBinary(std::istream& f, std::string filePath)
+void MeshLoader::ReadFromBinary(std::fstream& filePath, std::ofstream& filepathOut, std::string fileString)
 {
-	size_t fileSize = filesystem::file_size(filePath);
-	char *data;
-	
-	std::cerr << "read from binary" << std::endl;
+	string bin = "";
+	string s = "TEST;";
+	string fileData = "";
+	int fileSize = filesystem::file_size(fileString);
+	int i = 0;
+	while (getline (filePath, fileData))
+	{
+		i++;
+		//cout << fileData << "\n";
+		//bin.append(fileData);
+		fileData.append(fileData);
+		// convert each char to
+		// ASCII value
+		int val = int(fileData[i]);
 
-	//f.read((char*)&fileSize, sizeof(fileSize));// This would cause an unhandled exception.
-	data = new char[fileSize + 1];
-	f.read(data, fileSize);
-	data[fileSize] = '\0';
-	name = data;   
-	delete data; 
+		// Convert ASCII value to binary
 
-	f.read((char*)&fileSize, sizeof(fileSize));
-	data = new char[fileSize + 1];
-	f.read(data, fileSize);
-	data[fileSize] = '\0';
-	//type = data;
-	
-	
-	//std::cerr << data << std::endl;
-	delete[] data; // memory clearing
-
-	
-
-	
-
-}
-
-void BinaryFile::hexdump(void* pointer, int buflen)
-{
-	File.open(FileName, std::ios::binary | std::ios::out);
-	unsigned char* buf = (unsigned char*)pointer;
-	int i, j;
-	for (i = 0; i < buflen; i += 16) {
-		printf("%06x: ", i);
-
-		for (j = 0; j < 16; j++)
+		while (val > 0)
 		{
-			if (i + j < buflen)
-				printf("%02x", buf[i + j]);
-			else
-				printf("  ");
+			(val % 2) ? bin.push_back('1') : bin.push_back('0');
+			val /= 2; //  bin.push_back(' ');
 		}
-		printf(" ");
-		for (j = 0; j < 16; j++) {
-			if (i + j < buflen)
-				printf("%c", isprint(buf[i + j]) ? buf[i + j] : '.');
-		}
-
-		printf("\n");
-	/*	if (i >= buflen)
-			return;*/
+		reverse(bin.begin(), bin.end());
+		filepathOut.write(bin.c_str(), bin.size());
+		cout << bin << " ";
 		
 	}
+		//int n = s.length();
+
+
+	
+
+	//for (int i = 0; i <= fileSize; i++)
+	//{
+	//	
+	//}
+
 }
+
+
 
 
 
@@ -417,39 +400,4 @@ void BinaryFile::WriteFile() {
 	File.close();
 }
 
-void BinaryFile::ReadFile() {
-	File.open(FileName, std::ios::binary | std::ios::in);
-	//file.open(fileName, ios::in | ios::binary);
-	if (File.is_open())
-	{	// get the starting position
-		streampos start = File.tellg();
 
-		// go to the end
-		File.seekg(0, std::ios::end);
-
-		// get the ending position
-		streampos end = File.tellg();
-
-		// go back to the start
-		File.seekg(0, std::ios::beg);
-
-		// create a vector to hold the data that
-		// is resized to the total size of the file
-		std::vector<char> contents;
-		contents.resize(static_cast<size_t>(end - start));
-
-		//read it in
-		File.read(&contents[0], contents.size());
-
-		//print it out 
-		hexdump(contents.data(), contents.size());
-		//return true;
-	}
-	if (!File)
-	{
-		std::cerr << "File error reading: " << FileName << ">\n";
-		exit(1);
-	}
-	//obj.ReadFromBinary(File);
-	File.close();
-}
