@@ -240,24 +240,6 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 				colliderMang->Create(cubeColl2)
 			);
 		}
-		//else
-		//{
-		//	objectmanager->Create(
-		//		nameBuffer, // Name
-		//		meshmang->Create(nameBuffer, meshBuffer),
-		//		textureMang->Create(std::string(nameBuffer + tex), textureBuffer),
-		//		shader->DefaultShader,
-		//		colliderMang->Create(cubeColl2)
-		//	);
-		//}
-		
-
-		//Object::Entities.push_back(objectMang->ObjectMesh);
-
-		
-
-
-
 	}
 	//std::string test = nameBuffer;
 	if (ImGui::Button("Create new cube"))

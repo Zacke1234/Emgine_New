@@ -30,10 +30,10 @@ Mesh* MeshManager::LoadMesh(std::string fromPath, std::string name)
 
 	//char* data = new char;
 	//
-	std::ofstream write("C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\bins\\" + name + ".bin", std::ios::binary); // ./out.bin
+	std::ofstream write("resource\\bins\\" + name + ".bin", std::ios::binary); // ./out.bin
 	std::fstream read(fromPath);
 	
-	meshLoader->ReadFromBinary(read, write, fromPath);
+	meshLoader->WriteToBinary(read, write, fromPath);
 	
 	//meshLoader->ReadFile(fromPath, Binary, write, read);
 	

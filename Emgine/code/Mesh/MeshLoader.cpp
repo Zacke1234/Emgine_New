@@ -211,7 +211,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 	temp_uvs.clear();
 	temp_vertices.clear();
 	/*WriteToBinary(fileName, &file);
-	ReadFromBinary(fileName, *file);*/
+	WriteToBinary(fileName, *file);*/
 	return true;
 }
 
@@ -269,29 +269,18 @@ void MeshLoader::ParseFaceIndices(const std::string& string, Face& face, int ver
 //filesystem::path filePath = "C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\meshes\\cube.obj"; //
 //
 
-void MeshLoader::WriteToBinary(std::string name, string data1)
+void MeshLoader::ParseBinary(std::string fileString, string data1)
 {
-	
-	std::string test;
-	std::ofstream write("resource\\bins\\" + name + ".bin", ios::out |  std::ios::binary ); // ./out.bin
-	//ofstream file(filePath, std::ios::binary);
+	int fileSize = filesystem::file_size(fileString);
 
-	if (!write)
+	for (int i = 0; i < fileSize; i++)
 	{
-		std::cerr << "File error writing to binary " << ">\n";
-		//exit(1);
-		return;
+		stringstream binTemp;
+		
 	}
-
-	size_t fileSize = data1.length();
-	//= filesystem::file_size(filePath);
-
-	write.write(reinterpret_cast<const char*>(&fileSize), sizeof(fileSize));
-	write.write(data1.c_str(), fileSize);
-	write.close();
 }
 
-void MeshLoader::ReadFromBinary(std::fstream& filePath, std::ofstream& filepathOut, std::string fileString)
+void MeshLoader::WriteToBinary(std::fstream& filePath, std::ofstream& filepathOut, std::string fileString)
 {
 	string bin = "";
 	string s = "TEST;";
@@ -317,7 +306,8 @@ void MeshLoader::ReadFromBinary(std::fstream& filePath, std::ofstream& filepathO
 		}
 		reverse(bin.begin(), bin.end());
 		filepathOut.write(bin.c_str(), bin.size());
-		cout << bin << " ";
+		
+		//cout << bin << " ";
 		
 	}
 		//int n = s.length();
