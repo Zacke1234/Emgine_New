@@ -403,6 +403,12 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 		//virtobj->Entities[Object::SelectedEntity]->myCollider->isKinematic;
 	}
 
+	if(ImGui::Button("Change Mesh"))
+	{
+		mesh = meshmang->Create("mesh", meshBuffer);
+		Object::Entities[Object::SelectedEntity]->SetMesh(*mesh);
+	}
+
 	if (ImGui::Button("Change Texture"))
 	{
 		std::string test = "C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\textures\\";

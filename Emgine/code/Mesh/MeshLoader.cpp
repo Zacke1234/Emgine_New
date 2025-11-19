@@ -303,7 +303,7 @@ void MeshLoader::ReadFromBinary(std::fstream& filePath, std::ofstream& filepathO
 		i++;
 		//cout << fileData << "\n";
 		//bin.append(fileData);
-		fileData.append(fileData);
+		fileData.append(bin);
 		// convert each char to
 		// ASCII value
 		int val = int(fileData[i]);
