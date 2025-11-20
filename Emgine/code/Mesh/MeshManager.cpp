@@ -32,9 +32,10 @@ Mesh* MeshManager::LoadMesh(std::string fromPath, std::string name)
 	//
 	std::ofstream write("resource\\bins\\" + name + ".bin", std::ios::binary); // ./out.bin
 	std::fstream read(fromPath);
+	std::fstream readBin("resource\\bins\\" + name + ".bin");
 	
 	meshLoader->WriteToBinary(read, write, fromPath);
-	
+	meshLoader->ParseBinary(Binary, readBin, write);
 	//meshLoader->ReadFile(fromPath, Binary, write, read);
 	
 	/*BinaryFile bin((fromPath).c_str());

@@ -55,12 +55,14 @@ void Physics::Simulate(const float& aDeltaTime)
 	coll = new Collider();
 	if (coll->CollType != ColliderType::Null)
 	{
+		//ApplyCollision(aDeltaTime, collisions);
+		HandleCollisions(collisions);
 		ApplyGravity(colliders, aDeltaTime);
 
-		ApplyCollision(aDeltaTime, collisions);
+		
 
 		//As a result of those collisions what should happen?
-		HandleCollisions(collisions);
+		
 
 
 		//at the moment this only applying gravity to my colliders since I have no calculations for linear and angular velocity based on collisions.

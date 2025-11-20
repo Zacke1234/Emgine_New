@@ -11,7 +11,7 @@
 using namespace std;
 
 // do breakpoints
-
+int n;
 MeshLoader::MeshLoader()
 {
 	
@@ -93,16 +93,16 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 			iss >> newFace;
 			ParseFaceIndices(newFace, face, vertexIndex);
 			vertexIndex++;
-
+			
 			iss >> newFace;
-			if (newFace.length() >= 6 && runOnce == false) // This can't actually tell triangulated and non triangulated meshes apart.
-			{
-				runOnce = true;
-				//std::cout << "This engine does not support mesh files with quads, please make sure the file is triangulated" << "\n";
-				//std::exit(EXIT_FAILURE);
-				//std::abort();
-				
-			}
+			//if (mesh.numberVertices == 4 && runOnce == false) // This can't actually tell triangulated and non triangulated meshes apart.
+			//{
+			//	runOnce = true;
+			//	//std::cout << "This engine does not support mesh files with quads, please make sure the file is triangulated" << "\n";
+			//	//std::exit(EXIT_FAILURE);
+			//	//std::abort();
+			//	
+			//}
 
 			temp_faces.push_back(face);
 			
@@ -238,7 +238,7 @@ void MeshLoader::ParseFaceIndices(const std::string& string, Face& face, int ver
 
 	std::string indexString = "";
 	int indexCounter = 0;
-	
+	n = 0;
 	std::vector<std::string> tokens = SplitString(string, del);
 	
 	for (std::string& token : tokens)
@@ -257,69 +257,52 @@ void MeshLoader::ParseFaceIndices(const std::string& string, Face& face, int ver
 			face.uvIndices[vertexIndex] = index;
 		}
 		indexCounter++;
+		n++;
 	}
 }
 
-// $(SolutionDir)resoure
-
-//ofstream filePath("out.bin", std::ios::binary);
-//ofstream fileSize("out.bin", std::ios::binary);
-
-
-//filesystem::path filePath = "C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\meshes\\cube.obj"; //
-//
-
-void MeshLoader::ParseBinary(std::string fileString, string data1)
+void MeshLoader::ParseBinary(std::string fileString, std::fstream& fstreamPath, std::ofstream& filepathOut)
 {
-	int fileSize = filesystem::file_size(fileString);
-
-	for (int i = 0; i < fileSize; i++)
-	{
-		stringstream binTemp;
-		
-	}
+	//while( getline (fstreamPath, fileString))
+	//{
+	//	//cout << fileData << "\n";
+	//	//filepathOut.write(fileString.c_str(), fileString.size());
+	//}
 }
 
 void MeshLoader::WriteToBinary(std::fstream& filePath, std::ofstream& filepathOut, std::string fileString)
 {
 	string bin = "";
-	string s = "TEST;";
-	string fileData = "";
-	int fileSize = filesystem::file_size(fileString);
+	
+	
 	int i = 0;
-	while (getline (filePath, fileData))
+	while (getline (filePath, fileString))
 	{
-		i++;
-		//cout << fileData << "\n";
-		//bin.append(fileData);
-		fileData.append(bin);
-		// convert each char to
-		// ASCII value
-		int val = int(fileData[i]);
-
-		// Convert ASCII value to binary
+		
+		fileString.append(bin);
+		
+		int val = int(fileString[i]);
 
 		while (val > 0)
 		{
-			(val % 2) ? bin.push_back('1') : bin.push_back('0');
-			val /= 2; //  bin.push_back(' ');
+			(val % 2) ? bin.append("1") : bin.append("0");
+			val /= 2;
+			i++;
+			
+			if (i >= 4)
+			{
+				bin.append("\n");
+				i = 0;
+			}
+			
 		}
-		reverse(bin.begin(), bin.end());
+		
 		filepathOut.write(bin.c_str(), bin.size());
 		
-		//cout << bin << " ";
 		
 	}
-		//int n = s.length();
-
-
+	//cout << bin << " File from binary \n";
 	
-
-	//for (int i = 0; i <= fileSize; i++)
-	//{
-	//	
-	//}
-
 }
 
 

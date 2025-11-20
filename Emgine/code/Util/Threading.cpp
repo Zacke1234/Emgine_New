@@ -43,7 +43,7 @@ void Threading::Run()
 }
 
 float lastFrame = 0.0f;
-Physics* Phys = new Physics();
+//Physics* Phys = new Physics();
 // float deltatime, 
 void Thread::DoWork(Observer *observer, Message *myMessage)
 {

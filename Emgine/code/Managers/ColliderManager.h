@@ -4,8 +4,7 @@
 class ColliderManager
 {
 public:
-	Collider* Create(Collider* myColl);
-	CubeCollider* planeColl;
+	Collider* Create(std::string collName,Collider* myColl);
 	CubeCollider* cubeColl;
 	SphereCollider* sphereColl;
 };

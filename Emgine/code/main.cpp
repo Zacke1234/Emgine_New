@@ -58,6 +58,7 @@ MessageQueue* myMessageQueue;
 CubeCollider* cubeColl;
 SphereCollider* sphereColl;
 LightingManager* myLightingManager;
+Physics* Phys;
 //Threading* myThreading;
 Thread* myThread; 
 LightData* newLightdata;
@@ -181,7 +182,7 @@ int init_lightning() {
 
 int init_physics() {
 	//init physics
-	//Phys = new Physics();
+	Phys = new Physics();
 	float deltatime = 0.0f;
 	float lastFrame = 0.0f;
 	unsigned int depthMapFBO = 0;
@@ -261,6 +262,7 @@ int main()
 
 	init_lightning();
 	
+	init_physics();
 	
 	
 	myUI = new UI(window);
@@ -296,7 +298,7 @@ int main()
 		fish,
 		wall,
 		myShaderManager->DefaultShader,
-		MyColliderManager->Create(sphereColl)
+		MyColliderManager->Create("SphereColl", sphereColl)
 
 	);
 
@@ -304,7 +306,7 @@ int main()
 		cube, 
 		defaultTex,
 		myShaderManager->DefaultShader,
-		MyColliderManager->Create(cubeColl)
+		MyColliderManager->Create("CubeColl", cubeColl)
 	);
 
 	
@@ -357,6 +359,7 @@ int main()
 			
 		}
 	
+		Phys->Simulate(myCamera->deltatime);
 		
 		// render UI (after/ON TOP OF drawcall)
 		update_ui(myUI, myShaderManager, myObjectManager);
