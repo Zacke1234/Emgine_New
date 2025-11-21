@@ -9,6 +9,7 @@
 #include "MeshManager.h"
 #include <Cube.h>
 #include "Util/GLChecking.h"
+#include <Rigidbody.h>
 
 
 
@@ -41,7 +42,7 @@ class Object
 public:
 	
 	
-	Object(std::string _namn, Mesh* Mesh, Texture* aTexture, Shader* aShader, Collider* coll);
+	Object(std::string _namn, Mesh* Mesh, Texture* aTexture, Shader* aShader, Collider* coll, Rigidbody* rb);
 	
 
 	// should a virtual object contain a IsKinematic bool?
@@ -53,6 +54,7 @@ public:
 	void SetCollider(Collider& collider);
 	void SetMaterial(Material& material);
 	void SetName(std::string name);
+	void SetRigidbody(Rigidbody& rb);
 
 	//void SetLighting(Lighting& lighting);
 	Mesh* CreateMesh(Mesh* mesh);
@@ -127,7 +129,7 @@ class LightObject : public Object
 {
 public:
 	
-	LightObject(std::string _namn, Mesh* Mesh, Texture* aTexture, Shader* aShader, Collider* coll, LightData* myLightData);
+	LightObject(std::string _namn, Mesh* Mesh, Texture* aTexture, Shader* aShader, Collider* coll, LightData* myLightData, Rigidbody* rb);
 	static std::vector<LightObject*> LightEntities;
 	
 

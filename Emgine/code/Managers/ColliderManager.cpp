@@ -1,6 +1,8 @@
 #include "ColliderManager.h"
-Collider* ColliderManager::Create(std::string collName, Collider* myColl = NULL)
+Collider* ColliderManager::Create(std::string collName = "new_collider", Collider* myColl = NULL)
 {
+	
 	myColl = new Collider();
-	return nullptr;
+	Collider::CollEntities.push_back(myColl);
+	return myColl;
 }

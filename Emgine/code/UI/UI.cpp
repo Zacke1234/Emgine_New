@@ -7,6 +7,7 @@
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
 #include <iostream>
+
 #pragma once
 
 CubeCollider* cubeColl2;
@@ -17,6 +18,7 @@ ColliderManager* colliderMang;
 TextureManager* textureMang;
 LightingManager* lightMang;
 LightData* newLightData;
+RigidbodyManager* myRigidbodyMang;
 //Lighting* myLighting;
 bool SelectedLight;
 bool selectedMaterial;
@@ -144,6 +146,7 @@ int classes() {
 	textureMang = new TextureManager();
 	meshmang = new MeshManager();
 	lightMang = new LightingManager();
+	myRigidbodyMang = new RigidbodyManager();
 	
 	
 	return 0;
@@ -227,7 +230,8 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 				meshmang->Create("Mesh", meshBuffer),
 				textureMang->Create(std::string(nameBuffer + tex), "Default 1.png", material),
 				shader->DefaultShader,
-				colliderMang->Create("CubeColl", cubeColl2)
+				colliderMang->Create("CubeColl", cubeColl2),
+				myRigidbodyMang->Create(0.0f)
 			);
 		}
 		if (meshBuffer[0] == '\0' && meshBuffer != NULL)
@@ -237,7 +241,8 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 				meshmang->Create("fish", "fish.obj"),
 				textureMang->Create(std::string(nameBuffer + tex), "Default 1.png", material),
 				shader->DefaultShader,
-				colliderMang->Create("CubeColl", cubeColl2)
+				colliderMang->Create("CubeColl", cubeColl2),
+				myRigidbodyMang->Create(0.0f)
 			);
 		}
 	}
@@ -252,7 +257,8 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 				meshmang->Create("Cube", "cube.obj"),
 				textureMang->Create(std::string("Cube" + tex), "Default 1.png", material),
 				shader->DefaultShader,
-				colliderMang->Create("CubeColl", cubeColl2)
+				colliderMang->Create("CubeColl", cubeColl2),
+				myRigidbodyMang->Create(0.0f)
 			);
 		}
 		else
@@ -261,7 +267,8 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 				meshmang->Create(nameBuffer, "cube.obj"),
 				textureMang->Create(std::string(nameBuffer + tex), textureBuffer, material),
 				shader->DefaultShader,
-				colliderMang->Create("CubeColl", cubeColl2)
+				colliderMang->Create("CubeColl", cubeColl2),
+				myRigidbodyMang->Create(0.0f)
 			);
 		}
 		
@@ -295,7 +302,8 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 				textureMang->Create(std::string(nameBuffer + tex), textureBuffer, material),
 				shader->DefaultShader,
 				NULL,
-				lightMang->Create("Light", shader->DefaultShader, newLightData)
+				lightMang->Create("Light", shader->DefaultShader, newLightData),
+				myRigidbodyMang->Create(0.0f)
 
 			);
 			
@@ -308,7 +316,8 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 				textureMang->Create(std::string(nameBuffer + tex), textureBuffer, material),
 				shader->DefaultShader,
 				NULL,
-				lightMang->Create(nameBuffer, shader->DefaultShader, newLightData)
+				lightMang->Create(nameBuffer, shader->DefaultShader, newLightData),
+				myRigidbodyMang->Create(0.0f)
 			);
 			
 		}

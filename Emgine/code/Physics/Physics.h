@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Collider.h"
+#include "Rigidbody.h"
 #include <Object.h>
 
 
@@ -53,9 +54,8 @@ public:
 	Collider* coll; 
 	ColliderType* type;
 private:
-	std::vector<Collider*> colliders;
+	
 
-	std::vector<Collision*> collisions;
 
 	//std::vector<Object*> m_Objects;
 };

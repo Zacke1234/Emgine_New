@@ -2,6 +2,7 @@
 #include "Physics.h"
 #include <Object.h>
 
+std::vector<Collider*> Collider::CollEntities;
 
 glm::mat3 ComputeMomentOfInertiaCube(float mass, glm::vec3 extents)
 {
@@ -39,27 +40,25 @@ Collider::Collider()
 
 void Collider::SetTheCollision()
 {
-	Cube* cube = new Cube();
-	Mesh* mesh = new Mesh();
-	LightData* light = new LightData();
+	
 
 	
 	//CubeCollider* cubeColl = new CubeCollider(center, extents, pos);
 	for (auto& o : Object::Entities)
 	{
-		if (&cube) // ?
+		if (o->ObjType == 3) // ?
 		{
-			ColliderType::Cube;
+			o->myCollider->CollType = ColliderType::Cube;
 			//o->Scale = CubeCollider::extents;
 		}
-		if(&mesh)
+		if(o->ObjType == 2)
 		{
-			ColliderType::Sphere;
+			o->myCollider->CollType = ColliderType::Sphere;
 			//o->Scale = SphereCollider::center;
 		}
-		if (&light)
+		if (o->ObjType == 0)
 		{
-			ColliderType::Null;
+			o->myCollider->CollType = ColliderType::Null;
 		}
 		
 		

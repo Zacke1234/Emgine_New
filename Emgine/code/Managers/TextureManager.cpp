@@ -4,7 +4,7 @@
 
 Texture* TextureManager::Create(std::string name, std::string path_end, Material* mat)
 {
-	std::string path = "C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\textures\\";
+	std::string path = "resource\\textures\\";
 	mat = new Material();
 	// C:\Users\zackarias.hager\Emgine_New\Emgine\resource\textures
 	Texture* new_texture = new Texture((path + path_end).c_str(), mat);

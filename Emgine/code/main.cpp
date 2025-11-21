@@ -34,6 +34,7 @@
 #include <Managers/TextureManager.h>
 #include "../DisplayMessage.h"
 #include <Managers/LightingManager.h>
+#include <Managers/RigidbodyManager.h>
 
 
 
@@ -58,6 +59,7 @@ MessageQueue* myMessageQueue;
 CubeCollider* cubeColl;
 SphereCollider* sphereColl;
 LightingManager* myLightingManager;
+RigidbodyManager* myRigidbodyManager;
 Physics* Phys;
 //Threading* myThreading;
 Thread* myThread; 
@@ -147,6 +149,7 @@ int init_managers() {
 	myShaderManager->InitDefaultShader();
 	//TODO: init shader, collider, and rigidbodymanager
 	myObjectManager = new ObjectManager;
+	myRigidbodyManager = new RigidbodyManager();
 	return 0;
 } 
 
@@ -223,7 +226,8 @@ int static update_ui(UI* myUI, ShaderManager* myShader, ObjectManager* objManage
 			glm::radians(myUI->zRot));
 		Object::Entities[Object::SelectedEntity]->Scale = glm::vec3(myUI->xScale, myUI->yScale, myUI->zScale);
 	}
-
+	/*Object::Entities[Object::SelectedEntity]->Rotation = glm::mat4(
+		glm::rotate(transform, glm::radians(myUI->yRot), glm::vec3(0, 0, 0)));*/
 
 	//
 	
@@ -272,7 +276,7 @@ int main()
 	Mesh* fish = myMeshManager->Create("fish", "fish.obj");
 	Mesh* quadplane = myMeshManager->Create("quadplane", "quadplane.obj");
 	Mesh* cube = myMeshManager->Create("Cube", "cube.obj");
-
+	
 	//myObjectManager->CreateLight( // this also pushes to Object::Entities and LightObject::lightEntities
 	//	"lightObj",
 	//	cube,
@@ -293,12 +297,14 @@ int main()
 	//	NULL,
 	//	//myLightingManager->CreatePointLight(glm::vec3(0, 5, 0), glm::vec3(1, 1, 1), 1.0f)
 	//);
+	
 	myObjectManager->Create( // this also pushes to Object::Entities
 		"Fish",
 		fish,
 		wall,
 		myShaderManager->DefaultShader,
-		MyColliderManager->Create("SphereColl", sphereColl)
+		MyColliderManager->Create("SphereColl", sphereColl),
+		myRigidbodyManager->Create(0.0f)
 
 	);
 
@@ -306,7 +312,8 @@ int main()
 		cube, 
 		defaultTex,
 		myShaderManager->DefaultShader,
-		MyColliderManager->Create("CubeColl", cubeColl)
+		MyColliderManager->Create("CubeColl", cubeColl),
+		myRigidbodyManager->Create(0.0f)
 	);
 
 	
@@ -315,7 +322,8 @@ int main()
 		defaultTex,
 		myShaderManager->DefaultShader,
 		NULL,
-		myLightingManager->Create("SceneLight", myShaderManager->DefaultShader, myLightingManager->DefaultLighting)
+		myLightingManager->Create("SceneLight", myShaderManager->DefaultShader, myLightingManager->DefaultLighting),
+		myRigidbodyManager->Create(0.0f)
 	);
 
 

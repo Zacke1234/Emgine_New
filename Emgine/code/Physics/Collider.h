@@ -1,7 +1,7 @@
 #pragma once
 #include <glm.hpp>
 #include <iostream>
-
+#include <vector>
 
 
 enum class ColliderType {
@@ -44,7 +44,7 @@ public:
 
 	void SetTheCollision();
 	
-	
+	static std::vector<Collider*> CollEntities;
 	
 };
 

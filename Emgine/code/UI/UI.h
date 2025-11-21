@@ -8,6 +8,7 @@
 #include "Managers/ColliderManager.h"
 #include "Managers/TextureManager.h"
 #include "Managers/LightingManager.h"
+#include "Managers/RigidbodyManager.h"
 #include "Cube.h"
 #include <Object.h>
 
@@ -27,14 +28,17 @@ public:
 	int SelectedItem = 0;
 
 	// POSITION AND ROTATION
+	glm::vec3 position;
 	float yPos = 0;
 	float xPos = 0;
 	float zPos = 0;
 
+	glm::vec3 rotation;
 	float yRot = 0;
 	float xRot = 0;
 	float zRot = 0;
 
+	glm::vec3 scale;
 	float yScale = 1;
 	float xScale = 1;
 	float zScale = 1;

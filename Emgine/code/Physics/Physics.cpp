@@ -40,36 +40,41 @@ void Physics::GatherAllPhysicObjects()
 
 void Physics::Simulate(const float& aDeltaTime)
 {
-	colliders = UpdatePhysicsScene();
+	UpdatePhysicsScene();
 	
-	std::vector<Collision> collisions = CheckIntersections(colliders);
+	std::vector<Collision> collisions = CheckIntersections(Collider::CollEntities);
 		
 	// gotta update this
 	
 	// Just setting the positions of the colliders to match the visual
-	std::vector<Collider*> cols = UpdatePhysicsScene();
+	
 
 	// checking for any intersections and storing their data in a vector of collisions
 	//std::vector<Collision> collisions = CheckIntersections(cols);
-	
-	coll = new Collider();
-	if (coll->CollType != ColliderType::Null)
+	// Collider::CollEntities
+	//coll = new Collider();
+	for (auto& o : Object::Entities)
 	{
-		//ApplyCollision(aDeltaTime, collisions);
-		HandleCollisions(collisions);
-		ApplyGravity(colliders, aDeltaTime);
+		if (o->myCollider == NULL)
+			return;
+		if (o->myCollider->CollType != ColliderType::Null)
+		{
+			//ApplyCollision(aDeltaTime, collisions);
+			HandleCollisions(collisions);
+			ApplyGravity(Collider::CollEntities, aDeltaTime);
 
-		
-
-		//As a result of those collisions what should happen?
-		
 
 
-		//at the moment this only applying gravity to my colliders since I have no calculations for linear and angular velocity based on collisions.
-		//This should ideally be in HandleCollisions
-		ApplyVelocity(cols, aDeltaTime);
+			//As a result of those collisions what should happen?
+
+
+
+			//at the moment this only applying gravity to my colliders since I have no calculations for linear and angular velocity based on collisions.
+			//This should ideally be in HandleCollisions
+			ApplyVelocity(Collider::CollEntities, aDeltaTime);
+		}
 	}
-
+	
 	
 
 	//Making sure that the visuals of the colliders aligned with the colliders
@@ -122,7 +127,7 @@ glm::vec3 Physics::SafeNormalise(glm::vec3 vector)
 void Physics::ApplyVelocity(std::vector<Collider*> colliders, const float& dt)
 {
 	// std::vector<Collider*> colliders
-	for (Collider* c : colliders)
+	for (auto* c : Collider::CollEntities)
 	{
 		if (c->hasGravity && !c->isKinematic)
 		{
@@ -167,11 +172,8 @@ void Physics::ApplyVelocity(std::vector<Collider*> colliders, const float& dt)
 void Physics::ApplyGravity(std::vector<Collider*> colliders, const float& dt)
 {
 	
-	for (Collider* c : colliders)
+	for (auto* c : Collider::CollEntities)
 	{
-		
-		for(Collider* c2 : colliders)
-		
 		if (!c->isKinematic)
 		{
 			
@@ -382,9 +384,9 @@ std::vector<Collision> Physics::CheckIntersections(std::vector<Collider*> collid
 
 	int count = colliders.size();
 
-	for (Collider* c1 : colliders)
+	for (auto* c1 : Collider::CollEntities)
 	{
-		for (Collider* c2 : colliders)
+		for (auto* c2 : Collider::CollEntities)
 		{
 			if (c1 != c2)
 			{
@@ -498,7 +500,7 @@ bool Physics::CubeCubeIntersect(const CubeCollider& aCube1, const CubeCollider& 
 bool Physics::RayCast(const Ray& aRay, RayHit& aHit)
 {
 	
-	for (Collider* c : colliders)
+	for (auto* c : Collider::CollEntities)
 	{
 		/*if (c->mass > 0)
 		{

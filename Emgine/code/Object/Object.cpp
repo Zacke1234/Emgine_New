@@ -21,7 +21,7 @@ vector<LightObject*> LightObject::LightEntities;
 
 
 
-Object::Object(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL)
+Object::Object(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL, Rigidbody* rb = NULL)
 {
 	
 	ObjType = Type_Mesh;
@@ -62,7 +62,13 @@ Object::Object(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTe
 	else {
 		std::cout << "No collider assigned to object: " << _namn << "\n";
 	}
-
+	if(rb)
+	{
+		SetRigidbody(*rb);
+	}
+	else {
+		std::cout << "No rigidbody assigned to object: " << _namn << "\n";
+	}
 	
 	/*if (*Objtype != Type_Mesh)
 	{
@@ -76,7 +82,7 @@ Object::Object(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTe
 	
 }
 
-LightObject::LightObject(std::string _namn = "new_lightObject", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL, LightData* aLightData = NULL)
+LightObject::LightObject(std::string _namn = "new_lightObject", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL, LightData* aLightData = NULL, Rigidbody* rb = NULL)
 {
 	ObjType = Type_Light;
 	// Name
@@ -123,7 +129,13 @@ LightObject::LightObject(std::string _namn = "new_lightObject", Mesh* Mesh = NUL
 	{
 		std::cout << "No light data assigned to light object: " << _namn << "\n";
 	}
-	
+	if (rb)
+	{
+		SetRigidbody(*rb);
+	}
+	else {
+		std::cout << "No rigidbody assigned to object: " << _namn << "\n";
+	}
 }
 
 void Object::SetCube(Cube& aCube)
@@ -157,6 +169,7 @@ void Object::SetCollider(Collider& aCollider)
 	myCollider->position = this->Position;
 	myCollider->isKinematic = false;
 	myCollider->scale = Scale;
+	myCollider->SetTheCollision();
 }
 void Object::SetMaterial(Material& material)
 {
@@ -216,6 +229,11 @@ void Object::SetName(std::string name)
 	namn = name;
 }
 
+void Object::SetRigidbody(Rigidbody& rb)
+{
+	Rigidbody* myRigidbody = &rb;
+}
+
 void Object::Draw(Camera* aCamera, Shader* myShader)
 {
 	DrawObject(aCamera, myShader);
@@ -230,7 +248,7 @@ void Object::DrawCube(Camera* aCamera, Shader* myShader)
 
 void Object::UpdateTransform()
 {
-	//mtx.lock();
+	
 	trans = Math::identity4;
 
 	trans = glm::translate(trans, Position);
@@ -242,7 +260,6 @@ void Object::UpdateTransform()
 	trans = glm::scale(trans, Scale);
 
 	IsTransformValid = true; 
-	//mtx.unlock();
 }
 
 void Object::DrawObject(Camera* aCamera, Shader* myShader)

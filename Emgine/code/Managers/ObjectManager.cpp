@@ -1,9 +1,9 @@
 #include "ObjectManager.h"
 
-Object* ObjectManager::Create(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL) 
+Object* ObjectManager::Create(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL, Rigidbody* rb = NULL)
 {
 	
-	Object* obj = new Object(_namn, Mesh, aTexture, aShader, aCollider);
+	Object* obj = new Object(_namn, Mesh, aTexture, aShader, aCollider, rb);
 	
 	Object::Entities.push_back(obj);
 	
@@ -33,9 +33,9 @@ void ObjectManager::Destroy(Object* obj) {
 	
 }
 
-LightObject* ObjectManager::CreateLight(std::string aName = "new_lightObject", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL, LightData* aLightData = NULL)
+LightObject* ObjectManager::CreateLight(std::string aName = "new_lightObject", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL, LightData* aLightData = NULL, Rigidbody* rb = NULL)
 {
-	LightObject* lightObj = new LightObject(aName, Mesh, aTexture, aShader, aCollider, aLightData);
+	LightObject* lightObj = new LightObject(aName, Mesh, aTexture, aShader, aCollider, aLightData, rb);
 	//lightObj->type = ObjectType::Type_Light;
 	//lightObj->SetLightData(lightData);
 	//lightObj->SetLighting(*lightData);

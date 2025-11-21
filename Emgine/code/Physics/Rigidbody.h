@@ -1,9 +1,13 @@
 #pragma once
 #include <Collider.h>
-class Rigidbody : public Collider
+class Rigidbody
 {
 public:
-	float gravity;
+	Rigidbody(float gravity);
+	
+
+	float friction;
+	float mass;
 
 };
 
