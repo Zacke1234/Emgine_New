@@ -277,28 +277,7 @@ int main()
 	Mesh* quadplane = myMeshManager->Create("quadplane", "quadplane.obj");
 	Mesh* cube = myMeshManager->Create("Cube", "cube.obj");
 	
-	//myObjectManager->CreateLight( // this also pushes to Object::Entities and LightObject::lightEntities
-	//	"lightObj",
-	//	cube,
-	//	wall,
-	//	myShaderManager->DefaultShader,
-	//	NULL,
-	//	myLightingManager->CreateData(myLightData)
-	//);
-
-	
-	
-
-	//myObjectManager->CreateLight( // this also pushes to Object::Entities
-	//	"lightObj",
-	//	NULL,
-	//	NULL,
-	//	myShaderManager->DefaultShader,
-	//	NULL,
-	//	//myLightingManager->CreatePointLight(glm::vec3(0, 5, 0), glm::vec3(1, 1, 1), 1.0f)
-	//);
-	
-	myObjectManager->Create( // this also pushes to Object::Entities
+	myObjectManager->Create( // these also push entities to Object::Entities and etc
 		"Fish",
 		fish,
 		wall,

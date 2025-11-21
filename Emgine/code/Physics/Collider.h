@@ -24,23 +24,20 @@ public:
 
 	//void UpdateCollider(SphereCollider* sphere, CubeCollider* cube);
 	
-	glm::mat4 transform;
 	glm::vec3 extents;
 	glm::vec3 pos;
 	glm::vec3 center;
 	// move to dynamic body
-	bool hasGravity;
-	glm::vec3 velocity;
-	float mass;
+	glm::mat4 transform;
+	
 	glm::vec3 position;
-	bool isKinematic;
+	
 	ColliderType CollType = ColliderType::Null;
-	glm::vec3 angularVelocity;
+
 	glm::vec3 scale;
 	//glm::vec3 extents;
 
-	glm::mat3 momentOfInertia;
-	glm::mat3 inverseMomentOfInertia;
+	
 
 	void SetTheCollision();
 	
@@ -70,11 +67,10 @@ public:
 	SphereCollider(const glm::vec3& aCenter, const float& aRadius, glm::vec3 Apos) : Collider()
 	{
 		CollType = ColliderType::Sphere;
-		velocity = glm::vec3(0, 0, 0);
-		hasGravity = false;
+		
 		center = aCenter;
 		radius = aRadius;
-		mass = 1;
+	
 		position = Apos;
 		
 	}
@@ -88,8 +84,6 @@ public:
 	CubeCollider(const glm::vec3& aCenter, const glm::vec3& someExtents, glm::vec3 Apos)  : Collider()
 	{
 		CollType = ColliderType::Cube;
-		velocity = glm::vec3(0, 0, 0);
-		hasGravity = false;
 		center = aCenter;
 		extents = someExtents;
 		position = Apos;
