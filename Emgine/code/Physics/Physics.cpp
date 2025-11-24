@@ -296,58 +296,64 @@ void Physics::HandleDynamicDynamic(std::vector<Collision> collisions)
 	
 }
 
-void Physics::HandleStaticDynamic(std::vector<Collision> collisions)
+void Physics::HandleStaticDynamic(std::vector<Collision> collisions, std::vector<Motion> motions)
 {
-	const float SlidingFriction = 0.5f;
-	for (auto* r : Rigidbody::rbEntities)
-	{
-		for (Collision c : collisions)
-		{
-			//std::cout << "handle static dynamic";
-			Collider* A = c.col1;
-			Collider* B = c.col2;
+	//const float SlidingFriction = 0.5f;
+	//for (Motion rb : motions)
+	//{
+	//	for (Collision c : collisions)
+	//	{
+	//		//std::cout << "handle static dynamic";
+	//		Collider* A = c.col1;
+	//		Collider* B = c.col2;
 
-			bool A_isDynamic = !r->isKinematic;
-			bool B_isDynamic = !r->isKinematic;
+	//		Rigidbody* RigA = rb.rig1;
+	//		Rigidbody* RigB = rb.rig2;
 
-			if (!A_isDynamic && !B_isDynamic) continue;
+	//		bool A_isDynamic = !rb->isKinematic;
+	//		bool B_isDynamic = !rb->isKinematic;
 
-			Collider* dynamicCollider = A_isDynamic ? A : B;
-			Collider* staticCollider = A_isDynamic ? B : A;
+	//		if (!A_isDynamic && !B_isDynamic) continue;
 
-			glm::vec3 n = glm::normalize(c.normal1);
-			glm::vec3 r = c.point - dynamicCollider->position;
+	//		Collider* dynamicCollider = A_isDynamic ? A : B;
+	//		Collider* staticCollider = A_isDynamic ? B : A;
 
-			glm::vec3 v = dynamicCollider->velocity + glm::cross(dynamicCollider->angularVelocity, r);
-			float vRelDotN = glm::dot(v, n);
+	//		Rigidbody* dynamicRigidbody = A_isDynamic ? RigA : RigB;
+	//		Rigidbody* staticRigidbody = A_isDynamic ? RigB : RigA;
 
-			if (vRelDotN > 0) continue;
+	//		glm::vec3 n = glm::normalize(c.normal1);
+	//		glm::vec3 r = c.point - dynamicCollider->position;
 
-			float invMass = (dynamicCollider->mass > 0) ? 1.0f / dynamicCollider->mass : 0;
-			glm::vec3 r_cross_n = glm::cross(r, n);
-			float angularEffect = glm::dot(r_cross_n, dynamicCollider->inverseMomentOfInertia * r_cross_n);
+	//		glm::vec3 v = dynamicRigidbody->velocity + glm::cross(dynamicRigidbody->angularVelocity, r);
+	//		float vRelDotN = glm::dot(v, n);
 
-			float impulseMagnitude = -(1 + Restitution) * vRelDotN / (invMass * angularEffect);
-			glm::vec3 impulse = impulseMagnitude * n;
+	//		if (vRelDotN > 0) continue;
 
-			//apply impulse to linear velocity
-			dynamicCollider->velocity += impulse * invMass;
+	//		float invMass = (dynamicRigidbody->mass > 0) ? 1.0f / dynamicRigidbody->mass : 0;
+	//		glm::vec3 r_cross_n = glm::cross(r, n);
+	//		float angularEffect = glm::dot(r_cross_n, dynamicRigidbody->inverseMomentOfInertia * r_cross_n);
 
-			//angular velocity (considering moment of inertia 
-			dynamicCollider->angularVelocity += dynamicCollider->inverseMomentOfInertia * glm::cross(r, impulse);
+	//		float impulseMagnitude = -(1 + Restitution) * vRelDotN / (invMass * angularEffect);
+	//		glm::vec3 impulse = impulseMagnitude * n;
 
-			glm::vec3 tangentVelocity = v - (n * glm::dot(v, n));
-			if (glm::length(tangentVelocity) > 0.0001f)
-			{
-				glm::vec3 frictionDirection = -glm::normalize(tangentVelocity);
-				glm::vec3 frictionImpulse = frictionDirection * SlidingFriction * glm::length(tangentVelocity);
+	//		//apply impulse to linear velocity
+	//		dynamicRigidbody->velocity += impulse * invMass;
 
-				dynamicCollider->velocity += frictionImpulse * invMass;
-				dynamicCollider->angularVelocity += dynamicCollider->inverseMomentOfInertia * glm::cross(r, frictionImpulse);
-			}
+	//		//angular velocity (considering moment of inertia 
+	//		dynamicRigidbody->angularVelocity += dynamicRigidbody->inverseMomentOfInertia * glm::cross(r, impulse);
 
-		}
-	}
+	//		glm::vec3 tangentVelocity = v - (n * glm::dot(v, n));
+	//		if (glm::length(tangentVelocity) > 0.0001f)
+	//		{
+	//			glm::vec3 frictionDirection = -glm::normalize(tangentVelocity);
+	//			glm::vec3 frictionImpulse = frictionDirection * SlidingFriction * glm::length(tangentVelocity);
+
+	//			dynamicRigidbody->velocity += frictionImpulse * invMass;
+	//			dynamicRigidbody->angularVelocity += dynamicRigidbody->inverseMomentOfInertia * glm::cross(r, frictionImpulse);
+	//		}
+
+	//	}
+	//}
 	
 }
 

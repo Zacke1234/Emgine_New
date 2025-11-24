@@ -20,9 +20,11 @@ class UI
 public:
 	enum ObjectType type;
 	enum LightType lightType;
+	//ImGuiContext* context;
 	UI(GLFWwindow* window);
 	void RenderUI(ShaderManager* shader, ObjectManager* objectmanager);
-	//ImGuiIO& io;
+	
+	void ErrorDialog(const char* dialog, GLFWwindow* window);
 
 	const char* Items[3] = {"Directional", "Point", "Spot"};
 	int SelectedItem = 0;

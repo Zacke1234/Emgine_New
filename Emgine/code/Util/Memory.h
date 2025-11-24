@@ -24,7 +24,7 @@ public:
 
 	std::mutex* meshes;
 
-	bool HasMemoryAvailable(int megaBytes);
+	bool HasMemoryAvailable(int megaBytes, GLFWwindow* window);
 
 	std::thread T1();
 

@@ -23,7 +23,7 @@ public:
 
 	void HandleCollisions(std::vector<Collision> collisions);
 	void HandleDynamicDynamic(std::vector<Collision> collisions);
-	void HandleStaticDynamic(std::vector <Collision> collisions);
+	void HandleStaticDynamic(std::vector <Collision> collisions, std::vector <Motion> motions);
 	void UpdateVisuals();
 
 	void ApplyCollision(const float& dt, std::vector<Collision> collisions);

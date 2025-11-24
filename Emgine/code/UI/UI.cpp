@@ -195,6 +195,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 	//ImGui::ShowDemoWindow();
 	ImGui::Text("");
+	
 
 	if (ImGui::Button("echo"))
 	{
@@ -421,15 +422,11 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 	}
 
 	ImGui::Text("Mesh Manager");
-	//int n = sizeof(virtobj->Entities);
-
-	
-	
+	//int n = sizeof(virtobj->Entities
 
 	//if (this == NULL){}
 		uiObjectList(this);
 
-	
 	//ImGui::InputText("texture file", buf, sizeof(buf) - 1);
 
 	ImGui::Text("");
@@ -454,5 +451,15 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 	//glfwSwapBuffers(window);
 	glfwPollEvents();
 
+}
+
+void UI::ErrorDialog(const char* dialog, GLFWwindow* window)
+{
+	//ImGui::BeginPopupContextWindow("Error");
+	/*ImGui::CreateContext();
+
+	ImGui::Text("Mesh Manager");*/
+	
+	
 }
 		

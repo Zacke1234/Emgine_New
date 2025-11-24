@@ -57,7 +57,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 		std::cerr <<  "Failed to open file: " << fileName << std::endl;
 		return false;
 	}
-
+	
 	while (std::getline(file, line)){
 		std::istringstream iss(line);
 		std::string prefix;
@@ -70,6 +70,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 		}
 		if (prefix == "v")
 		{
+			
 			glm::vec3 position;
 			iss >> position.x >> position.y >> position.z;
 			
@@ -78,6 +79,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 		}
 		if (prefix == "f")
 		{
+			
 			Face face;
 			int vertexIndex = 0;
 			std::string newFace;
@@ -109,6 +111,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 		}
 		if (prefix == "vt") 
 		{
+			
 			glm::vec2 UV;
 			iss >> UV.x >> UV.y;
 
@@ -117,6 +120,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 
 		if (prefix == "vn")
 		{
+			
 			glm::vec3 NORMAL;
 			iss >> NORMAL.x >> NORMAL.y >> NORMAL.z;
 
@@ -263,11 +267,28 @@ void MeshLoader::ParseFaceIndices(const std::string& string, Face& face, int ver
 
 void MeshLoader::ParseBinary(std::string fileString, std::fstream& fstreamPath, std::ofstream& filepathOut)
 {
+	
 	//while( getline (fstreamPath, fileString))
 	//{
 	//	//cout << fileData << "\n";
 	//	//filepathOut.write(fileString.c_str(), fileString.size());
 	//}
+}
+
+void MeshLoader::Faces(Face& face)
+{
+}
+
+void MeshLoader::Vertices(Vertex& vertex)
+{
+}
+
+void MeshLoader::UVs(Vertex& vertex)
+{
+}
+
+void MeshLoader::Normals(Vertex& vertex)
+{
 }
 
 void MeshLoader::WriteToBinary(std::fstream& filePath, std::ofstream& filepathOut, std::string fileString)
@@ -305,12 +326,64 @@ void MeshLoader::WriteToBinary(std::fstream& filePath, std::ofstream& filepathOu
 	
 }
 
+void MeshLoader::DoMeshloadingStages(Mesh* theMesh, std::string fileName, const std::string& string, std::string ParsefileString, std::fstream& parseFStreamPath, std::ofstream& filepathOut,
+	std::fstream& filePath, std::string fileString)
+{
+	Face face = temp_faces[1];
+	int vertexIndex = 0;
+	stage = ParsingObj;
+	switch (stage)
+	{
+		case 0:
+			ObjParser(fileName, theMesh);
+			stage = ReadingVertices;
+			break;
+
+		case 1:
+			
+			stage = ReadingFaces;
+			break;
+
+		case 2:
+			ParseFaceIndices(string, face, vertexIndex);
+			stage = ReadingUVs;
+			break;
+		case 3:
+
+			stage = ReadingNormals;
+			break;
+		case 4:
+			
+			stage = BinaryParsing;
+			break;
+		case 5:
+			ParseBinary(ParsefileString, parseFStreamPath, filepathOut);
+			stage = BinaryWriting;
+			break;
+		case 6:
+			WriteToBinary(filePath, filepathOut, fileString);
+			stage = InitialisingMesh;
+			break;
+		case 7:
+			theMesh->InitialiseMesh();
+			stage = MeshLoaded;
+			break;
+		case 8:
+			std::cout << "Mesh loading complete \n";
+			break;
+	default:
+		std::cout << "Mesh loading default \n";
+		break;
+	}
+}
+
 
 
 
 
 void Mesh::InitialiseMesh()
 {
+	
 	//std::cout << "initialise object file" << "\n";
 	
 	/*if (data.size() != NULL)

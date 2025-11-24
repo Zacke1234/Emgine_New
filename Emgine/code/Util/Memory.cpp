@@ -13,7 +13,7 @@ Memory::Memory()
 
 }
 
-bool Memory::HasMemoryAvailable(int megaBytes)
+bool Memory::HasMemoryAvailable(int megaBytes, GLFWwindow* window)
 {
 
 	//GetProcessMemoryInfo(megaBytes, );
@@ -23,10 +23,16 @@ bool Memory::HasMemoryAvailable(int megaBytes)
 	GlobalMemoryStatusEx(&status);
 	//std::cout << status.ullTotalPhys + " megabytes \n" << endl;
 	//std::cout << "There are %*ld percent of memory in use.\n", status.dwMemoryLoad;
-	_tprintf(TEXT("There is  %*ld percent of memory in use.\n"), WIDTH, status.dwMemoryLoad); // % does not show up in the message
+	_tprintf(TEXT("There is  %*ld percent of memory in use.\n"), WIDTH, status.dwMemoryLoad);
+
+	if (status.dwMemoryLoad > megaBytes) // * 1048
+	{
+		std::cout << "Loaded memory is too high" << std::endl;
+		myUI->ErrorDialog("Too much memory in use", window);
+		//return false;
+	}
+
 	return status.ullTotalPhys;
-	
-	
 }
 
 std::thread Memory::T1()

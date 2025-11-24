@@ -167,7 +167,7 @@ void Object::SetCollider(Collider& aCollider)
 {
 	myCollider = &aCollider;
 	myCollider->position = this->Position;
-	myCollider->isKinematic = false;
+	
 	myCollider->scale = Scale;
 	myCollider->SetTheCollision();
 }
@@ -232,6 +232,7 @@ void Object::SetName(std::string name)
 void Object::SetRigidbody(Rigidbody& rb)
 {
 	Rigidbody* myRigidbody = &rb;
+	myRigidbody->isKinematic = false;
 }
 
 void Object::Draw(Camera* aCamera, Shader* myShader)

@@ -34,6 +34,7 @@ Mesh* MeshManager::LoadMesh(std::string fromPath, std::string name)
 	std::fstream read(fromPath);
 	std::fstream readBin("resource\\bins\\" + name + ".bin");
 	
+	//meshLoader->DoMeshloadingStages(this, fromPath, "", read, write, readBin, Binary);
 	meshLoader->WriteToBinary(read, write, fromPath);
 	meshLoader->ParseBinary(Binary, readBin, write);
 	//meshLoader->ReadFile(fromPath, Binary, write, read);

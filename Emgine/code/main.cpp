@@ -130,9 +130,9 @@ int static init_window()
 }
 
 int init_memory_tracker() {
-	int megaBytes = 0;
+	int megaBytes = 30;
 	myMemory = new Memory();
-	myMemory->HasMemoryAvailable(megaBytes);
+	myMemory->HasMemoryAvailable(megaBytes, window);
 	return 0;
 }
 
@@ -238,12 +238,14 @@ int static update_ui(UI* myUI, ShaderManager* myShader, ObjectManager* objManage
 
 
 
+
+
 int main()
 {
 	
 	init_window();
 
-	init_memory_tracker();
+
 
 	init_managers();
 
@@ -270,7 +272,7 @@ int main()
 	
 	
 	myUI = new UI(window);
-
+	init_memory_tracker();
 	
 	// Object Creation
 	Mesh* fish = myMeshManager->Create("fish", "fish.obj");
@@ -343,7 +345,7 @@ int main()
 		{
 			myTextureManager->InitializeTexture(myShaderManager->DefaultShader, o->myTexture->myMaterial);
 			o->Draw(myCamera, myShaderManager->DefaultShader); 
-			
+			//stage = MeshLoaded;
 		}
 	
 		Phys->Simulate(myCamera->deltatime);

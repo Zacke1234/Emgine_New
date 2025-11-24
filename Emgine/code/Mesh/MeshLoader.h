@@ -50,28 +50,39 @@ public:
 	void InitialiseMesh();
 };
 
+enum MeshLoadStage {
+	ParsingObj = 0,
+	ReadingVertices,
+	ReadingFaces,
+	ReadingUVs,
+	ReadingNormals,
+	InitialisingMesh,
+	BinaryWriting,
+	BinaryParsing,
+	MeshLoaded
+};
 
-class MeshLoader// observer? subject? message to meshmanager?
+
+class MeshLoader
 {
 public:
 	
+	MeshLoadStage stage;
 	MeshLoader();
 	bool ObjParser(std::string fileName, Mesh* mesh);
 	void ParseFaceIndices(const std::string& string, Face& face, int vertexIndex);
 
 	void ParseBinary(std::string fileString, std::fstream& fstreamPath, std::ofstream& filepathOut);
+	void Faces(Face& face);
+	void Vertices(Vertex& vertex);
+	void UVs(Vertex& vertex);
+	void Normals(Vertex& vertex);
 	void WriteToBinary(std::fstream& filePath, std::ofstream& filepathOut, std::string fileString);
-	// size_t fileSize, std::filesystem::path filePath
-	/*MessageQueueComponent1* c1 = new MessageQueueComponent1;
-	MessageQueueComponent2* c2 = new MessageQueueComponent2;
-	ConcreteMessage* message = new ConcreteMessage(c1, c2);*/
+
+	void DoMeshloadingStages(Mesh* theMesh, std::string fileName, const std::string& string, std::string ParsefileString, std::fstream& fstreamPath, std::ofstream& filepathOut, std::fstream& filePath, std::string fileString);
 	std::string name;
 	std::string type;
 
-	
-	/*size_t fileSize;*/
-	 
-	
 	std::vector <Vertex> tmp;
 	std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
 	//std::vector <glm::vec3> temp_vertices; // glm::vec3 

@@ -11,7 +11,7 @@ enum class ColliderType {
 glm::mat3 ComputeMomentOfInertiaCube(float mass, glm::vec3 extents);
 glm::mat3 ComputeMomentOfInertiaSphere(float mass, float radius);
 
-class Collider  
+class Collider
 {
 public: 
 	Collider();
@@ -37,7 +37,8 @@ public:
 	glm::vec3 scale;
 	//glm::vec3 extents;
 
-	
+	// auto* r : Rigidbody::rbEntities
+	// Rigidbody r : rigidbodies
 
 	void SetTheCollision();
 	
@@ -51,8 +52,7 @@ struct Collision {
 	glm::vec3 point;
 	glm::vec3 normal1;
 	glm::vec3 normal2;
-	float restitution; // I think it goes here
-	glm::mat3 LinearDrag; // maybe
+	
 };
 
 
