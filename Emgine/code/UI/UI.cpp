@@ -220,6 +220,19 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 	//ImGui::Text("Change camera speed");
 	//ImGui::InputFloat("Camera speed", &speed, 1.0f, 1.0f, "%.1f"); // supposed to change speed of camera cause
 	
+	if (errorTriggered) {
+
+		ImGui::OpenPopup("errorMessage");
+		if (ImGui::BeginPopup("errorMessage"))
+		{
+			ImGui::Text(errorMessage);
+		}
+		if (ImGui::Button("Ok"))
+		{
+			errorTriggered = false;	
+		}
+		ImGui::EndPopup();
+	}
 	
 
 	if (ImGui::Button("Create new mesh"))
@@ -453,13 +466,5 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 
 }
 
-void UI::ErrorDialog(const char* dialog, GLFWwindow* window)
-{
-	//ImGui::BeginPopupContextWindow("Error");
-	/*ImGui::CreateContext();
 
-	ImGui::Text("Mesh Manager");*/
-	
-	
-}
 		

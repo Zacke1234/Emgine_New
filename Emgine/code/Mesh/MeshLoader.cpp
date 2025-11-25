@@ -330,6 +330,7 @@ void MeshLoader::DoMeshloadingStages(Mesh* theMesh, std::string fileName, const 
 	std::fstream& filePath, std::string fileString)
 {
 	Face face = temp_faces[1];
+	//Vertex& vertex;
 	int vertexIndex = 0;
 	stage = ParsingObj;
 	switch (stage)
@@ -340,7 +341,7 @@ void MeshLoader::DoMeshloadingStages(Mesh* theMesh, std::string fileName, const 
 			break;
 
 		case 1:
-			
+			//Vertices();
 			stage = ReadingFaces;
 			break;
 
@@ -349,11 +350,11 @@ void MeshLoader::DoMeshloadingStages(Mesh* theMesh, std::string fileName, const 
 			stage = ReadingUVs;
 			break;
 		case 3:
-
+			//UVs(Vertex & vertex);
 			stage = ReadingNormals;
 			break;
 		case 4:
-			
+			//Normals(Vertex & vertex);
 			stage = BinaryParsing;
 			break;
 		case 5:

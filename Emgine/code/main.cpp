@@ -132,7 +132,7 @@ int static init_window()
 int init_memory_tracker() {
 	int megaBytes = 30;
 	myMemory = new Memory();
-	myMemory->HasMemoryAvailable(megaBytes, window);
+	myMemory->HasMemoryAvailable(megaBytes, myUI);
 	return 0;
 }
 

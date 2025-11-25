@@ -24,10 +24,12 @@ public:
 	UI(GLFWwindow* window);
 	void RenderUI(ShaderManager* shader, ObjectManager* objectmanager);
 	
-	void ErrorDialog(const char* dialog, GLFWwindow* window);
+	bool errorTriggered;
+	const char* errorMessage;
 
 	const char* Items[3] = {"Directional", "Point", "Spot"};
 	int SelectedItem = 0;
+
 
 	// POSITION AND ROTATION
 	glm::vec3 position;
