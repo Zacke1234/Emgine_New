@@ -27,7 +27,8 @@ Mesh* MeshManager::LoadMesh(std::string fromPath, std::string name)
 {
 	size_t fileSize = std::filesystem::file_size(fromPath);
 	std::string Binary = "resource\\bins\\" + name + ".bin";
-
+	Mesh* mesh = new Mesh;
+	mesh->name = name;
 	//char* data = new char;
 	//
 	std::ofstream write("resource\\bins\\" + name + ".bin", std::ios::binary); // ./out.bin
@@ -35,33 +36,20 @@ Mesh* MeshManager::LoadMesh(std::string fromPath, std::string name)
 	std::fstream readBin("resource\\bins\\" + name + ".bin");
 	
 	//meshLoader->DoMeshloadingStages(this, fromPath, "", read, write, readBin, Binary);
-	meshLoader->WriteToBinary(read, write, fromPath);
-	meshLoader->ParseBinary(Binary, readBin, write);
-	//meshLoader->ReadFile(fromPath, Binary, write, read);
-	
-	/*BinaryFile bin((fromPath).c_str());
-	bin.ReadFile(fromPath, Binary, write, read);*/
-	//bin.WriteFile();
 	
 	
+	if (meshLoader->ParseBinary(Binary, readBin, write, mesh))
+	{
+		meshLoader->WriteToBinary(read, write, fromPath, mesh);
+		meshLoader->ObjParser(Binary, mesh, NULL);
+	}
+	else
+	{
+		meshLoader->ObjParser(fromPath, mesh);
+	}
 	
-
-	Mesh* mesh = new Mesh;
-	mesh->name = name;
-	meshLoader->ObjParser(fromPath, mesh);
-	//if (!meshLoader->ObjParser("C:\\Users\\zackarias.hager\\Emgine_New\\Emgine\\resource\\bins\\" + name + ".bin", mesh)) // herein lies the problem....
-	//{
-	//	std::cout << "Something is wrong with" << name << " from path: " << fromPath + name << "\n";
-	//	//mesh = new Mesh();
-	//	
-	//	//return nullptr;
-	//}
-
-	msg = "Mesh loaded in";
-	//message->SendMessage(msg, 0);
 	mesh->InitialiseMesh();
-	//MeshCache.emplace(fromPath, mesh);
-
+	
 	return mesh;
 }	
 

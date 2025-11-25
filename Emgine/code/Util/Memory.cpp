@@ -21,7 +21,7 @@ bool Memory::HasMemoryAvailable(int megaBytes, UI* thisUI)
 	MEMORYSTATUSEX status;
 	status.dwLength = sizeof(status);
 	GlobalMemoryStatusEx(&status);
-	
+	int memoryLoaded = status.dwMemoryLoad;
 	//std::cout << status.ullTotalPhys + " megabytes \n" << endl;
 	//std::cout << "There are %*ld percent of memory in use.\n", status.dwMemoryLoad;
 	
@@ -29,7 +29,10 @@ bool Memory::HasMemoryAvailable(int megaBytes, UI* thisUI)
 	{
 		_tprintf(TEXT("There is  %*ld MB of physical memory available.\n"), WIDTH, status.ullAvailPhys / (1024 * 1024));
 		_tprintf(TEXT("There is  %*ld MB of virtual memory available.\n"), WIDTH, status.ullAvailVirtual / (1024 * 1024));
-		thisUI->errorMessage = "Loaded memory is too high, There is MB memory in use.\n ";
+		_tprintf(TEXT("There is  %*ld MB of memory loaded.\n"), WIDTH, memoryLoaded);
+		//std::sprintf(thisUI->errorMessage, "%d", memoryLoaded);
+		thisUI->errorMessage = "Loaded memory is too high, MB memory in use: " , static_cast<char>(memoryLoaded);
+	
 		thisUI->errorTriggered = true;
 		//return false;
 	}
