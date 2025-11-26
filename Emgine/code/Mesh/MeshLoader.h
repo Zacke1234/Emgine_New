@@ -77,8 +77,8 @@ public:
 	void Vertices(Vertex& vertex);
 	void UVs(Vertex& vertex);
 	void Normals(Vertex& vertex);
-	virtual bool WriteToBinary(std::fstream& filePath, std::ofstream& filepathOut, std::string fileString, Mesh* mesh);
-	virtual bool ParseBinary(std::string fileString, std::fstream& fstreamPath, std::ofstream& filepathOut, Mesh* mesh);
+	virtual bool ParseObjToBinary(std::ifstream& filePath, std::ofstream& filepathOut, std::string fileString, Mesh* mesh);
+	virtual bool ParseBinaryToMesh(std::string fileString, std::ifstream& fstreamPath, std::ofstream& filepathOut, Mesh* mesh);
 	void DoMeshloadingStages(Mesh* theMesh, std::string fileName, const std::string& string, std::string ParsefileString, std::fstream& fstreamPath, std::ofstream& filepathOut, std::fstream& filePath, std::string fileString);
 	std::string name;
 	std::string type;

@@ -52,7 +52,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 	
 	std::string line;
 	
-	if (!file.is_open())
+	if (file.is_open())
 	{
 		std::cerr <<  "Failed to open file: " << fileName << std::endl;
 		return false;
@@ -129,10 +129,9 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 		if (prefix == "mtllib") // load in the material from the file onto the mesh
 		{
 			
-			/*char material[] = {255};
-			iss >> material;
-			std::cout << material , "\n";
-			MeshTexture(material);*/
+			
+			std::cout << "Material", "\n";
+			
 
 		}
 		
@@ -214,8 +213,8 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 	temp_position.clear();
 	temp_uvs.clear();
 	temp_vertices.clear();
-	/*WriteToBinary(fileName, &file);
-	WriteToBinary(fileName, *file);*/
+	/*ParseObjToBinary(fileName, &file);
+	ParseObjToBinary(fileName, *file);*/
 	return true;
 }
 
@@ -282,61 +281,76 @@ void MeshLoader::Normals(Vertex& vertex)
 {
 }
 
-bool MeshLoader::ParseBinary(std::string fileString, std::fstream& fstreamPath, std::ofstream& filepathOut, Mesh* mesh)
+bool MeshLoader::ParseBinaryToMesh(std::string binaryPath, std::ifstream& binaryInputFile, std::ofstream& binaryOutputFile, Mesh* mesh)
 {
-	std::string tempName = mesh->name;
-	std::vector<Vertex> tempVertices = mesh->vertices;
-	std::vector<Face> tempFaces = mesh->faces;
-	std::vector<float> tempData = mesh->data;
-	std::vector<unsigned int> tempElements = mesh->elements;
-	int tempVertexbuffer = mesh->vertexbuffer;
-	unsigned int tempNumberVertices = mesh->numberVertices;
-	unsigned int tempVAO = mesh->VAO;
-	unsigned int tempVBO = mesh->VBO;
-	unsigned int tempEBO = mesh->EBO;
-	size_t tempIndexCount = mesh->indexCount, tempVertexCount = mesh->vertexCount;
+	std::string tempName;
+	std::vector<Vertex> tempVertices;
+	std::vector<Face> tempFaces;
+	std::vector<float> tempData;
+	std::vector<unsigned int> tempElements;
+	int tempVertexbuffer;
+	int tempNumberVertices[1];
+	unsigned int tempVAO;
+	unsigned int tempVBO;
+	unsigned int tempEBO;
+	size_t tempIndexCount, tempVertexCount;
 	
-	if (!fstreamPath.is_open())
+	if (!binaryInputFile.is_open())
 	{
 		cerr << "Error: Failed to open for parsing" << endl;
 		return false;
 	}
-	fstreamPath.read(reinterpret_cast<char*>(mesh), sizeof(mesh));
-	//std::cout << this;
-	fstreamPath.close();
+
+
+	
+
+	
+	for (int i = 0; i < sizeof(temp_vertices); ++i)
+	{
+		tempVertices[i] = temp_vertices[i];
+	}
+	for (int i = 0; i < sizeof(temp_faces); ++i)
+	{
+		mesh->faces[i] = temp_faces[i];
+	}
+
+	binaryInputFile.read((char*)&tempVertices, sizeof(int));
+	binaryInputFile.read((char*)&tempFaces, sizeof(int));
+	binaryInputFile.read((char*)&tempData, sizeof(int));
+	binaryInputFile.read((char*)&tempElements, sizeof(int));
+
+	binaryInputFile.close();
 	return true;
 }
 
-bool MeshLoader::WriteToBinary(std::fstream& filePath, std::ofstream& filepathOut, std::string fileString, Mesh* mesh)
+bool MeshLoader::ParseObjToBinary(std::ifstream& ObjInputFile, std::ofstream& binaryOutputFile, std::string ObjFilePath, Mesh* mesh)
 {
 	
-	std::string tempName = mesh->name;
-	std::vector<Vertex> tempVertices = mesh->vertices;
-	std::vector<Face> tempFaces = mesh->faces;
-	std::vector<float> tempData = mesh->data;
-	std::vector<unsigned int> tempElements = mesh->elements;
-	int tempVertexbuffer = mesh->vertexbuffer;
-	unsigned int tempNumberVertices = mesh->numberVertices;
-	unsigned int tempVAO = mesh->VAO;
-	unsigned int tempVBO = mesh->VBO;
-	unsigned int tempEBO = mesh->EBO;
-	size_t tempIndexCount = mesh->indexCount, tempVertexCount = mesh->vertexCount;
+	std::string tempName;
+	std::vector<Vertex> tempVertices;
+	std::vector<Face> tempFaces;
+	std::vector<float> tempData;
+	std::vector<unsigned int> tempElements;
+	int tempVertexbuffer;
+	unsigned int tempNumberVertices;
+	unsigned int tempVAO;
+	unsigned int tempVBO;
+	unsigned int tempEBO;
+	size_t tempIndexCount, tempVertexCount;
 
-	if (!filepathOut.is_open())
+
+	if (!binaryOutputFile.is_open())
 	{
 		cerr << "Error: Failed to open for parsing" << endl;
 		return false;
 	}
 	
-	while (std::getline(filePath, fileString)) {
-		std::istringstream iss(fileString);
-		{
-
-
-		}
-	}
-	filepathOut.write(reinterpret_cast<const char*>(mesh), sizeof(*mesh));
-	filepathOut.close();
+	binaryOutputFile.write((char*)&tempVertices, sizeof(int));
+	binaryOutputFile.write((char*)&tempFaces, sizeof(int));
+	binaryOutputFile.write((char*)&tempData, sizeof(int));
+	binaryOutputFile.write((char*)&tempElements, sizeof(int));
+	
+	binaryOutputFile.close();
 
 	
 }
@@ -373,11 +387,11 @@ void MeshLoader::DoMeshloadingStages(Mesh* theMesh, std::string fileName, const 
 			stage = BinaryParsing;
 			break;
 		case 5:
-			//ParseBinary(ParsefileString, parseFStreamPath, filepathOut);
+			//ParseBinaryToMesh(ParsefileString, parseFStreamPath, binaryOutputFile);
 			stage = BinaryWriting;
 			break;
 		case 6:
-			WriteToBinary(filePath, filepathOut, fileString, theMesh);
+			//ParseObjToBinary(filePath, filepathOut, fileString, theMesh);
 			stage = InitialisingMesh;
 			break;
 		case 7:
@@ -458,7 +472,7 @@ void BinaryFile::WriteFile() {
 		std::cerr << "File error writing: " << FileName << ">\n";
 		exit(1);
 	}
-	//obj.WriteToBinary(File, );
+	//obj.ParseObjToBinary(File, );
 	File.close();
 }
 

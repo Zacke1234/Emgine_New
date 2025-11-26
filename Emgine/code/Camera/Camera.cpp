@@ -119,7 +119,11 @@ void Camera::ProcessInput(GLFWwindow* window)
 		//std::cout << "let go of shift" << "\n";
 		cameraSpeed = 3.0f * deltatime;
 	}
-	
+	/*GLFWscrollfun scrollfun;
+	if (glfwSetScrollCallback(window, scrollfun))
+	{
+		
+	}*/
 }
 
 void Camera::Mouse_Callback(GLFWwindow* window, double xpos, double ypos)

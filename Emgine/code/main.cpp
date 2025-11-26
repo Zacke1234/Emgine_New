@@ -155,7 +155,7 @@ int init_managers() {
 
 int init_camera() {
 	//init camera
-	myCamera = new Camera();
+	myCamera = new Camera;
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetCursorPosCallback(window, myCamera->Mouse_Callback);
 	return 0;
@@ -251,7 +251,7 @@ int main()
 
 	init_camera();
 
-	myCamera->myPosition = glm::vec3(0, 3, 0);
+	
 
 	//Create Textures
 	Texture* wall = myTextureManager->Create("wall", "wall.jpg");
@@ -275,7 +275,7 @@ int main()
 	init_memory_tracker();
 	
 	// Object Creation
-	Mesh* fish = myMeshManager->Create("fish", "fish.obj");
+	Mesh* fish = myMeshManager->Create("Fish", "fish.obj");
 	Mesh* quadplane = myMeshManager->Create("quadplane", "quadplane.obj");
 	Mesh* cube = myMeshManager->Create("Cube", "cube.obj");
 	
@@ -307,6 +307,9 @@ int main()
 		myRigidbodyManager->Create(0.0f)
 	);
 
+	myObjectManager->CreateCamera("SceneCamera",
+		myCamera,
+		myShaderManager->DefaultShader);
 
 	////myObjectManager->Find("cubeObj");
 
@@ -330,7 +333,7 @@ int main()
 
 	
 				myShaderManager->DefaultShader->UseShader();
-		myLighting->Use(myCamera, myShaderManager->DefaultShader);
+	
 	
 		
 	
@@ -343,7 +346,7 @@ int main()
 		//Drawcall objects
 		for (auto& o : Object::Entities)
 		{
-			myTextureManager->InitializeTexture(myShaderManager->DefaultShader, o->myTexture->myMaterial);
+			//myTextureManager->InitializeTexture(myShaderManager->DefaultShader, o->myTexture->myMaterial);
 			o->Draw(myCamera, myShaderManager->DefaultShader); 
 			//stage = MeshLoaded;
 		}
@@ -355,7 +358,7 @@ int main()
 
 		//update camera
 		update_camera(myCamera, myUI, window);
-		
+		myLighting->Use(myCamera, myShaderManager->DefaultShader);
 
 		// swaps front and back buffers
 		glfwSwapBuffers(window);

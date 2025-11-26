@@ -23,32 +23,47 @@ MeshManager::~MeshManager()
 
 
 
-Mesh* MeshManager::LoadMesh(std::string fromPath, std::string name)
+Mesh* MeshManager::LoadMesh(std::string objPath, std::string name)
 {
-	size_t fileSize = std::filesystem::file_size(fromPath);
-	std::string Binary = "resource\\bins\\" + name + ".bin";
+	size_t fileSize = std::filesystem::file_size(objPath);
+	std::string BinaryPath = "resource\\bins\\" + name + ".bin";
 	Mesh* mesh = new Mesh;
 	mesh->name = name;
-	//char* data = new char;
-	//
-	std::ofstream write("resource\\bins\\" + name + ".bin", std::ios::binary); // ./out.bin
-	std::fstream read(fromPath);
-	std::fstream readBin("resource\\bins\\" + name + ".bin");
 	
-	//meshLoader->DoMeshloadingStages(this, fromPath, "", read, write, readBin, Binary);
-	
-	
-	if (meshLoader->ParseBinary(Binary, readBin, write, mesh))
+	std::ofstream writeBin(BinaryPath, std::ios_base::out , std::ios_base::binary); 
+	std::ifstream readObj(objPath);
+	std::ifstream readBin(BinaryPath, std::ios::binary);
+	readBin.open(BinaryPath, std::ios_base::in, std::ios_base::binary);
+	//writeBin.open(BinaryPath, std::ios_base::out, std::ios_base::binary);
+	if (readBin.is_open())
 	{
-		meshLoader->WriteToBinary(read, write, fromPath, mesh);
-		meshLoader->ObjParser(Binary, mesh, NULL);
+		
+		if (meshLoader->ParseBinaryToMesh(BinaryPath, readBin, writeBin, mesh));
+		else
+		{
+			meshLoader->ParseObjToBinary(readObj, writeBin, objPath, mesh);
+			meshLoader->ParseBinaryToMesh(BinaryPath, readBin, writeBin, mesh);
+			mesh->InitialiseMesh();
+		}
 	}
-	else
-	{
-		meshLoader->ObjParser(fromPath, mesh);
+	else {
+		meshLoader->ObjParser(objPath, mesh);
+		mesh->InitialiseMesh();
 	}
+	//check if binary path has file:
+		//if file exists
+			// parse binary->mesh
+		//else
+			// parse obj to binary
+			// then binary ->mesh
+		// then load mesh(instantiate) into meshmanager n stuff 
+
+
+
+
+	//meshLoader->DoMeshloadingStages(this, objPath, "", readObj, writeBin, readBin, BinaryPath);
 	
-	mesh->InitialiseMesh();
+
 	
 	return mesh;
 }	

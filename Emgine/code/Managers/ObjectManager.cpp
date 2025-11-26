@@ -36,12 +36,17 @@ void ObjectManager::Destroy(Object* obj) {
 LightObject* ObjectManager::CreateLight(std::string aName = "new_lightObject", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL, LightData* aLightData = NULL, Rigidbody* rb = NULL)
 {
 	LightObject* lightObj = new LightObject(aName, Mesh, aTexture, aShader, aCollider, aLightData, rb);
-	//lightObj->type = ObjectType::Type_Light;
-	//lightObj->SetLightData(lightData);
-	//lightObj->SetLighting(*lightData);
 	Object::Entities.push_back(lightObj);
 	LightObject::LightEntities.push_back(lightObj);
 	return lightObj;
+}
+
+CameraObject* ObjectManager::CreateCamera(std::string aName = "new_cameraObject", Camera* aCamera = NULL, Shader* aShader = NULL)
+{
+	CameraObject* cameraObj = new CameraObject(aName, aCamera, aShader);
+	Object::Entities.push_back(cameraObj);
+	CameraObject::CameraEntities.push_back(cameraObj);
+	return cameraObj;
 }
 
 Object* ObjectManager::Find(std::string aName)

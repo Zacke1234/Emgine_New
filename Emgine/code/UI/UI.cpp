@@ -22,10 +22,57 @@ RigidbodyManager* myRigidbodyMang;
 //Lighting* myLighting;
 bool SelectedLight;
 bool selectedMaterial;
+bool selectedCamera;
+
+int boolHandler()
+{
+	
+	if (Object::Entities[Object::SelectedEntity]->myTexture != nullptr)
+	{
+		selectedMaterial = true;
+	}
+	else
+	{
+		selectedMaterial = false;
+	}
+	if (Object::Entities[Object::SelectedEntity]->ObjType == 1)
+	{
+		SelectedLight = true;
+	}
+	else
+	{
+		SelectedLight = false;
+	}
+	if (Object::Entities[Object::SelectedEntity]->ObjType == 4)
+	{
+		selectedCamera = true;
+	}
+	else
+	{
+		selectedCamera = false;
+	}
+	
+	return 0;
+}
+
+int uiCameratList(UI* myUI, ObjectManager* objectmanager)
+{
+	
+	if (Object::Entities.size() > 0) {
+		
+		if (selectedCamera)
+		{
+			Object::Entities[Object::SelectedEntity]->myCamera->myPosition = Object::Entities[Object::SelectedEntity]->Position;
+			//Object::Entities[Object::SelectedEntity]->myCamera->myView = Object::Entities[Object::SelectedEntity]->Rotation;
+		}
+	}
+	return 0;
+}
+
 int uiLightList(UI* myUI, ObjectManager* objectmanager)
 {
 	if (Object::Entities.size() > 0) {
-		SelectedLight = Object::Entities[Object::SelectedEntity]->ObjType == 1;
+		
 
 		if (SelectedLight)
 		{
@@ -54,7 +101,7 @@ int uiLightList(UI* myUI, ObjectManager* objectmanager)
 int uiMaterialList(UI* myUI)
 {
 	
-	selectedMaterial = Object::Entities[Object::SelectedEntity]->myTexture != nullptr;
+	
 	if (Object::Entities.size() > 0 && selectedMaterial) {
 		
 		Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->diffuse = myUI->matDiffuse;
@@ -71,7 +118,6 @@ int uiMaterialList(UI* myUI)
 
 int uiObjectList(UI* ui) 
 {
-	selectedMaterial = Object::Entities[Object::SelectedEntity]->myTexture != nullptr;
 	
 	for (int i = 0; i < Object::Entities.size(); i++)
 	{
@@ -93,7 +139,7 @@ int uiObjectList(UI* ui)
 			ui->yScale = Object::Entities[i]->Scale[1];
 			ui->zScale = Object::Entities[i]->Scale[2];
 
-			if (selectedMaterial)
+			if (Object::Entities[Object::SelectedEntity]->myTexture != nullptr)
 			{
 				ui->matColor = Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->color;
 				ui->matShininess = Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->shininess;
@@ -118,11 +164,13 @@ int uiObjectList(UI* ui)
 				ui->outerCutOff = Object::Entities[Object::SelectedEntity]->myLightData->outerCutOff;
 				
 			}
-			
-			/*if (ImGui::Button(LightObject::Entities[i]->namn.c_str()))
+
+			if (Object::Entities[Object::SelectedEntity]->ObjType == 4)
 			{
-				std::cout << "test" << std::endl;
-			}*/
+				ui->xPos = Object::Entities[Object::SelectedEntity]->myCamera->myPosition.x;
+				ui->yPos = Object::Entities[Object::SelectedEntity]->myCamera->myPosition.y;
+				ui->zPos = Object::Entities[Object::SelectedEntity]->myCamera->myPosition.z;
+			}
 			
 			
 		}
@@ -196,6 +244,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 	//ImGui::ShowDemoWindow();
 	ImGui::Text("");
 	
+	boolHandler();
 
 	if (ImGui::Button("echo"))
 	{
@@ -293,6 +342,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 		
 
 	}
+	uiCameratList(this, objectmanager);
 	uiMaterialList(this);
 	if(Object::Entities.size() > 0)
 	{

@@ -24,7 +24,7 @@ public:
 	static std::vector<Texture*> textures;
 
 	//vector<Object*> Object::Entities;
-	bool IsValid() const { return TextureObject != 0; };
+	bool IsValid() const { return TextureObject == 0; };
 
 	std::string msg;
 	//Message* message = new Message(msg);

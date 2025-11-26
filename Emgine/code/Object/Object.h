@@ -55,6 +55,7 @@ public:
 	void SetMaterial(Material& material);
 	void SetName(std::string name);
 	void SetRigidbody(Rigidbody& rb);
+	void SetCamera(Camera cam);
 
 	//void SetLighting(Lighting& lighting);
 	Mesh* CreateMesh(Mesh* mesh);
@@ -76,7 +77,8 @@ public:
 		Type_NULL = 0,
 		Type_Light = 1,
 		Type_Mesh = 2,
-		Type_Cube = 3
+		Type_Cube = 3,
+		Type_Camera = 4
 	};
 
 	ObjectType ObjType;
@@ -103,7 +105,7 @@ public:
 	Mesh* myMesh;
 	
 	Texture* myTexture;
-	
+	Camera* myCamera;
 	LightData* myLightData;
 private: 
 	
@@ -139,4 +141,11 @@ public:
 	void SetPoint(LightData* aLightData);
 	void SetSpot(LightData* aLightData);
 	static int SelectedLightEntity;
+};
+
+class CameraObject : public Object
+{
+public:
+	CameraObject(std::string _namn, Camera* camera, Shader* _shader);
+	static std::vector<CameraObject*> CameraEntities;
 };

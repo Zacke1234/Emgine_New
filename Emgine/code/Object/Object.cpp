@@ -15,6 +15,7 @@ int Object::SelectedEntity;
 //vector<Object*> SelectedEntityVec;
 int LightObject::SelectedLightEntity;
 vector<LightObject*> LightObject::LightEntities;
+vector<CameraObject*> CameraObject::CameraEntities;
 // Objects should hold all my meshes and lights
 // Meshes should hold meshses like teapots, fishes and cubes
 // Lighting should have lights, like directional, pointlight and spotlight etc (is that lightdata?)
@@ -138,6 +139,36 @@ LightObject::LightObject(std::string _namn = "new_lightObject", Mesh* Mesh = NUL
 	}
 }
 
+CameraObject::CameraObject(std::string _namn, Camera* _camera, Shader* _shader)
+{
+	ObjType = Type_Camera;
+	// Name
+	if (_namn != "new_lightObject")
+	{
+		this->namn = _namn;
+	}
+	else {
+		std::cout << "No name assigned to object: " << _namn << "\n";
+	}
+	// Camera
+	if (_camera)
+	{
+		this->myCamera = _camera;
+	}
+	else {
+		std::cout << "No camera assigned to object: " << _namn << "\n";
+	}
+
+	// shader
+	if (_shader)
+	{
+		SetShader(*_shader);
+	}
+	else {
+		std::cout << "No shader assigned to object: " << _namn << "\n";
+	}
+}
+
 void Object::SetCube(Cube& aCube)
 {
 	
@@ -235,6 +266,11 @@ void Object::SetRigidbody(Rigidbody& rb)
 	myRigidbody->isKinematic = false;
 }
 
+void Object::SetCamera(Camera cam)
+{
+	myCamera = &cam;
+}
+
 void Object::Draw(Camera* aCamera, Shader* myShader)
 {
 	DrawObject(aCamera, myShader);
@@ -305,5 +341,4 @@ void Object::DrawObject(Camera* aCamera, Shader* myShader)
 
 		IsTransformValid = false;
 }
-
 
