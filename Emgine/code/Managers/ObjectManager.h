@@ -13,7 +13,7 @@ public:
 	
 	virtual LightObject* CreateLight(std::string aName, Mesh* Mesh, Texture* aTexture, Shader* aShader, Collider* aCollider, LightData* lightData, Rigidbody* rb);
 
-	virtual CameraObject* CreateCamera(std::string aName, Camera* camera, Shader* aShader);
+	virtual CameraObject* CreateCamera(std::string aName, Mesh* Mesh , Texture* aTexture , Shader* aShader , Collider* aCollider , Camera* aCamera , Rigidbody* rb);
 
 	virtual Object* Find(std::string name);
 

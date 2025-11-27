@@ -41,9 +41,9 @@ LightObject* ObjectManager::CreateLight(std::string aName = "new_lightObject", M
 	return lightObj;
 }
 
-CameraObject* ObjectManager::CreateCamera(std::string aName = "new_cameraObject", Camera* aCamera = NULL, Shader* aShader = NULL)
+CameraObject* ObjectManager::CreateCamera(std::string aName = "new_cameraObject", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL, Camera* aCamera = NULL, Rigidbody* rb = NULL)
 {
-	CameraObject* cameraObj = new CameraObject(aName, aCamera, aShader);
+	CameraObject* cameraObj = new CameraObject(aName, Mesh, aTexture, aShader, aCollider, aCamera, rb);
 	Object::Entities.push_back(cameraObj);
 	CameraObject::CameraEntities.push_back(cameraObj);
 	return cameraObj;

@@ -170,6 +170,7 @@
     <ClCompile Include="..\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="code\Managers\CameraManager.cpp" />
     <ClCompile Include="code\Camera\Camera.cpp" />
     <ClCompile Include="code\Physics\Collider.cpp" />
     <ClCompile Include="code\Mesh\Cube.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="..\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\imgui\imstb_textedit.h" />
     <ClInclude Include="..\imgui\imstb_truetype.h" />
+    <ClInclude Include="code\Managers\CameraManager.h" />
     <ClInclude Include="code\Camera\Camera.h" />
     <ClInclude Include="code\Physics\Collider.h" />
     <ClInclude Include="code\Mesh\Cube.h" />

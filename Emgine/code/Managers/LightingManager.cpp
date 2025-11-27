@@ -300,7 +300,7 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 		shader->SetFloat("baseLight.linear", aLightData->linear);
 		shader->SetFloat("baseLight.quadratic", aLightData->quadtric);
 
-		shader->SetVec3("lightColor", glm::vec3(0.0f, 0.01, 0.0f));
+		shader->SetVec3("lightColor", glm::vec3(1.0f, 1.01, 1.0f));
 
 		shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
 
@@ -309,7 +309,7 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 		//DirectionalLightSetting(shader, aLightData);
 		//std::cout << "Directional light" << std::endl;
 
-		shader->SetVec3("lightColor", glm::vec3(0.0f, 0.01, 0.0f));
+		shader->SetVec3("lightColor", glm::vec3(1.0f, 1.01, 1.0f));
 
 		shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
 	
@@ -337,7 +337,7 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 		shader->SetVec3("baseLight.specular", aLightData->specular);
 		// gotta take in and set materials from and into glsl and the meshes/objects.
 
-		shader->SetVec3("material.lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		shader->SetVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 		
 
 		shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);

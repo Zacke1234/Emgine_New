@@ -59,7 +59,7 @@ public:
 
 
 	// MATERIALS
-	int matDiffuse = 1;
+	int matDiffuse = 0;
 	int matSpecular = 1;
 	int matShininess = 1;
 	glm::vec3 matColor = {1,1,1};
@@ -97,7 +97,7 @@ private:
 	Shader* shade;
 	Texture* texture;
 	Material* material;
-	Camera* camera;
+	
 	CubeCollider* cubeCollider;
 	Collider* newCollider;
 	Physics* physics;

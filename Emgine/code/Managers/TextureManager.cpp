@@ -30,6 +30,7 @@ Texture* TextureManager::Find(std::string name) {
 
 Material TextureManager::InitializeTexture(Shader* shader, Material* mat)
 {
+
 	shader->SetInt("material.diffuse", mat->diffuse);
 	shader->SetInt("material.specular", mat->specular);
 	shader->SetFloat("material.shininess", mat->shininess);

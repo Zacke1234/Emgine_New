@@ -35,6 +35,7 @@
 #include "../DisplayMessage.h"
 #include <Managers/LightingManager.h>
 #include <Managers/RigidbodyManager.h>
+#include <CameraManager.h>
 
 
 
@@ -64,6 +65,7 @@ Physics* Phys;
 //Threading* myThreading;
 Thread* myThread; 
 LightData* newLightdata;
+CameraManager* myCameraManager;
 
 
 int message_stuff() { // message passing between meshmanager and objectmanager
@@ -150,12 +152,15 @@ int init_managers() {
 	//TODO: init shader, collider, and rigidbodymanager
 	myObjectManager = new ObjectManager;
 	myRigidbodyManager = new RigidbodyManager();
+	myCameraManager = new CameraManager();
+	
 	return 0;
 } 
 
 int init_camera() {
 	//init camera
-	myCamera = new Camera;
+	
+	
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetCursorPosCallback(window, myCamera->Mouse_Callback);
 	return 0;
@@ -242,7 +247,7 @@ int static update_ui(UI* myUI, ShaderManager* myShader, ObjectManager* objManage
 
 int main()
 {
-	
+
 	init_window();
 
 
@@ -251,34 +256,34 @@ int main()
 
 	init_camera();
 
-	
+
 
 	//Create Textures
 	Texture* wall = myTextureManager->Create("wall", "wall.jpg");
 	Texture* defaultTex = myTextureManager->Create("default", "Default 1.png");
 	//myTextureManager->Create("Default", "Default 1.png");
-	
+	myCamera = myCameraManager->create("Camera");
 	//Message calling
 	message_stuff();
-	
 
-	
+
+
 
 	init_colliders();
 
 	init_lightning();
-	
+
 	init_physics();
-	
-	
+
+
 	myUI = new UI(window);
 	init_memory_tracker();
-	
+
 	// Object Creation
 	Mesh* fish = myMeshManager->Create("Fish", "fish.obj");
 	Mesh* quadplane = myMeshManager->Create("quadplane", "quadplane.obj");
 	Mesh* cube = myMeshManager->Create("Cube", "cube.obj");
-	
+
 	myObjectManager->Create( // these also push entities to Object::Entities and etc
 		"Fish",
 		fish,
@@ -290,16 +295,16 @@ int main()
 	);
 
 	myObjectManager->Create("Cube",
-		cube, 
+		cube,
 		defaultTex,
 		myShaderManager->DefaultShader,
 		MyColliderManager->Create("CubeColl", cubeColl),
 		myRigidbodyManager->Create(0.0f)
 	);
 
-	
+
 	myObjectManager->CreateLight("SceneLight",
-		NULL, 
+		NULL,
 		defaultTex,
 		myShaderManager->DefaultShader,
 		NULL,
@@ -308,8 +313,12 @@ int main()
 	);
 
 	myObjectManager->CreateCamera("SceneCamera",
+		NULL,
+		defaultTex,
+		myShaderManager->DefaultShader,
+		MyColliderManager->Create("CubeColl", cubeColl),
 		myCamera,
-		myShaderManager->DefaultShader);
+		myRigidbodyManager->Create(0.0f));
 
 	////myObjectManager->Find("cubeObj");
 
@@ -332,7 +341,7 @@ int main()
 		//myMemory->LoadInMemory(myShaderManager->DefaultShader, myCamera, myLighting, myObjectManager, myUI, myMeshManager, fish, cubeColl);
 
 	
-				myShaderManager->DefaultShader->UseShader();
+		myShaderManager->DefaultShader->UseShader();
 	
 	
 		
@@ -346,11 +355,19 @@ int main()
 		//Drawcall objects
 		for (auto& o : Object::Entities)
 		{
-			//myTextureManager->InitializeTexture(myShaderManager->DefaultShader, o->myTexture->myMaterial);
-			o->Draw(myCamera, myShaderManager->DefaultShader); 
+			o->Draw(myCamera, myShaderManager->DefaultShader);
+	
+		
+			myTextureManager->InitializeTexture(myShaderManager->DefaultShader, o->myTexture->myMaterial);
+		
+			
 			//stage = MeshLoaded;
 		}
 	
+		/*for (auto& cams : CameraObject::CameraEntities)
+		{
+
+		}*/
 		Phys->Simulate(myCamera->deltatime);
 		
 		// render UI (after/ON TOP OF drawcall)

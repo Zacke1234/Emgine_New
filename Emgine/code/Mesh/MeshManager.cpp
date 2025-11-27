@@ -33,23 +33,21 @@ Mesh* MeshManager::LoadMesh(std::string objPath, std::string name)
 	std::ofstream writeBin(BinaryPath, std::ios_base::out , std::ios_base::binary); 
 	std::ifstream readObj(objPath);
 	std::ifstream readBin(BinaryPath, std::ios::binary);
-	readBin.open(BinaryPath, std::ios_base::in, std::ios_base::binary);
+	//readBin.open(BinaryPath, std::ios_base::in, std::ios_base::binary);
 	//writeBin.open(BinaryPath, std::ios_base::out, std::ios_base::binary);
 	if (readBin.is_open())
 	{
-		
+		meshLoader->ParseObjToBinary(readObj, writeBin, objPath, mesh);
 		if (meshLoader->ParseBinaryToMesh(BinaryPath, readBin, writeBin, mesh));
 		else
 		{
-			meshLoader->ParseObjToBinary(readObj, writeBin, objPath, mesh);
-			meshLoader->ParseBinaryToMesh(BinaryPath, readBin, writeBin, mesh);
+			
+			meshLoader->ObjParser(objPath, mesh);
 			mesh->InitialiseMesh();
+			
 		}
 	}
-	else {
-		meshLoader->ObjParser(objPath, mesh);
-		mesh->InitialiseMesh();
-	}
+	
 	//check if binary path has file:
 		//if file exists
 			// parse binary->mesh

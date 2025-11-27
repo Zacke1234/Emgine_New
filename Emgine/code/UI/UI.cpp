@@ -19,6 +19,8 @@ TextureManager* textureMang;
 LightingManager* lightMang;
 LightData* newLightData;
 RigidbodyManager* myRigidbodyMang;
+
+
 //Lighting* myLighting;
 bool SelectedLight;
 bool selectedMaterial;
@@ -141,10 +143,10 @@ int uiObjectList(UI* ui)
 
 			if (Object::Entities[Object::SelectedEntity]->myTexture != nullptr)
 			{
-				ui->matColor = Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->color;
-				ui->matShininess = Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->shininess;
-				ui->matSpecular = Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->specular;
-				ui->matDiffuse = Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->diffuse;
+				ui->matColor = Object::Entities[i]->myTexture->myMaterial->color;
+				ui->matShininess = Object::Entities[i]->myTexture->myMaterial->shininess;
+				ui->matSpecular = Object::Entities[i]->myTexture->myMaterial->specular;
+				ui->matDiffuse = Object::Entities[i]->myTexture->myMaterial->diffuse;
 				
 
 
@@ -153,23 +155,24 @@ int uiObjectList(UI* ui)
 
 			if (Object::Entities[Object::SelectedEntity]->ObjType == 1)
 			{
-				ui->lightAmbient = Object::Entities[Object::SelectedEntity]->myLightData->ambient;
-				ui->lightDiffuse = Object::Entities[Object::SelectedEntity]->myLightData->diffuse;
-				ui->lightspecular = Object::Entities[Object::SelectedEntity]->myLightData->specular;
+				ui->lightAmbient = Object::Entities[i]->myLightData->ambient;
+				ui->lightDiffuse = Object::Entities[i]->myLightData->diffuse;
+				ui->lightspecular = Object::Entities[i]->myLightData->specular;
 
-				ui->lightLinear = Object::Entities[Object::SelectedEntity]->myLightData->linear;
-				ui->lightQuadratic = Object::Entities[Object::SelectedEntity]->myLightData->quadtric;
-				ui->lightConstant = Object::Entities[Object::SelectedEntity]->myLightData->constant;
-				ui->cutoff = Object::Entities[Object::SelectedEntity]->myLightData->cutOff;
-				ui->outerCutOff = Object::Entities[Object::SelectedEntity]->myLightData->outerCutOff;
+				ui->lightLinear = Object::Entities[i]->myLightData->linear;
+				ui->lightQuadratic = Object::Entities[i]->myLightData->quadtric;
+				ui->lightConstant = Object::Entities[i]->myLightData->constant;
+				ui->cutoff = Object::Entities[i]->myLightData->cutOff;
+				ui->outerCutOff = Object::Entities[i]->myLightData->outerCutOff;
 				
 			}
 
 			if (Object::Entities[Object::SelectedEntity]->ObjType == 4)
 			{
-				ui->xPos = Object::Entities[Object::SelectedEntity]->myCamera->myPosition.x;
-				ui->yPos = Object::Entities[Object::SelectedEntity]->myCamera->myPosition.y;
-				ui->zPos = Object::Entities[Object::SelectedEntity]->myCamera->myPosition.z;
+				
+				ui->xPos = Object::Entities[i]->myCamera->myPosition.x;
+				ui->yPos = Object::Entities[i]->myCamera->myPosition.y;
+				ui->zPos = Object::Entities[i]->myCamera->myPosition.z;
 			}
 			
 			
@@ -348,7 +351,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 	{
 		ImGui::Text("Material properties");
 		
-		ImGui::DragInt("Diffuse", &matDiffuse,step, 0, 100);
+		ImGui::DragInt("Diffuse", &matDiffuse,step, 0, 1);
 		ImGui::DragInt("Specular", &matSpecular, step, 0, 100);
 		ImGui::DragInt("Shininess", &matShininess, step, 0, 100);
 		ImGui::DragFloat3("Color", &matColor[0], step, step);

@@ -9,7 +9,7 @@
 
 struct Material {
 	
-	int diffuse;
+	int diffuse = 0;
 	int specular;
 	float shininess;
 	glm::vec3 color;

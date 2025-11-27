@@ -139,7 +139,7 @@ LightObject::LightObject(std::string _namn = "new_lightObject", Mesh* Mesh = NUL
 	}
 }
 
-CameraObject::CameraObject(std::string _namn, Camera* _camera, Shader* _shader)
+CameraObject::CameraObject(std::string _namn = "new_cameraObject", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* _shader = NULL, Collider* coll = NULL, Camera* _camera = NULL, Rigidbody* rb = NULL)
 {
 	ObjType = Type_Camera;
 	// Name
@@ -166,6 +166,37 @@ CameraObject::CameraObject(std::string _namn, Camera* _camera, Shader* _shader)
 	}
 	else {
 		std::cout << "No shader assigned to object: " << _namn << "\n";
+	}
+	//Components
+	if (Mesh)
+	{
+		SetMesh(*Mesh);
+		//CreateMesh(Mesh);
+	}
+	else {
+		std::cout << "No mesh assigned to light object: " << _namn << "\n";
+	}
+	if (aTexture)
+	{
+		SetTexture(*aTexture);
+	}
+	else {
+		std::cout << "No texture assigned to light object: " << _namn << "\n";
+	}
+	if (coll)
+	{
+		SetCollider(*coll);
+	}
+	else {
+		std::cout << "No collider assigned to light object: " << _namn << "\n";
+
+	}
+	if (rb)
+	{
+		SetRigidbody(*rb);
+	}
+	else {
+		std::cout << "No rigidbody assigned to object: " << _namn << "\n";
 	}
 }
 
@@ -266,7 +297,7 @@ void Object::SetRigidbody(Rigidbody& rb)
 	myRigidbody->isKinematic = false;
 }
 
-void Object::SetCamera(Camera cam)
+void CameraObject::SetCamera(Camera& cam)
 {
 	myCamera = &cam;
 }

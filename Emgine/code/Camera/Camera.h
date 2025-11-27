@@ -25,6 +25,8 @@ public:
 	
 	static Camera* GetInstance();
 
+	std::string name;
+
 	glm::mat4 myView;
 	glm::mat4 projection;
 

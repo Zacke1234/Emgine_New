@@ -29,6 +29,7 @@ float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
 std::vector<Texture*> Texture::textures;
 Texture::Texture(const char* aPath, Material* mat)
 {
+
 	msg = "";
 	//std::cout << "texture" << "\n";
 	//aPath = "Default 1.png";

@@ -55,7 +55,7 @@ public:
 	void SetMaterial(Material& material);
 	void SetName(std::string name);
 	void SetRigidbody(Rigidbody& rb);
-	void SetCamera(Camera cam);
+	
 
 	//void SetLighting(Lighting& lighting);
 	Mesh* CreateMesh(Mesh* mesh);
@@ -146,6 +146,8 @@ public:
 class CameraObject : public Object
 {
 public:
-	CameraObject(std::string _namn, Camera* camera, Shader* _shader);
+	CameraObject(std::string _namn, Mesh* Mesh, Texture* aTexture, Shader* aShader, Collider* coll, Camera* cam, Rigidbody* rb);
 	static std::vector<CameraObject*> CameraEntities;
+	void SetCamera(Camera& cam);
+	static int SelectedCameraEntity;
 };
