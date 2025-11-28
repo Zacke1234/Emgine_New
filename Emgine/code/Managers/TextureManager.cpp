@@ -8,7 +8,8 @@ Texture* TextureManager::Create(std::string name, std::string path_end, Material
 	mat = new Material();
 	// C:\Users\zackarias.hager\Emgine_New\Emgine\resource\textures
 	Texture* new_texture = new Texture((path + path_end).c_str(), mat);
-	new_texture->name = name;
+	new_texture->name = name; // the material inside of new texture seems to be broken
+	mat->name = name;
 	Texture::textures.push_back(new_texture);
 	std::cout << "Texture created: " << name << " from path: " << path + path_end << "\n";
 	return new_texture;

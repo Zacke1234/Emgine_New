@@ -104,6 +104,7 @@ LightObject::LightObject(std::string _namn = "new_lightObject", Mesh* Mesh = NUL
 	if (aTexture)
 	{
 		SetTexture(*aTexture);
+		SetMaterial(*aTexture->myMaterial);
 	}
 	else {
 		std::cout << "No texture assigned to light object: " << _namn << "\n";
@@ -179,6 +180,7 @@ CameraObject::CameraObject(std::string _namn = "new_cameraObject", Mesh* Mesh = 
 	if (aTexture)
 	{
 		SetTexture(*aTexture);
+		SetMaterial(*aTexture->myMaterial);
 	}
 	else {
 		std::cout << "No texture assigned to light object: " << _namn << "\n";
@@ -239,7 +241,7 @@ void Object::SetMaterial(Material& material)
 	myTexture->myMaterial->color = { 1,1,1 };
 	myTexture->myMaterial->shininess = 1;
 	myTexture->myMaterial->specular = 1;
-	myTexture->myMaterial->diffuse = 1;
+	myTexture->myMaterial->diffuse = 0;
 	
 	
 }

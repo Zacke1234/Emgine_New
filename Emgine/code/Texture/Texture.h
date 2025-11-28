@@ -9,7 +9,8 @@
 
 struct Material {
 	
-	int diffuse = 0;
+	std::string name;
+	int diffuse;
 	int specular;
 	float shininess;
 	glm::vec3 color;
