@@ -2,15 +2,17 @@
 #include <filesystem>
 #include <iostream>
 
-Texture* TextureManager::Create(std::string name, std::string path_end, Material* mat)
+Texture* TextureManager::Create(std::string name, std::string path_end)
 {
 	std::string path = "resource\\textures\\";
-	mat = new Material();
-	// C:\Users\zackarias.hager\Emgine_New\Emgine\resource\textures
-	Texture* new_texture = new Texture((path + path_end).c_str(), mat);
-	new_texture->name = name; // the material inside of new texture seems to be broken
+	Material* mat = new Material();
 	mat->name = name;
+	
+	Texture* new_texture = new Texture((path + path_end).c_str(), mat);
+	new_texture->name = name; 
+	
 	Texture::textures.push_back(new_texture);
+	Texture::materials.push_back(mat);
 	std::cout << "Texture created: " << name << " from path: " << path + path_end << "\n";
 	return new_texture;
 }
@@ -29,7 +31,7 @@ Texture* TextureManager::Find(std::string name) {
 	return nullptr;
 }
 
-Material TextureManager::InitializeTexture(Shader* shader, Material* mat)
+Material TextureManager::InitializeMaterial(Shader* shader, Material* mat)
 {
 
 	shader->SetInt("material.diffuse", mat->diffuse);

@@ -30,7 +30,7 @@ Mesh* MeshManager::LoadMesh(std::string objPath, std::string name)
 	Mesh* mesh = new Mesh;
 	mesh->name = name;
 	
-	std::ofstream writeBin(BinaryPath, std::ios_base::out , std::ios_base::binary); 
+	std::ofstream writeBin(BinaryPath, std::ios_base::binary); 
 	std::ifstream readObj(objPath);
 	std::ifstream readBin(BinaryPath, std::ios::binary);
 	//readBin.open(BinaryPath, std::ios_base::in, std::ios_base::binary);

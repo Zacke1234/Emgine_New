@@ -30,6 +30,8 @@ struct Vertex {
 
 struct Mesh{
 	
+public:
+	
 	std::string name;
 	std::vector<Vertex> vertices;
 	std::vector<Face> faces;
@@ -44,9 +46,9 @@ struct Mesh{
 
 
 	
+	
+	
 
-
-public:	
 	void InitialiseMesh();
 };
 
@@ -79,7 +81,7 @@ public:
 	void Normals(Vertex& vertex);
 	virtual bool ParseObjToBinary(std::ifstream& filePath, std::ofstream& filepathOut, std::string fileString, Mesh* mesh);
 	virtual bool ParseBinaryToMesh(std::string fileString, std::ifstream& fstreamPath, std::ofstream& filepathOut, Mesh* mesh);
-	void DoMeshloadingStages(Mesh* theMesh, std::string fileName, const std::string& string, std::string ParsefileString, std::fstream& fstreamPath, std::ofstream& filepathOut, std::fstream& filePath, std::string fileString);
+
 	std::string name;
 	std::string type;
 
@@ -95,17 +97,5 @@ public:
 	
 };
 
-class BinaryFile
-{
-private:
-	
-public:
-	std::string FileName;
-	std::fstream File;
-	BinaryFile(std::string FileName) : FileName(FileName) {};
-	void WriteFile();
 
-	
-	
-};
 

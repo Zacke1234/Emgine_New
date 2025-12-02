@@ -281,33 +281,21 @@ void MeshLoader::Normals(Vertex& vertex)
 {
 }
 
-bool MeshLoader::ParseBinaryToMesh(std::string binaryPath, std::ifstream& binaryInputFile, std::ofstream& binaryOutputFile, Mesh* mesh)
+bool MeshLoader::ParseBinaryToMesh(std::string binaryPath, std::ifstream& binaryInputFile, std::ofstream& binaryOutputFile, Mesh* mesh) // read
 {
-	
-	ObjParser(binaryPath, mesh);
+
+
 	if (!binaryInputFile.is_open())
 	{
 		cerr << "Error: Failed to open for parsing" << endl;
 		return false;
 	}
 
+	
+	binaryInputFile.read(reinterpret_cast<char*>(&mesh),
+		sizeof(*mesh));
 
 	
-	
-	
-	binaryInputFile.read(reinterpret_cast<char*>(&mesh->data),
-		sizeof(&mesh->data));
-
-	binaryInputFile.read(reinterpret_cast<char*>(&mesh->vertices),
-		sizeof(&mesh->vertices));
-
-	binaryInputFile.read(reinterpret_cast<char*>(&mesh->elements),
-		sizeof(&mesh->elements));
-
-	binaryInputFile.read(reinterpret_cast<char*>(&mesh->faces),
-		sizeof(&mesh->faces));
-
-
 	mesh->InitialiseMesh();
 
 	binaryInputFile.close();
@@ -315,9 +303,12 @@ bool MeshLoader::ParseBinaryToMesh(std::string binaryPath, std::ifstream& binary
 	return true;
 }
 
-bool MeshLoader::ParseObjToBinary(std::ifstream& ObjInputFile, std::ofstream& binaryOutputFile, std::string ObjFilePath, Mesh* mesh)
+bool MeshLoader::ParseObjToBinary(std::ifstream& ObjInputFile, std::ofstream& binaryOutputFile, std::string ObjFilePath, Mesh* mesh) // write
 {
+	
+
 	ObjParser(ObjFilePath, mesh);
+	
 	if (!binaryOutputFile.is_open())
 	{
 		cerr << "Error: Failed to open for parsing" << endl;
@@ -325,72 +316,17 @@ bool MeshLoader::ParseObjToBinary(std::ifstream& ObjInputFile, std::ofstream& bi
 	}
 	
 	
-
-	binaryOutputFile.write(reinterpret_cast<const char*>(&mesh->data),
-		sizeof(&mesh->data));
-	binaryOutputFile.write(reinterpret_cast<const char*>(&mesh->vertices),
-		sizeof(&mesh->vertices));
-	binaryOutputFile.write(reinterpret_cast<const char*>(&mesh->elements),
-		sizeof(&mesh->elements));
-	binaryOutputFile.write(reinterpret_cast<const char*>(&mesh->faces),
-		sizeof(&mesh->faces));
+	binaryOutputFile.write(reinterpret_cast<const char*>(&mesh),
+                   sizeof(*mesh));
+	
 
 	binaryOutputFile.close();
 
 	
 }
 
-void MeshLoader::DoMeshloadingStages(Mesh* theMesh, std::string fileName, const std::string& string, std::string ParsefileString, std::fstream& parseFStreamPath, std::ofstream& filepathOut,
-	std::fstream& filePath, std::string fileString)
-{
-	Face face = temp_faces[1];
-	//Vertex& vertex;
-	int vertexIndex = 0;
-	stage = ParsingObj;
-	switch (stage)
-	{
-		case 0:
-			//ObjParser(fileName, theMesh);
-			stage = ReadingVertices;
-			break;
 
-		case 1:
-			//Vertices();
-			stage = ReadingFaces;
-			break;
 
-		case 2:
-			ParseFaceIndices(string, face, vertexIndex);
-			stage = ReadingUVs;
-			break;
-		case 3:
-			//UVs(Vertex & vertex);
-			stage = ReadingNormals;
-			break;
-		case 4:
-			//Normals(Vertex & vertex);
-			stage = BinaryParsing;
-			break;
-		case 5:
-			//ParseBinaryToMesh(ParsefileString, parseFStreamPath, binaryOutputFile);
-			stage = BinaryWriting;
-			break;
-		case 6:
-			//ParseObjToBinary(filePath, filepathOut, fileString, theMesh);
-			stage = InitialisingMesh;
-			break;
-		case 7:
-			theMesh->InitialiseMesh();
-			stage = MeshLoaded;
-			break;
-		case 8:
-			std::cout << "Mesh loading complete \n";
-			break;
-	default:
-		std::cout << "Mesh loading default \n";
-		break;
-	}
-}
 
 
 
@@ -450,15 +386,6 @@ void Mesh::InitialiseMesh()
 	
 }
 
-void BinaryFile::WriteFile() {
-	File.open(FileName, std::ios::binary | std::ios::out);
-	if (!File)
-	{
-		std::cerr << "File error writing: " << FileName << ">\n";
-		exit(1);
-	}
-	//obj.ParseObjToBinary(File, );
-	File.close();
-}
+
 
 

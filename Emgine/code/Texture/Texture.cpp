@@ -27,9 +27,20 @@ inline void CheckOpenGLError(const char* stmt, const char* fname, int line)
 #pragma once
 float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
 std::vector<Texture*> Texture::textures;
-Texture::Texture(const char* aPath, Material* mat)
+std::vector<Material*> Texture::materials;
+
+Texture::Texture(const char* aPath, Material* mat = NULL)
 {
-	myMaterial = mat;
+	if (mat)
+	{
+		std::cout << "Set the material " << aPath << "\n";
+		SetMaterial(*mat);
+	}
+	else
+	{
+		std::cout << "No material assigned to texture: " << aPath << "\n";
+	}
+
 	msg = "";
 	//std::cout << "texture" << "\n";
 	//aPath = "Default 1.png";
@@ -74,6 +85,16 @@ Texture::Texture(const char* aPath, Material* mat)
 	
 	stbi_image_free(data);
 	
+}
+
+void Texture::SetMaterial(Material& mat)
+{
+	this->myMaterial = &mat;
+	this->myMaterial->color = { 1,1,1 };
+	this->myMaterial->shininess = 1;
+	this->myMaterial->specular = 1;
+	this->myMaterial->diffuse = 0;
+
 }
 
 

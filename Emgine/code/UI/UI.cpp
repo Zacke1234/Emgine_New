@@ -104,7 +104,7 @@ int uiMaterialList(UI* myUI)
 {
 	
 	
-	if (Object::Entities.size() > 0 && selectedMaterial) {
+	if (Object::Entities.size() > 0 && Object::Entities[Object::SelectedEntity]->myTexture != nullptr) {
 		
 		Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->diffuse = myUI->matDiffuse;
 				Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->specular = myUI->matSpecular;
@@ -294,7 +294,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 			objectmanager->Create(
 				"Mesh", // Name
 				meshmang->Create("Mesh", meshBuffer),
-				textureMang->Create(std::string(nameBuffer + tex), "Default 1.png", material),
+				textureMang->Create(std::string(nameBuffer + tex), "Default 1.png"),
 				shader->DefaultShader,
 				colliderMang->Create("CubeColl", cubeColl2),
 				myRigidbodyMang->Create(0.0f)
@@ -305,7 +305,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 			objectmanager->Create(
 				"Mesh", // Name
 				meshmang->Create("fish", "fish.obj"),
-				textureMang->Create(std::string(nameBuffer + tex), "Default 1.png", material),
+				textureMang->Create(std::string(nameBuffer + tex), "Default 1.png"),
 				shader->DefaultShader,
 				colliderMang->Create("CubeColl", cubeColl2),
 				myRigidbodyMang->Create(0.0f)
@@ -321,7 +321,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 			
 			objectmanager->Create("Cube",
 				meshmang->Create("Cube", "cube.obj"),
-				textureMang->Create(std::string("Cube" + tex), "Default 1.png", material),
+				textureMang->Create(std::string("Cube" + tex), "Default 1.png"),
 				shader->DefaultShader,
 				colliderMang->Create("CubeColl", cubeColl2),
 				myRigidbodyMang->Create(0.0f)
@@ -331,7 +331,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 		{
 			objectmanager->Create(nameBuffer,
 				meshmang->Create(nameBuffer, "cube.obj"),
-				textureMang->Create(std::string(nameBuffer + tex), textureBuffer, material),
+				textureMang->Create(std::string(nameBuffer + tex), textureBuffer),
 				shader->DefaultShader,
 				colliderMang->Create("CubeColl", cubeColl2),
 				myRigidbodyMang->Create(0.0f)
@@ -351,7 +351,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 	{
 		ImGui::Text("Material properties");
 		
-		ImGui::DragInt("Diffuse", &matDiffuse,step, 0, 1);
+		ImGui::DragInt("Diffuse", &matDiffuse, step, 0, 1);
 		ImGui::DragInt("Specular", &matSpecular, step, 0, 100);
 		ImGui::DragInt("Shininess", &matShininess, step, 0, 100);
 		ImGui::DragFloat3("Color", &matColor[0], step, step);
@@ -366,7 +366,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 		{
 			objectmanager->CreateLight("Light",
 				NULL,
-				textureMang->Create(std::string(nameBuffer + tex), textureBuffer, material),
+				textureMang->Create(std::string(nameBuffer + tex), textureBuffer),
 				shader->DefaultShader,
 				NULL,
 				lightMang->Create("Light", shader->DefaultShader, newLightData),
@@ -380,7 +380,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 		{
 			objectmanager->CreateLight(nameBuffer,
 				NULL,
-				textureMang->Create(std::string(nameBuffer + tex), textureBuffer, material),
+				textureMang->Create(std::string(nameBuffer + tex), textureBuffer),
 				shader->DefaultShader,
 				NULL,
 				lightMang->Create(nameBuffer, shader->DefaultShader, newLightData),
@@ -429,20 +429,17 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 			{	 
 				
 				lightMang->SetDirectional(newLightData, Object::Entities[Object::SelectedEntity]);
-				//lightMang->InitialiseLightData(shader->DefaultShader, newLightData);
-				//LightObject::LightEntities[LightObject::SelectedLightEntity]->SetDirectional(newLightData);
+				
 			}
 			if (SelectedItem == 1)
 			{
 				lightMang->SetPoint(newLightData, Object::Entities[Object::SelectedEntity]);
-				//lightMang->InitialiseLightData(shader->DefaultShader, newLightData);
-				//LightObject::LightEntities[LightObject::SelectedLightEntity]->SetPoint(newLightData);
+			
 			}
 			if (SelectedItem == 2)
 			{
 				lightMang->SetSpot(newLightData, Object::Entities[Object::SelectedEntity]);
-				//lightMang->InitialiseLightData(shader->DefaultShader, newLightData);
-				//LightObject::LightEntities[LightObject::SelectedLightEntity]->SetSpot(newLightData);
+		
 			}
 		};
 			
@@ -487,7 +484,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 
 	}
 
-	ImGui::Text("Mesh Manager");
+	ImGui::Text("Entity Manager");
 	//int n = sizeof(virtobj->Entities
 
 	//if (this == NULL){}

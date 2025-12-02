@@ -21,13 +21,13 @@ bool Memory::HasMemoryAvailable(int megaBytes, UI* thisUI)
 	MEMORYSTATUSEX status;
 	status.dwLength = sizeof(status);
 	GlobalMemoryStatusEx(&status);
-	int memoryLoaded = status.dwMemoryLoad;
+	int memoryLoaded = status.dwMemoryLoad / (1024 * 1024);
 	int physicalLoaded = status.ullTotalPhys / (1024 * 1024);
 	int virtualLoaded = status.ullTotalVirtual / (1024 * 1024);
 	//std::cout << status.ullTotalPhys + " megabytes \n" << endl;
 	//std::cout << "There are %*ld percent of memory in use.\n", status.dwMemoryLoad;
 	
-	if (status.ullTotalPhys > megaBytes / (1024 * 1024)) // * 1048
+	if (status.dwMemoryLoad > megaBytes / (1024 * 1024)) // * 1048
 	{
 		_tprintf(TEXT("There is  %*ld MB of physical memory available.\n"), WIDTH, status.ullAvailPhys / (1024 * 1024));
 		
@@ -38,7 +38,7 @@ bool Memory::HasMemoryAvailable(int megaBytes, UI* thisUI)
 		thisUI->errorTriggered = true;
 		//return false;
 	}
-	if (status.ullTotalVirtual > megaBytes / (1024 * 1024)) // * 1048
+	if (status.dwMemoryLoad > megaBytes / (1024 * 1024)) // * 1048
 	{
 		_tprintf(TEXT("There is  %*ld MB of virtual memory available.\n"), WIDTH, status.ullAvailVirtual / (1024 * 1024));
 		_tprintf(TEXT("There is  %*ld MB of memory loaded.\n"), WIDTH, virtualLoaded);

@@ -19,11 +19,12 @@ struct Material {
 class Texture
 {
 public:
-	Material* myMaterial = new Material();
+	Material* myMaterial;
 	Texture(const char* aPath, Material* mat);
 
+	void SetMaterial(Material& mat);
 	static std::vector<Texture*> textures;
-
+	static std::vector<Material*> materials;
 	//vector<Object*> Object::Entities;
 	bool IsValid() const { return TextureObject == 0; };
 

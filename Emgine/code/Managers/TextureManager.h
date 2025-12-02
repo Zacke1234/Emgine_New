@@ -6,8 +6,8 @@ class TextureManager
 {
 public:
 	
-	Texture* Create(std::string name = "newtexture", std::string path_end = NULL, Material* mat = NULL);
+	Texture* Create(std::string name = "newtexture", std::string path_end = NULL);
 	Texture* Find(std::string name);
-	Material InitializeTexture(Shader* shader = NULL, Material* mat = NULL);
+	Material InitializeMaterial(Shader* shader = NULL, Material* mat = NULL);
 };
 

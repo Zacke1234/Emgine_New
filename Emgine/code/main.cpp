@@ -287,7 +287,7 @@ int main()
 	myObjectManager->Create( // these also push entities to Object::Entities and etc
 		"Fish",
 		fish,
-		wall,
+		defaultTex,
 		myShaderManager->DefaultShader,
 		MyColliderManager->Create("SphereColl", sphereColl),
 		myRigidbodyManager->Create(0.0f)
@@ -296,16 +296,23 @@ int main()
 
 	myObjectManager->Create("Cube",
 		cube,
-		defaultTex,
+		wall,
 		myShaderManager->DefaultShader,
 		MyColliderManager->Create("CubeColl", cubeColl),
 		myRigidbodyManager->Create(0.0f)
 	);
 
+	myObjectManager->Create("Cube",
+		cube,
+		wall,
+		myShaderManager->DefaultShader,
+		MyColliderManager->Create("CubeColl", cubeColl),
+		myRigidbodyManager->Create(0.0f)
+	);
 
 	myObjectManager->CreateLight("SceneLight",
 		NULL,
-		defaultTex,
+		NULL,
 		myShaderManager->DefaultShader,
 		NULL,
 		myLightingManager->Create("SceneLight", myShaderManager->DefaultShader, myLightingManager->DefaultLighting),
@@ -314,7 +321,7 @@ int main()
 
 	myObjectManager->CreateCamera("SceneCamera",
 		NULL,
-		defaultTex,
+		NULL,
 		myShaderManager->DefaultShader,
 		MyColliderManager->Create("CubeColl", cubeColl),
 		myCamera,
@@ -358,12 +365,15 @@ int main()
 			o->Draw(myCamera, myShaderManager->DefaultShader);
 	
 		
-			myTextureManager->InitializeTexture(myShaderManager->DefaultShader, o->myTexture->myMaterial);
 		
 			
 			//stage = MeshLoaded;
 		}
-	
+
+		for (auto& m : Texture::materials)
+		{
+			
+		}
 		/*for (auto& cams : CameraObject::CameraEntities)
 		{
 

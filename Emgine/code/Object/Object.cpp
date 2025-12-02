@@ -44,7 +44,7 @@ Object::Object(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTe
 	if (aTexture)
 	{
 		SetTexture(*aTexture);
-		SetMaterial(*aTexture->myMaterial);
+		//SetMaterial(*aTexture->myMaterial);
 	}
 	else {
 		std::cout << "No texture assigned to object: " << _namn << "\n";
@@ -104,7 +104,7 @@ LightObject::LightObject(std::string _namn = "new_lightObject", Mesh* Mesh = NUL
 	if (aTexture)
 	{
 		SetTexture(*aTexture);
-		SetMaterial(*aTexture->myMaterial);
+		//SetMaterial(*aTexture->myMaterial);
 	}
 	else {
 		std::cout << "No texture assigned to light object: " << _namn << "\n";
@@ -180,7 +180,7 @@ CameraObject::CameraObject(std::string _namn = "new_cameraObject", Mesh* Mesh = 
 	if (aTexture)
 	{
 		SetTexture(*aTexture);
-		SetMaterial(*aTexture->myMaterial);
+		//SetMaterial(*aTexture->myMaterial);
 	}
 	else {
 		std::cout << "No texture assigned to light object: " << _namn << "\n";
@@ -235,16 +235,7 @@ void Object::SetCollider(Collider& aCollider)
 	myCollider->scale = Scale;
 	myCollider->SetTheCollision();
 }
-void Object::SetMaterial(Material& material)
-{
-	myTexture->myMaterial = &material;
-	myTexture->myMaterial->color = { 1,1,1 };
-	myTexture->myMaterial->shininess = 1;
-	myTexture->myMaterial->specular = 1;
-	myTexture->myMaterial->diffuse = 0;
-	
-	
-}
+
 void LightObject::SetLightData(LightData& lightdata)
 {
 	
@@ -353,8 +344,9 @@ void Object::DrawObject(Camera* aCamera, Shader* myShader)
 		MyShader->SetMatrix("transform", trans);
 		MyShader->SetMatrix("view", aCamera->myView);
 		MyShader->SetMatrix("projection", aCamera->projection);
+
 		
-		if (myTexture != NULL && myTexture->IsValid())
+		if (myTexture != NULL)
 		{
 			GL_CHECK(glActiveTexture(GL_TEXTURE0)); // Activate the texture unit before binding texture
 			GL_CHECK(glBindTexture(GL_TEXTURE_2D, myTexture->TextureObject));
@@ -364,6 +356,12 @@ void Object::DrawObject(Camera* aCamera, Shader* myShader)
 			
 			GL_CHECK(glActiveTexture(GL_TEXTURE1));
 			GL_CHECK(glBindTexture(GL_TEXTURE_2D, myTexture->TextureObject));
+
+			MyShader->SetInt("material.diffuse", myTexture->myMaterial->diffuse);
+			MyShader->SetInt("material.specular", myTexture->myMaterial->specular);
+			MyShader->SetFloat("material.shininess", myTexture->myMaterial->shininess);
+			MyShader->SetVec3("material.objectColor", myTexture->myMaterial->color);
+
 		}
 		
 		
