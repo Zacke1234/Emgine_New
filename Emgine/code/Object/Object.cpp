@@ -36,7 +36,7 @@ Object::Object(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTe
 	if (Mesh)
 	{
 		SetMesh(*Mesh);
-		//CreateMesh(Mesh);
+		
 	}
 	else {
 		std::cout << "No mesh assigned to object: " << _namn << "\n";
@@ -44,7 +44,7 @@ Object::Object(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTe
 	if (aTexture)
 	{
 		SetTexture(*aTexture);
-		//SetMaterial(*aTexture->myMaterial);
+
 	}
 	else {
 		std::cout << "No texture assigned to object: " << _namn << "\n";
@@ -70,16 +70,6 @@ Object::Object(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTe
 	else {
 		std::cout << "No rigidbody assigned to object: " << _namn << "\n";
 	}
-	
-	/*if (*Objtype != Type_Mesh)
-	{
-		std::cout << "This is not a mesh " << _namn << "\n";
-	}*/
-	/*if (ObjectType::Type_Light)
-	{
-		myLightData = nullptr;
-		
-	}*/
 	
 }
 

@@ -285,7 +285,7 @@ void MeshLoader::Normals(Vertex& vertex)
 
 bool MeshLoader::ParseBinaryToMesh(std::string binaryPath, std::ifstream& binaryInputFile, std::ofstream& binaryOutputFile, Mesh* mesh) // read
 {
-
+	
 	int dataLength = mesh->data.size();
 	int elementsLength = mesh->elements.size();
 
@@ -320,7 +320,7 @@ bool MeshLoader::ParseBinaryToMesh(std::string binaryPath, std::ifstream& binary
 		//std::cout << elementsBinary << endl;
 	}
 	
-
+	
 	mesh->InitialiseMesh();
 
 	binaryInputFile.close();

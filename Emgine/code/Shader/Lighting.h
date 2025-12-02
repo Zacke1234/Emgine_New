@@ -42,8 +42,8 @@ class Lighting
 {
 public:
 	
-	 
-	
+	unsigned int depthmap;
+	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 	Lighting();
 	//std::vector<LightData> Lightdata;
 	void Use(Camera* aCamera, Shader* aShader);
