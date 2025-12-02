@@ -202,6 +202,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 				mesh.data.push_back(uv.y);
 			}
 			mesh.elements.push_back(mesh.numberVertices);
+			temp_elements.push_back(mesh.numberVertices);
 			mesh.numberVertices++;
 			
 		}
@@ -213,6 +214,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 	temp_position.clear();
 	temp_uvs.clear();
 	temp_vertices.clear();
+	temp_elements.clear();
 	/*ParseObjToBinary(fileName, &file);
 	ParseObjToBinary(fileName, *file);*/
 	return true;
@@ -284,6 +286,8 @@ void MeshLoader::Normals(Vertex& vertex)
 bool MeshLoader::ParseBinaryToMesh(std::string binaryPath, std::ifstream& binaryInputFile, std::ofstream& binaryOutputFile, Mesh* mesh) // read
 {
 
+	int dataLength = mesh->data.size();
+	int elementsLength = mesh->elements.size();
 
 	if (!binaryInputFile.is_open())
 	{
@@ -291,11 +295,32 @@ bool MeshLoader::ParseBinaryToMesh(std::string binaryPath, std::ifstream& binary
 		return false;
 	}
 
-	
-	binaryInputFile.read(reinterpret_cast<char*>(&mesh),
-		sizeof(*mesh));
+	for (int i = 0; i < dataLength; i++)
+	{
 
+		float dataBinary = mesh->data[i];
+		
+		
+
+		binaryInputFile.read((char*)(&dataBinary),
+			sizeof(float));
 	
+
+
+	}
+	for (int i = 0; i < elementsLength; i++)
+	{
+
+
+		unsigned int elementsBinary = mesh->elements[i];
+
+		
+		binaryInputFile.read((char*)(&elementsBinary),
+			sizeof(unsigned int));
+		//std::cout << elementsBinary << endl;
+	}
+	
+
 	mesh->InitialiseMesh();
 
 	binaryInputFile.close();
@@ -306,20 +331,43 @@ bool MeshLoader::ParseBinaryToMesh(std::string binaryPath, std::ifstream& binary
 bool MeshLoader::ParseObjToBinary(std::ifstream& ObjInputFile, std::ofstream& binaryOutputFile, std::string ObjFilePath, Mesh* mesh) // write
 {
 	
-
-	ObjParser(ObjFilePath, mesh);
 	
+	ObjParser(ObjFilePath, mesh);
+	int dataLength = mesh->data.size();
+	int elementsLength = mesh->elements.size();
+
 	if (!binaryOutputFile.is_open())
 	{
 		cerr << "Error: Failed to open for parsing" << endl;
 		return false;
 	}
 	
-	
-	binaryOutputFile.write(reinterpret_cast<const char*>(&mesh),
-                   sizeof(*mesh));
-	
+	for (int i = 0; i < dataLength; i++)
+	{
+		
+		float dataBinary = mesh->data[i];
+		
 
+		binaryOutputFile.write((const char*)(&dataBinary),
+			sizeof(float));
+		
+
+
+	}
+	for (int i = 0; i < elementsLength; i++)
+	{
+
+		
+		unsigned int elementsBinary = mesh->elements[i];
+
+		binaryOutputFile.write((const char*)(&elementsBinary),
+			sizeof(unsigned int));
+
+
+	}
+
+	//std::cout << reinterpret_cast<char*>(&TEST) << std::endl;
+	
 	binaryOutputFile.close();
 
 	

@@ -86,7 +86,7 @@ public:
 	std::string type;
 
 	std::vector <Vertex> tmp;
-	std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
+	std::vector<unsigned int> temp_elements;
 	//std::vector <glm::vec3> temp_vertices; // glm::vec3 
 	std::vector<Vertex> temp_vertices; // glm::vec3
 	std::vector<glm::vec2> temp_uvs;
