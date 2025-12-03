@@ -25,7 +25,7 @@ public:
 	//void UpdateCollider(SphereCollider* sphere, CubeCollider* cube);
 	
 	glm::vec3 extents;
-	glm::vec3 pos;
+	
 	glm::vec3 center;
 	// move to dynamic body
 	glm::mat4 transform;
@@ -34,7 +34,6 @@ public:
 	
 	ColliderType CollType = ColliderType::Null;
 
-	glm::vec3 scale;
 	//glm::vec3 extents;
 
 	// auto* r : Rigidbody::rbEntities

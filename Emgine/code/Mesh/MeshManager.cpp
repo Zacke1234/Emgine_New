@@ -34,8 +34,12 @@ Mesh* MeshManager::LoadMesh(std::string objPath, std::string name)
 	std::ifstream readObj(objPath);
 	std::ifstream readBin(BinaryPath, std::ios::binary);
 	
-	meshLoader->ParseObjToBinary(readObj, writeBin, objPath, mesh);
-	if (meshLoader->ParseBinaryToMesh(BinaryPath, readBin, writeBin, mesh));
+	meshLoader->ParseBinaryToMesh(BinaryPath, readBin, writeBin, mesh);
+	if (meshLoader->ParseObjToBinary(readObj, writeBin, objPath, mesh))
+	{
+		
+		meshLoader->BinParser(BinaryPath, mesh);
+	}
 	else
 	{
 

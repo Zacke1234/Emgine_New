@@ -73,13 +73,9 @@ public:
 	MeshLoadStage stage;
 	MeshLoader();
 	bool ObjParser(std::string fileName, Mesh* mesh);
+	bool BinParser(std::string fileName, Mesh* mesh);
 	void ParseFaceIndices(const std::string& string, Face& face, int vertexIndex);
 
-	
-	void Faces(Face& face);
-	void Vertices(Vertex& vertex);
-	void UVs(Vertex& vertex);
-	void Normals(Vertex& vertex);
 	virtual bool ParseObjToBinary(std::ifstream& filePath, std::ofstream& filepathOut, std::string fileString, Mesh* mesh);
 	virtual bool ParseBinaryToMesh(std::string fileString, std::ifstream& fstreamPath, std::ofstream& filepathOut, Mesh* mesh);
 

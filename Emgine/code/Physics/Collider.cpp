@@ -29,7 +29,7 @@ Collider::Collider()
 	
 	transform = Math::identity4;
 	position = glm::vec3(0, 0, 0);
-	scale = glm::vec3(1, 1, 1);
+	extents = glm::vec3(0, 0, 0);
 	
 	//std::cout << "test";
 

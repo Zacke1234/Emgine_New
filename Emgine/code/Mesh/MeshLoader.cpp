@@ -236,6 +236,95 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 	return true;
 }
 
+bool MeshLoader::BinParser(std::string bineFileName, Mesh* mesh)
+{
+	std::ifstream binFile(bineFileName);
+	std::string line;
+	if (!binFile.is_open())
+	{
+		std::cout << "Filename empty" << std::endl;
+		return false;
+	}
+
+	if (mesh == nullptr)
+	{
+		std::cout << "mesh is nullptr" << std::endl;
+		return false;
+	}
+
+	// Parse the Binary file back into the human readable OBJ format and initialise the mesh with that exact data.
+
+	int dataLength = mesh->data.size();
+	int elementsLength = mesh->elements.size();
+	int positionLength = mesh->position.size();
+	int normalsLength = mesh->normals.size();
+	int uvLength = mesh->uvs.size();
+	int facesLength = mesh->faces.size();
+
+	
+	for (int i = 0; i < positionLength; i++)
+	{
+
+
+		glm::vec3 positionBinary = mesh->position[i];
+
+
+		binFile.read((char*)(&positionBinary),
+			sizeof(glm::vec3));
+		//std::cout << elementsBinary << endl;
+	}
+	for (int i = 0; i < facesLength; i++)
+	{
+
+
+		Face facesBinary = mesh->faces[i];
+
+
+		binFile.read((char*)(&facesBinary),
+			sizeof(Face));
+		//std::cout << elementsBinary << endl;
+	}
+	for (int i = 0; i < uvLength; i++)
+	{
+
+
+		glm::vec2 uvBinary = mesh->uvs[i];
+
+
+		binFile.read((char*)(&uvBinary),
+			sizeof(glm::vec2));
+		//std::cout << elementsBinary << endl;
+	}
+
+	for (int i = 0; i < normalsLength; i++)
+	{
+
+
+		glm::vec3 normalBinary = mesh->normals[i];
+
+
+		binFile.read((char*)(&normalBinary),
+			sizeof(glm::vec3));
+		//std::cout << elementsBinary << endl;
+	}
+
+	for (int i = 0; i < dataLength; i++)
+	{
+
+		float dataBinary = mesh->data[i];
+
+		binFile.read((char*)(&dataBinary),
+			sizeof(float));
+
+	}
+
+
+
+
+	mesh->InitialiseMesh();
+	return false;
+}
+
 static inline std::vector<std::string> SplitString(const std::string& str, char delimeter) {
 	std::vector<std::string> tokens;
 	std::stringstream ss(str);
@@ -280,23 +369,6 @@ void MeshLoader::ParseFaceIndices(const std::string& string, Face& face, int ver
 		indexCounter++;
 		n++;
 	}
-}
-
-
-void MeshLoader::Faces(Face& face)
-{
-}
-
-void MeshLoader::Vertices(Vertex& vertex)
-{
-}
-
-void MeshLoader::UVs(Vertex& vertex)
-{
-}
-
-void MeshLoader::Normals(Vertex& vertex)
-{
 }
 
 bool MeshLoader::ParseBinaryToMesh(std::string binaryPath, std::ifstream& binaryInputFile, std::ofstream& binaryOutputFile, Mesh* mesh) // read
@@ -364,13 +436,9 @@ bool MeshLoader::ParseBinaryToMesh(std::string binaryPath, std::ifstream& binary
 	{
 
 		float dataBinary = mesh->data[i];
-		
-		
 
 		binaryInputFile.read((char*)(&dataBinary),
 			sizeof(float));
-	
-
 
 	}
 
@@ -390,8 +458,12 @@ bool MeshLoader::ParseBinaryToMesh(std::string binaryPath, std::ifstream& binary
 	}
 
 	
+
 	
-	mesh->InitialiseMesh();
+	//mesh->InitialiseMesh();
+
+	
+	
 
 	binaryInputFile.close();
 	

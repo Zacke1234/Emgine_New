@@ -222,7 +222,7 @@ void Object::SetCollider(Collider& aCollider)
 	myCollider = &aCollider;
 	myCollider->position = this->Position;
 	
-	myCollider->scale = Scale;
+	myCollider->extents = Scale;
 	myCollider->SetTheCollision();
 }
 

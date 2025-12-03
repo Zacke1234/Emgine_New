@@ -62,7 +62,7 @@ void Physics::Simulate(const float& aDeltaTime)
 			//ApplyCollision(aDeltaTime, collisions);
 			HandleCollisions(collisions);
 			ApplyGravity(Collider::CollEntities, aDeltaTime);
-
+			UpdateColliderProperties();
 
 
 			//As a result of those collisions what should happen?
@@ -79,8 +79,21 @@ void Physics::Simulate(const float& aDeltaTime)
 
 	//Making sure that the visuals of the colliders aligned with the colliders
 	UpdateVisuals();
-	//std::cout << "each object: " << colliders.size() << std::endl;
-	//std::cout << "Started thread id=" << std::this_thread::get_id() << std::endl;
+	
+}
+
+void Physics::UpdateColliderProperties()
+{
+	for (auto& o : Object::Entities) // Have to make it so an Entity MUST have a sphere or cube collider to be considered being a "Collider"
+	{
+		o->myCollider->position = o->Position;
+		o->myCollider->extents = glm::vec3(o->Scale.x, o->Scale.y , o->Scale.z ); 
+		o->myCollider->transform = o->trans;
+		//o->myCollider->extents
+
+
+
+	}
 }
 
 void Physics::UpdateVisuals()

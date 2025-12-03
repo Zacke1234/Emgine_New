@@ -18,6 +18,8 @@ public:
 	void GatherAllPhysicObjects();
 	void Simulate(const float& aDeltaTime);
 
+	void UpdateColliderProperties();
+
 	void ApplyVelocity(std::vector<Collider*> colliders, const float& dt);
 	void ApplyGravity(std::vector<Collider*> colliders, const float& dt);
 
