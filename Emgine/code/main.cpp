@@ -193,9 +193,7 @@ int init_physics() {
 	Phys = new Physics();
 	float deltatime = 0.0f;
 	float lastFrame = 0.0f;
-	unsigned int depthMapFBO = 0;
-	unsigned int depthMap = 0;
-	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+
 	return 0;
 }
 

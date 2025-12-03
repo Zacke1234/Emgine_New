@@ -5,13 +5,7 @@ std::vector<LightData*> lightsList;
 //Camera* Cameron = new Camera();
 // 
 // shadow mapping  
-float near_plane = 1.0f, far_plane = 7.5f;
-glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-glm::mat4 lightView = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f),
-	glm::vec3(0.0f, 0.0f, 0.0f),
-	glm::vec3(0.0f, 1.0f, 0.0f));
-glm::mat4 lightSpaceMatrix = lightProjection * lightView;
-int lightSpaceMatrixLocation;
+
 
 glm::vec3 pointLightPositions[] = {
 	glm::vec3(0.7f,  0.2f,  2.0f),
@@ -230,6 +224,15 @@ LightData* LightingManager::SetSpot(LightData* aLightData, Object* test)
 
 LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLightData)
 {
+	float near_plane = 1.0f, far_plane = 7.5f;
+	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+	glm::mat4 lightView = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f),
+		glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::vec3(0.0f, 1.0f, 0.0f));
+	
+	glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+	int lightSpaceMatrixLocation;
+
 	if (aLightData == NULL)
 	{
 		aLightData = Object::Entities[Object::SelectedEntity]->myLightData;

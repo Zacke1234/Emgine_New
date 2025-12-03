@@ -42,7 +42,8 @@ class Lighting
 {
 public:
 	
-	unsigned int depthmap;
+	unsigned int depthmap = 0;
+	unsigned int depthMapFBO = 0;
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 	Lighting();
 	//std::vector<LightData> Lightdata;

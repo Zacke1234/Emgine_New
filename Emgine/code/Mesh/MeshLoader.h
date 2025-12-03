@@ -44,9 +44,10 @@ public:
 	unsigned int EBO = 0;
 	size_t indexCount = 0, vertexCount = 0;
 
-
+	std::vector<glm::vec3> position;
+	std::vector<glm::vec3> normals;
 	
-	
+	std::vector<glm::vec2> uvs;
 	
 
 	void InitialiseMesh();

@@ -44,8 +44,8 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 	std::ifstream file(fileName);
 	//bin.FileName = fileName;
 
-	std::vector<Vertex> vertices;
-	std::vector<Face> faces;
+
+	
 	//printf("%s", file.binary);
 
 	
@@ -75,6 +75,8 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 			iss >> position.x >> position.y >> position.z;
 			
 			temp_position.push_back(position);
+			mesh.position.push_back(position);
+			
 			
 		}
 		if (prefix == "f")
@@ -107,6 +109,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 			//}
 
 			temp_faces.push_back(face);
+			mesh.faces.push_back(face);
 			
 		}
 		if (prefix == "vt") 
@@ -116,6 +119,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 			iss >> UV.x >> UV.y;
 
 			temp_uvs.push_back(UV);
+			mesh.uvs.push_back(UV);
 		}
 
 		if (prefix == "vn")
@@ -125,6 +129,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 			iss >> NORMAL.x >> NORMAL.y >> NORMAL.z;
 
 			temp_normals.push_back(NORMAL);
+			mesh.normals.push_back(NORMAL);
 		}
 		if (prefix == "mtllib") // load in the material from the file onto the mesh
 		{
@@ -144,10 +149,17 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 
 	file.close();
 	
-
+	
 	for (int i = 0; i < temp_faces.size(); i++) 
 	{
+		glm::vec3 position;
+		glm::vec3 normal;
+		glm::vec2 uv;
+
+		//Vertex vertex = temp_vertices[i];
 		Face face = temp_faces[i];
+		//vertices = temp_vertices(position, normal, uv);
+
 		for (int e = 0; e < 3; e++)
 		{
 			
@@ -162,7 +174,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 			}
 			else
 			{
-				glm::vec3 position = temp_position[index - 1]; 
+				position = temp_position[index - 1]; 
 
 				mesh.data.push_back(position.x);
 				mesh.data.push_back(position.y);
@@ -180,7 +192,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 			}
 			else
 			{
-				glm::vec3 normal = temp_normals[index - 1];
+				normal = temp_normals[index - 1];
 				mesh.data.push_back(normal.x);
 				mesh.data.push_back(normal.y);
 				mesh.data.push_back(normal.z);
@@ -197,12 +209,16 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 			}
 			else
 			{
-   				glm::vec2 uv = temp_uvs[index - 1];
+   				uv = temp_uvs[index - 1];
 				mesh.data.push_back(uv.x);
 				mesh.data.push_back(uv.y);
 			}
+			
 			mesh.elements.push_back(mesh.numberVertices);
 			temp_elements.push_back(mesh.numberVertices);
+			
+			//temp_vertices.push_back(vertices);
+
 			mesh.numberVertices++;
 			
 		}
@@ -288,11 +304,60 @@ bool MeshLoader::ParseBinaryToMesh(std::string binaryPath, std::ifstream& binary
 	
 	int dataLength = mesh->data.size();
 	int elementsLength = mesh->elements.size();
+	int positionLength = mesh->position.size();
+	int normalsLength = mesh->normals.size();
+	int uvLength = mesh->uvs.size();
+	int facesLength = mesh->faces.size();
 
 	if (!binaryInputFile.is_open())
 	{
 		cerr << "Error: Failed to open for parsing" << endl;
 		return false;
+	}
+	for (int i = 0; i < positionLength; i++)
+	{
+
+
+		glm::vec3 positionBinary = mesh->position[i];
+
+
+		binaryInputFile.read((char*)(&positionBinary),
+			sizeof(glm::vec3));
+		//std::cout << elementsBinary << endl;
+	}
+	for (int i = 0; i < facesLength; i++)
+	{
+
+
+		Face facesBinary = mesh->faces[i];
+
+
+		binaryInputFile.read((char*)(&facesBinary),
+			sizeof(Face));
+		//std::cout << elementsBinary << endl;
+	}
+	for (int i = 0; i < uvLength; i++)
+	{
+
+
+		glm::vec2 uvBinary = mesh->uvs[i];
+
+
+		binaryInputFile.read((char*)(&uvBinary),
+			sizeof(glm::vec2));
+		//std::cout << elementsBinary << endl;
+	}
+
+	for (int i = 0; i < normalsLength; i++)
+	{
+
+
+		glm::vec3 normalBinary = mesh->normals[i];
+
+
+		binaryInputFile.read((char*)(&normalBinary),
+			sizeof(glm::vec3));
+		//std::cout << elementsBinary << endl;
 	}
 
 	for (int i = 0; i < dataLength; i++)
@@ -308,6 +373,10 @@ bool MeshLoader::ParseBinaryToMesh(std::string binaryPath, std::ifstream& binary
 
 
 	}
+
+	
+	
+
 	for (int i = 0; i < elementsLength; i++)
 	{
 
@@ -319,6 +388,7 @@ bool MeshLoader::ParseBinaryToMesh(std::string binaryPath, std::ifstream& binary
 			sizeof(unsigned int));
 		//std::cout << elementsBinary << endl;
 	}
+
 	
 	
 	mesh->InitialiseMesh();
@@ -336,12 +406,63 @@ bool MeshLoader::ParseObjToBinary(std::ifstream& ObjInputFile, std::ofstream& bi
 	int dataLength = mesh->data.size();
 	int elementsLength = mesh->elements.size();
 
+	int positionLength = mesh->position.size();
+	int normalsLength = mesh->normals.size();
+	int uvLength = mesh->uvs.size();
+
+	int facesLength = mesh->faces.size();
+
 	if (!binaryOutputFile.is_open())
 	{
 		cerr << "Error: Failed to open for parsing" << endl;
 		return false;
 	}
-	
+	for (int i = 0; i < positionLength; i++)
+	{
+
+
+		glm::vec3 positionBinary = mesh->position[i];
+
+
+		binaryOutputFile.write((const char*)(&positionBinary),
+			sizeof(glm::vec3));
+		//std::cout << elementsBinary << endl;
+	}
+
+	for (int i = 0; i < facesLength; i++)
+	{
+
+
+		Face facesBinary = mesh->faces[i];
+
+
+		binaryOutputFile.write((const char*)(&facesBinary),
+			sizeof(Face));
+		//std::cout << elementsBinary << endl;
+	}
+	for (int i = 0; i < uvLength; i++)
+	{
+
+
+		glm::vec2 uvBinary = mesh->uvs[i];
+
+
+		binaryOutputFile.write((const char*)(&uvBinary),
+			sizeof(glm::vec2));
+		//std::cout << elementsBinary << endl;
+	}
+	for (int i = 0; i < normalsLength; i++)
+	{
+
+
+		glm::vec3 normalBinary = mesh->normals[i];
+
+
+		binaryOutputFile.write((const char*)(&normalBinary),
+			sizeof(glm::vec3));
+		//std::cout << elementsBinary << endl;
+	}
+
 	for (int i = 0; i < dataLength; i++)
 	{
 		
@@ -354,6 +475,7 @@ bool MeshLoader::ParseObjToBinary(std::ifstream& ObjInputFile, std::ofstream& bi
 
 
 	}
+	
 	for (int i = 0; i < elementsLength; i++)
 	{
 
@@ -366,6 +488,7 @@ bool MeshLoader::ParseObjToBinary(std::ifstream& ObjInputFile, std::ofstream& bi
 
 	}
 
+	
 	//std::cout << reinterpret_cast<char*>(&TEST) << std::endl;
 	
 	binaryOutputFile.close();

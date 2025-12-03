@@ -63,7 +63,7 @@ void main()
    
      viewPos = vec3(view * transform * vec4(aPos, 1.0));
      //gl_FragColor = texture2D(ourColor, TexCoord) * vec4(Color, 1.0);
-     gl_Position = projection * view * transform * vec4(FragPos, 1.0); 
+     gl_Position = projection * view * transform * FragPosLightSpace vec4(FragPos, 1.0); 
    
    
    
