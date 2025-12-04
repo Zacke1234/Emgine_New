@@ -36,6 +36,7 @@
 #include <Managers/LightingManager.h>
 #include <Managers/RigidbodyManager.h>
 #include <CameraManager.h>
+#include <Time/Time.h>
 
 
 
@@ -66,7 +67,12 @@ Physics* Phys;
 Thread* myThread; 
 LightData* newLightdata;
 CameraManager* myCameraManager;
+Time* myTime;
 
+int do_time()
+{
+	return 0;
+}
 
 int message_stuff() { // message passing between meshmanager and objectmanager
 	myMessage = new Message;
@@ -92,6 +98,7 @@ int message_stuff() { // message passing between meshmanager and objectmanager
 	
 	return 0;
 }
+
 
 
 //Init Functions
@@ -191,8 +198,7 @@ int init_lightning() {
 int init_physics() {
 	//init physics
 	Phys = new Physics();
-	float deltatime = 0.0f;
-	float lastFrame = 0.0f;
+	
 
 	return 0;
 }
@@ -202,7 +208,7 @@ int init_physics() {
 
 int static update_camera(Camera* cam, UI* myUI, GLFWwindow* window)
 {
-	cam->ProcessInput(window);
+	cam->ProcessInput(window, myTime->Deltatime);
 	cam->CameraUpdate(window);
 	
 	cam->fieldOfView = myUI->fov;
@@ -218,7 +224,7 @@ int static update_ui(UI* myUI, ShaderManager* myShader, ObjectManager* objManage
 	//glm::vec3 v(selectedobj->Rotation);
 	
 
-	myUI->RenderUI(myShader, objManager);
+	myUI->RenderUI(myShader, objManager, myTime);
 	//test = glm::scale(test, Object::Entities[Object::SelectedEntity]->Scale);
 	
 	if (Object::Entities.size() > 0) {
@@ -245,7 +251,8 @@ int static update_ui(UI* myUI, ShaderManager* myShader, ObjectManager* objManage
 
 int main()
 {
-
+	
+	myTime = new Time();
 	init_window();
 
 
@@ -287,7 +294,7 @@ int main()
 		fish,
 		defaultTex,
 		myShaderManager->DefaultShader,
-		MyColliderManager->Create("SphereColl", sphereColl),
+		MyColliderManager->Create("SphereColl", sphereColl, NULL),
 		myRigidbodyManager->Create(0.0f)
 
 	);
@@ -296,16 +303,16 @@ int main()
 		cube,
 		wall,
 		myShaderManager->DefaultShader,
-		MyColliderManager->Create("CubeColl", cubeColl),
-		myRigidbodyManager->Create(0.0f)
+		MyColliderManager->Create("CubeColl", cubeColl, NULL),
+		myRigidbodyManager->Create(-0.01f)
 	);
 
 	myObjectManager->Create("Cube",
 		cube,
 		wall,
 		myShaderManager->DefaultShader,
-		MyColliderManager->Create("CubeColl", cubeColl),
-		myRigidbodyManager->Create(0.0f)
+		MyColliderManager->Create("CubeColl", cubeColl, NULL),
+		myRigidbodyManager->Create(0.01f)
 	);
 
 	myObjectManager->CreateLight("SceneLight",
@@ -314,16 +321,15 @@ int main()
 		myShaderManager->DefaultShader,
 		NULL,
 		myLightingManager->Create("SceneLight", myShaderManager->DefaultShader, myLightingManager->DefaultLighting),
-		myRigidbodyManager->Create(0.0f)
-	);
+		NULL);
 
 	myObjectManager->CreateCamera("SceneCamera",
 		NULL,
 		NULL,
 		myShaderManager->DefaultShader,
-		MyColliderManager->Create("CubeColl", cubeColl),
+		MyColliderManager->Create("CubeColl", cubeColl, NULL),
 		myCamera,
-		myRigidbodyManager->Create(0.0f));
+		NULL);
 
 	////myObjectManager->Find("cubeObj");
 
@@ -345,7 +351,8 @@ int main()
 
 		//myMemory->LoadInMemory(myShaderManager->DefaultShader, myCamera, myLighting, myObjectManager, myUI, myMeshManager, fish, cubeColl);
 
-	
+		myTime->Run();
+
 		myShaderManager->DefaultShader->UseShader();
 	
 	
@@ -376,7 +383,7 @@ int main()
 		{
 
 		}*/
-		Phys->Simulate(myCamera->deltatime);
+		Phys->Simulate(myTime->Deltatime, myTime);
 		
 		// render UI (after/ON TOP OF drawcall)
 		update_ui(myUI, myShaderManager, myObjectManager);

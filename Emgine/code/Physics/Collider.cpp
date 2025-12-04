@@ -32,6 +32,7 @@ Collider::Collider()
 	extents = glm::vec3(0, 0, 0);
 	
 	//std::cout << "test";
+	//SetTheCollision();
 
 }
 
@@ -41,24 +42,6 @@ void Collider::SetTheCollision()
 
 	
 	//CubeCollider* cubeColl = new CubeCollider(center, extents, pos);
-	for (auto& o : Object::Entities)
-	{
-		if (o->ObjType == 3) // ?
-		{
-			o->myCollider->CollType = ColliderType::Cube;
-			//o->Scale = CubeCollider::extents;
-		}
-		if(o->ObjType == 2)
-		{
-			o->myCollider->CollType = ColliderType::Sphere;
-			//o->Scale = SphereCollider::center;
-		}
-		if (o->ObjType == 0)
-		{
-			o->myCollider->CollType = ColliderType::Null;
-		}
-		
-		
-	}
+ 
 	//std::cout << "set the collision" << std::endl;
 }

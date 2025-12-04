@@ -103,7 +103,7 @@ public:
 	SphereCollider* mySphereColl;
 	CubeCollider* myCubeColl;
 	Mesh* myMesh;
-	
+	Rigidbody* myRigidbody;
 	Texture* myTexture;
 	Camera* myCamera;
 	LightData* myLightData;

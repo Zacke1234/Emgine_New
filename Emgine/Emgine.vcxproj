@@ -199,6 +199,7 @@
     <ClCompile Include="code\Managers\LightingManager.cpp" />
     <ClCompile Include="code\Util\GLChecking.cpp" />
     <ClCompile Include="code\Managers\RigidbodyManager.cpp" />
+    <ClCompile Include="code\Time\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Dependencies\GLFW\include\glfw3.h">
@@ -244,6 +245,7 @@
     <ClInclude Include="code\Managers\LightingManager.h" />
     <ClInclude Include="code\Util\GLChecking.h" />
     <ClInclude Include="code\Managers\RigidbodyManager.h" />
+    <ClInclude Include="code\Time\Time.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\Dependencies\GLFW\lib-vc2022\glfw3.lib" />

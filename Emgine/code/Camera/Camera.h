@@ -3,6 +3,7 @@
 #include <string>
 #include <ext/matrix_transform.hpp>
 #include <ext/matrix_clip_space.hpp>
+#include <Time/Time.h>
 #include <glad.h>
 #include <fstream>
 #include <sstream>
@@ -17,7 +18,7 @@ public:
 
 	void CameraUpdate(GLFWwindow* window);
 
-	void ProcessInput(GLFWwindow* window);
+	void ProcessInput(GLFWwindow* window, float& deltatime);
 
 	static void Mouse_Callback(GLFWwindow* window, double xpos, double ypos);
 
@@ -48,9 +49,7 @@ public:
 
 	bool TabbedIn = true;
 
-	float deltatime = 0.0f;
-	float lastFrame = 0.0f;
-
+	
 	glm::vec3 myPosition;
 	
 	glm::mat4 GetViewMatrix()

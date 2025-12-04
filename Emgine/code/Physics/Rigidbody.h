@@ -8,6 +8,7 @@ public:
 	glm::vec3 velocity;
 	float friction;
 	float mass;
+	float gravity;
 	static std::vector<Rigidbody*> rbEntities;
 
 	glm::mat3 momentOfInertia;

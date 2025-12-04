@@ -4,6 +4,7 @@
 #include "imgui.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "Time\Time.h"
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
 #include <iostream>
@@ -230,12 +231,9 @@ UI::UI(GLFWwindow* window) // unitilized
 	classes();
 }
 
-void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
+void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gameTime)
 {
 
-	
-	
-	
 	
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
@@ -296,7 +294,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 				meshmang->Create("Mesh", meshBuffer),
 				textureMang->Create(std::string(nameBuffer + tex), "Default 1.png"),
 				shader->DefaultShader,
-				colliderMang->Create("CubeColl", cubeColl2),
+				colliderMang->Create("CubeColl", cubeColl2, NULL),
 				myRigidbodyMang->Create(0.0f)
 			);
 		}
@@ -307,7 +305,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 				meshmang->Create("fish", "fish.obj"),
 				textureMang->Create(std::string(nameBuffer + tex), "Default 1.png"),
 				shader->DefaultShader,
-				colliderMang->Create("CubeColl", cubeColl2),
+				colliderMang->Create("CubeColl", cubeColl2, NULL),
 				myRigidbodyMang->Create(0.0f)
 			);
 		}
@@ -323,7 +321,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 				meshmang->Create("Cube", "cube.obj"),
 				textureMang->Create(std::string("Cube" + tex), "Default 1.png"),
 				shader->DefaultShader,
-				colliderMang->Create("CubeColl", cubeColl2),
+				colliderMang->Create("CubeColl", cubeColl2, NULL),
 				myRigidbodyMang->Create(0.0f)
 			);
 		}
@@ -333,7 +331,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 				meshmang->Create(nameBuffer, "cube.obj"),
 				textureMang->Create(std::string(nameBuffer + tex), textureBuffer),
 				shader->DefaultShader,
-				colliderMang->Create("CubeColl", cubeColl2),
+				colliderMang->Create("CubeColl", cubeColl2, NULL),
 				myRigidbodyMang->Create(0.0f)
 			);
 		}
@@ -481,7 +479,11 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager)
 
 	if (ImGui::Button("Play"))
 	{
-
+		gameTime->UnPause();
+	}
+	if (ImGui::Button("Pause"))
+	{
+		gameTime->Pause();
 	}
 
 	ImGui::Text("Entity Manager");

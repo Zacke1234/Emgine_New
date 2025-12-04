@@ -4,7 +4,7 @@ std::vector<Rigidbody*> Rigidbody::rbEntities;
 
 Rigidbody::Rigidbody(float gravity)
 {
-	gravity = 9.84f;
+	gravity = 0.0f;
 	hasGravity = true;
 	inverseMomentOfInertia = Math::identity3;
 	mass = 0;

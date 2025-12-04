@@ -16,7 +16,7 @@ class Physics
 public:
 	Physics();
 	void GatherAllPhysicObjects();
-	void Simulate(const float& aDeltaTime);
+	void Simulate(const float& aDeltaTime, Time* physicsTime);
 
 	void UpdateColliderProperties();
 

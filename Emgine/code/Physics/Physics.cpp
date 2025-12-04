@@ -38,7 +38,7 @@ void Physics::GatherAllPhysicObjects()
 	//
 }
 
-void Physics::Simulate(const float& aDeltaTime)
+void Physics::Simulate(const float& aDeltaTime, Time* physicsTime)
 {
 	UpdatePhysicsScene();
 	
@@ -55,30 +55,44 @@ void Physics::Simulate(const float& aDeltaTime)
 	//coll = new Collider();
 	for (auto& o : Object::Entities)
 	{
-		if (o->myCollider == NULL)
-			return;
-		if (o->myCollider->CollType != ColliderType::Null)
+		if (!o->myCollider == NULL)
 		{
-			//ApplyCollision(aDeltaTime, collisions);
-			HandleCollisions(collisions);
-			ApplyGravity(Collider::CollEntities, aDeltaTime);
 			UpdateColliderProperties();
-
-
-			//As a result of those collisions what should happen?
-
-
-
-			//at the moment this only applying gravity to my colliders since I have no calculations for linear and angular velocity based on collisions.
-			//This should ideally be in HandleCollisions
-			ApplyVelocity(Collider::CollEntities, aDeltaTime);
+			HandleCollisions(collisions);
+			//Making sure that the visuals of the colliders aligned with the colliders
+			
 		}
+	
+		
+
+
+
+		//As a result of those collisions what should happen?
+
+
+
+		//at the moment this only applying gravity to my colliders since I have no calculations for linear and angular velocity based on collisions.
+		//This should ideally be in HandleCollisions
+		
+	}
+	if (physicsTime->IsPaused == false)
+	{
+		for (auto& o : Object::Entities) {
+
+			if (!o->myRigidbody == NULL)
+			{
+
+				ApplyGravity(Collider::CollEntities, aDeltaTime);
+				ApplyVelocity(Collider::CollEntities, aDeltaTime);
+			}
+
+
+
+		}
+
+		UpdateVisuals();
 	}
 	
-	
-
-	//Making sure that the visuals of the colliders aligned with the colliders
-	UpdateVisuals();
 	
 }
 
@@ -86,9 +100,13 @@ void Physics::UpdateColliderProperties()
 {
 	for (auto& o : Object::Entities) // Have to make it so an Entity MUST have a sphere or cube collider to be considered being a "Collider"
 	{
-		o->myCollider->position = o->Position;
-		o->myCollider->extents = glm::vec3(o->Scale.x, o->Scale.y , o->Scale.z ); 
-		o->myCollider->transform = o->trans;
+		if (o->myCollider != NULL)
+		{
+			o->myCollider->position = o->Position;
+			o->myCollider->extents = glm::vec3(o->Scale.x, o->Scale.y, o->Scale.z);
+			o->myCollider->transform = o->trans;
+		}
+		
 		//o->myCollider->extents
 
 
@@ -106,8 +124,13 @@ void Physics::UpdateVisuals()
 		o->UpdateTransform();
 		//std::thread T1(o->UpdateTransform());
 		  
+		if (!o->myRigidbody == NULL)
+		{
+			o->Position = o->myRigidbody->velocity;
+		}
+
 		
-		//o->Position = o->myCollider->position;
+		
 
 		//o->myCollider->transform = o->trans;
 		
@@ -203,7 +226,7 @@ void Physics::ApplyGravity(std::vector<Collider*> colliders, const float& dt)
 				// 9.84
 
 
-				r->velocity.y -= 0.001f * dt;
+				r->velocity.y -= r->gravity * dt;
 				position += r->velocity * dt;
 				c->position = position;
 				r->transform[3] = glm::vec4(position, 1.0f);
@@ -439,7 +462,7 @@ std::vector<Collision> Physics::CheckIntersections(std::vector<Collider*> collid
 					collision.col1 = c1;
 					collision.col2 = c2;
 					collisions.push_back(collision);
-					//std::cout << "check Intersections";
+					std::cout << "check Intersections";
 
 				}
 			}

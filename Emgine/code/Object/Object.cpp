@@ -276,7 +276,7 @@ void Object::SetName(std::string name)
 
 void Object::SetRigidbody(Rigidbody& rb)
 {
-	Rigidbody* myRigidbody = &rb;
+	myRigidbody = &rb;
 	myRigidbody->isKinematic = false;
 }
 

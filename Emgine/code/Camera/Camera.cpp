@@ -45,7 +45,7 @@ Camera::Camera()
 	curx = 0;
 	cury = 0;
 
-	cameraSpeed = 3.0f * deltatime;
+	//cameraSpeed = 3.0f * deltatime;
 }
 
 void Camera::CameraUpdate(GLFWwindow* window) // the mouse cursor is still not good, when you tab in, it will just snap to another position again, need to fix
@@ -57,9 +57,7 @@ void Camera::CameraUpdate(GLFWwindow* window) // the mouse cursor is still not g
 	}
 	myUp = glm::cross(myDirection, myRight);
 	
-	double currentFrame = glfwGetTime();
-	deltatime = currentFrame - lastFrame;
-	lastFrame = currentFrame;
+	
 
 	projection = glm::perspective(glm::radians(fieldOfView), myWidth / myHeight, 0.1f, 200.0f);
 
@@ -71,7 +69,7 @@ void Camera::CameraUpdate(GLFWwindow* window) // the mouse cursor is still not g
 
 }
 
-void Camera::ProcessInput(GLFWwindow* window)
+void Camera::ProcessInput(GLFWwindow* window, float& deltatime)
 {
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
@@ -112,13 +110,14 @@ void Camera::ProcessInput(GLFWwindow* window)
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 	{
 		//std::cout << "shift" << "\n";
-		cameraSpeed = 9.0f * deltatime;
+		cameraSpeed = 9.0f * 0.5;
 	}
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)
 	{
 		//std::cout << "let go of shift" << "\n";
-		cameraSpeed = 3.0f * deltatime;
+		cameraSpeed = 3.0f * 0.5f;
 	}
+
 	/*GLFWscrollfun scrollfun;
 	if (glfwSetScrollCallback(window, scrollfun))
 	{
@@ -165,7 +164,7 @@ void Camera::mouse_callback(double xpos, double ypos)
 	xoffset *= sensitivity;
 	yoffset *= sensitivity;
 
-	yaw += xoffset;
+	yaw += xoffset; 
 	pitch += yoffset;
 
 	if (pitch > 89.0f)
