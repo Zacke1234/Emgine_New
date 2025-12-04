@@ -346,11 +346,14 @@ void Object::DrawObject(Camera* aCamera, Shader* myShader)
 			
 			GL_CHECK(glActiveTexture(GL_TEXTURE1));
 			GL_CHECK(glBindTexture(GL_TEXTURE_2D, myTexture->TextureObject));
-
-			MyShader->SetInt("material.diffuse", myTexture->myMaterial->diffuse);
-			MyShader->SetInt("material.specular", myTexture->myMaterial->specular);
-			MyShader->SetFloat("material.shininess", myTexture->myMaterial->shininess);
-			MyShader->SetVec3("material.objectColor", myTexture->myMaterial->color);
+			if (myTexture->myMaterial != NULL)
+			{
+				MyShader->SetInt("material.diffuse", myTexture->myMaterial->diffuse);
+				MyShader->SetInt("material.specular", myTexture->myMaterial->specular);
+				MyShader->SetFloat("material.shininess", myTexture->myMaterial->shininess);
+				MyShader->SetVec3("material.objectColor", myTexture->myMaterial->color);
+			}
+			
 
 		}
 		

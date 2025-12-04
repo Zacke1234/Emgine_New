@@ -107,10 +107,14 @@ int uiMaterialList(UI* myUI)
 	
 	if (Object::Entities.size() > 0 && Object::Entities[Object::SelectedEntity]->myTexture != nullptr) {
 		
-		Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->diffuse = myUI->matDiffuse;
-				Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->specular = myUI->matSpecular;
-				Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->shininess = myUI->matShininess;
-				Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->color = myUI->matColor;
+		if (Object::Entities[Object::SelectedEntity]->myTexture->myMaterial != nullptr)
+		{
+			Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->diffuse = myUI->matDiffuse;
+			Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->specular = myUI->matSpecular;
+			Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->shininess = myUI->matShininess;
+			Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->color = myUI->matColor;
+		}
+	
 	}
 	
 	
@@ -262,9 +266,10 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 	name = ImGui::InputText("Name", nameBuffer, sizeof(nameBuffer) - 1);
 	charMesh = ImGui::InputText("Mesh", meshBuffer, sizeof(meshBuffer) - 1); 
 
-	ImGui::InputFloat("Field of view", &fov, 1.0f, 1.0f, "%.2f");
+	ImGui::DragFloat("Field of view", &fov, step, step_fast);
+	
 
-	ImGui::InputFloat("Camera sensitivity", &sens, 0.1f, 1.0f, "%.2f");
+	ImGui::DragFloat("Camera sensitivity", &sens, step, step_fast);
 
 	std::string tex = "_tex";
 	//ImGui::Text("Change camera speed");
