@@ -52,43 +52,17 @@ void Physics::Simulate(const float& aDeltaTime, Time* physicsTime)
 	// checking for any intersections and storing their data in a vector of collisions
 	//std::vector<Collision> collisions = CheckIntersections(cols);
 	// Collider::CollEntities
-	//coll = new Collider();
-	for (auto& o : Object::Entities)
-	{
-		if (!o->myCollider == NULL)
-		{
-			UpdateColliderProperties();
-			HandleCollisions(collisions);
-			//Making sure that the visuals of the colliders aligned with the colliders
-			
-		}
+	// 
+	UpdateColliderProperties();
+	HandleCollisions(collisions);
 	
-		
+	//	//As a result of those collisions what should happen?
 
 
-
-		//As a result of those collisions what should happen?
-
-
-
-		//at the moment this only applying gravity to my colliders since I have no calculations for linear and angular velocity based on collisions.
-		//This should ideally be in HandleCollisions
-		
-	}
 	if (physicsTime->IsPaused == false)
 	{
-		for (auto& o : Object::Entities) {
-
-			if (!o->myRigidbody == NULL)
-			{
-
-				ApplyGravity(Collider::CollEntities, aDeltaTime);
-				ApplyVelocity(Collider::CollEntities, aDeltaTime);
-			}
-
-
-
-		}
+		ApplyGravity(Collider::CollEntities, aDeltaTime);
+		ApplyVelocity(Collider::CollEntities, aDeltaTime);
 
 		UpdateVisuals();
 	}
@@ -215,28 +189,22 @@ void Physics::ApplyGravity(std::vector<Collider*> colliders, const float& dt)
 	
 	for (auto* r : Rigidbody::rbEntities)
 	{
-		for (auto* c : Collider::CollEntities )
+		if (!r->isKinematic)
 		{
-			if (!r->isKinematic)
-			{
-				// && CheckCollision(r, c2)
-							//std::cout << "apply gravity";
-				glm::vec3 position = glm::vec3(r->transform[3]);
-				//glm::vec3 scale = glm::vec3(r->scale[3]);
-				// 9.84
+			// && CheckCollision(r, c2)
+						//std::cout << "apply gravity";
+			glm::vec3 position = glm::vec3(r->transform[3]);
+			//glm::vec3 scale = glm::vec3(r->scale[3]);
+			// 9.84
+			
 
+			r->velocity.y -= r->gravity * dt;
+			position += r->velocity * dt;
+			//c->position = position;
+			r->transform[3] = glm::vec4(position, 1.0f);
+			//r->scale = scale;
 
-				r->velocity.y -= r->gravity * dt;
-				position += r->velocity * dt;
-				c->position = position;
-				r->transform[3] = glm::vec4(position, 1.0f);
-				//r->scale = scale;
-
-			}
 		}
-		
-
-		
 	}
 }
 
@@ -250,17 +218,8 @@ void Physics::HandleCollisions(std::vector<Collision> collisions)
 			//std::cout << "handle Collision";
 			if (!r->isKinematic)
 			{
+
 				r->velocity *= -1;
-			}
-
-			if (!r->isKinematic)
-			{
-				r->velocity *= -1;
-			}
-			if (!r->isKinematic)
-			{
-
-
 				glm::vec3 normal = SafeNormalise(c->position - c->position);//relative velocity
 				glm::vec3 relativeVelocity = r->velocity - r->velocity;
 				float velocityAlongNormal = glm::dot(relativeVelocity, normal);
@@ -445,7 +404,7 @@ std::vector<Collider*> Physics::UpdatePhysicsScene()
 std::vector<Collision> Physics::CheckIntersections(std::vector<Collider*> colliders)
 {
 	
-	std::vector<Collision> collisions;
+	
 
 	int count = colliders.size();
 

@@ -31,6 +31,7 @@ public:
 	int SelectedItem = 0;
 
 
+
 	// POSITION AND ROTATION
 	glm::vec3 position;
 	float yPos = 0;
@@ -56,7 +57,14 @@ public:
 	glm::vec3 lightDiffuse = { 1,1,1 };
 	float lightLinear = 1;
 	float lightQuadratic = 1;
-
+	// light
+	//glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 1.0f);
+	float left;
+	float right;
+	float bottom;
+	float up;
+	float zNear;
+	float zFar;
 
 	// MATERIALS
 	int matDiffuse = 0;

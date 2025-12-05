@@ -20,6 +20,9 @@ public:
 		glm::vec3 ambient = { 1,1,1 };
 		glm::vec3 diffuse = { 1,1,1 };
 		glm::vec3 specular = {1,1,1};
+
+		glm::mat4 projection = glm::ortho(-5.0f, 5.0f, -5.0f, 5.0f, 1.0f, 10.0f);
+
 		float linear = 1; 
 		float quadtric = 1; 
 		

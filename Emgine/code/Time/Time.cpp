@@ -20,7 +20,7 @@ void Time::Run()
 	}
 	else
 	{
-		glfwSetTime(CurrentFrame);
+		CurrentFrame = CurrentFrame;
 	}
 	
 }

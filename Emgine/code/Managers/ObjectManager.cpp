@@ -49,13 +49,16 @@ CameraObject* ObjectManager::CreateCamera(std::string aName = "new_cameraObject"
 	return cameraObj;
 }
 
-Object* ObjectManager::Find(std::string aName)
+Object* ObjectManager::FindAndSetProperties(std::string aName, glm::vec3 aPos, glm::vec3 aScale, glm::vec3 aRot)
 {
 	for (Object* object : Object::Entities)
 	{
 		if (object->namn == aName)
 		{
 			std::cout << "Object found: " << aName << "\n";
+			object->Position = aPos;
+			object->Scale = aScale;
+			object->Rotation = aRot;
 			return object;
 		}
 	}

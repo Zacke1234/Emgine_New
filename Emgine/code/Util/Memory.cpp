@@ -13,7 +13,7 @@ Memory::Memory()
 
 }
 
-bool Memory::HasMemoryAvailable(int megaBytes, UI* thisUI)
+bool Memory::HasMemoryAvailable(int megaBytesLimit, UI* thisUI)
 {
 
 	//GetProcessMemoryInfo(megaBytes, );
@@ -21,27 +21,28 @@ bool Memory::HasMemoryAvailable(int megaBytes, UI* thisUI)
 	MEMORYSTATUSEX status;
 	status.dwLength = sizeof(status);
 	GlobalMemoryStatusEx(&status);
-	int memoryLoaded = status.dwMemoryLoad / (1024 * 1024);
+	int memoryLoaded = status.dwMemoryLoad;
 	int physicalLoaded = status.ullTotalPhys / (1024 * 1024);
 	int virtualLoaded = status.ullTotalVirtual / (1024 * 1024);
 	//std::cout << status.ullTotalPhys + " megabytes \n" << endl;
 	//std::cout << "There are %*ld percent of memory in use.\n", status.dwMemoryLoad;
-	
-	if (status.dwMemoryLoad > megaBytes / (1024 * 1024)) // * 1048
+	_tprintf(TEXT("There is  %*ld MB of physical memory available.\n"), WIDTH, status.ullAvailPhys / (1024 * 1024));
+
+	_tprintf(TEXT("There is  %*ld MB of memory loaded.\n"), WIDTH, physicalLoaded);
+	if (physicalLoaded < memoryLoaded) // * 1048
 	{
-		_tprintf(TEXT("There is  %*ld MB of physical memory available.\n"), WIDTH, status.ullAvailPhys / (1024 * 1024));
 		
-		_tprintf(TEXT("There is  %*ld MB of memory loaded.\n"), WIDTH, physicalLoaded);
 		//std::sprintf(thisUI->errorMessage, "%d", memoryLoaded);
 		thisUI->errorMessage = "Loaded memory is too high, MB memory in use: " , static_cast<char>(physicalLoaded);
 	
 		thisUI->errorTriggered = true;
 		//return false;
 	}
-	if (status.dwMemoryLoad > megaBytes / (1024 * 1024)) // * 1048
+	_tprintf(TEXT("There is  %*ld MB of virtual memory available.\n"), WIDTH, status.ullAvailVirtual / (1024 * 1024));
+	_tprintf(TEXT("There is  %*ld MB of memory loaded.\n"), WIDTH, virtualLoaded);
+	if (virtualLoaded < memoryLoaded) // * 1048
 	{
-		_tprintf(TEXT("There is  %*ld MB of virtual memory available.\n"), WIDTH, status.ullAvailVirtual / (1024 * 1024));
-		_tprintf(TEXT("There is  %*ld MB of memory loaded.\n"), WIDTH, virtualLoaded);
+		
 		//std::sprintf(thisUI->errorMessage, "%d", memoryLoaded);
 		thisUI->errorMessage = "Loaded memory is too high, MB memory in use: ", static_cast<char>(virtualLoaded);
 		thisUI->errorTriggered = true;

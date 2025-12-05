@@ -14,7 +14,12 @@ using namespace std;
 int n;
 MeshLoader::MeshLoader()
 {
-	
+	//delete(&mesh->data);
+	//delete(&mesh->elements);
+	//delete(&mesh->position);
+	//delete(&mesh->normals);
+	//delete(&mesh->uvs);
+	//delete(&mesh->uvs);
 }
 
 // https://www.opengl-tutorial.org/beginners-tutorials/tutorial-7-model-loading/
@@ -381,6 +386,7 @@ bool MeshLoader::ReadObjToBinary(std::string objPath, std::ifstream& objReadFile
 	int uvLength = mesh->uvs.size();
 	int facesLength = mesh->faces.size();
 	
+	
 
 	if (!objReadFile.is_open())
 	{
@@ -459,7 +465,7 @@ bool MeshLoader::ReadObjToBinary(std::string objPath, std::ifstream& objReadFile
 	}
 
 	
-
+	
 	
 	//mesh->InitialiseMesh();
 

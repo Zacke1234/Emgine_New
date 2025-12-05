@@ -52,7 +52,7 @@ public:
 	bool Testgravity = true;
 
 	bool TimeTicking = true;
-
+	std::vector<Collision> collisions;
 	Collider* coll; 
 	ColliderType* type;
 private:

@@ -75,7 +75,7 @@ int SpotLightShaderSetting(Shader* shader, LightData* aLightData)
 		//
 		//std::cout << lObjs <<< "\n";
 		std::string number = std::to_string(lObjs);
-		shader->SetMatrix("SLight[NR_SPOT_LIGHTS]", lObjs);
+		shader->SetInt("NR_SPOTLIGHTS", lObjs);
 		shader->SetFloat("SLight[" + number + "].constant", aLightData->constant);
 		shader->SetFloat("SLight[" + number + "].linear", aLightData->linear);
 		shader->SetFloat("SLight[" + number + "].quadratic", aLightData->quadtric);
@@ -225,24 +225,26 @@ LightData* LightingManager::SetSpot(LightData* aLightData, Object* test)
 LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLightData)
 {
 	float near_plane = 1.0f, far_plane = 7.5f;
-	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-	glm::mat4 lightView = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f),
-		glm::vec3(0.0f, 0.0f, 0.0f),
-		glm::vec3(0.0f, 1.0f, 0.0f));
 	
-	glm::mat4 lightSpaceMatrix = lightProjection * lightView;
-	int lightSpaceMatrixLocation;
+	//int lightSpaceMatrixLocation;
 
 	if (aLightData == NULL)
 	{
 		aLightData = Object::Entities[Object::SelectedEntity]->myLightData;
 	}
+
+	glm::mat4 lightProjection = aLightData->projection; // X, Y, Z, W ?
+	glm::mat4 lightView = glm::lookAt(glm::vec3(aLightData->lightDir.x, aLightData->lightDir.y, aLightData->lightDir.z),
+		glm::vec3(aLightData->lightDir.x, aLightData->lightDir.y, aLightData->lightDir.z),
+		glm::vec3(aLightData->lightDir.x, aLightData->lightDir.y, aLightData->lightDir.z));
+
+	glm::mat4 lightSpaceMatrix = lightProjection * lightView;
 	switch (aLightData->LightVar)
 	{
 	case 0:
 
 		//std::cout << "Null light" << std::endl;
-		shader->SetVec3("baseLight.position", { 0,0,0 });
+		/*shader->SetVec3("baseLight.position", { 0,0,0 });
 		shader->SetVec3("baseLight.direction", { 0,0,0 });
 		shader->SetFloat("baseLight.cutOff", 0.0f);
 		shader->SetFloat("baseLight.outerCutOff", 0.0f);
@@ -252,7 +254,7 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 
 		shader->SetVec3("baseLight.ambient", { 0,0,0 });
 		shader->SetVec3("baseLight.diffuse", { 0,0,0 });
-		shader->SetVec3("baseLight.specular", { 0,0,0 });
+		shader->SetVec3("baseLight.specular", { 0,0,0 });*/
 		break;
 	case 1:
 		//std::cout << "Point light" << std::endl;

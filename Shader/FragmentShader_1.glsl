@@ -137,6 +137,11 @@ uniform Material material;
     }
     //out vec2 TexCoords;
     float shadow = ShadowCalculation(FragPosLightSpace);
+
+    int NR_DIRLIGHTS;
+    int NR_POINTLIGHTS;
+    int NR_SPOTLIGHTS;
+
      vec3 CalculateDirLight(vec3 normal, vec3 viewDir, float shadow)
      { 
           vec3 lightDir = normalize(-baseLight.direction);
@@ -265,23 +270,22 @@ void main()
 //    lighting += CalculatePointLight(norm, FragPos, viewDir);
 //    lighting += CalcSpotLight(norm, FragPos, viewDir);
 ////    
-//        for(int i = 0; i < NR_POINT_LIGHTS; i++)
-//        {
-//         lighting =+ CalculatePointLight(PLight[i], norm, FragPos, viewDir);
-//        }
-//
-//      
+ 
+      
 //       
-//       for(int i = 0; i < NR_DIR_LIGHTS; i++)
+//       for(int i = 0; i < NR_DIRLIGHTS; i++)
 //       {
-//        lighting += CalculateDirLight(DLight[i], norm, viewDir);
+//       lighting += CalculateDirLight(norm, viewDir, shadow);
 //       }
-////      
-////
-//       for(int i = 0; i < NR_SPOT_LIGHTS; i++)
+//        for(int i = 0; i < NR_SPOTLIGHTS; i++)
 //       {
-//       lighting += CalcSpotLight(Slight[i], norm, FragPos, viewDir);
+//       lighting +=  CalcSpotLight(norm, FragPos, viewDir, shadow);
 //       }
+//           for(int i = 0; i < NR_POINTLIGHTS; i++)
+//       {
+//       lighting +=  CalculatePointLight(norm, FragPos, viewDir, shadow);
+//       }
+
 //       
     float depthValue = texture(depthMap, TexCoord).r;
     // texture(ourTexture, TexCoord) * 

@@ -4,7 +4,10 @@ class Time
 public:
 	Time();
 	
-	
+	void Run();
+	void Pause();
+	void UnPause();
+
 
 	float Deltatime = 0;
 	float Lastframe = 0;
@@ -12,9 +15,7 @@ public:
 	double CurrentFrame = 0;
 	bool IsPaused = true;
 
-	void Run();
-	void Pause();
-	void UnPause();
+	
 
 };
 

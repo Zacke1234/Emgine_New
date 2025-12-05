@@ -15,7 +15,7 @@ public:
 
 	virtual CameraObject* CreateCamera(std::string aName, Mesh* Mesh , Texture* aTexture , Shader* aShader , Collider* aCollider , Camera* aCamera , Rigidbody* rb);
 
-	virtual Object* Find(std::string name);
+	virtual Object* FindAndSetProperties(std::string name, glm::vec3 aPos, glm::vec3 aScale, glm::vec3 aRot);
 
 	void Attach(Observer* observer) override {
 		observers.push_back(observer);

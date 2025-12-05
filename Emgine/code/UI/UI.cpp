@@ -93,6 +93,8 @@ int uiLightList(UI* myUI, ObjectManager* objectmanager)
 			Object::Entities[Object::SelectedEntity]->myLightData->linear = myUI->lightLinear;
 			Object::Entities[Object::SelectedEntity]->myLightData->quadtric = myUI->lightQuadratic;
 			Object::Entities[Object::SelectedEntity]->myLightData->specular = myUI->lightspecular;
+
+			//Object::Entities[Object::SelectedEntity]->myLightData->projection = myUI->left, myUI->right, myUI->bottom, myUI->up, myUI->zNear, myUI->zFar;
 			
 		}
 	}
@@ -169,7 +171,9 @@ int uiObjectList(UI* ui)
 				ui->lightConstant = Object::Entities[i]->myLightData->constant;
 				ui->cutoff = Object::Entities[i]->myLightData->cutOff;
 				ui->outerCutOff = Object::Entities[i]->myLightData->outerCutOff;
-				
+				//ui->left, ui->right, ui->bottom, ui->up, ui->zNear, ui->zFar = Object::Entities[i]->myLightData->projection;
+
+
 			}
 
 			if (Object::Entities[Object::SelectedEntity]->ObjType == 4)
@@ -179,7 +183,12 @@ int uiObjectList(UI* ui)
 				ui->yPos = Object::Entities[i]->myCamera->myPosition.y;
 				ui->zPos = Object::Entities[i]->myCamera->myPosition.z;
 			}
-			
+			if (Object::Entities[Object::SelectedEntity]->myRigidbody != nullptr)
+			{
+				ui->check = Object::Entities[Object::SelectedEntity]->myRigidbody->isKinematic;
+				//Object::Entities[Object::SelectedEntity]->myRigidbody->isKinematic = check;
+			}
+
 			
 		}
 		//Object::Entities[0] = o;
@@ -250,7 +259,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 	ImGui::Text("");
 	
 	boolHandler();
-
+	
 	if (ImGui::Button("echo"))
 	{
 		std::cout << "echo" << "\n";
@@ -406,6 +415,13 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 		ImGui::DragFloat("Light outer cut off", &outerCutOff, step, step_fast);
 		ImGui::DragFloat("Light linear", &lightLinear, step, step_fast);
 		ImGui::DragFloat("Light quadratic", &lightQuadratic, step, step_fast);
+
+		/*ImGui::DragFloat("Light projection left", &left, step, step_fast);
+		ImGui::DragFloat("Light projection right", &right, step, step_fast);
+		ImGui::DragFloat("Light projection bottom", &bottom, step, step_fast);
+		ImGui::DragFloat("Light projection up", &up, step, step_fast);
+		ImGui::DragFloat("Light projection near", &zNear, step, step_fast);
+		ImGui::DragFloat("Light projection far", &zFar, step, step_fast);*/
 		
 	}
 
@@ -457,7 +473,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
    //ImGui::Text("IsKinematic", &check);
 	if (ImGui::Checkbox("Is kinematic", &check)) // a bit jank
 	{
-		//Object::Entities[Object::SelectedEntity]->myCollider->isKinematic = check;
+		Object::Entities[Object::SelectedEntity]->myRigidbody->isKinematic = check;
 		//virtobj->Entities[Object::SelectedEntity]->myCollider->isKinematic;
 	}
 

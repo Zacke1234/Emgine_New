@@ -280,7 +280,9 @@ int main()
 
 	init_physics();
 
-
+	glm::vec3 size = {10,0.5f,10};
+	glm::vec3 pos = { 0,-1,0 };
+	glm::vec3 rotation = { 0,0,0 };
 	myUI = new UI(window);
 	init_memory_tracker();
 
@@ -296,7 +298,6 @@ int main()
 		myShaderManager->DefaultShader,
 		MyColliderManager->Create("SphereColl", sphereColl, NULL),
 		myRigidbodyManager->Create(0.0f)
-
 	);
 
 	myObjectManager->Create("Cube",
@@ -304,16 +305,18 @@ int main()
 		wall,
 		myShaderManager->DefaultShader,
 		MyColliderManager->Create("CubeColl", cubeColl, NULL),
-		myRigidbodyManager->Create(-0.01f)
+		myRigidbodyManager->Create(-0.98f)
 	);
 
-	myObjectManager->Create("Cube",
+	myObjectManager->Create("Plane",
 		cube,
 		wall,
 		myShaderManager->DefaultShader,
 		MyColliderManager->Create("CubeColl", cubeColl, NULL),
-		myRigidbodyManager->Create(0.01f)
+		myRigidbodyManager->Create(0.96f)
 	);
+
+	myObjectManager->FindAndSetProperties("Plane", pos, size, rotation);
 
 	myObjectManager->CreateLight("SceneLight",
 		NULL,
