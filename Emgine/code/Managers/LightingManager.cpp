@@ -172,8 +172,8 @@ LightData* LightingManager::Create(std::string name, Shader* shader, LightData* 
 	light = new LightData();
 	light->Name = name;
 	
-	//SetPoint(light, NULL);
-	SetDirectional(light, NULL);
+	SetPoint(light, NULL);
+	//SetDirectional(light, NULL);
 	//InitialiseLightData(shader, light);
 	
 	return light;

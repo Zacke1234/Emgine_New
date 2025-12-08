@@ -5,6 +5,7 @@
 
 #pragma once
 
+std::vector<Mesh*> MeshManager::MeshCache;
 MeshManager::MeshManager()
 {
 	meshLoader = new MeshLoader();
@@ -13,11 +14,11 @@ MeshManager::MeshManager()
 
 MeshManager::~MeshManager()
 { 
-	for (auto& [key, value] : MeshCache)
-	{
-		delete value;
-	}
-	delete meshLoader;
+	//for (auto& [key, value] : MeshCache)
+	//{
+	//	delete value;
+	//}
+	//delete meshLoader;
 }
 
 
@@ -33,9 +34,9 @@ Mesh* MeshManager::LoadMesh(std::string objPath, std::string name)
 	std::ofstream writeBin(BinaryPath, std::ios_base::binary); 
 	std::ifstream readObj(objPath);
 	std::ifstream readBin(BinaryPath, std::ios::binary);
-	
-	meshLoader->ReadObjToBinary(objPath, readObj, writeBin, mesh);
-	if (meshLoader->WriteObjToBinary(readObj, writeBin, objPath, mesh))
+
+	meshLoader->ReadObjToBinary(objPath, readObj, mesh);
+	if (meshLoader->WriteObjToBinary(writeBin, objPath, mesh))
 	{
 		
 		meshLoader->BinParser(BinaryPath, mesh);
@@ -66,7 +67,8 @@ Mesh* MeshManager::Create(std::string name, std::string path_end)
 	mesh->name = name;
 	mesh = LoadMesh((path + path_end).c_str(), name);
 	std::cout << "Mesh loaded in: " << name << " from path: " << path + path_end << "\n";
-	MeshCache.emplace(name, mesh);
+	MeshManager::MeshCache.push_back(mesh);
+
 	std::cout << "Mesh created: " << name << " from path: " << path + path_end << "\n";
 	
 	

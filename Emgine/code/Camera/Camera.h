@@ -49,7 +49,7 @@ public:
 
 	bool TabbedIn = true;
 
-	
+	glm::vec3 direction;
 	glm::vec3 myPosition;
 	
 	glm::mat4 GetViewMatrix()

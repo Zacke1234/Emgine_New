@@ -189,7 +189,7 @@ void Physics::ApplyGravity(std::vector<Collider*> colliders, const float& dt)
 	
 	for (auto* r : Rigidbody::rbEntities)
 	{
-		if (!r->isKinematic)
+		if (!r->isKinematic && r->hasGravity)
 		{
 			// && CheckCollision(r, c2)
 						//std::cout << "apply gravity";

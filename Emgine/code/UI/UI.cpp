@@ -66,6 +66,8 @@ int uiCameratList(UI* myUI, ObjectManager* objectmanager)
 		if (selectedCamera)
 		{
 			Object::Entities[Object::SelectedEntity]->myCamera->myPosition = Object::Entities[Object::SelectedEntity]->Position;
+
+			Object::Entities[Object::SelectedEntity]->myCamera->direction = Object::Entities[Object::SelectedEntity]->Rotation;
 			//Object::Entities[Object::SelectedEntity]->myCamera->myView = Object::Entities[Object::SelectedEntity]->Rotation;
 		}
 	}
@@ -150,13 +152,13 @@ int uiObjectList(UI* ui)
 
 			if (Object::Entities[Object::SelectedEntity]->myTexture != nullptr)
 			{
-				ui->matColor = Object::Entities[i]->myTexture->myMaterial->color;
-				ui->matShininess = Object::Entities[i]->myTexture->myMaterial->shininess;
-				ui->matSpecular = Object::Entities[i]->myTexture->myMaterial->specular;
-				ui->matDiffuse = Object::Entities[i]->myTexture->myMaterial->diffuse;
-				
-
-
+				if (Object::Entities[Object::SelectedEntity]->myTexture->myMaterial != nullptr)
+				{
+					ui->matColor = Object::Entities[i]->myTexture->myMaterial->color;
+					ui->matShininess = Object::Entities[i]->myTexture->myMaterial->shininess;
+					ui->matSpecular = Object::Entities[i]->myTexture->myMaterial->specular;
+					ui->matDiffuse = Object::Entities[i]->myTexture->myMaterial->diffuse;
+				}
 				//myUI->matColor = Object::Entities[Object::SelectedEntity]->myTexture->myMaterial->color;
 			}
 
@@ -182,6 +184,11 @@ int uiObjectList(UI* ui)
 				ui->xPos = Object::Entities[i]->myCamera->myPosition.x;
 				ui->yPos = Object::Entities[i]->myCamera->myPosition.y;
 				ui->zPos = Object::Entities[i]->myCamera->myPosition.z;
+
+				ui->xRot = glm::degrees(Object::Entities[i]->myCamera->direction.x);
+				ui->yRot = glm::degrees(Object::Entities[i]->myCamera->direction.y);
+				ui->zRot = glm::degrees(Object::Entities[i]->myCamera->direction.z);
+
 			}
 			if (Object::Entities[Object::SelectedEntity]->myRigidbody != nullptr)
 			{

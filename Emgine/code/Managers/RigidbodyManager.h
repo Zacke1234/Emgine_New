@@ -8,7 +8,7 @@ class RigidbodyManager
 {
 public:
 
-	Rigidbody* Create(float gravity = 0.0f, bool isKinematic = false);
+	Rigidbody* Create(float gravity = 0.0f, bool isKinematic = false, bool hasGrav = true);
 	
 };
 

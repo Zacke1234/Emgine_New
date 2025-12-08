@@ -2,9 +2,9 @@
 #include <Physics.h>
 std::vector<Rigidbody*> Rigidbody::rbEntities;
 
-Rigidbody::Rigidbody(float gravity)
+Rigidbody::Rigidbody(float gravity, bool isKinematic)
 {
-	gravity = 0.0f;
+	
 	hasGravity = true;
 	inverseMomentOfInertia = Math::identity3;
 	mass = 0;
@@ -12,5 +12,5 @@ Rigidbody::Rigidbody(float gravity)
 	velocity = glm::vec3(0, 0, 0);
 	transform = Math::identity4;
 	angularVelocity = glm::vec3(0, 0, 0);
-	isKinematic = false;
+
 }

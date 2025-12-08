@@ -376,7 +376,7 @@ void MeshLoader::ParseFaceIndices(const std::string& string, Face& face, int ver
 	}
 }
 
-bool MeshLoader::ReadObjToBinary(std::string objPath, std::ifstream& objReadFile, std::ofstream& binaryOutputFile, Mesh* mesh) // read
+bool MeshLoader::ReadObjToBinary(std::string objPath, std::ifstream& objReadFile, Mesh* mesh) // read
 {
 	ObjParser(objPath, mesh);
 	int dataLength = mesh->data.size();
@@ -477,7 +477,8 @@ bool MeshLoader::ReadObjToBinary(std::string objPath, std::ifstream& objReadFile
 	return true;
 }
 
-bool MeshLoader::WriteObjToBinary(std::ifstream& ObjInputFile, std::ofstream& binaryOutputFile, std::string ObjFilePath, Mesh* mesh) // write
+bool MeshLoader::WriteObjToBinary(std::ofstream& binaryOutputFile, 
+	std::string ObjFilePath, Mesh* mesh) // write
 {
 	
 	

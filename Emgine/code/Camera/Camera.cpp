@@ -29,7 +29,7 @@ Camera::Camera()
 
 	
 	myTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-	
+	direction = glm::vec3(0, 0, 0);
 	myDirection = glm::vec3(0.0f, 0.0f, -1.0f);
 	myPosition = glm::vec3(0.0f, 0.0f, 10.0f);
 	myFront = glm::vec3(1.0f, 0.0f, 0.0f);
@@ -51,10 +51,10 @@ Camera::Camera()
 void Camera::CameraUpdate(GLFWwindow* window) // the mouse cursor is still not good, when you tab in, it will just snap to another position again, need to fix
 {
 	
-	if (!TabbedIn)
+	/*if (!TabbedIn)
 	{
 		return;
-	}
+	}*/
 	myUp = glm::cross(myDirection, myRight);
 	
 	
@@ -96,17 +96,20 @@ void Camera::ProcessInput(GLFWwindow* window, float& deltatime)
 	{
 		
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
 		TabbedIn = false;
 		
 	}
 	if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS)
 	{
-		
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CENTER_CURSOR);
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_UNAVAILABLE);
+		
 		TabbedIn = true;
 		//io.ConfigFlags |= ImGuiConfigFlags_NoMouse;
 		
-	}
+	}			
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 	{
 		//std::cout << "shift" << "\n";
@@ -137,9 +140,15 @@ void Camera::Mouse_Callback(GLFWwindow* window, double xpos, double ypos)
 
 void Camera::mouse_callback(double xpos, double ypos)
 {
-	
+	myDirection = glm::normalize(direction);
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	if (!TabbedIn)
+	if (!TabbedIn )
+	{
+		
+		return;
+		
+	}
+	if (io.WantCaptureMouse)
 	{
 		return;
 	}
@@ -176,14 +185,14 @@ void Camera::mouse_callback(double xpos, double ypos)
 		pitch = -89.0f;
 	}
 
-	
-	glm::vec3 direction = glm::vec3(0, 0, 0);
-	
 	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
 	direction.y = sin(glm::radians(pitch));
 	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	//myDirection = glm::normalize(direction);
 	
-	myDirection = glm::normalize(direction);
+	
+
+	
 	//myCamera->myView = glm::lookAt(direction, direction, myCamera->myFront, myCamera->myUp);
 	//myView = glm::lookAt(myPosition, myPosition + myFront, myUp);
 	/*myCamera->myRight = glm::normalize(glm::cross(direction, WorldUp));

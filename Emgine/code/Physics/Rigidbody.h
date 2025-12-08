@@ -3,7 +3,7 @@
 class Rigidbody
 {
 public:
-	Rigidbody(float gravity);
+	Rigidbody(float gravity, bool isKinematic);
 	
 	glm::vec3 velocity;
 	float friction;

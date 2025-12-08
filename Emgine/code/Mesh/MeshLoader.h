@@ -76,8 +76,8 @@ public:
 	bool BinParser(std::string fileName, Mesh* mesh);
 	void ParseFaceIndices(const std::string& string, Face& face, int vertexIndex);
 
-	virtual bool WriteObjToBinary(std::ifstream& filePath, std::ofstream& filepathOut, std::string fileString, Mesh* mesh);
-	virtual bool ReadObjToBinary(std::string fileString, std::ifstream& fstreamPath, std::ofstream& filepathOut, Mesh* mesh);
+	virtual bool WriteObjToBinary(std::ofstream& filepathOut, std::string fileString, Mesh* mesh);
+	virtual bool ReadObjToBinary(std::string fileString, std::ifstream& fstreamPath, Mesh* mesh);
 
 	std::string name;
 	std::string type;

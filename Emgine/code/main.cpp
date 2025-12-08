@@ -167,20 +167,21 @@ int init_managers() {
 int init_camera() {
 	//init camera
 	
-	
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CENTER_CURSOR);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	
 	glfwSetCursorPosCallback(window, myCamera->Mouse_Callback);
 	return 0;
 }
 
 int init_colliders() {
-	glm::vec3 extents = { 1,1, 1 };
-	glm::vec3 extentsPlane = { 7 / 2, 0.5f / 2, 7 / 2 };
-	glm::vec3 center = { 0, 0,0 }; float radius = 0.5f; glm::vec3 pos = { 0,0,0 };
-	glm::vec3 scale = { 1,1,1 };
+	//glm::vec3 extents = { 1,1, 1 };
+	//glm::vec3 extentsPlane = { 7 / 2, 0.5f / 2, 7 / 2 };
+	//glm::vec3 center = { 0, 0,0 }; float radius = 0.5f; glm::vec3 pos = { 0,0,0 };
+	//glm::vec3 scale = { 1,1,1 };
 
-	cubeColl = new CubeCollider(center, extents, pos);
-	sphereColl = new SphereCollider(center, radius, pos);
+	/*cubeColl = new CubeCollider(center, extents, pos);
+	sphereColl = new SphereCollider(center, radius, pos);*/
 	return 0;
 }
 
@@ -297,7 +298,7 @@ int main()
 		defaultTex,
 		myShaderManager->DefaultShader,
 		MyColliderManager->Create("SphereColl", sphereColl, NULL),
-		myRigidbodyManager->Create(0.0f)
+		myRigidbodyManager->Create(0.96f, false)
 	);
 
 	myObjectManager->Create("Cube",
@@ -305,7 +306,7 @@ int main()
 		wall,
 		myShaderManager->DefaultShader,
 		MyColliderManager->Create("CubeColl", cubeColl, NULL),
-		myRigidbodyManager->Create(-0.98f)
+		myRigidbodyManager->Create(0.96f, false)
 	);
 
 	myObjectManager->Create("Plane",
@@ -313,7 +314,7 @@ int main()
 		wall,
 		myShaderManager->DefaultShader,
 		MyColliderManager->Create("CubeColl", cubeColl, NULL),
-		myRigidbodyManager->Create(0.96f)
+		myRigidbodyManager->Create(0.0f, false, false)
 	);
 
 	myObjectManager->FindAndSetProperties("Plane", pos, size, rotation);

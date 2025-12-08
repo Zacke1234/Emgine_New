@@ -27,7 +27,7 @@ public:
 	std::string msg;
 
 	// Mesh Management
-	std::map<std::string, Mesh*> MeshCache;
+	static std::vector<Mesh*> MeshCache;
 	Mesh* LoadMesh(std::string fromPath, std::string name);
 	Mesh* Create(std::string name = "newmesh", std::string path_end = NULL);
 	
