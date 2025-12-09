@@ -5,7 +5,7 @@
 
 #pragma once
 
-std::vector<Mesh*> MeshManager::MeshCache;
+std::vector<std::string> MeshManager::MeshCache;
 MeshManager::MeshManager()
 {
 	meshLoader = new MeshLoader();
@@ -24,16 +24,19 @@ MeshManager::~MeshManager()
 
 
 
-Mesh* MeshManager::LoadMesh(std::string objPath, std::string name)
+Mesh* MeshManager::LoadMesh(std::string objPath, std::string name, Mesh* mesh)
 {
 	size_t fileSize = std::filesystem::file_size(objPath);
 	std::string BinaryPath = "resource\\bins\\" + name + ".bin";
-	Mesh* mesh = new Mesh;
+	//Mesh* mesh = new Mesh;
 	mesh->name = name;
 	
 	std::ofstream writeBin(BinaryPath, std::ios_base::binary); 
 	std::ifstream readObj(objPath);
 	std::ifstream readBin(BinaryPath, std::ios::binary);
+	//
+
+
 
 	meshLoader->ReadObjToBinary(objPath, readObj, mesh);
 	if (meshLoader->WriteObjToBinary(writeBin, objPath, mesh))
@@ -48,6 +51,8 @@ Mesh* MeshManager::LoadMesh(std::string objPath, std::string name)
 		mesh->InitialiseMesh();
 
 	}
+
+	
 	
 	//check if binary path has file:
 		//if file exists
@@ -56,20 +61,51 @@ Mesh* MeshManager::LoadMesh(std::string objPath, std::string name)
 			// parse obj to binary
 			// then binary ->mesh
 		// then load mesh(instantiate) into meshmanager n stuff 
-
+	std::cout << "Mesh loaded in: " << name << " from path: " << objPath + name << "\n";
 	return mesh;
-}	
+}
+Mesh* MeshManager::LoadFromMeshCache(std::string fromPath, std::string name, Mesh* mesh)
+{
+	std::ifstream readObj(fromPath);
+	std::string BinaryPath = "resource\\bins\\" + name + ".bin";
+	if (meshLoader->ReadObjToBinary(fromPath, readObj, mesh))
+	{
+		meshLoader->BinParser(BinaryPath, mesh);
+	}
+	
+	return mesh;
+}
+
 
 Mesh* MeshManager::Create(std::string name, std::string path_end)
 {
 	std::string path = "resource\\meshes\\";
 	Mesh* mesh = new Mesh();
+	std::string BinaryPath = "resource\\bins\\" + name + ".bin";
 	mesh->name = name;
-	mesh = LoadMesh((path + path_end).c_str(), name);
-	std::cout << "Mesh loaded in: " << name << " from path: " << path + path_end << "\n";
-	MeshManager::MeshCache.push_back(mesh);
-
 	std::cout << "Mesh created: " << name << " from path: " << path + path_end << "\n";
+	
+	
+
+	if (std::find(MeshCache.begin(), MeshCache.end(), name) != MeshCache.end())
+	{
+		mesh = LoadFromMeshCache((path + path_end).c_str(), name, mesh);
+		std::cout << "has mesh: " + name << std::endl;
+	}
+	else
+	{
+		MeshCache.push_back(name);
+		mesh = LoadMesh((path + path_end).c_str(), name, mesh);
+		std::cout << "does not have mesh: " + name << std::endl;
+
+		
+	}
+
+ 	
+	
+	
+
+	
 	
 	
 	return mesh;

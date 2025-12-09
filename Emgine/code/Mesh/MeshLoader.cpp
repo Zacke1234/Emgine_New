@@ -236,6 +236,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 	temp_uvs.clear();
 	temp_vertices.clear();
 	temp_elements.clear();
+
 	/*ParseObjToBinary(fileName, &file);
 	ParseObjToBinary(fileName, *file);*/
 	return true;
@@ -623,6 +624,7 @@ void Mesh::InitialiseMesh()
 	GL_CHECK(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float))));
 	
 	GL_CHECK(glEnableVertexAttribArray(2));
+	
 
 	//GL_CHECK(glBindVertexArray(0));
 	//data.clear();

@@ -323,7 +323,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 		{
 			objectmanager->Create(
 				"Mesh", // Name
-				meshmang->Create("fish", "fish.obj"),
+				meshmang->Create("Fish", "fish.obj"),
 				textureMang->Create(std::string(nameBuffer + tex), "Default 1.png"),
 				shader->DefaultShader,
 				colliderMang->Create("CubeColl", cubeColl2, NULL),
