@@ -297,7 +297,7 @@ int main()
 		fish,
 		defaultTex,
 		myShaderManager->DefaultShader,
-		MyColliderManager->Create("SphereColl", sphereColl, NULL),
+		MyColliderManager->Create("SphereColl", sphereColl),
 		myRigidbodyManager->Create(0.96f, false)
 	);
 
@@ -305,7 +305,7 @@ int main()
 		cube,
 		wall,
 		myShaderManager->DefaultShader,
-		MyColliderManager->Create("CubeColl", cubeColl, NULL),
+		MyColliderManager->Create("CubeColl", cubeColl),
 		myRigidbodyManager->Create(0.96f, false)
 	);
 
@@ -313,7 +313,7 @@ int main()
 		cube,
 		wall,
 		myShaderManager->DefaultShader,
-		MyColliderManager->Create("CubeColl", cubeColl, NULL),
+		MyColliderManager->Create("CubeColl", cubeColl),
 		myRigidbodyManager->Create(0.0f, false, false)
 	);
 
@@ -331,7 +331,7 @@ int main()
 		NULL,
 		NULL,
 		myShaderManager->DefaultShader,
-		MyColliderManager->Create("CubeColl", cubeColl, NULL),
+		MyColliderManager->Create("CubeColl", cubeColl),
 		myCamera,
 		NULL);
 

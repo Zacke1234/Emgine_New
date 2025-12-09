@@ -53,7 +53,7 @@ void Physics::Simulate(const float& aDeltaTime, Time* physicsTime)
 	//std::vector<Collision> collisions = CheckIntersections(cols);
 	// Collider::CollEntities
 	// 
-	UpdateColliderProperties();
+	UpdateColliderProperties(Collider::CollEntities);
 	HandleCollisions(collisions);
 	
 	//	//As a result of those collisions what should happen?
@@ -70,7 +70,7 @@ void Physics::Simulate(const float& aDeltaTime, Time* physicsTime)
 	
 }
 
-void Physics::UpdateColliderProperties()
+void Physics::UpdateColliderProperties(std::vector<Collider*> colliders)
 {
 	for (auto& o : Object::Entities) // Have to make it so an Entity MUST have a sphere or cube collider to be considered being a "Collider"
 	{
@@ -357,7 +357,7 @@ bool Physics::BoolCheckIntersect(Collider* c1, Collider* c2)
 {
 
 	//CheckIntersect(c1, c2);
-	if (c1->isOf<SphereCollider>() && c2->isOf<SphereCollider>())
+	if (c1->CollType == 1 && c2->CollType == 1)
 	{
 		std::cout << "check with spheres intersect ";
 		SphereCollider* sphere1 = dynamic_cast<SphereCollider*>(c1);
@@ -366,7 +366,7 @@ bool Physics::BoolCheckIntersect(Collider* c1, Collider* c2)
 		
 	}
 
-	else if (c1->isOf<CubeCollider>() && c2->isOf<SphereCollider>())
+	else if (c1->CollType == 2 && c2->CollType == 1)
 	{
 		std::cout << "check with cubes & spheres intersect";
 		CubeCollider* cube1 = dynamic_cast<CubeCollider*>(c1);
@@ -377,7 +377,7 @@ bool Physics::BoolCheckIntersect(Collider* c1, Collider* c2)
 		
 	}
 
-	else if (c1->isOf<CubeCollider>() && c2->isOf<CubeCollider>())
+	else if (c1->CollType == 2 && c2->CollType == 2)
 	{
 		std::cout << "check with cubes intersect";
 		CubeCollider* cube1 = dynamic_cast<CubeCollider*>(c1);

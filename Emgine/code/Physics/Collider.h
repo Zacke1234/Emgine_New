@@ -4,9 +4,7 @@
 #include <vector>
 
 
-enum class ColliderType {
-	Null, Sphere, Cube, Raycast
-};
+
 
 glm::mat3 ComputeMomentOfInertiaCube(float mass, glm::vec3 extents);
 glm::mat3 ComputeMomentOfInertiaSphere(float mass, float radius);
@@ -31,9 +29,16 @@ public:
 	glm::mat4 transform;
 	
 	glm::vec3 position;
-	
-	ColliderType CollType = ColliderType::Null;
 
+	enum ColliderType {
+		Null = 0 , Sphere, Cube, Raycast
+	};
+
+	ColliderType CollType; // = ColliderType::Null;
+	ColliderType NullColl;
+	ColliderType SphereColl;
+	ColliderType CubeColl;
+	ColliderType RaycastColl;
 	//glm::vec3 extents;
 
 	// auto* r : Rigidbody::rbEntities

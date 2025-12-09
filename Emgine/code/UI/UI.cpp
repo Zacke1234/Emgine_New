@@ -315,7 +315,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 				meshmang->Create("Mesh", meshBuffer),
 				textureMang->Create(std::string(nameBuffer + tex), "Default 1.png"),
 				shader->DefaultShader,
-				colliderMang->Create("CubeColl", cubeColl2, NULL),
+				colliderMang->Create("CubeColl", cubeColl2),
 				myRigidbodyMang->Create(0.0f)
 			);
 		}
@@ -326,7 +326,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 				meshmang->Create("Fish", "fish.obj"),
 				textureMang->Create(std::string(nameBuffer + tex), "Default 1.png"),
 				shader->DefaultShader,
-				colliderMang->Create("CubeColl", cubeColl2, NULL),
+				colliderMang->Create("CubeColl", cubeColl2),
 				myRigidbodyMang->Create(0.0f)
 			);
 		}
@@ -342,7 +342,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 				meshmang->Create("Cube", "cube.obj"),
 				textureMang->Create(std::string("Cube" + tex), "Default 1.png"),
 				shader->DefaultShader,
-				colliderMang->Create("CubeColl", cubeColl2, NULL),
+				colliderMang->Create("CubeColl", cubeColl2),
 				myRigidbodyMang->Create(0.0f)
 			);
 		}
@@ -352,7 +352,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 				meshmang->Create(nameBuffer, "cube.obj"),
 				textureMang->Create(std::string(nameBuffer + tex), textureBuffer),
 				shader->DefaultShader,
-				colliderMang->Create("CubeColl", cubeColl2, NULL),
+				colliderMang->Create("CubeColl", cubeColl2),
 				myRigidbodyMang->Create(0.0f)
 			);
 		}

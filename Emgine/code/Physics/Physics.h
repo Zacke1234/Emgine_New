@@ -18,7 +18,7 @@ public:
 	void GatherAllPhysicObjects();
 	void Simulate(const float& aDeltaTime, Time* physicsTime);
 
-	void UpdateColliderProperties();
+	void UpdateColliderProperties(std::vector<Collider*> colliders);
 
 	void ApplyVelocity(std::vector<Collider*> colliders, const float& dt);
 	void ApplyGravity(std::vector<Collider*> colliders, const float& dt);
@@ -54,7 +54,7 @@ public:
 	bool TimeTicking = true;
 	std::vector<Collision> collisions;
 	Collider* coll; 
-	ColliderType* type;
+	//ColliderType* type;
 private:
 	
 

@@ -1,10 +1,10 @@
 #pragma once
 #include <string>
-#include "Collider.h"
+#include <Collider.h>
 class ColliderManager
 {
 public:
-	Collider* Create(std::string collName,Collider* myColl, ColliderType* collType);
+	Collider* Create(std::string collName,Collider* myColl);
 	CubeCollider* cubeColl;
 	SphereCollider* sphereColl;
 };
