@@ -100,8 +100,7 @@ public:
 	//std::thread T1(); can't do thread in header files either
 	glm::mat4 trans;
 	Collider* myCollider;
-	SphereCollider* mySphereColl;
-	CubeCollider* myCubeColl;
+
 	Mesh* myMesh;
 	Rigidbody* myRigidbody;
 	Texture* myTexture;

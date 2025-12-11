@@ -95,7 +95,7 @@ int uiLightList(UI* myUI, ObjectManager* objectmanager)
 			Object::Entities[Object::SelectedEntity]->myLightData->linear = myUI->lightLinear;
 			Object::Entities[Object::SelectedEntity]->myLightData->quadtric = myUI->lightQuadratic;
 			Object::Entities[Object::SelectedEntity]->myLightData->specular = myUI->lightspecular;
-
+			
 			//Object::Entities[Object::SelectedEntity]->myLightData->projection = myUI->left, myUI->right, myUI->bottom, myUI->up, myUI->zNear, myUI->zFar;
 			
 		}
@@ -149,6 +149,12 @@ int uiObjectList(UI* ui)
 			ui->xScale = Object::Entities[i]->Scale[0];
 			ui->yScale = Object::Entities[i]->Scale[1];
 			ui->zScale = Object::Entities[i]->Scale[2];
+			ui->objHasGravity = false;
+			if (Object::Entities[Object::SelectedEntity]->myRigidbody != nullptr)
+			{
+				ui->objHasGravity = Object::Entities[i]->myRigidbody->hasGravity;
+			}
+			
 
 			if (Object::Entities[Object::SelectedEntity]->myTexture != nullptr)
 			{
@@ -198,6 +204,7 @@ int uiObjectList(UI* ui)
 
 			
 		}
+		//ui->objHasGravity = true;
 		//Object::Entities[0] = o;
 		ImGui::PopID();
 	}
@@ -440,9 +447,6 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 		
 
 	}
-	/*if (Object::Entities[Object::SelectedEntity] != NULL) {
-		 
-	}*/
 	
 	
 	if (ImGui::Combo("Light type", &SelectedItem, Items, IM_ARRAYSIZE(Items)))
@@ -450,7 +454,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 		if (SelectedLight)
 		{
 			
-			//std::cout << "Selected entity is light" << std::endl; // Yes finally!!
+		
 			if (SelectedItem == 0)
 			{	 
 				

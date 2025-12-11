@@ -31,9 +31,35 @@ Collider::Collider()
 	position = glm::vec3(0, 0, 0);
 	extents = glm::vec3(0, 0, 0);
 	
-	//std::cout << "test";
+	std::cout << "test";
 	//SetTheCollision();
 
+}
+
+void Collider::test()
+{
+
+}
+
+SphereCollider::SphereCollider(const glm::vec3& aCenter, const float& aRadius, glm::vec3 Apos) : Collider()
+{
+	CollType = ColliderType::Sphere;
+
+	center = aCenter;
+	radius = aRadius;
+
+	position = Apos;
+	std::cout << "SphereCollider";
+}
+
+CubeCollider::CubeCollider(const glm::vec3& aCenter, const glm::vec3& someExtents, glm::vec3 Apos) : Collider()
+{
+	CollType = ColliderType::Cube;
+	center = aCenter;
+	extents = someExtents;
+	position = Apos;
+	//scale = aScale;
+	std::cout << "CubeCollider";
 }
 
 void Collider::SetTheCollision()

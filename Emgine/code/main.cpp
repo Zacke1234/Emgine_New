@@ -175,13 +175,13 @@ int init_camera() {
 }
 
 int init_colliders() {
-	//glm::vec3 extents = { 1,1, 1 };
-	//glm::vec3 extentsPlane = { 7 / 2, 0.5f / 2, 7 / 2 };
-	//glm::vec3 center = { 0, 0,0 }; float radius = 0.5f; glm::vec3 pos = { 0,0,0 };
-	//glm::vec3 scale = { 1,1,1 };
+	glm::vec3 extents = { 1,1, 1 };
+	glm::vec3 extentsPlane = { 1, 0.5f, 1 };
+	glm::vec3 center = { 0, 0,0 }; float radius = 0.5f; glm::vec3 pos = { 0,0,0 };
+	glm::vec3 scale = { 1,1,1 };
 
-	/*cubeColl = new CubeCollider(center, extents, pos);
-	sphereColl = new SphereCollider(center, radius, pos);*/
+	cubeColl = new CubeCollider(center, extents, pos);
+	sphereColl = new SphereCollider(center, radius, pos);
 	return 0;
 }
 
@@ -314,7 +314,7 @@ int main()
 		wall,
 		myShaderManager->DefaultShader,
 		MyColliderManager->Create("CubeColl", cubeColl),
-		myRigidbodyManager->Create(0.0f, false, false)
+		NULL()
 	);
 
 	myObjectManager->FindAndSetProperties("Plane", pos, size, rotation);

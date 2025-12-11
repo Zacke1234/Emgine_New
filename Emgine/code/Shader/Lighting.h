@@ -11,7 +11,7 @@ struct LightData {
 public:
 	
 		enum LightType {
-			Null, Point, Directional, Spot
+			Null = 0, Point, Directional, Spot
 		};
 		float ambientStrength = 0.1f;
 		glm::vec3 lightPos = { 0,0,0 };

@@ -13,13 +13,16 @@ class Collider
 {
 public: 
 	Collider();
-	virtual ~Collider() {};
+	virtual void test();
+	//virtual ~Collider() {};
 
 	template<typename T>
 	bool isOf() { return (dynamic_cast<T*>(this) != NULL); }; // do i need multiple of these in the structs?
 
+	// Determines if the collider will automatically scale with the object
+	bool autoColliderSize = true;
 	
-
+	std::string name;
 	//void UpdateCollider(SphereCollider* sphere, CubeCollider* cube);
 	
 	glm::vec3 extents;
@@ -30,15 +33,14 @@ public:
 	
 	glm::vec3 position;
 
+	float radius;
+
 	enum ColliderType {
 		Null = 0 , Sphere, Cube, Raycast
 	};
 
 	ColliderType CollType; // = ColliderType::Null;
-	ColliderType NullColl;
-	ColliderType SphereColl;
-	ColliderType CubeColl;
-	ColliderType RaycastColl;
+	
 	//glm::vec3 extents;
 
 	// auto* r : Rigidbody::rbEntities
@@ -48,6 +50,9 @@ public:
 	
 	static std::vector<Collider*> CollEntities;
 	
+	//SphereCollider* mySphereColl;
+	//CubeCollider* myCubeColl;
+
 };
 
 struct Collision {
@@ -65,19 +70,7 @@ class SphereCollider : public Collider{
 
 public:
 
-	float radius;
-	
-	
-	SphereCollider(const glm::vec3& aCenter, const float& aRadius, glm::vec3 Apos) : Collider()
-	{
-		CollType = ColliderType::Sphere;
-		
-		center = aCenter;
-		radius = aRadius;
-	
-		position = Apos;
-		
-	}
+	SphereCollider(const glm::vec3& aCenter, const float& aRadius, glm::vec3 Apos);
 
 };
 
@@ -85,14 +78,7 @@ class CubeCollider : public Collider
 {
 public:
 	// glm::vec3 aScale
-	CubeCollider(const glm::vec3& aCenter, const glm::vec3& someExtents, glm::vec3 Apos)  : Collider()
-	{
-		CollType = ColliderType::Cube;
-		center = aCenter;
-		extents = someExtents;
-		position = Apos;
-		//scale = aScale;
-	}
+	CubeCollider(const glm::vec3& aCenter, const glm::vec3& someExtents, glm::vec3 Apos);
 	
 };
 

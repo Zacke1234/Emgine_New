@@ -30,7 +30,7 @@ public:
 	const char* Items[3] = {"Directional", "Point", "Spot"};
 	int SelectedItem = 0;
 
-
+	bool objHasGravity;
 
 	// POSITION AND ROTATION
 	glm::vec3 position;

@@ -20,7 +20,7 @@ void Time::Run()
 	}
 	else
 	{
-		CurrentFrame = CurrentFrame;
+		CurrentFrame = 0;
 	}
 	
 }

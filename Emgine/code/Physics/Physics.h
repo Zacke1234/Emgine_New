@@ -20,15 +20,13 @@ public:
 
 	void UpdateColliderProperties(std::vector<Collider*> colliders);
 
-	void ApplyVelocity(std::vector<Collider*> colliders, const float& dt);
-	void ApplyGravity(std::vector<Collider*> colliders, const float& dt);
+	void ApplyVelocity(std::vector<Collider*> colliders, float dt);
+	void ApplyGravity(std::vector<Collider*> colliders, float dt);
 
 	void HandleCollisions(std::vector<Collision> collisions);
 	void HandleDynamicDynamic(std::vector<Collision> collisions);
 	void HandleStaticDynamic(std::vector <Collision> collisions, std::vector <Motion> motions);
-	void UpdateVisuals();
-
-	void ApplyCollision(const float& dt, std::vector<Collision> collisions);
+	void UpdateVisuals(Time* physicsTime);
 
 	glm::vec3 SafeNormalise(glm::vec3 vector);
 	
@@ -36,18 +34,18 @@ public:
 	std::vector<Collider*> UpdatePhysicsScene();
 	std::vector<Collision> CheckIntersections(std::vector<Collider*> colliders);
 	glm::mat3 ComputeMomentOfInertiaSPhere(float mass, float radius);
-	bool SphereSphereIntersect(const SphereCollider& c1, const SphereCollider& c2);
-	bool CubeSphereIntersect(const CubeCollider& aCube1, const SphereCollider& aSpher2);
-	bool CubeCubeIntersect(const CubeCollider& aCube1, const CubeCollider& aCube2);
+	bool SphereSphereIntersect(SphereCollider& c1, SphereCollider& c2);
+	bool CubeSphereIntersect(CubeCollider& aCube1, SphereCollider& aSpher2);
+	bool CubeCubeIntersect(CubeCollider& aCube1, CubeCollider& aCube2);
 
-	bool RayCast(const Ray& aRay, RayHit& aHit);
+	bool RayCast(Ray& aRay, RayHit& aHit);
 
-	bool CheckRayIntersect(const Ray& aRay, Collider* aCollider);
+	bool CheckRayIntersect(Ray& aRay, Collider* aCollider);
 
-	bool RayCubeIntersect(const Ray& aRay, CubeCollider aCube);
-	bool RaySphereIntersect(const Ray& aRay, SphereCollider aSphere);
+	bool RayCubeIntersect(Ray& aRay, CubeCollider aCube);
+	bool RaySphereIntersect(Ray& aRay, SphereCollider aSphere);
 
-	bool RayOBBIntersect(const Ray& aRay, const CubeCollider& aCube);
+	bool RayOBBIntersect(Ray& aRay, CubeCollider& aCube);
 	
 	bool Testgravity = true;
 

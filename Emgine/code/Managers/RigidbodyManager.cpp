@@ -6,6 +6,7 @@ Rigidbody* RigidbodyManager::Create(float gravity, bool isKinematic, bool hasGra
 	rb->gravity = gravity;
 	rb->isKinematic = isKinematic;
 	rb->hasGravity = hasGrav;
+	rb->mass = 1;
 	Rigidbody::rbEntities.push_back(rb);
 	return rb;
 }

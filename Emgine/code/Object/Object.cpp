@@ -223,7 +223,7 @@ void Object::SetCollider(Collider& aCollider)
 	myCollider->position = this->Position;
 	
 	myCollider->extents = Scale;
-	myCollider->SetTheCollision();
+	//myCollider->SetTheCollision();
 }
 
 void LightObject::SetLightData(LightData& lightdata)
