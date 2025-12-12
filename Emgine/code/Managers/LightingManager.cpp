@@ -224,7 +224,7 @@ LightData* LightingManager::SetSpot(LightData* aLightData, Object* test)
 
 LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLightData)
 {
-	float near_plane = 1.0f, far_plane = 7.5f;
+	
 	
 	//int lightSpaceMatrixLocation;
 
@@ -232,13 +232,15 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 	{
 		aLightData = Object::Entities[Object::SelectedEntity]->myLightData;
 	}
+	
+	//glm::mat4 lightProjection = ; // X, Y, Z, W ?
+	//// the light wouldn't have this if it's a point light, cause point light is not directional
+	aLightData->OrthographicProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, aLightData->near_plane, aLightData->far_plane);
+	aLightData->view = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f),
+		glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::vec3(0.0f, 1.0f, 0.0f));
+	//glm::mat4 lightSpaceMatrix = aLightData->projection; //* aLightData->view;
 
-	glm::mat4 lightProjection = aLightData->projection; // X, Y, Z, W ?
-	glm::mat4 lightView = glm::lookAt(glm::vec3(aLightData->lightDir.x, aLightData->lightDir.y, aLightData->lightDir.z),
-		glm::vec3(aLightData->lightDir.x, aLightData->lightDir.y, aLightData->lightDir.z),
-		glm::vec3(aLightData->lightDir.x, aLightData->lightDir.y, aLightData->lightDir.z));
-
-	glm::mat4 lightSpaceMatrix = lightProjection * lightView;
 	switch (aLightData->LightVar)
 	{
 	case 0:
@@ -260,40 +262,6 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 		//std::cout << "Point light" << std::endl;
 
 		//PointLightShaderSetting(shader, aLightData);
-
-		//shader->SetVec3("PLight[0].position", pointLightPositions[0]);
-		//shader->SetVec3("PLight[0].ambient", aLightData->ambient);
-		//shader->SetVec3("PLight[0].diffuse", aLightData->diffuse);
-		//shader->SetVec3("PLight[0].specular", aLightData->specular);
-		//shader->SetFloat("PLight[0].constant", aLightData->constant);
-		//shader->SetFloat("PLight[0].linear", aLightData->linear);
-		//shader->SetFloat("PLight[0].quadratic", aLightData->quadtric);
-		//// point light 2
-		//shader->SetVec3("PLight[1].position", pointLightPositions[1]);
-		//shader->SetVec3("PLight[1].ambient", aLightData->ambient);
-		//shader->SetVec3("PLight[1].diffuse", aLightData->diffuse);
-		//shader->SetVec3("PLight[1].specular", aLightData->specular);
-		//shader->SetFloat("PLight[1].constant", aLightData->constant);
-		//shader->SetFloat("PLight[1].linear", aLightData->linear);
-		//shader->SetFloat("PLight[1].quadratic", aLightData->quadtric);
-		//// point light 3
-		//shader->SetVec3("PLight[2].position", pointLightPositions[2]);
-		//shader->SetVec3("PLight[2].ambient", aLightData->ambient);
-		//shader->SetVec3("PLight[2].diffuse", aLightData->diffuse);
-		//shader->SetVec3("PLight[2].specular", aLightData->specular);
-		//shader->SetFloat("PLight[2].constant", aLightData->constant);
-		//shader->SetFloat("PLight[2].linear", aLightData->linear);
-		//shader->SetFloat("PLight[2].quadratic", aLightData->quadtric);
-		//// point light 4
-		//shader->SetVec3("PLight[3].position", pointLightPositions[3]);
-		//shader->SetVec3("PLight[3].ambient", aLightData->ambient);
-		//shader->SetVec3("PLight[3].diffuse", aLightData->diffuse);
-		//shader->SetVec3("PLight[3].specular", aLightData->specular);
-		////
-		//shader->SetFloat("PLight[3].constant", aLightData->constant);
-		//shader->SetFloat("PLight[3].linear", aLightData->linear);
-		//shader->SetFloat("PLight[3].quadratic", aLightData->quadtric);
-		//
 		
 		shader->SetVec3("baseLight.ambient", aLightData->ambient);
 		shader->SetVec3("baseLight.diffuse", aLightData->diffuse);
@@ -307,7 +275,7 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 
 		shader->SetVec3("lightColor", glm::vec3(1.0f, 1.01, 1.0f));
 
-		shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
+		//shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
 
 		break;
 	case 2:
@@ -316,7 +284,7 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 
 		shader->SetVec3("lightColor", glm::vec3(1.0f, 1.01, 1.0f));
 
-		shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
+		//shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
 	
 		shader->SetVec3("baseLight.ambient", aLightData->ambient);
 		shader->SetVec3("baseLight.diffuse", aLightData->diffuse);
@@ -345,7 +313,7 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 		shader->SetVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 		
 
-		shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
+		//shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
 	
 		
 		break;

@@ -33,6 +33,7 @@ public:
 	bool BoolCheckIntersect(Collider* c1, Collider* c2);
 	std::vector<Collider*> UpdatePhysicsScene();
 	std::vector<Collision> CheckIntersections(std::vector<Collider*> colliders);
+	std::vector<Motion> CheckMotions(std::vector<Rigidbody*> rbs);
 	glm::mat3 ComputeMomentOfInertiaSPhere(float mass, float radius);
 	bool SphereSphereIntersect(SphereCollider& c1, SphereCollider& c2);
 	bool CubeSphereIntersect(CubeCollider& aCube1, SphereCollider& aSpher2);
@@ -51,6 +52,7 @@ public:
 
 	bool TimeTicking = true;
 	std::vector<Collision> collisions;
+	std::vector<Motion> motions;
 	Collider* coll; 
 	//ColliderType* type;
 private:

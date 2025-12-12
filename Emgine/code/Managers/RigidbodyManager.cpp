@@ -8,5 +8,6 @@ Rigidbody* RigidbodyManager::Create(float gravity, bool isKinematic, bool hasGra
 	rb->hasGravity = hasGrav;
 	rb->mass = 1;
 	Rigidbody::rbEntities.push_back(rb);
+	//rb->name = "rigidbody";
 	return rb;
 }

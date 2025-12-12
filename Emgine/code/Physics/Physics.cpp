@@ -41,9 +41,11 @@ void Physics::GatherAllPhysicObjects()
 void Physics::Simulate(const float& aDeltaTime, Time* physicsTime)
 {
 	UpdatePhysicsScene();
+	UpdateColliderProperties(Collider::CollEntities);
+
 	
-	std::vector<Collision> collisions = CheckIntersections(Collider::CollEntities);
-		
+	
+	
 	// gotta update this
 	
 	// Just setting the positions of the colliders to match the visual
@@ -53,22 +55,25 @@ void Physics::Simulate(const float& aDeltaTime, Time* physicsTime)
 	//std::vector<Collision> collisions = CheckIntersections(cols);
 	// Collider::CollEntities
 	// 
-	UpdateColliderProperties(Collider::CollEntities);
-	HandleCollisions(collisions);
+	
+	
 	
 	//	//As a result of those collisions what should happen?
 
 
 	if (physicsTime->IsPaused == false)
 	{
+		std::vector<Collision> collisions = CheckIntersections(Collider::CollEntities);
 		UpdateVisuals(physicsTime);
 		ApplyGravity(Collider::CollEntities, aDeltaTime);
 		ApplyVelocity(Collider::CollEntities, aDeltaTime);
 
-		
+		std::vector<Motion> motions = CheckMotions(Rigidbody::rbEntities);
+		HandleStaticDynamic(collisions, motions);
+		HandleDynamicDynamic(collisions);
+		HandleCollisions(collisions);
 	}
-	
-	
+
 }
 
 void Physics::UpdateColliderProperties(std::vector<Collider*> colliders)
@@ -106,6 +111,7 @@ void Physics::UpdateVisuals(Time* physicsTime)
 		if (!o->myRigidbody == NULL)
 		{
 			o->Position = o->myRigidbody->velocity;
+			int a = 0;
 		}
 		
 		
@@ -303,7 +309,7 @@ void Physics::HandleStaticDynamic(std::vector<Collision> collisions, std::vector
 	const float SlidingFriction = 0.5f;
 	for (Motion rb : motions)
 	{
-		for (Collision c : collisions)
+		for (Collision c : collisions) 
 		{
 			//std::cout << "handle static dynamic";
 			Collider* A = c.col1;
@@ -323,13 +329,17 @@ void Physics::HandleStaticDynamic(std::vector<Collision> collisions, std::vector
 			Rigidbody* dynamicRigidbody = A_isDynamic ? RigA : RigB;
 			Rigidbody* staticRigidbody = A_isDynamic ? RigB : RigA;
 
-			glm::vec3 n = glm::normalize(c.normal1);
+			glm::vec3 n = glm::normalize(c.normal1); // nan inf, how do i calculate a normal of a collision
 			glm::vec3 r = c.point - dynamicCollider->position;
-
+			
 			glm::vec3 v = dynamicRigidbody->velocity + glm::cross(dynamicRigidbody->angularVelocity, r);
 			float vRelDotN = glm::dot(v, n);
 
 			if (vRelDotN > 0) continue;
+			/*else
+			{
+				return;
+			}*/
 
 			float invMass = (dynamicRigidbody->mass > 0) ? 1.0f / dynamicRigidbody->mass : 0;
 			glm::vec3 r_cross_n = glm::cross(r, n);
@@ -447,6 +457,27 @@ std::vector<Collision> Physics::CheckIntersections(std::vector<Collider*> collid
 		}
 	}
 	return collisions;
+}
+
+std::vector<Motion> Physics::CheckMotions(std::vector<Rigidbody*> rbs)
+{
+
+	int count = rbs.size();
+	for (auto* m1 : Rigidbody::rbEntities)
+	{
+		for (auto* m2 : Rigidbody::rbEntities)
+		{
+			if (m1 != m2)
+			{
+				Motion newMotion;
+				newMotion.rig1 = m1;
+				newMotion.rig2 = m2;
+				motions.push_back(newMotion);
+			}
+		}
+		
+	}
+	return motions;
 }
 
 glm::mat3 Physics::ComputeMomentOfInertiaSPhere(float mass, float radius) // omw to return a float that is a glm

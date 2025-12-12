@@ -20,8 +20,15 @@ public:
 		glm::vec3 ambient = { 1,1,1 };
 		glm::vec3 diffuse = { 1,1,1 };
 		glm::vec3 specular = {1,1,1};
+		float near_plane = 1.0f, far_plane = 7.5f;
+		glm::mat4 OrthographicProjection = glm::ortho(lightPos.x, lightPos.y, lightPos.z, 0.0f, near_plane, far_plane);
+		glm::mat4 NormalPerspective = glm::perspective(glm::radians(1.0f), 1.0f, 0.1f, 0.0f);
+		glm::mat4 view = glm::lookAt(glm::vec3(lightDir.x, lightDir.y, lightDir.z),
+			glm::vec3(lightDir.x, lightDir.y, lightDir.z),
+			glm::vec3(lightDir.x, lightDir.y, lightDir.z));
 
-		glm::mat4 projection = glm::ortho(-5.0f, 5.0f, -5.0f, 5.0f, 1.0f, 10.0f);
+		
+		
 
 		float linear = 1; 
 		float quadtric = 1; 

@@ -34,10 +34,10 @@ public:
 	int Width = 0;
 	int Height = 0;
 
-	
+	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 	unsigned int TextureObject = 0;
 	unsigned int depthMapFBO = 0;
-
+	unsigned int depthMap;
 	
 	
 };

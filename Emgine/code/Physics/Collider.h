@@ -56,6 +56,7 @@ public:
 };
 
 struct Collision {
+	Collision();
 	Collider* col1;
 	Collider* col2;
 	glm::vec3 point;

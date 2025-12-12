@@ -5,12 +5,15 @@ class Rigidbody
 public:
 	Rigidbody(float gravity, bool isKinematic);
 	
+	std::string name;
+
 	glm::vec3 velocity;
+	glm::vec3 position;
 	float friction;
 	float mass;
 	float gravity;
 	static std::vector<Rigidbody*> rbEntities;
-
+	//static std::vector<Motion*> motions;
 	glm::mat3 momentOfInertia;
 	glm::mat3 inverseMomentOfInertia;
 	glm::vec3 angularVelocity;
@@ -24,6 +27,7 @@ public:
 
 struct Motion
 {
+	Motion();
 	Rigidbody* rig1;
 	Rigidbody* rig2;
 	glm::vec3 origin;

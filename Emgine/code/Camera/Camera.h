@@ -32,7 +32,7 @@ public:
 	glm::mat4 projection;
 
 	float cameraSpeed;
-
+	float cameraViewRange;
 	float myWidth;
 	float myHeight;
 

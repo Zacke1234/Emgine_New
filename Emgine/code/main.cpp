@@ -59,6 +59,8 @@ UI* myUI;
 Message* myMessage;
 MessageQueue* myMessageQueue;
 CubeCollider* cubeColl;
+CubeCollider* planeColl;
+//CubeCollider* cubeColl2;
 SphereCollider* sphereColl;
 LightingManager* myLightingManager;
 RigidbodyManager* myRigidbodyManager;
@@ -181,6 +183,8 @@ int init_colliders() {
 	glm::vec3 scale = { 1,1,1 };
 
 	cubeColl = new CubeCollider(center, extents, pos);
+	//cubeColl2 = new CubeCollider(center, extents, pos);
+	planeColl = new CubeCollider(center, extents, pos);
 	sphereColl = new SphereCollider(center, radius, pos);
 	return 0;
 }
@@ -313,7 +317,7 @@ int main()
 		cube,
 		wall,
 		myShaderManager->DefaultShader,
-		MyColliderManager->Create("CubeColl", cubeColl),
+		MyColliderManager->Create("PlaneColl", planeColl),
 		NULL()
 	);
 
@@ -331,7 +335,7 @@ int main()
 		NULL,
 		NULL,
 		myShaderManager->DefaultShader,
-		MyColliderManager->Create("CubeColl", cubeColl),
+		NULL,
 		myCamera,
 		NULL);
 

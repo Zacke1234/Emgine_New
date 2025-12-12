@@ -44,7 +44,7 @@ Camera::Camera()
 
 	curx = 0;
 	cury = 0;
-
+	cameraViewRange = 300.0f;
 	//cameraSpeed = 3.0f * deltatime;
 }
 
@@ -59,7 +59,7 @@ void Camera::CameraUpdate(GLFWwindow* window) // the mouse cursor is still not g
 	
 	
 
-	projection = glm::perspective(glm::radians(fieldOfView), myWidth / myHeight, 0.1f, 200.0f);
+	projection = glm::perspective(glm::radians(fieldOfView), myWidth / myHeight, 0.1f, cameraViewRange);
 
 	myRight = glm::normalize(glm::cross(WorldUp, myDirection));
 	myUp = glm::cross(myDirection, myRight);
@@ -148,10 +148,10 @@ void Camera::mouse_callback(double xpos, double ypos)
 		return;
 		
 	}
-	if (io.WantCaptureMouse)
+	/*if (io.WantCaptureMouse)
 	{
 		return;
-	}
+	}*/
 
 	bool firstMouse = true;
 	

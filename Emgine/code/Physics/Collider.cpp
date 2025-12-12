@@ -71,3 +71,10 @@ void Collider::SetTheCollision()
  
 	//std::cout << "set the collision" << std::endl;
 }
+
+Collision::Collision()
+{
+	point = glm::vec3(0, 0, 0);
+	normal1 = glm::vec3(0, 0, 0);
+	normal2 = glm::vec3(0, 0, 0);
+}
