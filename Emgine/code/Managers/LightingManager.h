@@ -14,5 +14,10 @@ public:
 	LightData* SetDirectional(LightData* aLightData, Object* test);
 	LightData* SetPoint(LightData* aLightData, Object* test = NULL);
 	LightData* SetSpot(LightData* aLightData, Object* test);
+
+private:
+	void SetFragSpot(Shader* shader, LightData* aLightData);
+	void SetFragPoint(Shader* shader, LightData* aLightData);
+	void SetFragDir(Shader* shader, LightData* aLightData);
 };
 

@@ -222,6 +222,49 @@ LightData* LightingManager::SetSpot(LightData* aLightData, Object* test)
 	return aLightData;
 }
 
+glm::vec3 zeros = { 0.0f,0.0f,0.0f };
+void LightingManager::SetFragSpot(Shader* shader, LightData* aLightData)
+{
+	
+	shader->SetVec3("spotLight.position", aLightData->lightPos);
+	shader->SetVec3("spotLight.direction", aLightData->lightDir);
+	shader->SetFloat("spotLight.cutOff", aLightData->cutOff);
+	shader->SetFloat("spotLight.outerCutOff", aLightData->outerCutOff);
+	shader->SetFloat("spotLight.constant", aLightData->constant);
+	shader->SetFloat("spotLight.linear", aLightData->linear);
+	shader->SetFloat("spotLight.quadratic", aLightData->quadtric);
+
+	shader->SetVec3("spotLight.ambient", aLightData->ambient);
+	shader->SetVec3("spotLight.diffuse", aLightData->diffuse);
+	shader->SetVec3("spotLight.specular", aLightData->specular);
+	
+}
+
+void LightingManager::SetFragPoint(Shader* shader, LightData* aLightData)
+{
+	shader->SetVec3("pointLight.ambient", aLightData->ambient);
+	shader->SetVec3("pointLight.diffuse", aLightData->diffuse);
+	shader->SetVec3("pointLight.specular", aLightData->specular);
+
+	shader->SetVec3("pointLight.position", aLightData->lightPos);
+
+	shader->SetFloat("pointLight.constant", aLightData->constant);
+	shader->SetFloat("pointLight.linear", aLightData->linear);
+	shader->SetFloat("pointLight.quadratic", aLightData->quadtric);
+
+}
+
+void LightingManager::SetFragDir(Shader* shader, LightData* aLightData)
+{
+	shader->SetVec3("dirLight.ambient", aLightData->ambient);
+	shader->SetVec3("dirLight.diffuse", aLightData->diffuse);
+	shader->SetVec3("dirLight.specular", aLightData->specular);
+
+	shader->SetVec3("dirLight.direction", aLightData->lightDir);
+
+	
+}
+
 LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLightData)
 {
 	
@@ -263,16 +306,8 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 
 		//PointLightShaderSetting(shader, aLightData);
 		
-		shader->SetVec3("baseLight.ambient", aLightData->ambient);
-		shader->SetVec3("baseLight.diffuse", aLightData->diffuse);
-		shader->SetVec3("baseLight.specular", aLightData->specular);
-
-		shader->SetVec3("baseLight.position", aLightData->lightPos);
-
-		shader->SetFloat("baseLight.constant", aLightData->constant);
-		shader->SetFloat("baseLight.linear", aLightData->linear);
-		shader->SetFloat("baseLight.quadratic", aLightData->quadtric);
-
+		
+		SetFragPoint(shader, aLightData);
 		shader->SetVec3("lightColor", glm::vec3(1.0f, 1.01, 1.0f));
 
 		//shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
@@ -281,33 +316,18 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 	case 2:
 		//DirectionalLightSetting(shader, aLightData);
 		//std::cout << "Directional light" << std::endl;
-
+		SetFragDir(shader, aLightData);
 		shader->SetVec3("lightColor", glm::vec3(1.0f, 1.01, 1.0f));
 
 		//shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
 	
-		shader->SetVec3("baseLight.ambient", aLightData->ambient);
-		shader->SetVec3("baseLight.diffuse", aLightData->diffuse);
-		shader->SetVec3("baseLight.specular", aLightData->specular);
-
-		shader->SetVec3("baseLight.direction", aLightData->lightDir);
 
 		break;
 	case 3:
 		//std::cout << "Spot light" << std::endl;
 		//SpotLightShaderSetting(shader, aLightData);
 
-		shader->SetVec3("baseLight.position", aLightData->lightPos);
-		shader->SetVec3("baseLight.direction", aLightData->lightDir);
-		shader->SetFloat("baseLight.cutOff", aLightData->cutOff);
-		shader->SetFloat("baseLight.outerCutOff", aLightData->outerCutOff);
-		shader->SetFloat("baseLight.constant", aLightData->constant);
-		shader->SetFloat("baseLight.linear", aLightData->linear);
-		shader->SetFloat("baseLight.quadratic", aLightData->quadtric);
-
-		shader->SetVec3("baseLight.ambient", aLightData->ambient);
-		shader->SetVec3("baseLight.diffuse", aLightData->diffuse);
-		shader->SetVec3("baseLight.specular", aLightData->specular);
+		SetFragSpot(shader, aLightData);
 		// gotta take in and set materials from and into glsl and the meshes/objects.
 
 		shader->SetVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
