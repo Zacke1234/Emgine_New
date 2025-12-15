@@ -29,6 +29,9 @@ public:
 
 		
 		
+		static std::vector<LightData*> dirLights;
+		static std::vector<LightData*> spotLights;
+		static std::vector<LightData*> pointLights;
 
 		float linear = 1; 
 		float quadtric = 1; 

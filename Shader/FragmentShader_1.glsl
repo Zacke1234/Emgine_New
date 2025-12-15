@@ -56,8 +56,8 @@ struct DirectionalLight {
     vec3 diffuse;
     vec3 specular;
 };
-#define NR_DIR_LIGHTS
-uniform DirectionalLight dirLight; //[NR_DIR_LIGHTS];
+#define NR_DIR_LIGHTS 1
+uniform DirectionalLight dirLight[NR_DIR_LIGHTS];
 
 
 struct PointLight{
@@ -70,8 +70,8 @@ struct PointLight{
     float linear;
     float quadratic;
 };
-#define NR_POINT_LIGHTS
-uniform PointLight pointLight; //[NR_POINT_LIGHTS];
+#define NR_POINT_LIGHTS 1
+uniform PointLight pointLight[NR_POINT_LIGHTS];
 
 
 struct SpotLight{
@@ -89,17 +89,17 @@ vec3 diffuse;
 vec3 specular;
 
 };
-#define NR_SPOT_LIGHTS 
-uniform SpotLight spotLight ;// [NR_SPOT_LIGHTS];
+#define NR_SPOT_LIGHTS 1
+uniform SpotLight spotLight[NR_SPOT_LIGHTS];
  
 
 int test = 0;
 
-vec3 CalculateDirLight(vec3 normal, vec3 viewDir, float shadow);
+vec3 CalculateDirLight(DirectionalLight dirLight, vec3 normal, vec3 viewDir, float shadow);
 
-vec3 CalculatePointLight(vec3 norm, vec3 fragPos, vec3 viewDir, float shadow);
+vec3 CalculatePointLight(PointLight pointLight, vec3 norm, vec3 fragPos, vec3 viewDir, float shadow);
 
-vec3 CalcSpotLight(vec3 normal, vec3 fragPos, vec3 viewDir, float shadow);
+vec3 CalcSpotLight(SpotLight spotLight, vec3 normal, vec3 fragPos, vec3 viewDir, float shadow);
 
 struct Material {
     
@@ -144,7 +144,7 @@ uniform Material material;
     int NR_POINTLIGHTS;
     int NR_SPOTLIGHTS;
 
-     vec3 CalculateDirLight(vec3 normal, vec3 viewDir, float shadow)
+     vec3 CalculateDirLight(DirectionalLight dirLight, vec3 normal, vec3 viewDir, float shadow)
      { 
           vec3 lightDir = normalize(-dirLight.direction);
           // diffuse shading
@@ -159,7 +159,7 @@ uniform Material material;
           return (ambient + (1.0 - shadow) * (diffuse + specular) * material.objectColor);
      }
 
-     vec3 CalculatePointLight(vec3 normal, vec3 fragPos, vec3 viewDir, float shadow)
+     vec3 CalculatePointLight(PointLight pointLight, vec3 normal, vec3 fragPos, vec3 viewDir, float shadow)
      { 
         vec3 lightDir = normalize(pointLight.position - fragPos);
         // diffuse shading
@@ -180,7 +180,7 @@ uniform Material material;
          return (ambient + (1.0 - shadow) * (diffuse + specular) * material.objectColor);
      }
 
-     vec3 CalcSpotLight(vec3 normal, vec3 fragPos, vec3 ViewDir, float shadow)
+     vec3 CalcSpotLight(SpotLight spotLight, vec3 normal, vec3 fragPos, vec3 ViewDir, float shadow)
      {
          
         vec3 lightDir = normalize(spotLight.position - fragPos);
@@ -268,7 +268,7 @@ void main()
     // texture(depthMap, TexCoord).r;
     //vec3 color = texture(diffuseTexture, TexCoord).rgb;
     //vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular));
-    vec3 lighting = CalculateDirLight(norm, viewDir, shadow) + CalculatePointLight(norm, FragPos, viewDir, shadow) + CalcSpotLight(norm, FragPos, viewDir, shadow);
+    vec3 lighting; //= CalculateDirLight(norm, viewDir, shadow) + CalculatePointLight(norm, FragPos, viewDir, shadow) + CalcSpotLight(norm, FragPos, viewDir, shadow);
 
 //    lighting += CalculatePointLight(norm, FragPos, viewDir);
 //    lighting += CalcSpotLight(norm, FragPos, viewDir);
@@ -276,18 +276,20 @@ void main()
  
       
 //       
-//       for(int i = 0; i < NR_DIRLIGHTS; i++)
-//       {
-//       lighting += CalculateDirLight(dirLight[i], norm, viewDir, shadow);
-//       }
-//        for(int i = 0; i < NR_SPOTLIGHTS; i++)
-//       {
-//       lighting +=  CalcSpotLight(spotLight[i], norm, FragPos, viewDir, shadow);
-//       }
-//           for(int i = 0; i < NR_POINTLIGHTS; i++)
-//       {
-//       lighting +=  CalculatePointLight(pointLight[i], norm, FragPos, viewDir, shadow);
-//       }
+       for(int i = 0; i < NR_DIR_LIGHTS; i++)
+       {
+       lighting += CalculateDirLight(dirLight[i], norm, viewDir, shadow);
+       }
+
+       for(int i = 0; i < NR_SPOT_LIGHTS; i++)
+       {
+       lighting +=  CalcSpotLight(spotLight[i], norm, FragPos, viewDir, shadow);
+       }
+
+       for(int i = 0; i < NR_POINT_LIGHTS; i++)
+       {
+       lighting +=  CalculatePointLight(pointLight[i], norm, FragPos, viewDir, shadow);
+       }
 
 //       
     float depthValue = texture(depthMap, TexCoord).r;

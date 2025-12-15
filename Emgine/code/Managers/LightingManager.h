@@ -19,5 +19,6 @@ private:
 	void SetFragSpot(Shader* shader, LightData* aLightData);
 	void SetFragPoint(Shader* shader, LightData* aLightData);
 	void SetFragDir(Shader* shader, LightData* aLightData);
+	
 };
 

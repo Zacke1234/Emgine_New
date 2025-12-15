@@ -5,7 +5,9 @@
 #include <gtc/type_ptr.hpp>
 #pragma once
 
-
+std::vector<LightData*> LightData::dirLights;
+std::vector<LightData*> LightData::spotLights;
+std::vector<LightData*> LightData::pointLights;
 
 Lighting::Lighting()
 {
