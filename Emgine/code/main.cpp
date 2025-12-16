@@ -369,7 +369,7 @@ int main()
 		for (auto& lightObj : LightObject::LightEntities)
 		{
 
-			myLightingManager->InitialiseLightData(myShaderManager->DefaultShader, lightObj->myLightData);
+			myLightingManager->InitialiseLightData(myShaderManager->DefaultShader, lightObj->myLightData, myCamera);
 		}
 		
 		//Drawcall objects

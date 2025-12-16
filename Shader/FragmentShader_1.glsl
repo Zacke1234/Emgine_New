@@ -7,7 +7,7 @@ in vec3 LightPos;
 in vec3 ourColor;
 in vec3 FragPos;
 in vec4 FragPosLightSpace;
-
+//out mat4 view;
 out vec4 FragColor;
   
 uniform vec3 specularStrength;
@@ -171,13 +171,14 @@ uniform Material material;
          float distance = length(pointLight.position - fragPos);
          float attenuation = 1.0 / (pointLight.constant + pointLight.linear * distance + pointLight.quadratic * (distance * distance));    
          // combine results
-         vec3 ambient  = pointLight.ambient * vec3(texture(material.diffuse, TexCoord));
-         vec3 diffuse  = pointLight.diffuse * diff * vec3(texture(material.diffuse, TexCoord));
+         vec3 ambient = pointLight.ambient * vec3(texture(material.diffuse, TexCoord));
+         vec3 diffuse = pointLight.diffuse * diff * vec3(texture(material.diffuse, TexCoord));
          vec3 specular = pointLight.specular * spec * vec3(texture(material.specular, TexCoord));
-         ambient  *= attenuation;
-         diffuse  *= attenuation;
+         ambient *= attenuation;
+         diffuse *= attenuation;
          specular *= attenuation;
-         return (ambient + (1.0 - shadow) * (diffuse + specular) * material.objectColor);
+         return (ambient + diffuse + specular) * ((1.0 - shadow) * material.objectColor);
+         //  return (ambient + diffuse + specular);
      }
 
      vec3 CalcSpotLight(SpotLight spotLight, vec3 normal, vec3 fragPos, vec3 ViewDir, float shadow)

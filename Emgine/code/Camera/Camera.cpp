@@ -58,13 +58,13 @@ void Camera::CameraUpdate(GLFWwindow* window) // the mouse cursor is still not g
 	myUp = glm::cross(myDirection, myRight);
 	
 	
-
+	
 	projection = glm::perspective(glm::radians(fieldOfView), myWidth / myHeight, 0.1f, cameraViewRange);
 
 	myRight = glm::normalize(glm::cross(WorldUp, myDirection));
 	myUp = glm::cross(myDirection, myRight);
 	myView = glm::lookAt(myPosition, myPosition + myDirection, myUp);
-
+	//GetViewMatrix();
 	mouse_callback(lastX, lastY);
 
 }
@@ -188,18 +188,7 @@ void Camera::mouse_callback(double xpos, double ypos)
 	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
 	direction.y = sin(glm::radians(pitch));
 	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-	//myDirection = glm::normalize(direction);
-	
-	
 
-	
-	//myCamera->myView = glm::lookAt(direction, direction, myCamera->myFront, myCamera->myUp);
-	//myView = glm::lookAt(myPosition, myPosition + myFront, myUp);
-	/*myCamera->myRight = glm::normalize(glm::cross(direction, WorldUp));
-	myCamera->myUp = glm::normalize(glm::cross(myCamera->myRight, direction));*/
-
-
-	
 }
 
 Camera* Camera::GetInstance()
@@ -210,27 +199,5 @@ Camera* Camera::GetInstance()
 	}
 	return Camera::Instance;
 }
-
-
-
-//void Camera::Cursor_enter_callback(GLFWwindow* window, int entered)
-//{
-//	//cursor_enter_callback(window, entered);
-//	Entered = entered;
-//}
-//
-//void Camera::cursor_enter_callback(GLFWwindow* window,int entered)
-//{
-//	
-//	if (entered)
-//	{
-//		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-//		//mouseOutsideWindow = false;
-//	}
-//	else
-//	{
-//		//mouseOutsideWindow = true;
-//	}
-//}
 
 

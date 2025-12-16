@@ -19,13 +19,13 @@ void Lighting::Use(Camera* aCamera, Shader* shader)
 	unsigned int SCR_WIDTH = 1920;
 	unsigned int SCR_HEIGHT = 1080;
 	//shader->SetVec3("NoLight.direction", aCamera->projection);
-	shader->SetVec3("viewPos", aCamera->myPosition);
+	//shader->SetVec3("viewPos", aCamera->myPosition);
 	shader->SetVec3("specularStrength", glm::vec3(1.5f, 1.5, 1.5));
 	//shader->SetInt("shadowMap", 0);
 	//shader->SetInt("depthMap", 1);
-	glm::mat4 view = aCamera->GetViewMatrix();
-	shader->SetMatrix("view", view);
 	
+
+
 	/*GL_CHECK(glGenTextures(1, &depthmap));
 	GL_CHECK(glBindTexture(GL_TEXTURE_2D, depthmap));
 	GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,

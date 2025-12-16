@@ -35,6 +35,7 @@ public:
 	float cameraViewRange;
 	float myWidth;
 	float myHeight;
+	float zoom = 0;
 
 	float yaw = -90.0f;
 	float pitch = 0;
@@ -45,6 +46,7 @@ public:
 
 	void cursor_enter_callback(GLFWwindow* window,int entered);
 
+
 	float sensitivity = 0.1f;
 
 	bool TabbedIn = true;
@@ -54,7 +56,7 @@ public:
 	
 	glm::mat4 GetViewMatrix()
 	{
-		return glm::lookAt(myPosition, myPosition + myFront, myUp);
+		return glm::lookAt(myPosition, myPosition + myDirection, myUp);
 	}
 
 private:

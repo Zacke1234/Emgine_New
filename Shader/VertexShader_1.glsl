@@ -20,6 +20,7 @@ out vec3 FragPos;
     out mat3 TBN;
     out vec3 Normal;
     out vec4 FragPosLightSpace;
+    //out mat4 view;
 
 uniform vec3 lightPos; // we now define the uniform in the vertex shader and pass the 'view space' lightpos to the fragment shader. lightPos is currently in world space.
 uniform mat4 view;
@@ -61,8 +62,8 @@ void main()
      FragPosLightSpace = lightSpaceMatrix * vec4(FragPos, 1.0);
      // lightSpaceMatrix
    
-     viewPos = vec3(view * transform * vec4(aPos, 1.0));
-     //gl_FragColor = texture2D(ourColor, TexCoord) * vec4(Color, 1.0);
+     viewPos = vec3(view * transform); // something wrong here? This is the thing that is controlling the specular
+ 
      gl_Position = projection * view * transform * lightSpaceMatrix vec4(FragPos, 1.0); 
    
    

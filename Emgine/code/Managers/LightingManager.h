@@ -8,7 +8,7 @@ public:
 
 	LightData* InitDefaultLighting();
 	LightData* Create(std::string name = "newLight", Shader* shader = NULL, LightData* light = NULL);
-	LightData* InitialiseLightData(Shader* shader, LightData* aLightData);
+	LightData* InitialiseLightData(Shader* shader, LightData* aLightData, Camera* aCamera);
 	void Destroy(Lighting* light, LightData* lightData);
 	
 	LightData* SetDirectional(LightData* aLightData, Object* test);

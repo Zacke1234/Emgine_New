@@ -272,7 +272,7 @@ void LightingManager::SetFragDir(Shader* shader, LightData* aLightData)
 	
 }
 
-LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLightData)
+LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLightData, Camera* aCamera)
 {
 	
 	
@@ -285,74 +285,20 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 	
 	//glm::mat4 lightProjection = ; // X, Y, Z, W ?
 	//// the light wouldn't have this if it's a point light, cause point light is not directional
-	aLightData->OrthographicProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, aLightData->near_plane, aLightData->far_plane);
-	aLightData->view = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f),
-		glm::vec3(0.0f, 0.0f, 0.0f),
-		glm::vec3(0.0f, 1.0f, 0.0f));
-	//glm::mat4 lightSpaceMatrix = aLightData->projection; //* aLightData->view;
 
-	switch (aLightData->LightVar)
-	{
-	case 0:
-
-		//std::cout << "Null light" << std::endl;
-		/*shader->SetVec3("baseLight.position", { 0,0,0 });
-		shader->SetVec3("baseLight.direction", { 0,0,0 });
-		shader->SetFloat("baseLight.cutOff", 0.0f);
-		shader->SetFloat("baseLight.outerCutOff", 0.0f);
-		shader->SetFloat("baseLight.constant", 0.0f);
-		shader->SetFloat("baseLight.linear", 0.0f);
-		shader->SetFloat("baseLight.quadratic", 0.0f);
-
-		shader->SetVec3("baseLight.ambient", { 0,0,0 });
-		shader->SetVec3("baseLight.diffuse", { 0,0,0 });
-		shader->SetVec3("baseLight.specular", { 0,0,0 });*/
-		break;
-	case 1:
-		//std::cout << "Point light" << std::endl;
-		shader->SetInt("NR_POINT_LIGHTS", LightData::pointLights.size());
-		PointLightShaderSetting(shader, aLightData);
-		
-		
-		
-		shader->SetVec3("lightColor", glm::vec3(1.0f, 1.01, 1.0f));
-
-		//shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
-
-		break;
-	case 2:
-		
-		//std::cout << "Directional light" << std::endl;
-		shader->SetInt("NR_DIR_LIGHTS", LightData::dirLights.size());
-		DirectionalLightSetting(shader, aLightData);
-		//SetFragDir(shader, aLightData);
+	//glm::mat4 view = aCamera->GetViewMatrix();
+	//shader->SetMatrix("view", view);
 	
-		shader->SetVec3("lightColor", glm::vec3(1.0f, 1.01, 1.0f));
-
-		//shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
 	
+	shader->SetInt("NR_POINT_LIGHTS", LightData::pointLights.size());
+	PointLightShaderSetting(shader, aLightData);
 
-		break;
-	case 3:
-		//std::cout << "Spot light" << std::endl;
-		shader->SetInt("NR_SPOT_LIGHTS", LightData::spotLights.size());
-		SpotLightShaderSetting(shader, aLightData);
+	shader->SetInt("NR_DIR_LIGHTS", LightData::dirLights.size());
+	DirectionalLightSetting(shader, aLightData);
 
-		//SetFragSpot(shader, aLightData);
-		// gotta take in and set materials from and into glsl and the meshes/objects.
+	shader->SetInt("NR_SPOT_LIGHTS", LightData::spotLights.size());
+	SpotLightShaderSetting(shader, aLightData);
 
-		shader->SetVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-		
-
-		//shader->SetMatrix("lightSpaceMatrix", lightSpaceMatrix);
-	
-		
-		break;
-	default:
-		
-		//std::cout << "Default" << std::endl;
-		break;
-	}
 
 	
 
