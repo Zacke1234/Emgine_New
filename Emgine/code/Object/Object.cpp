@@ -333,6 +333,7 @@ void Object::DrawObject(Camera* aCamera, Shader* myShader)
 
 		MyShader->SetMatrix("transform", trans);
 		MyShader->SetMatrix("view", aCamera->myView);
+		
 		MyShader->SetMatrix("projection", aCamera->projection);
 
 		

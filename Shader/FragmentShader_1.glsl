@@ -21,6 +21,12 @@ uniform sampler2D shadowMap;
 uniform sampler2D normalMap; 
 uniform sampler2D diffuseTexture;
 
+uniform int NumDirectionalLights;
+uniform int NumPointLights;
+uniform int NumSpotLights;
+
+
+
 struct BasicLight {
 // dir
     vec3 direction;
@@ -46,8 +52,6 @@ vec3 rgb_normal = Normal * 0.5 + 0.5; // transforms from [-1,1] to [0,1]
 
 //layout (location = 1) out BasicLight baseLight;
 
-
-
 struct DirectionalLight {
     
     vec3 direction;
@@ -56,8 +60,8 @@ struct DirectionalLight {
     vec3 diffuse;
     vec3 specular;
 };
-#define NR_DIR_LIGHTS 1
-uniform DirectionalLight dirLight[NR_DIR_LIGHTS];
+#define NR_DIR_LIGHTS 10
+uniform DirectionalLight dirLight [NR_DIR_LIGHTS];
 
 
 struct PointLight{
@@ -70,8 +74,8 @@ struct PointLight{
     float linear;
     float quadratic;
 };
-#define NR_POINT_LIGHTS 1
-uniform PointLight pointLight[NR_POINT_LIGHTS];
+#define NR_POINT_LIGHTS 10
+uniform PointLight pointLight [NR_POINT_LIGHTS];
 
 
 struct SpotLight{
@@ -89,11 +93,9 @@ vec3 diffuse;
 vec3 specular;
 
 };
-#define NR_SPOT_LIGHTS 1
-uniform SpotLight spotLight[NR_SPOT_LIGHTS];
+#define NR_SPOT_LIGHTS 10
+uniform SpotLight spotLight [NR_SPOT_LIGHTS];
  
-
-int test = 0;
 
 vec3 CalculateDirLight(DirectionalLight dirLight, vec3 normal, vec3 viewDir, float shadow);
 
@@ -109,14 +111,6 @@ struct Material {
     vec3 objectColor;
 };
 uniform Material material;
-
-//in VS_OUT {
-//    vec3 FragPos; 
-//    vec2 TexCoord;
-//    mat3 TBN;
-//    vec3 Normal;
-//    vec4 FragPosLightSpace;
-//} fs_in; 
 
     int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 
@@ -139,10 +133,6 @@ uniform Material material;
     }
     //out vec2 TexCoords;
     float shadow = ShadowCalculation(FragPosLightSpace);
-
-    int NR_DIRLIGHTS;
-    int NR_POINTLIGHTS;
-    int NR_SPOTLIGHTS;
 
      vec3 CalculateDirLight(DirectionalLight dirLight, vec3 normal, vec3 viewDir, float shadow)
      { 
@@ -274,20 +264,20 @@ void main()
 //    lighting += CalculatePointLight(norm, FragPos, viewDir);
 //    lighting += CalcSpotLight(norm, FragPos, viewDir);
 ////    
- 
+
       
 //       
-       for(int i = 0; i < NR_DIR_LIGHTS; i++)
+       for(int i = 0; i < NumDirectionalLights; i++)
        {
        lighting += CalculateDirLight(dirLight[i], norm, viewDir, shadow);
        }
 
-       for(int i = 0; i < NR_SPOT_LIGHTS; i++)
+       for(int i = 0; i < NumSpotLights; i++)
        {
        lighting +=  CalcSpotLight(spotLight[i], norm, FragPos, viewDir, shadow);
        }
 
-       for(int i = 0; i < NR_POINT_LIGHTS; i++)
+       for(int i = 0; i < NumPointLights; i++)
        {
        lighting +=  CalculatePointLight(pointLight[i], norm, FragPos, viewDir, shadow);
        }

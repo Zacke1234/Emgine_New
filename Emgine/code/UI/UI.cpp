@@ -378,8 +378,8 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 		ImGui::Text("Material properties");
 		
 		ImGui::DragInt("Diffuse", &matDiffuse, step, 0, 1);
-		ImGui::DragInt("Specular", &matSpecular, step, 0, 100);
-		ImGui::DragInt("Shininess", &matShininess, step, 0, 100);
+		ImGui::DragInt("Specular", &matSpecular, step, 0, 1000);
+		ImGui::DragInt("Shininess", &matShininess, step, 0, 1000);
 		ImGui::DragFloat3("Color", &matColor[0], step, step);
 		
 	}

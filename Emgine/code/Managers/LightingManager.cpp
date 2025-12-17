@@ -22,18 +22,20 @@ int PointLightShaderSetting(Shader* shader, LightData* aLightData) // done
 	
 
 
-	for (int lObjs = 0; lObjs <= LightData::pointLights.size(); ++lObjs)
+	for (int lObjs = 0; lObjs < LightData::pointLights.size(); lObjs++)
 	{
 
 		//std::string PlightPos = "Plight["+lObjs + "].position";
 		//
 		//std::cout << lObjs <<< "\n";
 		std::string number = std::to_string(lObjs);
+		
 		//shader->SetInt("NR_POINTLIGHTS", lObjs);
 		//shader->SetInt("PLight[" + number + "]", 0.0f);
+		shader->SetInt("NumPointLights", lObjs);
 		shader->SetFloat("pointLight[" + number + "].constant", aLightData->constant);
 		shader->SetFloat("pointLight[" + number + "].linear", aLightData->linear);
-		shader->SetFloat("PLight[" + number + "].quadratic", aLightData->quadtric);
+		shader->SetFloat("pointLight[" + number + "].quadratic", aLightData->quadtric);
 
 		std::string temp1 = "pointLight[";  temp1.append(number);
 		std::string temp2 = "pointLight["; temp2.append(number);
@@ -77,6 +79,8 @@ int SpotLightShaderSetting(Shader* shader, LightData* aLightData)
 		//std::cout << lObjs <<< "\n";
 		std::string number = std::to_string(lObjs);
 		//shader->SetInt("NR_SPOTLIGHTS", lObjs);
+		
+		shader->SetInt("NumSpotLights", LightData::spotLights.size());
 		shader->SetFloat("spotLight[" + number + "].constant", aLightData->constant);
 		shader->SetFloat("spotLight[" + number + "].linear", aLightData->linear);
 		shader->SetFloat("spotLight[" + number + "].quadratic", aLightData->quadtric);
@@ -126,7 +130,9 @@ int DirectionalLightSetting(Shader* shader, LightData* aLightData)
 		//
 		//std::cout << lObjs <<< "\n";
 		std::string number = std::to_string(lObjs);
+
 		//shader->SetInt("NR_DIRLIGHTS", lObjs);
+		shader->SetInt("NumDirectionalLights", LightData::dirLights.size());
 		shader->SetFloat("dirLight[" + number + "].constant", aLightData->constant);
 		shader->SetFloat("dirLight[" + number + "].linear", aLightData->linear);
 		shader->SetFloat("dirLight[" + number + "].quadratic", aLightData->quadtric);
@@ -157,7 +163,7 @@ int DirectionalLightSetting(Shader* shader, LightData* aLightData)
 		shader->SetVec3(direction.c_str(), aLightData->lightDir);
 
 		//shader->SetMatrix(uniform.c_str(), lObjs);
-		std::cout << "Directional lights: " + number << std::endl;
+		//std::cout << "Directional lights: " + number << std::endl;
 
 
 	}
@@ -227,52 +233,8 @@ LightData* LightingManager::SetSpot(LightData* aLightData, Object* test)
 }
 
 glm::vec3 zeros = { 0.0f,0.0f,0.0f };
-void LightingManager::SetFragSpot(Shader* shader, LightData* aLightData)
-{
-	shader->SetInt("NR_SPOT_LIGHTS", LightData::spotLights.size());
-	
-	shader->SetVec3("spotLight[0].position", aLightData->lightPos);
-	shader->SetVec3("spotLight[0].direction", aLightData->lightDir);
-	shader->SetFloat("spotLight[0].cutOff", aLightData->cutOff);
-	shader->SetFloat("spotLight[0].outerCutOff", aLightData->outerCutOff);
-	shader->SetFloat("spotLight[0].constant", aLightData->constant);
-	shader->SetFloat("spotLight[0].linear", aLightData->linear);
-	shader->SetFloat("spotLight[0].quadratic", aLightData->quadtric);
 
-	shader->SetVec3("spotLight[0].ambient", aLightData->ambient);
-	shader->SetVec3("spotLight[0].diffuse", aLightData->diffuse);
-	shader->SetVec3("spotLight[0].specular", aLightData->specular);
-	
-}
-
-void LightingManager::SetFragPoint(Shader* shader, LightData* aLightData)
-{
-	
-	shader->SetVec3("pointLight[0].ambient", aLightData->ambient);
-	shader->SetVec3("pointLight[0].diffuse", aLightData->diffuse);
-	shader->SetVec3("pointLight[0].specular", aLightData->specular);
-
-	shader->SetVec3("pointLight[0].position", aLightData->lightPos);
-
-	shader->SetFloat("pointLight[0].constant", aLightData->constant);
-	shader->SetFloat("pointLight[0].linear", aLightData->linear);
-	shader->SetFloat("pointLight[0].quadratic", aLightData->quadtric);
-
-}
-
-void LightingManager::SetFragDir(Shader* shader, LightData* aLightData)
-{
-	shader->SetInt("NR_DIR_LIGHTS", LightData::dirLights.size());
-	shader->SetVec3("dirLight[0].ambient", aLightData->ambient);
-	shader->SetVec3("dirLight[0].diffuse", aLightData->diffuse);
-	shader->SetVec3("dirLight[0].specular", aLightData->specular);
-
-	shader->SetVec3("dirLight[0].direction", aLightData->lightDir);
-
-	
-}
-
-LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLightData, Camera* aCamera)
+LightData* LightingManager::RunLightData(Shader* shader, LightData* aLightData, Camera* aCamera)
 {
 	
 	
@@ -290,13 +252,13 @@ LightData* LightingManager::InitialiseLightData(Shader* shader, LightData* aLigh
 	//shader->SetMatrix("view", view);
 	
 	
-	shader->SetInt("NR_POINT_LIGHTS", LightData::pointLights.size());
+	//glUniform1f(aLightData->, )
 	PointLightShaderSetting(shader, aLightData);
 
-	shader->SetInt("NR_DIR_LIGHTS", LightData::dirLights.size());
+	
 	DirectionalLightSetting(shader, aLightData);
 
-	shader->SetInt("NR_SPOT_LIGHTS", LightData::spotLights.size());
+	
 	SpotLightShaderSetting(shader, aLightData);
 
 

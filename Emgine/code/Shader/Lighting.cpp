@@ -23,8 +23,12 @@ void Lighting::Use(Camera* aCamera, Shader* shader)
 	shader->SetVec3("specularStrength", glm::vec3(1.5f, 1.5, 1.5));
 	//shader->SetInt("shadowMap", 0);
 	//shader->SetInt("depthMap", 1);
+	//shader->SetMatrix("viewPos", aCamera->myView);
+	//shader->SetMatrix("lightSpaceMatrix", aCamera->GetViewMatrix());
 	
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	/*GL_CHECK(glGenTextures(1, &depthmap));
 	GL_CHECK(glBindTexture(GL_TEXTURE_2D, depthmap));

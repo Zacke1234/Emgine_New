@@ -35,6 +35,8 @@ std::string Shader::LoadShader(const char* aPath)
 
 Shader::Shader(const char* VertexPath, const char* FragmantPath)
 {
+	
+	
 
 	//"../Shader/FragmentShader_1.glsl"
 	unsigned int shaderProgram;
@@ -51,6 +53,8 @@ Shader::Shader(const char* VertexPath, const char* FragmantPath)
 	const char* fragmantCode = fragmantCodeString.c_str();
 	GL_CHECK(glShaderSource(fragmantShader, 1, &fragmantCode, NULL));
 
+	//std::vector<std::string> lines = fragmantCode.();
+
 	GL_CHECK(glCompileShader(fragmantShader));
 	shaderProgram = glCreateProgram();
 
@@ -59,11 +63,18 @@ Shader::Shader(const char* VertexPath, const char* FragmantPath)
 	GL_CHECK(glLinkProgram(shaderProgram));
 	ShaderProgram = shaderProgram;
 
+	
+
 	int result;
 	int vertexResult;
 	char Log[512];
 	GL_CHECK(glGetShaderiv(fragmantShader, GL_COMPILE_STATUS, &result));
 	GL_CHECK(glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &vertexResult));
+	//if (fragmantCode == "#define NR_POINT_LIGHTS")
+	//{
+	//	int b = 0;
+	//}
+
 	if (!result)
 	{
 		GL_CHECK(glGetShaderInfoLog(fragmantShader, 512, NULL, Log));

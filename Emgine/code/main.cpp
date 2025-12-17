@@ -331,6 +331,7 @@ int main()
 		myLightingManager->Create("SceneLight", myShaderManager->DefaultShader, myLightingManager->DefaultLighting),
 		NULL);
 
+
 	myObjectManager->CreateCamera("SceneCamera",
 		NULL,
 		NULL,
@@ -369,7 +370,7 @@ int main()
 		for (auto& lightObj : LightObject::LightEntities)
 		{
 
-			myLightingManager->InitialiseLightData(myShaderManager->DefaultShader, lightObj->myLightData, myCamera);
+			myLightingManager->RunLightData(myShaderManager->DefaultShader, lightObj->myLightData, myCamera);
 		}
 		
 		//Drawcall objects
