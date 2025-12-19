@@ -5,9 +5,16 @@
 #include <gtc/type_ptr.hpp>
 #pragma once
 
-std::vector<LightData*> LightData::dirLights;
-std::vector<LightData*> LightData::spotLights;
-std::vector<LightData*> LightData::pointLights;
+std::vector<LightData*> Lighting::dirLights;
+std::vector<LightData*> Lighting::spotLights;
+std::vector<LightData*> Lighting::pointLights;
+std::vector<glm::vec3*> Lighting::pointLightPositions;
+std::vector<glm::vec3*> Lighting::speculars;
+std::vector<glm::vec3*> Lighting::diffuses;
+std::vector<glm::vec3*> Lighting::ambients;
+std::vector<float*> Lighting::constants;
+std::vector<float*> Lighting::linears;
+std::vector<float*> Lighting::quadtrics;
 
 Lighting::Lighting()
 {

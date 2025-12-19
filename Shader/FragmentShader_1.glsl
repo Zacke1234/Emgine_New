@@ -60,8 +60,9 @@ struct DirectionalLight {
     vec3 diffuse;
     vec3 specular;
 };
+
 #define NR_DIR_LIGHTS 10
-uniform DirectionalLight dirLight [NR_DIR_LIGHTS];
+uniform DirectionalLight dirLight[NR_DIR_LIGHTS];
 
 
 struct PointLight{
@@ -75,7 +76,7 @@ struct PointLight{
     float quadratic;
 };
 #define NR_POINT_LIGHTS 10
-uniform PointLight pointLight [NR_POINT_LIGHTS];
+uniform PointLight pointLight[NR_POINT_LIGHTS];
 
 
 struct SpotLight{
@@ -94,7 +95,7 @@ vec3 specular;
 
 };
 #define NR_SPOT_LIGHTS 10
-uniform SpotLight spotLight [NR_SPOT_LIGHTS];
+uniform SpotLight spotLight[NR_SPOT_LIGHTS];
  
 
 vec3 CalculateDirLight(DirectionalLight dirLight, vec3 normal, vec3 viewDir, float shadow);

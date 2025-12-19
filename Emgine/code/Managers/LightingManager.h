@@ -3,7 +3,8 @@
 class LightingManager
 {
 public: 
-
+	
+	
 	LightData* DefaultLighting;
 
 	LightData* InitDefaultLighting();

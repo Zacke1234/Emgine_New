@@ -29,9 +29,6 @@ public:
 
 		
 		
-		static std::vector<LightData*> dirLights;
-		static std::vector<LightData*> spotLights;
-		static std::vector<LightData*> pointLights;
 
 		float linear = 1; 
 		float quadtric = 1; 
@@ -64,6 +61,16 @@ public:
 	//LightData* myLightData
 	
 
-	
+	static std::vector<glm::vec3*> pointLightPositions;
+	static std::vector<glm::vec3*> speculars;
+	static std::vector<glm::vec3*> diffuses;
+	static std::vector<glm::vec3*> ambients;
+	static std::vector<float*> constants;
+	static std::vector<float*> linears;
+	static std::vector<float*> quadtrics;
+
+	static std::vector<LightData*> dirLights;
+	static std::vector<LightData*> spotLights;
+	static std::vector<LightData*> pointLights;
 };
 

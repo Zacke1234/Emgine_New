@@ -170,6 +170,8 @@ int uiObjectList(UI* ui)
 
 			if (Object::Entities[Object::SelectedEntity]->ObjType == 1)
 			{
+				/*glm::vec3 testing = {0,0,0};
+				LightingManager::pointLightPositions.push_back(&testing);*/
 				ui->lightAmbient = Object::Entities[i]->myLightData->ambient;
 				ui->lightDiffuse = Object::Entities[i]->myLightData->diffuse;
 				ui->lightspecular = Object::Entities[i]->myLightData->specular;
