@@ -15,6 +15,12 @@ std::vector<glm::vec3*> Lighting::ambients;
 std::vector<float*> Lighting::constants;
 std::vector<float*> Lighting::linears;
 std::vector<float*> Lighting::quadtrics;
+std::vector<float*> Lighting::cutOffs;
+std::vector<float*> Lighting::outerCutOffs;
+std::vector<glm::vec3*> Lighting::DirLightDirections;
+std::vector<glm::vec3*> Lighting::spotLightPositions;
+std::vector<glm::vec3*> Lighting::spotLightDirections;
+
 
 Lighting::Lighting()
 {
@@ -28,41 +34,31 @@ void Lighting::Use(Camera* aCamera, Shader* shader)
 	//shader->SetVec3("NoLight.direction", aCamera->projection);
 	//shader->SetVec3("viewPos", aCamera->myPosition);
 	shader->SetVec3("specularStrength", glm::vec3(1.5f, 1.5, 1.5));
-	//shader->SetInt("shadowMap", 0);
-	//shader->SetInt("depthMap", 1);
-	//shader->SetMatrix("viewPos", aCamera->myView);
-	//shader->SetMatrix("lightSpaceMatrix", aCamera->GetViewMatrix());
 	
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	/*GL_CHECK(glGenBuffers(1, &depthMapFBO));
 
-	/*GL_CHECK(glGenTextures(1, &depthmap));
 	GL_CHECK(glBindTexture(GL_TEXTURE_2D, depthmap));
 	GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
 		SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
 	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
 	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
 	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
-	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));*/
-
-	//GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
-	//GL_CHECK(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthmap, 0));
-	//GL_CHECK(glDrawBuffer(GL_NONE));
-	//GL_CHECK(glReadBuffer(GL_NONE));
-	//GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
-
-	//GL_CHECK(glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT));
-	//GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
-	//GL_CHECK(glClear(GL_DEPTH_BUFFER_BIT));
-	//GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
-
-	//GL_CHECK(glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT));
-	//GL_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-	//GL_CHECK(glBindTexture(GL_TEXTURE_2D, depthmap));
-
+	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
 	
-	
+	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
+	GL_CHECK(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthmap, 0));
+	GL_CHECK(glDrawBuffer(GL_NONE));
+	GL_CHECK(glReadBuffer(GL_NONE));
+	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+
+	GL_CHECK(glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT));
+	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
+	GL_CHECK(glClear(GL_DEPTH_BUFFER_BIT));
+	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+	GL_CHECK(glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT));
+	GL_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+	GL_CHECK(glBindTexture(GL_TEXTURE_2D, depthmap));*/
 
 }
 

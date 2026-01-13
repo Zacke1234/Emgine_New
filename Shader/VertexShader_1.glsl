@@ -64,7 +64,7 @@ void main()
    
      viewPos = vec3(view * transform); // something wrong here? This is the thing that is controlling the specular
  
-     gl_Position = projection * view * transform * lightSpaceMatrix vec4(FragPos, 1.0); 
+     gl_Position = projection * view * transform * vec4(aPos, 1.0); 
    
    
    

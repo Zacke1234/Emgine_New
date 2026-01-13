@@ -324,8 +324,8 @@ int main()
 	myObjectManager->FindAndSetProperties("Plane", pos, size, rotation);
 
 	myObjectManager->CreateLight("SceneLight",
-		NULL,
-		NULL,
+		cube,
+		wall,
 		myShaderManager->DefaultShader,
 		NULL,
 		myLightingManager->Create("SceneLight", myShaderManager->DefaultShader, myLightingManager->DefaultLighting),
