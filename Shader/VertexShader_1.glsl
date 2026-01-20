@@ -8,7 +8,6 @@ layout (location = 4) in vec3 aBitangent;
 
 //layout (location = 3) in vec3 aColor;
 
-out vec3 viewPos;
 
 
 out vec3 LightPos;
@@ -29,8 +28,6 @@ uniform mat4 projection;
 uniform mat4 lightSpaceMatrix;
 
 
-
-
 // mip mapping
 //out VS_OUT {
 //    vec3 FragPos;
@@ -44,6 +41,7 @@ uniform mat4 lightSpaceMatrix;
 
 void main()
 { 
+   
     // mip map
    vec3 T = normalize(vec3(transform * vec4(aTangent,   0.0)));
    vec3 B = normalize(vec3(transform * vec4(aBitangent, 0.0)));
@@ -62,7 +60,7 @@ void main()
      FragPosLightSpace = lightSpaceMatrix * vec4(FragPos, 1.0);
      // lightSpaceMatrix
    
-     viewPos = vec3(view * transform); // something wrong here? This is the thing that is controlling the specular
+    // viewPos = vec3(view * transform); // something wrong here? This is the thing that is controlling the specular
  
      gl_Position = projection * view * transform * vec4(aPos, 1.0); 
    

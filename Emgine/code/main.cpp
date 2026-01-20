@@ -324,8 +324,8 @@ int main()
 	myObjectManager->FindAndSetProperties("Plane", pos, size, rotation);
 
 	myObjectManager->CreateLight("SceneLight",
-		cube,
-		wall,
+		NULL,
+		NULL,
 		myShaderManager->DefaultShader,
 		NULL,
 		myLightingManager->Create("SceneLight", myShaderManager->DefaultShader, myLightingManager->DefaultLighting),
@@ -363,35 +363,28 @@ int main()
 		myTime->Run();
 
 		myShaderManager->DefaultShader->UseShader();
-	
-	
+		myLighting->Use(myCamera, myShaderManager->DefaultShader); // memory leak
 		
-	
+		//Drawcall objects
+		for (auto& o : Object::Entities)
+		{
+			o->Draw(myCamera, myShaderManager->DefaultShader);
+
+
+
+
+			//stage = MeshLoaded;
+		}
+		
 		for (auto& lightObj : LightObject::LightEntities)
 		{
 
 			myLightingManager->RunLightData(myShaderManager->DefaultShader, lightObj->myLightData, myCamera);
 		}
 		
-		//Drawcall objects
-		for (auto& o : Object::Entities)
-		{
-			o->Draw(myCamera, myShaderManager->DefaultShader);
-	
-		
-		
-			
-			//stage = MeshLoaded;
-		}
 
-		for (auto& m : Texture::materials)
-		{
-			
-		}
-		/*for (auto& cams : CameraObject::CameraEntities)
-		{
+		
 
-		}*/
 		Phys->Simulate(myTime->Deltatime, myTime);
 		
 		// render UI (after/ON TOP OF drawcall)
@@ -399,7 +392,7 @@ int main()
 
 		//update camera
 		update_camera(myCamera, myUI, window);
-		myLighting->Use(myCamera, myShaderManager->DefaultShader);
+		
 
 		// swaps front and back buffers
 		glfwSwapBuffers(window);

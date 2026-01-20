@@ -28,7 +28,11 @@ inline void CheckOpenGLError(const char* stmt, const char* fname, int line)
 float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
 std::vector<Texture*> Texture::textures;
 std::vector<Material*> Texture::materials;
-
+unsigned int depthmap = 0;
+unsigned int depthMapFBO = 0;
+const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+unsigned int SCR_WIDTH = 1920;
+unsigned int SCR_HEIGHT = 1080;
 Texture::Texture(const char* aPath, Material* mat = NULL)
 {
 	if (mat)
@@ -54,19 +58,7 @@ Texture::Texture(const char* aPath, Material* mat = NULL)
 	
 	GL_CHECK(glGenTextures(1, &TextureObject));
 	GL_CHECK(glBindTexture(GL_TEXTURE_2D, TextureObject));
-
-	
-	//GL_CHECK(glBindTexture(GL_TEXTURE_2D, mat->diffuse));
-
-	// set the texture wrapping parameters
-
-
-	
-	/*glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
-	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
+	GL_CHECK(glGenFramebuffers(1, &depthMapFBO));
 
 	if (data != NULL)
 	{
@@ -81,6 +73,8 @@ Texture::Texture(const char* aPath, Material* mat = NULL)
 		GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
 		GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 		msg = "Texture loaded in";
+
+		
 		
 	}
 	else

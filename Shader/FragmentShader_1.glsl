@@ -1,6 +1,6 @@
 ﻿#version 330 core
 
-in vec3 viewPos;
+uniform vec3 viewPos;
 in vec3 Normal;
 in vec2 TexCoord;
 in vec3 LightPos;
@@ -26,6 +26,14 @@ uniform int NumPointLights;
 uniform int NumSpotLights;
 
 //uniform mat4 lightSpaceMatrix;
+
+uniform float near_plane;
+uniform float far_plane;
+
+
+
+
+
 
 struct BasicLight {
 // dir
@@ -115,17 +123,30 @@ uniform Material material;
 
     int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 
-    float ShadowCalculation(vec4 fragPosLightSpace)
+    float ShadowCalculation(vec4 fragPosLightSpace, vec3 lightPos)
     {
         vec3 norm = normalize(Normal);
-        vec3 lightDir = normalize(baseLight.direction - FragPos);
+        vec3 lightDir = normalize(lightPos - FragPos);
         float bias = max(0.05 * (1.0 - dot(norm, lightDir)), 0.005);
         //float bias = 0.005;
         vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
         projCoords = projCoords * 0.5 + 0.5;
         float closestDepth = texture(shadowMap, projCoords.xy).r;
         float currentDepth = projCoords.z;
-        float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
+        float shadow = 0.0;
+        vec2 texelSize = 1.0 / textureSize(shadowMap,0 );
+        for(int x = -1; x <= 1; ++x)
+        {
+            for (int y = -1; y<=1; ++y)
+            {
+            float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
+            shadow += currentDepth - bias > closestDepth ? 1.0 : 0.0;
+            }
+
+        }
+        
+        shadow /= 9.0;
+
         if (projCoords.z > 1.0)
         shadow = 0.0;
         //float shadow = currentDepth > closestDepth ? 1.0 : 0.0;
@@ -133,10 +154,13 @@ uniform Material material;
         return shadow;
     }
     //out vec2 TexCoords;
-    float shadow = ShadowCalculation(FragPosLightSpace);
+   
+    
+   
 
-     vec3 CalculateDirLight(DirectionalLight dirLight, vec3 normal, vec3 viewDir, float shadow)
-     { 
+     vec3 CalculateDirLight(DirectionalLight dirLight, vec3 normal, vec3 viewDir)
+     {  
+          float shadow = ShadowCalculation(FragPosLightSpace, dirLight.direction);
           vec3 lightDir = normalize(-dirLight.direction);
           // diffuse shading
           float diff = max(dot(normal, lightDir), 0.0);
@@ -150,8 +174,9 @@ uniform Material material;
           return (ambient + (1.0 - shadow) * (diffuse + specular) * material.objectColor);
      }
 
-     vec3 CalculatePointLight(PointLight pointLight, vec3 normal, vec3 fragPos, vec3 viewDir, float shadow)
+     vec3 CalculatePointLight(PointLight pointLight, vec3 normal, vec3 fragPos, vec3 viewDir)
      { 
+        float shadow = ShadowCalculation(FragPosLightSpace, pointLight.position);
         vec3 lightDir = normalize(pointLight.position - fragPos);
         // diffuse shading
         float diff = max(dot(normal, lightDir), 0.0);
@@ -172,9 +197,9 @@ uniform Material material;
          //  return (ambient + diffuse + specular);
      }
 
-     vec3 CalcSpotLight(SpotLight spotLight, vec3 normal, vec3 fragPos, vec3 ViewDir, float shadow)
+     vec3 CalcSpotLight(SpotLight spotLight, vec3 normal, vec3 fragPos, vec3 ViewDir)
      {
-         
+        float shadow = ShadowCalculation(FragPosLightSpace, spotLight.position);
         vec3 lightDir = normalize(spotLight.position - fragPos);
         // diffuse shading
         float diff = max(dot(normal, lightDir), 0.0);
@@ -200,6 +225,12 @@ uniform Material material;
        
      }
 
+    float LinearizeDepth(float depth)
+    {
+        float z = depth * 2.0 - 1.0;
+        return (2.0 * near_plane * far_plane) / (far_plane + near_plane - z * (far_plane - near_plane));
+    }
+
 void main()
 {
     
@@ -212,25 +243,26 @@ void main()
       
        for(int i = 0; i < NumDirectionalLights; i++)
        {
-       lighting += CalculateDirLight(dirLight[i], norm, viewDir, shadow);
+       lighting += CalculateDirLight(dirLight[i], norm, viewDir);
        }
 
        for(int i = 0; i < NumSpotLights; i++)
        {
-       lighting +=  CalcSpotLight(spotLight[i], norm, FragPos, viewDir, shadow);
+       lighting +=  CalcSpotLight(spotLight[i], norm, FragPos, viewDir);
        }
 
        for(int i = 0; i < NumPointLights; i++)
        {
-       lighting +=  CalculatePointLight(pointLight[i], norm, FragPos, viewDir, shadow);
+       lighting +=  CalculatePointLight(pointLight[i], norm, FragPos, viewDir);
        }
 
 //       
     float depthValue = texture(depthMap, TexCoord).r;
+
     // texture(ourTexture, TexCoord) * 
     //FragColor = vec4(result, 1.0);  // depthvValue
     //FragColor = vec4(vec3(depthValue), 1.0) * vec4(result, 1.0);  // depthvValue
     //FragColor = vec4(vec3(lighting), 1.0);
     
-    FragColor = vec4(lighting, 1.0);
+    FragColor = vec4(lighting, 1.0f); // * vec4(vec3(LinearizeDepth(depthValue) / far_plane), 1.0);
 } 
