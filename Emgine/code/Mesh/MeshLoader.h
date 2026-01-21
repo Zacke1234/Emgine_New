@@ -48,7 +48,23 @@ public:
 	std::vector<glm::vec3> normals;
 	
 	std::vector<glm::vec2> uvs;
-	
+
+	/*bool operator==(const Mesh& other)
+	{
+			if(name != other.name)
+				return false;
+			if (faces != other.faces)
+				return false;
+			if (data != other.data)
+				return false;
+			if (elements != other.elements)
+				return false;
+			else
+			{
+				return true;
+			}
+
+	}*/
 
 	void InitialiseMesh();
 };

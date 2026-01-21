@@ -260,7 +260,7 @@ bool MeshLoader::BinParser(std::string bineFileName, Mesh* mesh)
 
 	// Parse the Binary file back into the human readable OBJ format and initialise the mesh with that exact data.
 
-	int dataLength = mesh->data.size();
+	int dataLength = mesh->data.size(); // redo this for the cache loading
 	int elementsLength = mesh->elements.size();
 	int positionLength = mesh->position.size();
 	int normalsLength = mesh->normals.size();

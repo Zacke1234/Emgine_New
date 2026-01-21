@@ -5,7 +5,8 @@
 
 #pragma once
 
-std::vector<std::string> MeshManager::MeshCache;
+std::vector<Mesh> MeshManager::MeshCache;
+std::vector<std::string> MeshManager::MeshList;
 MeshManager::MeshManager()
 {
 	meshLoader = new MeshLoader();
@@ -68,10 +69,22 @@ Mesh* MeshManager::LoadFromMeshCache(std::string fromPath, std::string name, Mes
 {
 	std::ifstream readObj(fromPath);
 	std::string BinaryPath = "resource\\bins\\" + name + ".bin";
-	if (meshLoader->ReadObjToBinary(fromPath, readObj, mesh))
+	for (auto& meshes : MeshCache)
 	{
-		meshLoader->BinParser(BinaryPath, mesh);
+		if (meshes.name == name)
+		{
+			mesh->data = meshes.data;
+			mesh->elements = meshes.elements;
+			mesh->normals = meshes.normals;
+			mesh->uvs = meshes.uvs;
+			mesh->faces = meshes.faces;
+			mesh->position = meshes.position;
+			break;
+			
+		}
+		
 	}
+	meshLoader->BinParser(BinaryPath, mesh);
 	
 	return mesh;
 }
@@ -86,28 +99,24 @@ Mesh* MeshManager::Create(std::string name, std::string path_end)
 	std::cout << "Mesh created: " << name << " from path: " << path + path_end << "\n";
 	
 	
+	// copy over the mesh from the mesh cache over to this mesh without any of the obj parsing
 
-	if (std::find(MeshCache.begin(), MeshCache.end(), name) != MeshCache.end())
+	if (std::find(MeshList.begin(), MeshList.end(), name) != MeshList.end())
 	{
-		mesh = LoadFromMeshCache((path + path_end).c_str(), name, mesh);
+		
+		LoadFromMeshCache((path + path_end).c_str(), name, mesh);
 		std::cout << "has mesh: " + name << std::endl;
 	}
 	else
 	{
-		MeshCache.push_back(name);
+		MeshList.push_back(name);
+		
 		mesh = LoadMesh((path + path_end).c_str(), name, mesh);
+		MeshCache.push_back(*mesh);
 		std::cout << "does not have mesh: " + name << std::endl;
 
 		
 	}
-
- 	
-	
-	
-
-	
-	
-	
 	return mesh;
 }
 
