@@ -4,7 +4,7 @@ class LightingManager
 {
 public: 
 	
-	
+	LightingManager();
 	LightData* DefaultLighting;
 
 	LightData* InitDefaultLighting();
@@ -16,6 +16,7 @@ public:
 	LightData* SetDirectional(LightData* aLightData, Object* test);
 	LightData* SetPoint(LightData* aLightData, Object* test = NULL);
 	LightData* SetSpot(LightData* aLightData, Object* test);
-	
+
+
 };
 

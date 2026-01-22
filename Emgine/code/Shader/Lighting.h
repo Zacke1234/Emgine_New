@@ -15,20 +15,20 @@ public:
 		};
 		float ambientStrength = 0.1f;
 		glm::vec3 lightPos = { 0,0,0 };
-		glm::vec3 lightDir = { 0,0,0 };
+		glm::vec3 lightDir = { 0,0,-1.0f };
 		
 		glm::vec3 ambient = { 1,1,1 };
 		glm::vec3 diffuse = { 1,1,1 };
 		glm::vec3 specular = {1,1,1};
 
-		glm::vec3 lightRight = glm::normalize(glm::cross(WorldUp, lightDir));
-		glm::vec3 lightUp = glm::cross(lightDir, lightRight);
+		glm::vec3 lightRight;
+		glm::vec3 lightUp;
 
 		float near_plane = 1.0f, far_plane = 7.5f;
-		glm::mat4 LightOrthographicProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-		glm::mat4 LightNormalPerspective = glm::perspective(glm::radians(1.0f), 1.0f, 0.1f, 0.0f);
+		glm::mat4 LightOrthographicProjection;
+		glm::mat4 LightNormalPerspective;
 
-		glm::mat4 view = glm::lookAt(lightPos, lightPos + lightDir, lightUp);
+		glm::mat4 view;
 
 		
 		
@@ -60,9 +60,8 @@ public:
 	unsigned int depthmap = 0;
 	unsigned int depthMapFBO = 0;
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
-	Lighting();
 	//std::vector<LightData> Lightdata;
-	void Use(Camera* aCamera, Shader* aShader);
+	
 	//LightData* myLightData
 	
 

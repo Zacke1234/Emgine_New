@@ -3,13 +3,17 @@
 uniform vec3 viewPos;
 in vec3 Normal;
 in vec2 TexCoord;
-in vec3 LightPos;
+
 in vec3 ourColor;
 in vec3 FragPos;
 in vec4 FragPosLightSpace;
+
 //out mat4 view;
 out vec4 FragColor;
+out vec4 FragDepth;
   
+//uniform mat4 lightSpaceMatrix;
+
 uniform vec3 specularStrength;
 uniform vec3 objColor;
 uniform vec3 lightColor;
@@ -125,22 +129,27 @@ uniform Material material;
 
     float ShadowCalculation(vec4 fragPosLightSpace, vec3 lightPos)
     {
-        vec3 norm = normalize(Normal);
-        vec3 lightDir = normalize(lightPos - FragPos);
-        float bias = max(0.05 * (1.0 - dot(norm, lightDir)), 0.005);
-        //float bias = 0.005;
         vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
         projCoords = projCoords * 0.5 + 0.5;
+        //
         float closestDepth = texture(shadowMap, projCoords.xy).r;
         float currentDepth = projCoords.z;
+
+        vec3 normal = normalize(Normal);
+        vec3 lightDir = normalize(lightPos - FragPos);
+        float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+        //float bias = 0.005;
+        
+        
+        
         float shadow = 0.0;
         vec2 texelSize = 1.0 / textureSize(shadowMap,0 );
         for(int x = -1; x <= 1; ++x)
         {
             for (int y = -1; y<=1; ++y)
             {
-            float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
-            shadow += currentDepth - bias > closestDepth ? 1.0 : 0.0;
+                float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
+                shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
             }
 
         }
@@ -148,19 +157,18 @@ uniform Material material;
         shadow /= 9.0;
 
         if (projCoords.z > 1.0)
-        shadow = 0.0;
+            shadow = 0.0;
         //float shadow = currentDepth > closestDepth ? 1.0 : 0.0;
 
         return shadow;
     }
+   
     //out vec2 TexCoords;
-   
-    
-   
-
+  
+    vec3 dir;
      vec3 CalculateDirLight(DirectionalLight dirLight, vec3 normal, vec3 viewDir)
      {  
-          float shadow = ShadowCalculation(FragPosLightSpace, dirLight.direction);
+          float shadow = ShadowCalculation(FragPosLightSpace, dir); // do i need multiple different fragPosLights? for each light type? to properly load shadows
           vec3 lightDir = normalize(-dirLight.direction);
           // diffuse shading
           float diff = max(dot(normal, lightDir), 0.0);
@@ -264,5 +272,8 @@ void main()
     //FragColor = vec4(vec3(depthValue), 1.0) * vec4(result, 1.0);  // depthvValue
     //FragColor = vec4(vec3(lighting), 1.0);
     
-    FragColor = vec4(lighting, 1.0f); // * vec4(vec3(LinearizeDepth(depthValue) / far_plane), 1.0);
+  
+    FragColor = vec4(lighting, 1.0); // lighting
+    FragDepth = vec4(vec3(LinearizeDepth(depthValue) / far_plane), 1.0); // perspective
+     
 } 

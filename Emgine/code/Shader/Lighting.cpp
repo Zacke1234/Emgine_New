@@ -22,19 +22,3 @@ std::vector<glm::vec3*> Lighting::spotLightPositions;
 std::vector<glm::vec3*> Lighting::spotLightDirections;
 
 
-Lighting::Lighting()
-{
-	
-}
-
-
-void Lighting::Use(Camera* aCamera, Shader* shader)
-{
-	
-
-	//shader->SetVec3("NoLight.direction", aCamera->projection);
-	
-	 // memory leak
-   
-}
-

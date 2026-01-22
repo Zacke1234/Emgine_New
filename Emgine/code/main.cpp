@@ -253,7 +253,6 @@ int static update_ui(UI* myUI, ShaderManager* myShader, ObjectManager* objManage
 
 
 
-
 int main()
 {
 	
@@ -307,7 +306,7 @@ int main()
 
 	myObjectManager->Create("Cube",
 		cube,
-		wall,
+		defaultTex,
 		myShaderManager->DefaultShader,
 		MyColliderManager->Create("CubeColl", cubeColl),
 		myRigidbodyManager->Create(0.96f, false)
@@ -315,7 +314,7 @@ int main()
 
 	myObjectManager->Create("Plane",
 		cube,
-		wall,
+		defaultTex,
 		myShaderManager->DefaultShader,
 		MyColliderManager->Create("PlaneColl", planeColl),
 		NULL()
@@ -340,9 +339,28 @@ int main()
 		myCamera,
 		NULL);
 
-	////myObjectManager->Find("cubeObj");
-
 	
+	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+	unsigned int SCR_WIDTH = 1920;
+	unsigned int SCR_HEIGHT = 1080;
+	unsigned int depthMapFBO;
+	unsigned int depthMap;
+	glGenFramebuffers(1, &depthMapFBO);
+	GL_CHECK(glGenTextures(1, &depthMap));
+	GL_CHECK(glBindTexture(GL_TEXTURE_2D, depthMap));
+	GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
+	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
+	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
+	float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
+	GL_CHECK(glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor));
+	// attach depth texture as FBO's depth buffer
+	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
+	GL_CHECK(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0));
+	GL_CHECK(glDrawBuffer(GL_NONE));
+	GL_CHECK(glReadBuffer(GL_NONE));
+	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 
 	GL_CHECK(glEnable(GL_DEPTH_TEST));
 	// loops until user closes window
@@ -362,31 +380,38 @@ int main()
 
 		myTime->Run();
 
+		/*glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+		glClear(GL_DEPTH_BUFFER_BIT);*/
+		/*glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, woodTexture);*/
 		myShaderManager->DefaultShader->UseShader();
-		myLighting->Use(myCamera, myShaderManager->DefaultShader); // memory leak
 		
+		
+		/*glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		
+		glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
+		for (auto& lightObj : LightObject::LightEntities)
+		{
+			myLightingManager->RunLightData(myShaderManager->DefaultShader, lightObj->myLightData, myCamera);
+		}
+
+
+
+
 		//Drawcall objects
 		for (auto& o : Object::Entities)
 		{
 			o->Draw(myCamera, myShaderManager->DefaultShader);
 
-
-
-
-			//stage = MeshLoaded;
 		}
-		
-		for (auto& lightObj : LightObject::LightEntities)
-		{
-
-			myLightingManager->RunLightData(myShaderManager->DefaultShader, lightObj->myLightData, myCamera);
-		}
-		
-
-		
+		/*glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, depthMap);*/
 
 		Phys->Simulate(myTime->Deltatime, myTime);
-		
+		/*glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, depthMap);*/
 		// render UI (after/ON TOP OF drawcall)
 		update_ui(myUI, myShaderManager, myObjectManager);
 
