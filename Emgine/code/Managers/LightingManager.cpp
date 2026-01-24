@@ -317,7 +317,7 @@ LightData* LightingManager::SetSpot(LightData* aLightData, Object* obj)
 }
 
 glm::vec3 zeros = { 0.0f,0.0f,0.0f };
-float near_plane = 1.0f, far_plane = 7.5f;
+float near_plane = 0.1f, far_plane = 7.5f;
 LightData* LightingManager::RunLightData(Shader* shader, LightData* aLightData, Camera* aCamera)
 {
 	
@@ -332,9 +332,8 @@ LightData* LightingManager::RunLightData(Shader* shader, LightData* aLightData, 
 	
 	glm::mat4 lightspaceMatrix = lightProjection * aLightData->view;
 
-	shader->SetInt("shadowMap", 1);
-	shader->SetInt("depthMap", 0);
-
+	
+	shader->SetVec3("viewPos", aCamera->myPosition);
 	shader->SetMatrix("lightSpaceMatrix", lightspaceMatrix);
 	shader->SetFloat("near_plane", near_plane);
 	shader->SetFloat("far_plane", far_plane);

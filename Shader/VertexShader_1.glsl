@@ -7,7 +7,7 @@ layout (location = 2) in vec2 aTexCoord;
 
 
 out vec3 ourColor;
-
+out vec3 viewPos;
 
 out vec3 FragPos;
 
@@ -48,8 +48,9 @@ void main()
      FragPosLightSpace = lightSpaceMatrix * vec4(FragPos, 1.0);
      // lightSpaceMatrix
    
-    // viewPos = vec3(view * transform); // something wrong here? This is the thing that is controlling the specular
+    viewPos = vec3(view * transform); 
  
+ // lightSpaceMatrix *
      gl_Position = projection * view * transform * vec4(aPos, 1.0); 
    
    

@@ -39,25 +39,7 @@ uniform float far_plane;
 
 
 
-struct BasicLight {
-// dir
-    vec3 direction;
 
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
-    // point
-    
-    
-    vec3 position;
-     float constant;
-    float linear;
-    float quadratic;
-    // spot
-    float cutOff;
-    float outerCutOff;
-};
-uniform BasicLight baseLight;
 
 // mip mapping
 vec3 rgb_normal = Normal * 0.5 + 0.5; // transforms from [-1,1] to [0,1] 
@@ -143,7 +125,7 @@ uniform Material material;
         
         
         float shadow = 0.0;
-        vec2 texelSize = 1.0 / textureSize(shadowMap,0 );
+        vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
         for(int x = -1; x <= 1; ++x)
         {
             for (int y = -1; y<=1; ++y)
@@ -168,7 +150,7 @@ uniform Material material;
     vec3 dir;
      vec3 CalculateDirLight(DirectionalLight dirLight, vec3 normal, vec3 viewDir)
      {  
-          float shadow = ShadowCalculation(FragPosLightSpace, dir); // do i need multiple different fragPosLights? for each light type? to properly load shadows
+         float shadow = ShadowCalculation(FragPosLightSpace, dir); // do i need multiple different fragPosLights? for each light type? to properly load shadows
           vec3 lightDir = normalize(-dirLight.direction);
           // diffuse shading
           float diff = max(dot(normal, lightDir), 0.0);
@@ -242,7 +224,7 @@ uniform Material material;
 void main()
 {
     
-
+     //float shadow = ShadowCalculation(FragPosLightSpace, pos, FragPos);
     vec3 norm = normalize(Normal);
 
     vec3 viewDir = normalize(viewPos - FragPos); // the viewer is always at (0,0,0) in view-space, so viewDir is (0,0,0) - Position => -Position
@@ -274,6 +256,6 @@ void main()
     
   
     FragColor = vec4(lighting, 1.0); // lighting
-    FragDepth = vec4(vec3(LinearizeDepth(depthValue) / far_plane), 1.0); // perspective
+    //FragDepth = vec4(vec3(LinearizeDepth(depthValue) / far_plane), 1.0); // perspective
      
 } 
