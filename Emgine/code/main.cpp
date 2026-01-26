@@ -150,9 +150,10 @@ int init_memory_tracker() {
 
 int init_managers() {
 	
+	myShaderManager = new ShaderManager();
 	myLightingManager = new LightingManager();
 	myMeshManager = new MeshManager;
-	myShaderManager = new ShaderManager();
+	
 	myTextureManager = new TextureManager();
 	MyColliderManager = new ColliderManager();
 	newLightdata = new LightData();
@@ -266,7 +267,7 @@ int main()
 	init_camera();
 
 
-
+	Shader* depthShader = new Shader("../Shader/ShadowMappingVS.glsl", "../Shader/ShadowMappingFS.glsl");
 	//Create Textures
 	Texture* wall = myTextureManager->Create("wall", "wall.jpg");
 	Texture* defaultTex = myTextureManager->Create("default", "Default 1.png");
@@ -338,8 +339,8 @@ int main()
 		NULL,
 		myCamera,
 		NULL);
-
 	
+	//myShaderManager->Create(depthShader, "../Shader/ShadowMappingVS.glsl", "../Shader/ShadowMappingFS.glsl");
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 	unsigned int SCR_WIDTH = 1920;
 	unsigned int SCR_HEIGHT = 1080;
@@ -362,6 +363,7 @@ int main()
 	GL_CHECK(glReadBuffer(GL_NONE));
 	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 
+	
 	GL_CHECK(glEnable(GL_DEPTH_TEST));
 	// loops until user closes window
 	while (!glfwWindowShouldClose(window))
@@ -395,16 +397,21 @@ int main()
 		for (auto& lightObj : LightObject::LightEntities)
 		{
 			myLightingManager->RunLightData(myShaderManager->DefaultShader, lightObj->myLightData, myCamera);
+			
 		}
-
-
-
+		
+		
 
 		//Drawcall objects
 		for (auto& o : Object::Entities)
 		{
 			o->Draw(myCamera, myShaderManager->DefaultShader);
 
+		}
+		depthShader->UseShader();
+		for (auto& lightObj : LightObject::LightEntities)
+		{
+			myLightingManager->UseShadowDepth(depthShader, lightObj->myLightData);
 		}
 		/*glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, depthMap);*/

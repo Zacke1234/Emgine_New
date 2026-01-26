@@ -51,7 +51,7 @@ void main()
     viewPos = vec3(view * transform); 
  
  // lightSpaceMatrix *
-     gl_Position = projection * view * transform * vec4(aPos, 1.0); 
+     gl_Position =  projection * view * transform * vec4(aPos, 1.0); 
    
    
    

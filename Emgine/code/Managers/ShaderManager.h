@@ -8,6 +8,6 @@ public:
 	Shader* DefaultShader;
 	Shader* InitDefaultShader();
 
-	Shader* Create(Shader* myShader);
+	Shader* Create(Shader* myShader, const char* VertexPath, const char* FragmantPath);
 };
 

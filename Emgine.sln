@@ -8,6 +8,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3130C039-D359-4762-B7C5-DAD4FF8F0AED}"
 	ProjectSection(SolutionItems) = preProject
 		Shader\FragmentShader_1.glsl = Shader\FragmentShader_1.glsl
+		Shader\ShadowMappingFS.glsl = Shader\ShadowMappingFS.glsl
+		Shader\ShadowMappingVS.glsl = Shader\ShadowMappingVS.glsl
 		Shader\VertexShader_1.glsl = Shader\VertexShader_1.glsl
 	EndProjectSection
 EndProject

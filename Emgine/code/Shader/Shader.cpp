@@ -35,8 +35,15 @@ std::string Shader::LoadShader(const char* aPath)
 
 Shader::Shader(const char* VertexPath, const char* FragmantPath)
 {
-	
-	
+	/*unsigned int shadowMappingFragmentShader;
+	unsigned int shadowMappingVertexShader;
+	unsigned int shaderShadowMappingProgram;
+
+	const char* vertexShadowMapping = "ShadowMappingVS.glsl";
+	const char* fragmentShadowMapping = "ShadowMappingFS.glsl";
+
+	LoadShader(vertexShadowMapping);
+	LoadShader(fragmentShadowMapping);*/
 
 	//"../Shader/FragmentShader_1.glsl"
 	unsigned int shaderProgram;

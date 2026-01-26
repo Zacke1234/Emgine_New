@@ -6,11 +6,11 @@ Shader* ShaderManager::InitDefaultShader()
 	return DefaultShader;
 }
 
-Shader* ShaderManager::Create(Shader* myShader)
+Shader* ShaderManager::Create(Shader* myShader, const char* VertexPath, const char* FragmantPath)
 {
 	
-	myShader = new Shader("../Shader/VertexShader_1.glsl", "../Shader/FragmentShader_1.glsl");
-	DefaultShader = myShader;
+	myShader = new Shader(VertexPath, FragmantPath);
+	//DefaultShader =+ myShader;
 	return myShader;
 }
 

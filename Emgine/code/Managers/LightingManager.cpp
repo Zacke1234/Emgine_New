@@ -175,6 +175,7 @@ LightingManager::LightingManager()
 {
 	
 
+
 }
 LightData* LightingManager::InitDefaultLighting()
 {
@@ -338,6 +339,7 @@ LightData* LightingManager::RunLightData(Shader* shader, LightData* aLightData, 
 	shader->SetFloat("near_plane", near_plane);
 	shader->SetFloat("far_plane", far_plane);
 
+	
 	PointLightShaderSetting(shader, aLightData);
 	DirectionalLightSetting(shader, aLightData);
 	SpotLightShaderSetting(shader, aLightData);
@@ -350,4 +352,15 @@ LightData* LightingManager::RunLightData(Shader* shader, LightData* aLightData, 
 void LightingManager::Destroy(Lighting* light, LightData* lightData)
 {
 	Destroy(light, lightData);
+}
+
+LightData* LightingManager::UseShadowDepth(Shader* shader, LightData* aLightData)
+{
+	aLightData->view = glm::lookAt(aLightData->lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane); // X, Y, Z, W ?
+
+	glm::mat4 lightspaceMatrix = lightProjection * aLightData->view;
+	shader->SetMatrix("lightSpaceMatrix", lightspaceMatrix);
+	shader->SetMatrix("transform", trans);
+	return 0;
 }
