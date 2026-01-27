@@ -107,7 +107,7 @@ void Physics::UpdateVisuals(Time* physicsTime)
 	glm::vec3 extents = { 1,1,1 };*/
 	for (auto& o : Object::Entities)
 	{
-		o->UpdateTransform();
+		//o->UpdateTransform();
 		if (!o->myRigidbody == NULL)
 		{
 			o->Position = o->myRigidbody->velocity;

@@ -65,7 +65,7 @@ public:
 	void Draw(Camera* aCamera, Shader* myShader);
 	void DrawCube(Camera* aCamera, Shader* myShader);
 	void DrawObject(Camera* aCamera, Shader* myShader);
-	void UpdateTransform();
+	void UpdateTransform(Shader* myShader);
 
 	glm::vec3 Position;
 	glm::vec3 Scale;

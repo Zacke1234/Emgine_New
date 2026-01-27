@@ -297,7 +297,7 @@ void Object::DrawCube(Camera* aCamera, Shader* myShader)
 	myCube->Draw(myShader, this, aCamera);
 }
 
-void Object::UpdateTransform()
+void Object::UpdateTransform(Shader* myShader)
 {
 	
 	trans = Math::identity4;
@@ -309,7 +309,8 @@ void Object::UpdateTransform()
 	trans = glm::rotate(trans, Rotation.z, glm::vec3(0, 0, 1));
 
 	trans = glm::scale(trans, Scale);
-
+	MyShader->SetMatrix("transform", trans);
+	
 	IsTransformValid = true; 
 }
 
@@ -326,12 +327,12 @@ void Object::DrawObject(Camera* aCamera, Shader* myShader)
 		{
 			/*thread T1(&Object::UpdateTransform);
 			T1.join();*/
-			UpdateTransform();
+			UpdateTransform(myShader);
 
 		}
 		
 
-		MyShader->SetMatrix("transform", trans);
+		//MyShader->SetMatrix("transform", trans);
 		MyShader->SetMatrix("view", aCamera->myView);
 		
 		MyShader->SetMatrix("projection", aCamera->projection);

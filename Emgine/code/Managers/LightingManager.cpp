@@ -1,4 +1,5 @@
 #include "LightingManager.h"
+
 #pragma once
 std::vector<LightData*> lightsList;
 //LightObject::LightEntities.size();
@@ -316,20 +317,42 @@ LightData* LightingManager::SetSpot(LightData* aLightData, Object* obj)
 	aLightData->LightVar = aLightData->SpotLight;
 	return aLightData;
 }
-
+glm::mat4 lightProjection;
 glm::vec3 zeros = { 0.0f,0.0f,0.0f };
-float near_plane = 0.1f, far_plane = 7.5f;
+float near_plane = 1.0f, far_plane = 7.5f;
+const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+glm::vec3 sceneboundsDiagonalLength = {100, 100, 100};
 LightData* LightingManager::RunLightData(Shader* shader, LightData* aLightData, Camera* aCamera)
 {
-	
-
+	glm::vec3 normalisedDirectionOfLight = glm::normalize(aLightData->lightDir);
+	glm::vec3 lightEyePos = glm::vec3(0.0f, 0.0f, 0.0f) - normalisedDirectionOfLight * sceneboundsDiagonalLength;
+	//glm::vec3 upVector = (abs(dot(normalisedDirectionOfLight, (0, 1, 0))) > 0.99) ? (0, 0, 1) : (0, 1, 0);
 	if (aLightData == NULL)
 	{
 		return 0;
 		aLightData = Object::Entities[Object::SelectedEntity]->myLightData;
 	}
-	aLightData->view = glm::lookAt(aLightData->lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
-	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane); // X, Y, Z, W ?
+	if (aLightData->LightVar == 2)
+	{
+		lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane); // X, Y, Z, W ?
+		aLightData->view = glm::lookAt(aLightData->lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+	}
+	if(aLightData->LightVar == 1)
+	{
+		
+		lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
+		
+		aLightData->view = glm::lookAt(normalisedDirectionOfLight, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+	}
+	if (aLightData->LightVar == 3)
+	{
+		
+		lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
+		
+		aLightData->view = glm::lookAt(lightEyePos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+	}
+	
+	
 	
 	glm::mat4 lightspaceMatrix = lightProjection * aLightData->view;
 
@@ -338,7 +361,7 @@ LightData* LightingManager::RunLightData(Shader* shader, LightData* aLightData, 
 	shader->SetMatrix("lightSpaceMatrix", lightspaceMatrix);
 	shader->SetFloat("near_plane", near_plane);
 	shader->SetFloat("far_plane", far_plane);
-
+	shader->SetInt("shadowMap", 1);
 	
 	PointLightShaderSetting(shader, aLightData);
 	DirectionalLightSetting(shader, aLightData);
@@ -358,9 +381,14 @@ LightData* LightingManager::UseShadowDepth(Shader* shader, LightData* aLightData
 {
 	aLightData->view = glm::lookAt(aLightData->lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 	glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane); // X, Y, Z, W ?
-
+	//glm::mat4 lightProjection = glm::perspective(glm::radians(0.0f), near_plane / far_plane, 0.1f, 100.0f);
 	glm::mat4 lightspaceMatrix = lightProjection * aLightData->view;
 	shader->SetMatrix("lightSpaceMatrix", lightspaceMatrix);
-	shader->SetMatrix("transform", trans);
+
+	shader->SetInt("depthMap", 0);
+	shader->SetFloat("near_plane", near_plane);
+	shader->SetFloat("far_plane", far_plane);
+
+	//shader->SetMatrix("transform", trans);
 	return 0;
 }

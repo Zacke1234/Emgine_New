@@ -382,18 +382,18 @@ int main()
 
 		myTime->Run();
 
-		/*glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-		glClear(GL_DEPTH_BUFFER_BIT);*/
-		/*glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, woodTexture);*/
+		glClear(GL_DEPTH_BUFFER_BIT);
+		glActiveTexture(GL_TEXTURE0);
+		//glBindTexture(GL_TEXTURE_2D, woodTexture);
 		myShaderManager->DefaultShader->UseShader();
 		
 		
-		/*glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		
 		glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		for (auto& lightObj : LightObject::LightEntities)
 		{
 			myLightingManager->RunLightData(myShaderManager->DefaultShader, lightObj->myLightData, myCamera);
@@ -417,8 +417,8 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, depthMap);*/
 
 		Phys->Simulate(myTime->Deltatime, myTime);
-		/*glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, depthMap);*/
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, depthMap);
 		// render UI (after/ON TOP OF drawcall)
 		update_ui(myUI, myShaderManager, myObjectManager);
 
