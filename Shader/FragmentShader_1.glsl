@@ -31,8 +31,7 @@ uniform int NumSpotLights;
 
 //uniform mat4 lightSpaceMatrix;
 
-uniform float near_plane;
-uniform float far_plane;
+
 
 
 
@@ -111,12 +110,13 @@ uniform Material material;
 
     float ShadowCalculation(vec4 fragPosLightSpace, vec3 lightPos)
     {
+        //vec3 fragToLight = FragPos - lightPos;
         // peform perspective divide
         vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
         // transform to [0,1] range
         projCoords = projCoords * 0.5 + 0.5;
         // get closest depth from light's perspective (using [0,1] range frogposlight as coords)
-        float closestDepth = texture(shadowMap, projCoords.xy).r;
+        float tclosestDepth = texture(shadowMap, projCoords.xy).r;
         // just get the depth of current fragment from lights perspective
         float currentDepth = projCoords.z;
 
@@ -225,11 +225,7 @@ uniform Material material;
        
      }
 
-    float LinearizeDepth(float depth)
-    {
-        float z = depth * 2.0 - 1.0;
-        return (2.0 * near_plane * far_plane) / (far_plane + near_plane - z * (far_plane - near_plane));
-    }
+   
 
 void main()
 {

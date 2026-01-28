@@ -45,11 +45,11 @@ void main()
     
      Normal = transpose(inverse(mat3(transform))) * aNormal;
      TexCoord = aTexCoord;
-     FragPosLightSpace = lightSpaceMatrix * vec4(FragPos, 1.0);
+     
      // lightSpaceMatrix
    
-    viewPos = vec3(view * transform); 
- 
+     viewPos = vec3(view * transform); 
+     FragPosLightSpace = lightSpaceMatrix * vec4(FragPos, 1.0);
  // lightSpaceMatrix *
      gl_Position =  projection * view * transform * vec4(aPos, 1.0); 
    

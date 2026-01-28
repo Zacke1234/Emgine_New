@@ -341,30 +341,16 @@ int main()
 		NULL);
 	
 	//myShaderManager->Create(depthShader, "../Shader/ShadowMappingVS.glsl", "../Shader/ShadowMappingFS.glsl");
-	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
-	unsigned int SCR_WIDTH = 1920;
-	unsigned int SCR_HEIGHT = 1080;
-	unsigned int depthMapFBO;
-	unsigned int depthMap;
-	glGenFramebuffers(1, &depthMapFBO);
-	GL_CHECK(glGenTextures(1, &depthMap));
-	GL_CHECK(glBindTexture(GL_TEXTURE_2D, depthMap));
-	GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
-	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
-	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
-	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
-	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
-	float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
-	GL_CHECK(glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor));
-	// attach depth texture as FBO's depth buffer
-	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
-	GL_CHECK(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0));
-	GL_CHECK(glDrawBuffer(GL_NONE));
-	GL_CHECK(glReadBuffer(GL_NONE));
-	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
-
 	
+
 	GL_CHECK(glEnable(GL_DEPTH_TEST));
+	myLightingManager->InitDepthMapping();
+
+	myShaderManager->DefaultShader->UseShader();
+	myShaderManager->DefaultShader->SetInt("shadowMap", 1);
+
+	depthShader->UseShader();
+	depthShader->SetInt("depthMap", 0);
 	// loops until user closes window
 	while (!glfwWindowShouldClose(window))
 	{
@@ -382,23 +368,17 @@ int main()
 
 		myTime->Run();
 
-		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-		glClear(GL_DEPTH_BUFFER_BIT);
-		glActiveTexture(GL_TEXTURE0);
+
+		
+		
 		//glBindTexture(GL_TEXTURE_2D, woodTexture);
+		
+		//depthShader->UseShader();
 		myShaderManager->DefaultShader->UseShader();
+
+		//myLightingManager->ShadowMapStep1(myShaderManager->DefaultShader);
 		
 		
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		
-		glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		for (auto& lightObj : LightObject::LightEntities)
-		{
-			myLightingManager->RunLightData(myShaderManager->DefaultShader, lightObj->myLightData, myCamera);
-			
-		}
 		
 		
 
@@ -408,17 +388,24 @@ int main()
 			o->Draw(myCamera, myShaderManager->DefaultShader);
 
 		}
+		for (auto& lightObj : LightObject::LightEntities)
+		{
+			myLightingManager->RunLightData(myShaderManager->DefaultShader, lightObj->myLightData, myCamera);
+
+		}
+		//myLightingManager->ShadowMapStep2(myShaderManager->DefaultShader);
 		depthShader->UseShader();
 		for (auto& lightObj : LightObject::LightEntities)
 		{
 			myLightingManager->UseShadowDepth(depthShader, lightObj->myLightData);
 		}
+
+		
 		/*glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, depthMap);*/
 
 		Phys->Simulate(myTime->Deltatime, myTime);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, depthMap);
+		
 		// render UI (after/ON TOP OF drawcall)
 		update_ui(myUI, myShaderManager, myObjectManager);
 
