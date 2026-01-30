@@ -28,11 +28,8 @@ inline void CheckOpenGLError(const char* stmt, const char* fname, int line)
 float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
 std::vector<Texture*> Texture::textures;
 std::vector<Material*> Texture::materials;
-unsigned int depthmap = 0;
-unsigned int depthMapFBO = 0;
-const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
-unsigned int SCR_WIDTH = 1920;
-unsigned int SCR_HEIGHT = 1080;
+
+
 Texture::Texture(const char* aPath, Material* mat = NULL)
 {
 	if (mat)
@@ -45,15 +42,16 @@ Texture::Texture(const char* aPath, Material* mat = NULL)
 		std::cout << "No material assigned to texture: " << aPath << "\n";
 	}
 
-	msg = "";
+	
 	//std::cout << "texture" << "\n";
 	//aPath = "Default 1.png";
-	int Channels = 0;
+	Channels = 0;
 	Width = 0;
 	Height = 0;
 	
+
 	unsigned char* data = stbi_load(aPath, &Width, &Height, &Channels, 0);
-	
+	texturePath = aPath;
 	//GL_CHECK(glEnable(GL_TEXTURE_2D));
 	
 	GL_CHECK(glGenTextures(1, &TextureObject));
@@ -72,7 +70,7 @@ Texture::Texture(const char* aPath, Material* mat = NULL)
 		// set texture filtering parameters
 		GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
 		GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-		msg = "Texture loaded in";
+		
 
 		
 		
@@ -80,7 +78,7 @@ Texture::Texture(const char* aPath, Material* mat = NULL)
 	else
 	{
 		std::cout
-			<< "unable to load image: "
+			<< "unable to load texture: "
 			<< stbi_failure_reason()
 			<< "\n";
 		//throw;

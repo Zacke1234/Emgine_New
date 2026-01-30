@@ -28,11 +28,12 @@ public:
 	//vector<Object*> Object::Entities;
 	bool IsValid() const { return TextureObject == 0; };
 
-	std::string msg;
+	std::string texturePath = "";
 	//Message* message = new Message(msg);
 	std::string name;
 	int Width = 0;
 	int Height = 0;
+	int Channels = 0;
 
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 	unsigned int TextureObject = 0;

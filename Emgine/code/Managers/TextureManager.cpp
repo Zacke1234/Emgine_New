@@ -10,6 +10,7 @@ Texture* TextureManager::Create(std::string name, std::string path_end)
 	
 	Texture* new_texture = new Texture((path + path_end).c_str(), mat);
 	new_texture->name = name; 
+	//new_texture->texturePath = (path.c_str() + *path_end.c_str());
 	
 	Texture::textures.push_back(new_texture);
 	Texture::materials.push_back(mat);

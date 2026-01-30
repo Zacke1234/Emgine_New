@@ -24,9 +24,8 @@ public:
 		glm::vec3 lightRight;
 		glm::vec3 lightUp;
 
-		float near_plane = 1.0f, far_plane = 7.5f;
-		glm::mat4 LightOrthographicProjection;
-		glm::mat4 LightNormalPerspective;
+		
+		
 
 		glm::mat4 view;
 

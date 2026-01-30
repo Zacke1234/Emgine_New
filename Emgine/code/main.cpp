@@ -344,7 +344,11 @@ int main()
 	
 
 	GL_CHECK(glEnable(GL_DEPTH_TEST));
-	myLightingManager->InitDepthMapping();
+	for (auto& textures : Texture::textures)
+	{
+		myLightingManager->InitDepthMapping(textures);
+	}
+	
 
 	myShaderManager->DefaultShader->UseShader();
 	myShaderManager->DefaultShader->SetInt("shadowMap", 1);
@@ -374,35 +378,49 @@ int main()
 		//glBindTexture(GL_TEXTURE_2D, woodTexture);
 		
 		//depthShader->UseShader();
-		myShaderManager->DefaultShader->UseShader();
+		
 
-		//myLightingManager->ShadowMapStep1(myShaderManager->DefaultShader);
 		
 		
 		
-		
-
-		//Drawcall objects
-		for (auto& o : Object::Entities)
-		{
-			o->Draw(myCamera, myShaderManager->DefaultShader);
-
-		}
-		for (auto& lightObj : LightObject::LightEntities)
-		{
-			myLightingManager->RunLightData(myShaderManager->DefaultShader, lightObj->myLightData, myCamera);
-
-		}
-		//myLightingManager->ShadowMapStep2(myShaderManager->DefaultShader);
+	
 		depthShader->UseShader();
 		for (auto& lightObj : LightObject::LightEntities)
 		{
 			myLightingManager->UseShadowDepth(depthShader, lightObj->myLightData);
 		}
 
+		myLightingManager->ShadowMapStep1(depthShader, myCamera);
 		
-		/*glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, depthMap);*/
+		
+
+		
+		
+		myShaderManager->DefaultShader->UseShader();
+		
+		
+		for (auto& lightObj : LightObject::LightEntities)
+		{
+			myLightingManager->RunLightData(myShaderManager->DefaultShader, lightObj->myLightData, myCamera);
+
+		}
+		depthShader->UseShader();
+
+		myLightingManager->ShadowMapStep2(depthShader);
+	
+		
+		myShaderManager->DefaultShader->UseShader();
+		//Drawcall objects
+		for (auto& o : Object::Entities)
+		{
+			o->Draw(myCamera, myShaderManager->DefaultShader);
+
+		}
+		myLightingManager->ShadowMapStep3();
+
+		
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, myLightingManager->depthMap);
 
 		Phys->Simulate(myTime->Deltatime, myTime);
 		

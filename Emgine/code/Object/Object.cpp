@@ -309,7 +309,7 @@ void Object::UpdateTransform(Shader* myShader)
 	trans = glm::rotate(trans, Rotation.z, glm::vec3(0, 0, 1));
 
 	trans = glm::scale(trans, Scale);
-	MyShader->SetMatrix("transform", trans);
+	//MyShader->SetMatrix("transform", trans);
 	
 	IsTransformValid = true; 
 }
@@ -332,10 +332,12 @@ void Object::DrawObject(Camera* aCamera, Shader* myShader)
 		}
 		
 
-		//MyShader->SetMatrix("transform", trans);
-		MyShader->SetMatrix("view", aCamera->myView);
+		myShader->SetMatrix("transform", trans);
+
 		
-		MyShader->SetMatrix("projection", aCamera->projection);
+		myShader->SetMatrix("view", aCamera->myView);
+		
+		myShader->SetMatrix("projection", aCamera->projection);
 
 		
 		if (myTexture != NULL)
@@ -348,7 +350,7 @@ void Object::DrawObject(Camera* aCamera, Shader* myShader)
 			
 			GL_CHECK(glActiveTexture(GL_TEXTURE1));
 			GL_CHECK(glBindTexture(GL_TEXTURE_2D, myTexture->TextureObject));
-			if (myTexture->myMaterial != NULL)
+			if (myTexture->myMaterial != NULL && myShader->ShaderProgram != 6)
 			{
 				MyShader->SetInt("material.diffuse", myTexture->myMaterial->diffuse);
 				MyShader->SetInt("material.specular", myTexture->myMaterial->specular);
