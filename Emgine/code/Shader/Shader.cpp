@@ -7,6 +7,7 @@
 #include <gtc/type_ptr.hpp>
 #include <Object.h>
 
+std::vector<Shader*> Shader::shaderList;
 
 std::string Shader::LoadShader(const char* aPath)
 {
@@ -46,6 +47,7 @@ Shader::Shader(const char* VertexPath, const char* FragmantPath)
 	LoadShader(fragmentShadowMapping);*/
 
 	//"../Shader/FragmentShader_1.glsl"
+	
 	unsigned int shaderProgram;
 	unsigned int vertexShader;
 	unsigned int fragmantShader;
@@ -92,6 +94,8 @@ Shader::Shader(const char* VertexPath, const char* FragmantPath)
 		GL_CHECK(glGetShaderInfoLog(vertexShader, 512, NULL, Log));
 		std::cout << "Failed to compile vertex shader \n" << Log << std::endl;
 	}
+	glDeleteShader(fragmantShader);
+	glDeleteShader(vertexShader);
 }
 
 void Shader::UseShader()

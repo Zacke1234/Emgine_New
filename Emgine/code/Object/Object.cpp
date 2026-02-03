@@ -309,7 +309,7 @@ void Object::UpdateTransform(Shader* myShader)
 	trans = glm::rotate(trans, Rotation.z, glm::vec3(0, 0, 1));
 
 	trans = glm::scale(trans, Scale);
-	//MyShader->SetMatrix("transform", trans);
+	myShader->SetMatrix("transform", trans);
 	
 	IsTransformValid = true; 
 }
@@ -332,7 +332,7 @@ void Object::DrawObject(Camera* aCamera, Shader* myShader)
 		}
 		
 
-		myShader->SetMatrix("transform", trans);
+		//myShader->SetMatrix("transform", trans);
 
 		
 		myShader->SetMatrix("view", aCamera->myView);
@@ -350,12 +350,12 @@ void Object::DrawObject(Camera* aCamera, Shader* myShader)
 			
 			GL_CHECK(glActiveTexture(GL_TEXTURE1));
 			GL_CHECK(glBindTexture(GL_TEXTURE_2D, myTexture->TextureObject));
-			if (myTexture->myMaterial != NULL && myShader->ShaderProgram != 6)
+			if (myTexture->myMaterial != NULL)
 			{
-				MyShader->SetInt("material.diffuse", myTexture->myMaterial->diffuse);
-				MyShader->SetInt("material.specular", myTexture->myMaterial->specular);
-				MyShader->SetFloat("material.shininess", myTexture->myMaterial->shininess);
-				MyShader->SetVec3("material.objectColor", myTexture->myMaterial->color);
+				myShader->SetInt("material.diffuse", myTexture->myMaterial->diffuse);
+				myShader->SetInt("material.specular", myTexture->myMaterial->specular);
+				myShader->SetFloat("material.shininess", myTexture->myMaterial->shininess);
+				myShader->SetVec3("material.objectColor", myTexture->myMaterial->color);
 			}
 			
 

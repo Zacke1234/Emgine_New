@@ -32,6 +32,7 @@ std::vector<Material*> Texture::materials;
 
 Texture::Texture(const char* aPath, Material* mat = NULL)
 {
+	
 	if (mat)
 	{
 		std::cout << "Set the material " << aPath << "\n";

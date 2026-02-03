@@ -8,6 +8,9 @@ public:
 	Shader* DefaultShader;
 	Shader* InitDefaultShader();
 
-	Shader* Create(Shader* myShader, const char* VertexPath, const char* FragmantPath);
+	Shader* Create(std::string name, const char* VertexPath, const char* FragmantPath);
+
+	Shader* Find(std::string name);
+
 };
 

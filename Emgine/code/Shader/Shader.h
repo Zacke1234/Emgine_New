@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <glm.hpp>
+#include <vector>
 
 class Shader
 {
@@ -26,6 +27,10 @@ public:
 	std::string LoadShader(const char* aPath);
 
 	unsigned int ShaderProgram;
-private:
+
+	std::string shaderName;
+
+	static std::vector<Shader*> shaderList;
+ private:
 	
 };

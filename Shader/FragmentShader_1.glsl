@@ -19,7 +19,6 @@ uniform vec3 objColor;
 uniform vec3 lightColor;
 uniform vec3 ambientStrength;
 uniform sampler2D ourTexture;
-uniform vec3 lightPosition;
 uniform sampler2D depthMap;
 uniform sampler2D shadowMap;
 uniform sampler2D normalMap; 
@@ -104,6 +103,7 @@ struct Material {
     float shininess;
     vec3 objectColor;
 };
+
 uniform Material material;
 
     int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
@@ -116,7 +116,7 @@ uniform Material material;
         // transform to [0,1] range
         projCoords = projCoords * 0.5 + 0.5;
         // get closest depth from light's perspective (using [0,1] range frogposlight as coords)
-        float tclosestDepth = texture(shadowMap, projCoords.xy).r;
+       // float closestDepth = texture(shadowMap, projCoords.xy).r;
         // just get the depth of current fragment from lights perspective
         float currentDepth = projCoords.z;
 
@@ -153,7 +153,7 @@ uniform Material material;
     }
    
     //out vec2 TexCoords;
-  
+   
     vec3 dir;
      vec3 CalculateDirLight(DirectionalLight dirLight, vec3 viewDir)
      {  
@@ -174,8 +174,9 @@ uniform Material material;
 
      vec3 CalculatePointLight(PointLight pointLight, vec3 fragPos, vec3 viewDir)
      { 
+     float shadow = ShadowCalculation(FragPosLightSpace, pointLight.position);
         vec3 norm = normalize(Normal);
-        float shadow = ShadowCalculation(FragPosLightSpace, pointLight.position);
+       
         vec3 lightDir = normalize(pointLight.position - fragPos);
         // diffuse shading
         float diff = max(dot(norm, lightDir), 0.0);
@@ -192,7 +193,8 @@ uniform Material material;
          ambient *= attenuation;
          diffuse *= attenuation;
          specular *= attenuation;
-         return (ambient + (1.0 - shadow) * (diffuse + specular) * material.objectColor);
+          
+         return (ambient + (1 - shadow) * (diffuse + specular)) * material.objectColor; // shadow should maybe be somewhere else
          //  return (ambient + diffuse + specular);
      }
 
@@ -230,11 +232,11 @@ uniform Material material;
 void main()
 {
     
-     //float shadow = ShadowCalculation(FragPosLightSpace, pos, FragPos);
+     
     
 
     vec3 viewDir = normalize(viewPos - FragPos); // the viewer is always at (0,0,0) in view-space, so viewDir is (0,0,0) - Position => -Position
-
+    //float shadow = ShadowCalculation(FragPosLightSpace, viewPos);
     vec3 lighting;
       
        for(int i = 0; i < NumDirectionalLights; i++)

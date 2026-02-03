@@ -45,7 +45,6 @@ using namespace std;
 
 
 GLFWwindow* window;
-
 Lighting* myLighting;
 Camera* myCamera;
 MeshManager* myMeshManager;
@@ -266,8 +265,7 @@ int main()
 
 	init_camera();
 
-
-	Shader* depthShader = new Shader("../Shader/ShadowMappingVS.glsl", "../Shader/ShadowMappingFS.glsl");
+	myShaderManager->Create("depthShader", "../Shader/ShadowMappingVS.glsl", "../Shader/ShadowMappingFS.glsl");
 	//Create Textures
 	Texture* wall = myTextureManager->Create("wall", "wall.jpg");
 	Texture* defaultTex = myTextureManager->Create("default", "Default 1.png");
@@ -344,17 +342,15 @@ int main()
 	
 
 	GL_CHECK(glEnable(GL_DEPTH_TEST));
-	for (auto& textures : Texture::textures)
-	{
-		myLightingManager->InitDepthMapping(textures);
-	}
+
+	myLightingManager->InitDepthMapping(NULL);
 	
 
 	myShaderManager->DefaultShader->UseShader();
 	myShaderManager->DefaultShader->SetInt("shadowMap", 1);
 
-	depthShader->UseShader();
-	depthShader->SetInt("depthMap", 0);
+	myShaderManager->Find("depthShader")->UseShader();
+	myShaderManager->Find("depthShader")->SetInt("depthMap", 0);
 	// loops until user closes window
 	while (!glfwWindowShouldClose(window))
 	{
@@ -373,7 +369,7 @@ int main()
 		myTime->Run();
 
 
-		
+		// opremazazol
 		
 		//glBindTexture(GL_TEXTURE_2D, woodTexture);
 		
@@ -384,13 +380,14 @@ int main()
 		
 		
 	
-		depthShader->UseShader();
+		myShaderManager->Find("depthShader")->UseShader();
 		for (auto& lightObj : LightObject::LightEntities)
 		{
-			myLightingManager->UseShadowDepth(depthShader, lightObj->myLightData);
+			myLightingManager->UseShadowDepth(myShaderManager->Find("depthShader"), lightObj->myLightData);
 		}
 
-		myLightingManager->ShadowMapStep1(depthShader, myCamera);
+
+		myLightingManager->ShadowMapStep1(myShaderManager->Find("depthShader"), myCamera, defaultTex);
 		
 		
 
@@ -404,10 +401,10 @@ int main()
 			myLightingManager->RunLightData(myShaderManager->DefaultShader, lightObj->myLightData, myCamera);
 
 		}
-		depthShader->UseShader();
+		myShaderManager->Find("depthShader")->UseShader();
 
-		myLightingManager->ShadowMapStep2(depthShader);
-	
+		
+		myLightingManager->ShadowMapStep2(myShaderManager->Find("depthShader"), defaultTex);
 		
 		myShaderManager->DefaultShader->UseShader();
 		//Drawcall objects
@@ -416,11 +413,12 @@ int main()
 			o->Draw(myCamera, myShaderManager->DefaultShader);
 
 		}
-		myLightingManager->ShadowMapStep3();
+		myShaderManager->Find("depthShader")->UseShader();
+		myLightingManager->ShadowMapStep3(myShaderManager->Find("depthShader"));
 
 		
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, myLightingManager->depthMap);
+		/*glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, myLightingManager->depthMap);*/
 
 		Phys->Simulate(myTime->Deltatime, myTime);
 		

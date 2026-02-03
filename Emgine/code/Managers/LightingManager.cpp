@@ -1,4 +1,5 @@
 #include "LightingManager.h"
+#include "TextureManager.h"
 #include "stb_image.h"
 
 #pragma once
@@ -323,25 +324,26 @@ Lighting* LightingManager::InitDepthMapping(Texture* shadowTexture)
 {
 	
 	//data = stbi_load(shadowTexture->texturePath.c_str(), &shadowTexture->Width, &shadowTexture->Height, &shadowTexture->Channels, 0);
-	glGenFramebuffers(1, &depthMapFBO);
+
+	GL_CHECK(glGenFramebuffers(1, &depthMapFBO) );
 	// create depth texture
 	
-	glGenTextures(1, &depthMap);
-	glBindTexture(GL_TEXTURE_2D, depthMap);
+	GL_CHECK(glGenTextures(1, &depthMap));
+	GL_CHECK(glBindTexture(GL_TEXTURE_2D, depthMap));
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
+	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
+	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
 	float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
-	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+	GL_CHECK(glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor));
 	// attach depth texture as FBO's depth buffer
-	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
-	glDrawBuffer(GL_NONE);
-	glReadBuffer(GL_NONE);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
+	GL_CHECK(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0));
+	GL_CHECK((GL_NONE));
+	GL_CHECK(glReadBuffer(GL_NONE));
+	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 
 	return 0;
 }
@@ -365,11 +367,11 @@ LightData* LightingManager::RunLightData(Shader* shader, LightData* aLightData, 
 		return 0;
 		aLightData = Object::Entities[Object::SelectedEntity]->myLightData;
 	}
-
+	glm::vec3 origo = { 0,0,0 };
 	glm::vec3 normalisedDirectionOfLight = glm::normalize(aLightData->lightDir);
 	glm::vec3 normalisedPosOfLight = glm::normalize(aLightData->lightPos);
 	glm::vec3 lightEyeDir = glm::vec3(0.0f, 1.0f, 0.0f) - normalisedDirectionOfLight; // *sceneboundsDiagonalLength;
-	glm::vec3 lightEyePos = glm::vec3(0.0f, 1.0f, 0.0f) - normalisedPosOfLight; // *sceneboundsDiagonalLength;
+	glm::vec3 lightEyePos = origo - glm::normalize(aLightData->lightPos); // *sceneboundsDiagonalLength;
 	//glm::vec3 upVector = (abs(dot(normalisedDirectionOfLight, (0, 1, 0))) > 0.99) ? (0, 0, 1) : (0, 1, 0);
 	
 
@@ -385,7 +387,7 @@ LightData* LightingManager::RunLightData(Shader* shader, LightData* aLightData, 
 		
 		lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
 		
-		aLightData->view = glm::lookAt(aLightData->lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+		aLightData->view = glm::lookAt(aLightData->diffuse, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 	}
 	if (aLightData->LightVar == 3) // spot
 	{
@@ -419,10 +421,11 @@ void LightingManager::Destroy(Lighting* light, LightData* lightData)
 	Destroy(light, lightData);
 }
 
+
 Lighting* LightingManager::UseShadowDepth(Shader* shader, LightData* aLightData)
 {
 
-
+	glm::vec3 origo = { 0,0,0 };
 
 	if (aLightData == NULL)
 	{
@@ -430,26 +433,28 @@ Lighting* LightingManager::UseShadowDepth(Shader* shader, LightData* aLightData)
 		aLightData = Object::Entities[Object::SelectedEntity]->myLightData;
 	}
 
+	glm::vec2 sceneCenter(origo + glm::vec3(1,1,1) * 0.5f);
 	glm::vec3 normalisedDirectionOfLight = glm::normalize(aLightData->lightDir);
 	glm::vec3 normalisedPosOfLight = glm::normalize(aLightData->lightPos);
 	glm::vec3 lightEyeDir = glm::vec3(0.0f, 1.0f, 0.0f) - normalisedDirectionOfLight; // *sceneboundsDiagonalLength;
-	glm::vec3 lightEyePos = glm::vec3(0.0f, 1.0f, 0.0f) - normalisedPosOfLight; // *sceneboundsDiagonalLength;
+	glm::vec3 lightEyePos = origo - glm::normalize(aLightData->lightDir);
+	
 	//glm::vec3 upVector = (abs(dot(normalisedDirectionOfLight, (0, 1, 0))) > 0.99) ? (0, 0, 1) : (0, 1, 0);
 	
 
-	if (aLightData->LightVar == 2)
+	if (aLightData->LightVar == 2) // directional
 	{
 		lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane); // X, Y, Z, W ?
-		aLightData->view = glm::lookAt(aLightData->lightDir, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+		aLightData->view = glm::lookAt(aLightData->lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 	}
-	if (aLightData->LightVar == 1)
+	if (aLightData->LightVar == 1) // point
 	{
 
 		lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
 
-		aLightData->view = glm::lookAt(aLightData->lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+		aLightData->view = glm::lookAt(aLightData->diffuse, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 	}
-	if (aLightData->LightVar == 3)
+	if (aLightData->LightVar == 3) // spot
 	{
 
 		lightProjection = glm::perspective(glm::radians(aLightData->cutOff - aLightData->outerCutOff), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
@@ -459,58 +464,52 @@ Lighting* LightingManager::UseShadowDepth(Shader* shader, LightData* aLightData)
 	glm::mat4 lightspaceMatrix = lightProjection * aLightData->view;
 	shader->SetMatrix("lightSpaceMatrix", lightspaceMatrix);
 
-	shader->SetInt("depthMap", 0);
-	shader->SetFloat("near_plane", near_plane);
-	shader->SetFloat("far_plane", far_plane);
+	//shader->SetInt("depthMap", 0);
+	/*shader->SetFloat("near_plane", near_plane);
+	shader->SetFloat("far_plane", far_plane);*/
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, depthMap);
+	/*glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, depthMap);*/
 
+	/*PointLightShaderSetting(shader, aLightData);
+	DirectionalLightSetting(shader, aLightData);
+	SpotLightShaderSetting(shader, aLightData);*/
 
 	//shader->SetMatrix("transform", trans);
 	return 0;
 }
 
-Lighting* LightingManager::ShadowMapStep1(Shader* shader, Camera* myCamera)
+Lighting* LightingManager::ShadowMapStep1(Shader* shader, Camera* myCamera, Texture* texture)
 {
 	
-	glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-	glClear(GL_DEPTH_BUFFER_BIT);
-	glActiveTexture(GL_TEXTURE0);
-	if (data != NULL)
-	{
-		glBindTexture(GL_TEXTURE_2D, *data);
+	GL_CHECK(glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT));
+	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
+	GL_CHECK(glClear(GL_DEPTH_BUFFER_BIT));
+	
 		//renderScene(simpleDepthShader);
 
-		for (auto& o : Object::Entities)
-		{
-			o->Draw(myCamera, shader);
+	for (auto& o : Object::Entities) // render scene
+	{
+		o->Draw(myCamera, shader);
 
-		}
-
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-		// reset viewport
-		glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
-	
-	
+
+	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+	//glUniformMatrix4fv(lightSpaceMatrixLocation, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+
+	// reset viewport
+	GL_CHECK(glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT));
+	GL_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+
+
 
 	return 0;
 }
 
-Lighting* LightingManager::ShadowMapStep2(Shader* shader)
+Lighting* LightingManager::ShadowMapStep2(Shader* shader, Texture* texture)
 {
 	
-	if (data != NULL)
-	{
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, *data);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, depthMap);
-	}
+
 	
 	
 	//renderScene(shader);
@@ -522,9 +521,10 @@ Lighting* LightingManager::ShadowMapStep2(Shader* shader)
 	return 0;
 }
 
-Lighting* LightingManager::ShadowMapStep3()
+Lighting* LightingManager::ShadowMapStep3(Shader* shader)
 {
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, depthMap);
+	shader->SetFloat("near_plane", near_plane);
+	shader->SetFloat("far_plane", far_plane);
+	
 	return 0;
 }

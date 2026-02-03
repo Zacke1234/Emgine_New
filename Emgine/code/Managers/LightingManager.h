@@ -13,15 +13,15 @@ public:
 	void Destroy(Lighting* light, LightData* lightData);
 	Lighting* UseShadowDepth(Shader* shader, LightData* lightData);
 
-	Lighting* ShadowMapStep1(Shader* shader, Camera* myCamera);
-	Lighting* ShadowMapStep2(Shader* shader);
-	Lighting* ShadowMapStep3();
+	Lighting* ShadowMapStep1(Shader* shader, Camera* myCamera, Texture* texture);
+	Lighting* ShadowMapStep2(Shader* shader, Texture* texture);
+	Lighting* ShadowMapStep3(Shader* shader);
 
 	LightData* SetDirectional(LightData* aLightData, Object* test);
 	LightData* SetPoint(LightData* aLightData, Object* test = NULL);
 	LightData* SetSpot(LightData* aLightData, Object* test);
 
-	Lighting* InitDepthMapping(Texture* shadowTexture);
+	Lighting* InitDepthMapping(Texture* shadowTexture = NULL);
 	Lighting* InitShaderMaps(Shader* shader);
 
 	glm::mat4 lightProjection;
@@ -32,7 +32,9 @@ public:
 	unsigned int SCR_HEIGHT = 1080;
 	unsigned int depthMapFBO;
 	unsigned int depthMap;
-	glm::vec3 sceneboundsDiagonalLength = { 100, 100, 100 };
-	unsigned char* data;
+
+	unsigned int* texture;
+
+	
 
 };
