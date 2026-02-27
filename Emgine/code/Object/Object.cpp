@@ -285,9 +285,9 @@ void CameraObject::SetCamera(Camera& cam)
 	myCamera = &cam;
 }
 
-void Object::Draw(Camera* aCamera, Shader* myShader)
+void Object::Draw(Shader* myShader)
 {
-	DrawObject(aCamera, myShader);
+	DrawObject(myShader);
 	
 }
 
@@ -314,7 +314,7 @@ void Object::UpdateTransform(Shader* myShader)
 	IsTransformValid = true; 
 }
 
-void Object::DrawObject(Camera* aCamera, Shader* myShader)
+void Object::DrawObject(Shader* myShader)
 {
 		if (myMesh == NULL)
 		{
@@ -335,10 +335,7 @@ void Object::DrawObject(Camera* aCamera, Shader* myShader)
 		//myShader->SetMatrix("transform", trans);
 
 		
-		myShader->SetMatrix("view", aCamera->myView);
 		
-		myShader->SetMatrix("projection", aCamera->projection);
-
 		
 		if (myTexture != NULL)
 		{

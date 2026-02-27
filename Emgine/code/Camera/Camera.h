@@ -1,13 +1,10 @@
 #pragma once
-#include <glm.hpp>
-#include <string>
-#include <ext/matrix_transform.hpp>
-#include <ext/matrix_clip_space.hpp>
-#include <Time/Time.h>
-#include <glad.h>
-#include <fstream>
-#include <sstream>
 #include <glfw3.h>
+#include <gtc/type_ptr.hpp>
+#include <iostream>
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#include <Shader.h>
 
 class Camera
 {
@@ -15,6 +12,7 @@ public:
 	static Camera* Instance;
 
 	Camera();
+	void CameraSendToShader(Shader* myShader);
 
 	void CameraUpdate(GLFWwindow* window);
 

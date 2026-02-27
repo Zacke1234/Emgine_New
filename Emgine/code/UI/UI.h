@@ -1,5 +1,4 @@
 #pragma once
-#include "MeshManager.h"
 #include "Physics.h"
 #include "Camera.h"
 #include "MeshLoader.h"
@@ -10,6 +9,7 @@
 #include "Managers/LightingManager.h"
 #include "Managers/RigidbodyManager.h"
 #include "Cube.h"
+#include "Time/Time.h"
 #include <Object.h>
 
 
@@ -50,11 +50,11 @@ public:
 
 	// LIGHTING IN UI
 	float lightConstant = 1;
-	glm::vec3 lightspecular = { 1,1,1 };
+	glm::vec3 lightspecular = { 0.3,0.3,0.3 };
 	float cutoff = 1;
 	float outerCutOff = 1;
-	glm::vec3 lightAmbient = { 1,1,1 };
-	glm::vec3 lightDiffuse = { 1,1,1 };
+	glm::vec3 lightAmbient = { 0.3,0.3,0.3 };
+	glm::vec3 lightDiffuse = { 0.3,0.3,0.3 };
 	float lightLinear = 1;
 	float lightQuadratic = 1;
 	// light

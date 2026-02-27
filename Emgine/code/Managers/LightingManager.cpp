@@ -1,10 +1,8 @@
 #include "LightingManager.h"
-#include "TextureManager.h"
-#include "stb_image.h"
 
 #pragma once
 std::vector<LightData*> lightsList;
-//LightObject::LightEntities.size();
+//LightObject::LightEntities.size();	
 //Camera* Cameron = new Camera();
 // 
 // shadow mapping  
@@ -17,6 +15,7 @@ std::vector<LightData*> lightsList;
 int PointLightShaderSetting(Shader* shader, LightData* aLightData) // done
 {
 	
+
 	for (int lObjs = 0; lObjs < Lighting::pointLights.size(); lObjs++)
 	{
 		std::string number = std::to_string(lObjs);
@@ -25,9 +24,10 @@ int PointLightShaderSetting(Shader* shader, LightData* aLightData) // done
 		//shader->SetInt("PLight[" + number + "]", 0.0f);
 		shader->SetInt("NumPointLights", Lighting::pointLights.size());
 
-		shader->SetFloat("pointLight[" + number + "].constant", *Lighting::constants[lObjs]); // Something wrong with these sets
+		shader->SetFloat("pointLight[" + number + "].constant", *Lighting::constants[lObjs]); 
 		shader->SetFloat("pointLight[" + number + "].linear", *Lighting::linears[lObjs]);
 		shader->SetFloat("pointLight[" + number + "].quadratic", *Lighting::quadtrics[lObjs]);
+		shader->SetFloat("pointLight[" + number + "].far_plane", 7.0f); // far plane
 
 		std::string temp1 = "pointLight[";  temp1.append(number);
 		std::string temp2 = "pointLight["; temp2.append(number);
@@ -43,7 +43,7 @@ int PointLightShaderSetting(Shader* shader, LightData* aLightData) // done
 		std::string specular = temp3.append(tempSpec);
 		std::string position = temp4.append(tempPos);
 
-
+		
 		shader->SetVec3(ambient.c_str(), *Lighting::ambients[lObjs]); // it appends the number at the start as well as in the middle field. SOLVED!
 
 		shader->SetVec3(diffuse.c_str(), *Lighting::diffuses[lObjs]);
@@ -52,11 +52,12 @@ int PointLightShaderSetting(Shader* shader, LightData* aLightData) // done
 
 		shader->SetVec3(position.c_str(), *Lighting::pointLightPositions[lObjs]);
 		
+		
+
 		/*shader->SetVec3("pointLight[0].position", glm::vec3(4, 3, 1));
 		shader->SetVec3("pointLight[1].position", glm::vec3(1, -3, 1));
 		shader->SetVec3("pointLight[2].position", glm::vec3(7, 0, 2));*/
 	}
-	
 	
 	
 	//std::cout << "obj" << std::endl;
@@ -191,7 +192,7 @@ LightData* LightingManager::Create(std::string name, Shader* shader, LightData* 
 	aLightData->Name = name;
 
 
-	SetPoint(aLightData, NULL);
+	SetPoint(aLightData);
 	//SetDirectional(aLightData, NULL);
 	//SetSpot(aLightData, NULL);
 	//InitialiseLightData(shader, light);
@@ -199,12 +200,9 @@ LightData* LightingManager::Create(std::string name, Shader* shader, LightData* 
 	return aLightData;
 }
 
-LightData* LightingManager::SetDirectional(LightData* aLightData, Object* obj)
+LightData* LightingManager::SetDirectional(LightData* aLightData)
 {
-	if (!obj == NULL) {
-
-		aLightData = obj->Entities[obj->SelectedEntity]->myLightData;
-	}
+	
 	
 	if (aLightData->LightVar != 2)
 	{ 
@@ -216,13 +214,13 @@ LightData* LightingManager::SetDirectional(LightData* aLightData, Object* obj)
 	{
 		Lighting::dirLights.pop_back();
 	}
-	aLightData->lightDir = { -0.2f, -1.0f, -0.3f };
-	aLightData->ambient = { 0.3, 0.3, 0.3 };
-	aLightData->diffuse = { 0.3, 0.3, 0.3 };
-	aLightData->specular = { 0.3, 0.3, 0.3 };
-	aLightData->constant = 0.3;
-	aLightData->linear = 0.3;
-	aLightData->quadtric = 0.3;
+	aLightData->lightDir = { 0,0,0 };
+	aLightData->ambient = { 0.3,0.3,0.3 };
+	aLightData->diffuse = { 0.3,0.3,0.3 };
+	aLightData->specular = { 0.3,0.3,0.3 };
+	aLightData->constant = 1;
+	aLightData->linear = 1;
+	aLightData->quadtric = 1;
 	Lighting::DirLightDirections.push_back(&aLightData->lightDir);
 	Lighting::speculars.push_back(&aLightData->specular);
 	Lighting::diffuses.push_back(&aLightData->diffuse);
@@ -238,12 +236,12 @@ LightData* LightingManager::SetDirectional(LightData* aLightData, Object* obj)
 	return aLightData;
 }
 
-LightData* LightingManager::SetPoint(LightData* aLightData, Object* obj)
+LightData* LightingManager::SetPoint(LightData* aLightData)
 {
-	if (!obj == NULL) {
+	/*if (!obj == NULL) {
 
 		aLightData = obj->Entities[obj->SelectedEntity]->myLightData;
-	}
+	}*/
 	if (aLightData->LightVar != 1)
 	{
 		Lighting::pointLights.push_back(aLightData);
@@ -253,12 +251,13 @@ LightData* LightingManager::SetPoint(LightData* aLightData, Object* obj)
 		Lighting::pointLights.pop_back();
 	}
 	Lighting::pointLightPositions.push_back(&aLightData->lightPos);
-	aLightData->ambient = { 0.3, 0.3, 0.3 };
-	aLightData->diffuse = { 0.3, 0.3, 0.3 };
-	aLightData->specular = { 0.3, 0.3, 0.3 };
-	aLightData->constant = 0.3;
-	aLightData->linear = 0.3;
-	aLightData->quadtric = 0.3;
+	aLightData->ambient = { 0.3,0.3,0.3 };
+	aLightData->diffuse = { 0.3,0.3,0.3 };
+	aLightData->specular = { 0.3,0.3,0.3 };
+	aLightData->constant = 1;
+	aLightData->linear = 0;
+	aLightData->quadtric = 0;
+
 	Lighting::speculars.push_back(&aLightData->specular);
 	Lighting::diffuses.push_back(&aLightData->diffuse);
 	Lighting::ambients.push_back(&aLightData->ambient);
@@ -269,9 +268,9 @@ LightData* LightingManager::SetPoint(LightData* aLightData, Object* obj)
 	//Lighting::pointLightPositions->length();
 	
 	
-	
-	
-	obj->Entities[obj->SelectedEntity]->Position = aLightData->lightPos;
+	//obj->Entities[obj->SelectedEntity]->Position = aLightData->lightPos;
+	// gotta change this
+	//obj->Position = aLightData->lightPos;
 	
 
 	
@@ -280,12 +279,9 @@ LightData* LightingManager::SetPoint(LightData* aLightData, Object* obj)
 	return aLightData;
 }
 
-LightData* LightingManager::SetSpot(LightData* aLightData, Object* obj)
+LightData* LightingManager::SetSpot(LightData* aLightData)
 {
-	if (!obj == NULL) {
-
-		aLightData = obj->Entities[obj->SelectedEntity]->myLightData;
-	}
+	
 	if (aLightData->LightVar != 3)
 	{
 		Lighting::spotLights.push_back(aLightData);
@@ -294,15 +290,15 @@ LightData* LightingManager::SetSpot(LightData* aLightData, Object* obj)
 	{
 		Lighting::spotLights.pop_back();
 	}
-	aLightData->lightDir = { -0.2f, -1.0f, -0.3f };
-	aLightData->ambient = { 0.3, 0.3, 0.3 };
-	aLightData->diffuse = { 0.3, 0.3, 0.3 };
-	aLightData->specular = { 0.3, 0.3, 0.3 };
-	aLightData->constant = 0.3;
-	aLightData->linear = 0.3;
-	aLightData->quadtric = 0.3;
-	aLightData->cutOff = 0.3;
-	aLightData->outerCutOff = 0.3;
+	aLightData->lightDir = { 0,0,0 };
+	aLightData->ambient = { 0.3,0.3,0.3 };
+	aLightData->diffuse = { 0.3,0.3,0.3 };
+	aLightData->specular = { 0.3,0.3,0.3 };
+	aLightData->constant = 1;
+	aLightData->linear = 1;
+	aLightData->quadtric = 1;
+	aLightData->cutOff = 1;
+	aLightData->outerCutOff = 1;
 	Lighting::spotLightDirections.push_back(&aLightData->lightDir);
 	Lighting::spotLightPositions.push_back(&aLightData->lightPos);
 	Lighting::speculars.push_back(&aLightData->specular);
@@ -341,9 +337,13 @@ Lighting* LightingManager::InitDepthMapping(Texture* shadowTexture)
 	// attach depth texture as FBO's depth buffer
 	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
 	GL_CHECK(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0));
-	GL_CHECK((GL_NONE));
+	GL_CHECK(glDrawBuffer(GL_NONE));
 	GL_CHECK(glReadBuffer(GL_NONE));
 	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		std::cout << ("ShadowBuffer [Framebuffer] could not be initialized.");
+	//std::cout << "init depth mapping" << std::endl;
 
 	return 0;
 }
@@ -357,59 +357,23 @@ Lighting* LightingManager::InitShaderMaps(Shader* shader)
 
 
 
-LightData* LightingManager::RunLightData(Shader* shader, LightData* aLightData, Camera* aCamera)
+LightData* LightingManager::RunLightData(Shader* shader, Camera* aCamera, LightObject* lightObj)
 {
-	
-	
-	
-	if (aLightData == NULL)
+
+	if (lightObj->myLightData == NULL)
 	{
 		return 0;
-		aLightData = Object::Entities[Object::SelectedEntity]->myLightData;
+		lightObj->myLightData = Object::Entities[Object::SelectedEntity]->myLightData;
 	}
-	glm::vec3 origo = { 0,0,0 };
-	glm::vec3 normalisedDirectionOfLight = glm::normalize(aLightData->lightDir);
-	glm::vec3 normalisedPosOfLight = glm::normalize(aLightData->lightPos);
-	glm::vec3 lightEyeDir = glm::vec3(0.0f, 1.0f, 0.0f) - normalisedDirectionOfLight; // *sceneboundsDiagonalLength;
-	glm::vec3 lightEyePos = origo - glm::normalize(aLightData->lightPos); // *sceneboundsDiagonalLength;
-	//glm::vec3 upVector = (abs(dot(normalisedDirectionOfLight, (0, 1, 0))) > 0.99) ? (0, 0, 1) : (0, 1, 0);
-	
 
+	lightObj->myLightData->lightPos = lightObj->Position;
 	
-	 
-	if (aLightData->LightVar == 2) // directional
-	{
-		lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane); // X, Y, Z, W ?
-		aLightData->view = glm::lookAt(aLightData->lightDir, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
-	}
-	if(aLightData->LightVar == 1) // point
-	{
-		
-		lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
-		
-		aLightData->view = glm::lookAt(aLightData->diffuse, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
-	}
-	if (aLightData->LightVar == 3) // spot
-	{
-		
-		lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane); // X, Y, Z, W ?
-		
-		aLightData->view = glm::lookAt(aLightData->lightPos + aLightData->lightDir, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
-	}
-	
-	
-	
-	glm::mat4 lightspaceMatrix = lightProjection * aLightData->view;
-
-	
-	shader->SetVec3("viewPos", aCamera->myPosition);
-	shader->SetMatrix("lightSpaceMatrix", lightspaceMatrix);
 	
 	//shader->SetInt("shadowMap", 1);
 	
-	PointLightShaderSetting(shader, aLightData);
-	DirectionalLightSetting(shader, aLightData);
-	SpotLightShaderSetting(shader, aLightData);
+	PointLightShaderSetting(shader, lightObj->myLightData);
+	DirectionalLightSetting(shader, lightObj->myLightData);
+	SpotLightShaderSetting(shader, lightObj->myLightData);
 
 	return 0;
 }
@@ -418,113 +382,251 @@ LightData* LightingManager::RunLightData(Shader* shader, LightData* aLightData, 
 
 void LightingManager::Destroy(Lighting* light, LightData* lightData)
 {
-	Destroy(light, lightData);
+	//Destroy(light, lightData);
 }
 
 
-Lighting* LightingManager::UseShadowDepth(Shader* shader, LightData* aLightData)
+Lighting* LightingManager::UseShadowDepth(Shader* shader, LightData* aLightData, Object* objects)
 {
+	if (shader == NULL)
+	{
+		return 0;
+	}
+	glm::vec3 aPos = glm::vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3 fragPos = glm::vec3(objects->trans * glm::vec4(aPos, 1.0f));
 
-	glm::vec3 origo = { 0,0,0 };
-
+	glm::vec3 pointLightPos = glm::normalize(aLightData->lightPos + fragPos); // (whole scene within range of course)
+	glm::vec3 pointLightDir = glm::normalize(aLightData->lightDir + fragPos);
 	if (aLightData == NULL)
 	{
 		return 0;
 		aLightData = Object::Entities[Object::SelectedEntity]->myLightData;
 	}
-
-	glm::vec2 sceneCenter(origo + glm::vec3(1,1,1) * 0.5f);
-	glm::vec3 normalisedDirectionOfLight = glm::normalize(aLightData->lightDir);
-	glm::vec3 normalisedPosOfLight = glm::normalize(aLightData->lightPos);
-	glm::vec3 lightEyeDir = glm::vec3(0.0f, 1.0f, 0.0f) - normalisedDirectionOfLight; // *sceneboundsDiagonalLength;
-	glm::vec3 lightEyePos = origo - glm::normalize(aLightData->lightDir);
+	glm::mat4 depthModelMatrix = glm::mat4(1.0);
 	
-	//glm::vec3 upVector = (abs(dot(normalisedDirectionOfLight, (0, 1, 0))) > 0.99) ? (0, 0, 1) : (0, 1, 0);
 	
+	// return glm::lookAt(myPosition, myPosition + myDirection, myUp);
 
+	
 	if (aLightData->LightVar == 2) // directional
 	{
-		lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane); // X, Y, Z, W ?
-		aLightData->view = glm::lookAt(aLightData->lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+		lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+		view = glm::lookAt(aLightData->lightDir, glm::vec3(0), glm::vec3(0, 1, 0));
+		
 	}
 	if (aLightData->LightVar == 1) // point
 	{
 
-		lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
+		lightProjection = glm::perspective(glm::radians(70.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
 
-		aLightData->view = glm::lookAt(aLightData->diffuse, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
-	}
+		view = glm::lookAt(aLightData->lightPos, glm::vec3(0.0), glm::vec3(0.0, 1.0, 0.0)); // this light position is not enough to reflect the whole scene sadly
+	}															// NOTE: this one in the middle is super important for this!!!!!!!
 	if (aLightData->LightVar == 3) // spot
 	{
 
-		lightProjection = glm::perspective(glm::radians(aLightData->cutOff - aLightData->outerCutOff), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
+		lightProjection = glm::perspective(glm::acos(aLightData->outerCutOff) * 2.0f, (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
 
-		aLightData->view = glm::lookAt(aLightData->lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+		view = glm::lookAt(aLightData->lightPos, aLightData->lightPos + aLightData->lightDir, glm::vec3(0.0, 1.0, 0.0));
 	}
-	glm::mat4 lightspaceMatrix = lightProjection * aLightData->view;
+	lightspaceMatrix = lightProjection * view;
+
+	
+	/*myUp = glm::cross(myDirection, myRight);
+
+
+
+	projection = glm::perspective(glm::radians(fieldOfView), myWidth / myHeight, 0.1f, cameraViewRange);
+
+	myRight = glm::normalize(glm::cross(WorldUp, myDirection));
+	myUp = glm::cross(myDirection, myRight);
+	myView = glm::lookAt(myPosition, myPosition + myDirection, myUp);*/
+
+	
+	/*glm::vec4 FragPosLightSpace = glm::vec4(1, 2, 440, 1);
+
+
+
+	shader->SetVec4("FragPosLightSpace", FragPosLightSpace);*/
 	shader->SetMatrix("lightSpaceMatrix", lightspaceMatrix);
-
-	//shader->SetInt("depthMap", 0);
-	/*shader->SetFloat("near_plane", near_plane);
-	shader->SetFloat("far_plane", far_plane);*/
-
-	/*glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, depthMap);*/
-
-	/*PointLightShaderSetting(shader, aLightData);
-	DirectionalLightSetting(shader, aLightData);
-	SpotLightShaderSetting(shader, aLightData);*/
-
-	//shader->SetMatrix("transform", trans);
+	shader->SetMatrix("dirLight.lightSpaceMatrix", lightspaceMatrix);
+	//FragPosLightSpace
+	
+	
+	
+	
 	return 0;
 }
 
-Lighting* LightingManager::ShadowMapStep1(Shader* shader, Camera* myCamera, Texture* texture)
+Lighting* LightingManager::ShadowMapStep1(Shader* shader, Texture* texture)
+{
+	GL_CHECK(glActiveTexture(GL_TEXTURE0));
+	GL_CHECK(glBindTexture(GL_TEXTURE_2D, texture->TextureObject));
+	GL_CHECK(glActiveTexture(GL_TEXTURE1));
+	GL_CHECK(glBindTexture(GL_TEXTURE_2D, depthMap));
+	//viewTEST = glm::lookAt(aLightData->lightPos, aLightData->lightPos, glm::vec3(0.0f, 1.0f, 0.0f));
+	/*glm::mat4 lightspaceMatrix = lightProjection * aLightData->view;
+	if (aLightData->lightPos.length > objects->Position.length)
+	{
+		shader->SetInt("shadowMap", 0);
+	}
+	else
+	{
+		shader->SetInt("shadowMap", 1);
+	}
+	shader->SetMatrix("lightSpaceMatrix", lightspaceMatrix);
+*/
+	
+	
+
+	return 0;
+}
+
+Lighting* LightingManager::ShadowMapStep2(Shader* shader, Texture* texture, Camera* camera)
 {
 	
 	GL_CHECK(glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT));
 	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
 	GL_CHECK(glClear(GL_DEPTH_BUFFER_BIT));
-	
-		//renderScene(simpleDepthShader);
-
-	for (auto& o : Object::Entities) // render scene
+	GL_CHECK(glActiveTexture(GL_TEXTURE0));
+	GL_CHECK(glBindTexture(GL_TEXTURE_2D, texture->TextureObject));
+	glCullFace(GL_FRONT);
+	for (auto& o : Object::Entities)
 	{
-		o->Draw(myCamera, shader);
-
+		o->Draw(shader);
 	}
-
+	glCullFace(GL_BACK);
+	//renderScene(simpleDepthShader);
 	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
-	//glUniformMatrix4fv(lightSpaceMatrixLocation, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 
-	// reset viewport
+	 // reset viewport
 	GL_CHECK(glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT));
 	GL_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-
-
-
-	return 0;
-}
-
-Lighting* LightingManager::ShadowMapStep2(Shader* shader, Texture* texture)
-{
-	
-
-	
-	
-	//renderScene(shader);
-
-	// render Depth map to quad for visual debugging
-	// ---------------------------------------------
-	
 	
 	return 0;
 }
 
 Lighting* LightingManager::ShadowMapStep3(Shader* shader)
 {
+	GL_CHECK(glActiveTexture(GL_TEXTURE0));
+	GL_CHECK(glBindTexture(GL_TEXTURE_2D, depthMap));
+	return 0;
+}
+
+Lighting* LightingManager::DebugShadow(Shader* shader)
+{
 	shader->SetFloat("near_plane", near_plane);
 	shader->SetFloat("far_plane", far_plane);
-	
 	return 0;
+}
+
+BoundingRegions::BoundingRegions(BoundingTypes type) : type(type)
+{
+	
+
+}
+
+BoundingRegions::BoundingRegions(glm::vec3 Center, float radius) : type(BoundingTypes::SPHERE), center(center), radius(radius)
+{
+}
+
+BoundingRegions::BoundingRegions(glm::vec3 min, glm::vec3 max) : type(BoundingTypes::AABB), min(min), max(max) {
+
+}
+
+
+glm::vec3 BoundingRegions::CalcTheCenter()
+{
+	return (type == BoundingTypes::AABB) ? (min + max) / 2.0f : center;
+}
+
+glm::vec3 BoundingRegions::CalcTheDimensions()
+{
+	return (type == BoundingTypes::AABB) ? (min - max) : glm::vec3(2.0f * radius);
+}
+
+bool BoundingRegions::containsPoints(glm::vec3 pts)
+{
+	if (type == BoundingTypes::AABB)
+	{
+		return (pts.x >= min.x) && (pts.x <= max.x) &&
+			(pts.y >= min.y) && (pts.y <= max.y) &&
+			(pts.z >= min.z) && (pts.z <= max.z);
+	}
+	else
+	{
+		float dist = 0.0f;
+		for (int i = 0; i < 3; i++)
+		{
+			dist += (center[i] - pts[i]) * (center[i] - pts[i]);
+		}
+		return dist <= (radius * radius);
+	}
+}
+
+bool BoundingRegions::containsRegion(BoundingRegions br)
+{
+	if (br.type == BoundingTypes::AABB)
+	{
+		return containsPoints(br.min) && containsPoints(br.max);
+	}
+	else if (type == BoundingTypes::SPHERE && br.type == BoundingTypes::SPHERE){
+		return glm::length(center - br.center) + br.radius < radius;
+	}
+	else
+	{
+		if (!containsPoints(br.center))
+		{
+			return false;
+		}
+		for (int i = 0; i < 3; i++)
+		{
+			if (abs(max[i] - br.center[i] < br.radius ||
+				abs(br.center[i] - min[i] < br.radius)))
+			{
+				return false;
+			}
+			
+		}
+		return true;
+	}
+}
+
+bool BoundingRegions::intersectsWith(BoundingRegions br)
+{
+	if (type == BoundingTypes::AABB && br.type == BoundingTypes::AABB)
+	{
+		glm::vec3 rad = CalcTheDimensions() / 2.0f;
+		glm::vec3 radBr = br.CalcTheDimensions() / 2.0f;
+
+		glm::vec3 center = CalcTheCenter();
+		glm::vec3 centerBr = br.CalcTheCenter();
+
+		glm::vec3 dist = abs(center - centerBr);
+
+		for (int i = 0; i < 3; i++)
+		{
+			if (dist[i] > rad[i] + radBr[i])
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	else if (type == BoundingTypes::SPHERE) {
+		// this is a sphere, br is a box
+		float distSquared = 0.0f;
+		for (int i = 0; i < 3; i++) {
+			// determine closest side
+			float closestPt = std::max(br.min[i], std::min(center[i], br.max[i]));
+			// add distance
+			distSquared += (closestPt - center[i]) * (closestPt - center[i]);
+		}
+
+		return distSquared < (radius * radius);
+	}
+
+	else
+	{
+		return br.intersectsWith(*this);
+	}
 }

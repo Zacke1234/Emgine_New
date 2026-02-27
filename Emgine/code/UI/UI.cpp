@@ -83,10 +83,7 @@ int uiLightList(UI* myUI, ObjectManager* objectmanager)
 		{
 
 			Object::Entities[Object::SelectedEntity]->myLightData->lightPos = Object::Entities[Object::SelectedEntity]->Position;
-			Object::Entities[Object::SelectedEntity]->myLightData->lightDir = glm::vec3(
-				glm::radians(myUI->xRot),
-				glm::radians(myUI->yRot),
-				glm::radians(myUI->zRot));
+			Object::Entities[Object::SelectedEntity]->myLightData->lightDir = glm::vec3((myUI->xRot), (myUI->yRot), (myUI->zRot));
 			Object::Entities[Object::SelectedEntity]->myLightData->constant = myUI->lightConstant;
 			Object::Entities[Object::SelectedEntity]->myLightData->cutOff = myUI->cutoff;
 			Object::Entities[Object::SelectedEntity]->myLightData->outerCutOff = myUI->outerCutOff;
@@ -379,7 +376,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 	{
 		ImGui::Text("Material properties");
 		
-		ImGui::DragInt("Diffuse", &matDiffuse, step, 0, 1);
+		ImGui::DragInt("Diffuse", &matDiffuse, step, 0, 100);
 		ImGui::DragInt("Specular", &matSpecular, step, 0, 1000);
 		ImGui::DragInt("Shininess", &matShininess, step, 0, 1000);
 		ImGui::DragFloat3("Color", &matColor[0], step, step);
@@ -460,17 +457,17 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 			if (SelectedItem == 0)
 			{	 
 				
-				lightMang->SetDirectional(newLightData, Object::Entities[Object::SelectedEntity]);
+				lightMang->SetDirectional(newLightData);
 				
 			}
 			if (SelectedItem == 1)
 			{
-				lightMang->SetPoint(newLightData, Object::Entities[Object::SelectedEntity]);
+				lightMang->SetPoint(newLightData);
 			
 			}
 			if (SelectedItem == 2)
 			{
-				lightMang->SetSpot(newLightData, Object::Entities[Object::SelectedEntity]);
+				lightMang->SetSpot(newLightData);
 		
 			}
 		};

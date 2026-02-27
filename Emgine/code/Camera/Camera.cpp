@@ -1,17 +1,4 @@
 #include "Camera.h"
-#include "imgui.h"
-#include <glm.hpp>
-#include <ext/matrix_transform.hpp>
-#include <ext/matrix_clip_space.hpp>
-#include <glad.h>
-#include <fstream>
-#include <sstream>
-#include <glfw3.h>
-#include <gtc/type_ptr.hpp>
-#include "Shader.h"
-#include <iostream>
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
 
 
 
@@ -48,6 +35,13 @@ Camera::Camera()
 	//cameraSpeed = 3.0f * deltatime;
 }
 
+void Camera::CameraSendToShader(Shader* myShader)
+{
+	myShader->SetMatrix("view", myView);
+	myShader->SetVec3("viewPos", myPosition);
+	myShader->SetMatrix("projection", projection);
+}
+
 void Camera::CameraUpdate(GLFWwindow* window) // the mouse cursor is still not good, when you tab in, it will just snap to another position again, need to fix
 {
 	
@@ -67,27 +61,28 @@ void Camera::CameraUpdate(GLFWwindow* window) // the mouse cursor is still not g
 	//GetViewMatrix();
 	mouse_callback(lastX, lastY);
 
+	
 }
 
 void Camera::ProcessInput(GLFWwindow* window, float& deltatime)
 {
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	//ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 	{
 		myPosition += cameraSpeed * myDirection;
 	}
-	if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 	{
 		myPosition -= cameraSpeed * myDirection;
 	}
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) 
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 	{
 		
 		myPosition -= glm::normalize(glm::cross(myDirection, myUp)) * cameraSpeed;
 
 	}
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 	{
 		myPosition += glm::normalize(glm::cross(myDirection, myUp)) * cameraSpeed;
 		

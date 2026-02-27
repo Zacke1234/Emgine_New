@@ -62,9 +62,9 @@ public:
 	
 	
 	
-	void Draw(Camera* aCamera, Shader* myShader);
+	void Draw(Shader* myShader);
 	void DrawCube(Camera* aCamera, Shader* myShader);
-	void DrawObject(Camera* aCamera, Shader* myShader);
+	void DrawObject(Shader* myShader);
 	void UpdateTransform(Shader* myShader);
 
 	glm::vec3 Position;
