@@ -14,10 +14,10 @@ public:
 	LightData* Create(std::string name = "newLight", Shader* shader = NULL, LightData* light = NULL);
 	LightData* RunLightData(Shader* shader, Camera* aCamera, LightObject* lightObj);
 	void Destroy(Lighting* light, LightData* lightData);
-	Lighting* UseShadowDepth(Shader* shader, LightData* lightData, Object* objects);
+	Lighting* UseShadowDepth(Shader* shader, LightData* lightData);
 
-	Lighting* ShadowMapStep1(Shader* shader, Texture* texture);
-	Lighting* ShadowMapStep2(Shader* shader, Texture* texture, Camera* camera);
+	Lighting* ShadowMapStep1(Shader* shader);
+	Lighting* ShadowMapStep2(Shader* shader);
 	Lighting* ShadowMapStep3(Shader* shader);
 	Lighting* DebugShadow(Shader* shader);
 
@@ -30,7 +30,7 @@ public:
 
 	
 	glm::vec3 zeros = { 0.0f,0.0f,0.0f };
-	float near_plane = 1.0f, far_plane = 7.0f;
+	float near_plane = 1.0f, far_plane = 10.0f;
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 	unsigned int SCR_WIDTH = 1920;
 	unsigned int SCR_HEIGHT = 1080;

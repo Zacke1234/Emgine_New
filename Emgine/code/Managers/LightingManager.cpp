@@ -386,17 +386,17 @@ void LightingManager::Destroy(Lighting* light, LightData* lightData)
 }
 
 
-Lighting* LightingManager::UseShadowDepth(Shader* shader, LightData* aLightData, Object* objects)
+Lighting* LightingManager::UseShadowDepth(Shader* shader, LightData* aLightData)
 {
 	if (shader == NULL)
 	{
 		return 0;
 	}
-	glm::vec3 aPos = glm::vec3(0.0f, 0.0f, 0.0f);
-	glm::vec3 fragPos = glm::vec3(objects->trans * glm::vec4(aPos, 1.0f));
+	//glm::vec3 aPos = glm::vec3(0.0f, 0.0f, 0.0f);
+	//glm::vec3 fragPos = glm::vec3(objects->trans * glm::vec4(aPos, 1.0f));
 
-	glm::vec3 pointLightPos = glm::normalize(aLightData->lightPos + fragPos); // (whole scene within range of course)
-	glm::vec3 pointLightDir = glm::normalize(aLightData->lightDir + fragPos);
+	//glm::vec3 pointLightPos = glm::normalize(aLightData->lightPos + fragPos); // (whole scene within range of course)
+	//glm::vec3 pointLightDir = glm::normalize(aLightData->lightDir + fragPos);
 	if (aLightData == NULL)
 	{
 		return 0;
@@ -457,10 +457,13 @@ Lighting* LightingManager::UseShadowDepth(Shader* shader, LightData* aLightData,
 	return 0;
 }
 
-Lighting* LightingManager::ShadowMapStep1(Shader* shader, Texture* texture)
+Lighting* LightingManager::ShadowMapStep1(Shader* shader)
 {
 	GL_CHECK(glActiveTexture(GL_TEXTURE0));
-	GL_CHECK(glBindTexture(GL_TEXTURE_2D, texture->TextureObject));
+	for (auto& t : Texture::textures)
+	{
+		GL_CHECK(glBindTexture(GL_TEXTURE_2D, t->TextureObject));
+	}
 	GL_CHECK(glActiveTexture(GL_TEXTURE1));
 	GL_CHECK(glBindTexture(GL_TEXTURE_2D, depthMap));
 	//viewTEST = glm::lookAt(aLightData->lightPos, aLightData->lightPos, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -481,26 +484,30 @@ Lighting* LightingManager::ShadowMapStep1(Shader* shader, Texture* texture)
 	return 0;
 }
 
-Lighting* LightingManager::ShadowMapStep2(Shader* shader, Texture* texture, Camera* camera)
+Lighting* LightingManager::ShadowMapStep2(Shader* shader)
 {
 	
-	GL_CHECK(glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT));
+	/*GL_CHECK(glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT));
 	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
 	GL_CHECK(glClear(GL_DEPTH_BUFFER_BIT));
 	GL_CHECK(glActiveTexture(GL_TEXTURE0));
-	GL_CHECK(glBindTexture(GL_TEXTURE_2D, texture->TextureObject));
-	glCullFace(GL_FRONT);
+	for (auto& t : Texture::textures)
+	{
+		GL_CHECK(glBindTexture(GL_TEXTURE_2D, t->TextureObject));
+	}*/
+	
+	//glCullFace(GL_FRONT);
 	for (auto& o : Object::Entities)
 	{
 		o->Draw(shader);
 	}
-	glCullFace(GL_BACK);
-	//renderScene(simpleDepthShader);
-	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+	//glCullFace(GL_BACK);
+	////renderScene(simpleDepthShader);
+	//GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 
-	 // reset viewport
-	GL_CHECK(glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT));
-	GL_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+	// // reset viewport
+	//GL_CHECK(glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT));
+	//GL_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 	
 	return 0;
 }
