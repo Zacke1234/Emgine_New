@@ -192,9 +192,10 @@ LightData* LightingManager::Create(std::string name, Shader* shader, LightData* 
 	aLightData->Name = name;
 
 
-	SetPoint(aLightData);
-	//SetDirectional(aLightData, NULL);
-	//SetSpot(aLightData, NULL);
+	//
+	//SetPoint(aLightData);
+	SetDirectional(aLightData);
+	//SetSpot(aLightData);
 	//InitialiseLightData(shader, light);
 	
 	return aLightData;
@@ -202,6 +203,10 @@ LightData* LightingManager::Create(std::string name, Shader* shader, LightData* 
 
 LightData* LightingManager::SetDirectional(LightData* aLightData)
 {
+	if (aLightData == NULL)
+	{
+		aLightData = Object::Entities[Object::SelectedEntity]->myLightData;
+	}
 	
 	
 	if (aLightData->LightVar != 2)
@@ -220,7 +225,7 @@ LightData* LightingManager::SetDirectional(LightData* aLightData)
 	aLightData->specular = { 0.3,0.3,0.3 };
 	aLightData->constant = 1;
 	aLightData->linear = 1;
-	aLightData->quadtric = 1;
+	aLightData->quadtric = 0.5;
 	Lighting::DirLightDirections.push_back(&aLightData->lightDir);
 	Lighting::speculars.push_back(&aLightData->specular);
 	Lighting::diffuses.push_back(&aLightData->diffuse);
@@ -242,6 +247,10 @@ LightData* LightingManager::SetPoint(LightData* aLightData)
 
 		aLightData = obj->Entities[obj->SelectedEntity]->myLightData;
 	}*/
+	if (aLightData == NULL)
+	{
+		aLightData = Object::Entities[Object::SelectedEntity]->myLightData;
+	}
 	if (aLightData->LightVar != 1)
 	{
 		Lighting::pointLights.push_back(aLightData);
@@ -256,7 +265,7 @@ LightData* LightingManager::SetPoint(LightData* aLightData)
 	aLightData->specular = { 0.3,0.3,0.3 };
 	aLightData->constant = 1;
 	aLightData->linear = 0;
-	aLightData->quadtric = 0;
+	aLightData->quadtric = 0.5;
 
 	Lighting::speculars.push_back(&aLightData->specular);
 	Lighting::diffuses.push_back(&aLightData->diffuse);
@@ -281,7 +290,10 @@ LightData* LightingManager::SetPoint(LightData* aLightData)
 
 LightData* LightingManager::SetSpot(LightData* aLightData)
 {
-	
+	if (aLightData == NULL)
+	{
+		aLightData = Object::Entities[Object::SelectedEntity]->myLightData;
+	}
 	if (aLightData->LightVar != 3)
 	{
 		Lighting::spotLights.push_back(aLightData);
@@ -296,9 +308,9 @@ LightData* LightingManager::SetSpot(LightData* aLightData)
 	aLightData->specular = { 0.3,0.3,0.3 };
 	aLightData->constant = 1;
 	aLightData->linear = 1;
-	aLightData->quadtric = 1;
-	aLightData->cutOff = 1;
-	aLightData->outerCutOff = 1;
+	aLightData->quadtric = 0;
+	aLightData->cutOff = glm::cos(glm::radians(12.5f));
+	aLightData->outerCutOff = glm::cos(glm::radians(15.f));
 	Lighting::spotLightDirections.push_back(&aLightData->lightDir);
 	Lighting::spotLightPositions.push_back(&aLightData->lightPos);
 	Lighting::speculars.push_back(&aLightData->specular);
@@ -367,7 +379,7 @@ LightData* LightingManager::RunLightData(Shader* shader, Camera* aCamera, LightO
 	}
 
 	lightObj->myLightData->lightPos = lightObj->Position;
-	
+	lightObj->myLightData->lightDir = lightObj->Rotation;
 	
 	//shader->SetInt("shadowMap", 1);
 	
@@ -411,7 +423,7 @@ Lighting* LightingManager::UseShadowDepth(Shader* shader, LightData* aLightData)
 	if (aLightData->LightVar == 2) // directional
 	{
 		lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-		view = glm::lookAt(aLightData->lightDir, glm::vec3(0), glm::vec3(0, 1, 0));
+		view = glm::lookAt(aLightData->lightDir, aLightData->lightDir, glm::vec3(0, 1, 0));
 		
 	}
 	if (aLightData->LightVar == 1) // point
@@ -419,14 +431,14 @@ Lighting* LightingManager::UseShadowDepth(Shader* shader, LightData* aLightData)
 
 		lightProjection = glm::perspective(glm::radians(70.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
 
-		view = glm::lookAt(aLightData->lightPos, glm::vec3(0.0), glm::vec3(0.0, 1.0, 0.0)); // this light position is not enough to reflect the whole scene sadly
+		view = glm::lookAt(aLightData->lightPos, glm::vec3(1.0), glm::vec3(0.0, 1.0, 0.0)); // this light position is not enough to reflect the whole scene sadly
 	}															// NOTE: this one in the middle is super important for this!!!!!!!
 	if (aLightData->LightVar == 3) // spot
 	{
 
-		lightProjection = glm::perspective(glm::acos(aLightData->outerCutOff) * 2.0f, (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
+		lightProjection = glm::perspective(glm::radians(70.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
 
-		view = glm::lookAt(aLightData->lightPos, aLightData->lightPos + aLightData->lightDir, glm::vec3(0.0, 1.0, 0.0));
+		view = glm::lookAt(aLightData->lightPos, aLightData->lightDir, glm::vec3(0.0, 1.0, 0.0));
 	}
 	lightspaceMatrix = lightProjection * view;
 
@@ -448,7 +460,6 @@ Lighting* LightingManager::UseShadowDepth(Shader* shader, LightData* aLightData)
 
 	shader->SetVec4("FragPosLightSpace", FragPosLightSpace);*/
 	shader->SetMatrix("lightSpaceMatrix", lightspaceMatrix);
-	shader->SetMatrix("dirLight.lightSpaceMatrix", lightspaceMatrix);
 	//FragPosLightSpace
 	
 	
@@ -494,9 +505,9 @@ Lighting* LightingManager::ShadowMapStep2(Shader* shader)
 	for (auto& t : Texture::textures)
 	{
 		GL_CHECK(glBindTexture(GL_TEXTURE_2D, t->TextureObject));
-	}*/
+	}
 	
-	//glCullFace(GL_FRONT);
+	glCullFace(GL_FRONT);*/
 	for (auto& o : Object::Entities)
 	{
 		o->Draw(shader);
