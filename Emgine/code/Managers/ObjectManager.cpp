@@ -36,6 +36,7 @@ void ObjectManager::Destroy(Object* obj) {
 LightObject* ObjectManager::CreateLight(std::string aName = "new_lightObject", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL, LightData* aLightData = NULL, Rigidbody* rb = NULL)
 {
 	LightObject* lightObj = new LightObject(aName, Mesh, aTexture, aShader, aCollider, aLightData, rb);
+	 aLightData->lightPos = lightObj->Position;
 	Object::Entities.push_back(lightObj);
 	LightObject::LightEntities.push_back(lightObj);
 	return lightObj;

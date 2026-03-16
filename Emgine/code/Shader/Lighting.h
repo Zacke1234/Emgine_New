@@ -15,7 +15,7 @@ public:
 		};
 		float ambientStrength = 0.1f;
 		glm::vec3 lightPos = { 0,0,0 };
-		glm::vec3 lightDir = { 0,0,-1.0f };
+		glm::vec3 lightDir = { 0,0,0 };
 		
 		glm::vec3 ambient = { 1,1,1 };
 		glm::vec3 diffuse = { 1,1,1 };
@@ -27,7 +27,7 @@ public:
 		
 		
 
-		glm::mat4 view;
+		
 
 		
 		
@@ -70,6 +70,10 @@ public:
 	static std::vector<glm::vec3*> ambients;
 	static std::vector<glm::vec3*> DirLightDirections;
 	static std::vector<glm::vec3*> spotLightDirections;
+
+	static std::vector<glm::mat4*> DirlightspaceMatrixes;
+	static std::vector<glm::mat4*> pointlightspaceMatrixes;
+	static std::vector<glm::mat4*> spotlightspaceMatrixes;
 
 	static std::vector<float*> cutOffs;
 	static std::vector<float*> outerCutOffs;

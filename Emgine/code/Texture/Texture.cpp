@@ -50,24 +50,41 @@ Texture::Texture(const char* aPath, Material* mat = NULL)
 	Width = 0;
 	Height = 0;
 	
+	data = stbi_load(aPath, &Width, &Height, &Channels, 0);
 
-	unsigned char* data = stbi_load(aPath, &Width, &Height, &Channels, 0);
+	
+
+	
 	texturePath = aPath;
 	//GL_CHECK(glEnable(GL_TEXTURE_2D));
 	
-	GL_CHECK(glGenTextures(1, &TextureObject));
-	GL_CHECK(glBindTexture(GL_TEXTURE_2D, TextureObject));
-	GL_CHECK(glGenFramebuffers(1, &depthMapFBO));
+	
 
-	if (data != NULL)
+	if (data)
 	{
-		
-		GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Width, Height, 0, GL_RGB, GL_UNSIGNED_BYTE, data));
+		if (Channels == 1)
+		{
+			Channels = GL_RED;
+		}
+		else if (Channels == 3)
+		{
+			Channels = GL_RGB;
+		}
+		else if (Channels == 4)
+		{
+			Channels = GL_RGBA;
+		}
+
+		GL_CHECK(glGenTextures(1, &TextureObject));
+		GL_CHECK(glBindTexture(GL_TEXTURE_2D, TextureObject));
+		//GL_CHECK(glGenFramebuffers(1, &depthMapFBO));
+
+		GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, Width, Height, 0, Channels, GL_UNSIGNED_BYTE, data));
 		//GL_CHECK(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0));
 		GL_CHECK(glGenerateMipmap(GL_TEXTURE_2D));
 
-		GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));	// set texture wrapping to GL_REPEAT (default wrapping method)
-		GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+		GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Channels == GL_RGBA ? GL_CLAMP_TO_EDGE : GL_REPEAT));	// set texture wrapping to GL_REPEAT (default wrapping method)
+		GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Channels == GL_RGBA ? GL_CLAMP_TO_EDGE : GL_REPEAT));
 		// set texture filtering parameters
 		GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
 		GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
@@ -82,6 +99,7 @@ Texture::Texture(const char* aPath, Material* mat = NULL)
 			<< "unable to load texture: "
 			<< stbi_failure_reason()
 			<< "\n";
+		
 		//throw;
 			
 	}

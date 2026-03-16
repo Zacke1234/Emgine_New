@@ -65,18 +65,19 @@ Shader::Shader(const char* VertexPath, const char* FragmantPath)
 	//std::vector<std::string> lines = fragmantCode.();
 
 	GL_CHECK(glCompileShader(fragmantShader));
-	shaderProgram = glCreateProgram();
-
-	GL_CHECK(glAttachShader(shaderProgram, vertexShader));
-	GL_CHECK(glAttachShader(shaderProgram, fragmantShader));
-	GL_CHECK(glLinkProgram(shaderProgram));
-	ShaderProgram = shaderProgram;
-
+	ShaderProgram = glCreateProgram();
+	//ShaderProgram = shaderProgram;
+	GL_CHECK(glAttachShader(ShaderProgram, vertexShader));
+	GL_CHECK(glAttachShader(ShaderProgram, fragmantShader));
+	GL_CHECK(glLinkProgram(ShaderProgram));
+	
+	
+	char Log[512];
 	
 
 	int result;
 	int vertexResult;
-	char Log[512];
+	
 	GL_CHECK(glGetShaderiv(fragmantShader, GL_COMPILE_STATUS, &result));
 	GL_CHECK(glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &vertexResult));
 	//if (fragmantCode == "#define NR_POINT_LIGHTS")
@@ -94,8 +95,10 @@ Shader::Shader(const char* VertexPath, const char* FragmantPath)
 		GL_CHECK(glGetShaderInfoLog(vertexShader, 512, NULL, Log));
 		std::cout << "Failed to compile vertex shader \n" << Log << std::endl;
 	}
+	
 	glDeleteShader(fragmantShader);
 	glDeleteShader(vertexShader);
+
 }
 
 void Shader::UseShader()
@@ -106,6 +109,7 @@ void Shader::UseShader()
 void Shader::SetMatrix(const char* transform, glm::mat4 aMatrix)
 {
 	GL_CHECK(glUniformMatrix4fv(glGetUniformLocation(ShaderProgram, transform), 1, GL_FALSE, glm::value_ptr(aMatrix)));
+	
 }
 
 void Shader::SetVec2(const char* texture, glm::vec2 aVec2)
@@ -118,7 +122,8 @@ void Shader::SetVec3(const char* texture, glm::vec3 aVec3)
 }
 void Shader::SetVec4(const char* texture, glm::vec4 aVec4)
 {
-	GL_CHECK(glUniformMatrix4fv(glGetUniformLocation(ShaderProgram, texture), 1, GL_FALSE, glm::value_ptr(aVec4)));
+	GL_CHECK(glUniform4fv(glGetUniformLocation(ShaderProgram, texture), 1, glm::value_ptr(aVec4)));
+
 }
 void Shader::SetFloat(const std::string texcord, float aTexcord)
 {

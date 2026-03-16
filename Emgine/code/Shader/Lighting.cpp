@@ -21,4 +21,6 @@ std::vector<glm::vec3*> Lighting::DirLightDirections;
 std::vector<glm::vec3*> Lighting::spotLightPositions;
 std::vector<glm::vec3*> Lighting::spotLightDirections;
 
-
+std::vector<glm::mat4*> Lighting::DirlightspaceMatrixes;
+std::vector<glm::mat4*> Lighting::pointlightspaceMatrixes;
+std::vector<glm::mat4*> Lighting::spotlightspaceMatrixes;

@@ -3,6 +3,9 @@
 Shader* ShaderManager::InitDefaultShader()
 {
 	DefaultShader = new Shader("../Shader/VertexShader_1.glsl", "../Shader/FragmentShader_1.glsl");
+	
+	// "depthShader", "../Shader/ShadowMappingVS.glsl", "../Shader/ShadowMappingFS.glsl"
+	// "debugQuadShader", "../Shader/debugDepthQuadVS.glsl", "../Shader/debugDepthQuadFS.glsl"
 	DefaultShader->shaderName = "defaultShader";
 	Shader::shaderList.push_back(DefaultShader);
 	return DefaultShader;
@@ -27,7 +30,8 @@ Shader* ShaderManager::Find(std::string name)
 			return shader;
 		}
 	}
-	return nullptr;
+	
+	//return nullptr;
 }
 
 // C:\Users\zackarias.hager\source\repos\Emgine\Shader

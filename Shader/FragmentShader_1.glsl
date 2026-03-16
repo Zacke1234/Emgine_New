@@ -1,28 +1,25 @@
-﻿#version 330 core
+﻿#version 430 core
 
 uniform vec3 viewPos;
-in vec3 Normal;
-in vec2 TexCoord;
+
+
 
 in vec3 ourColor;
-in vec3 FragPos;
-in vec4 FragPosLightSpace;
 
+
+layout (location = 3) uniform sampler2D shadowMapTex;
 //out mat4 view;
 out vec4 FragColor;
-out vec4 FragDepth;
+
   
 //uniform mat4 lightSpaceMatrix;
 
-uniform vec3 specularStrength;
-uniform vec3 objColor;
-uniform vec3 lightColor;
-uniform vec3 ambientStrength;
+
 uniform sampler2D ourTexture;
 uniform sampler2D depthMap;
 uniform sampler2D shadowMap;
 uniform sampler2D normalMap; 
-uniform sampler2D diffuseTexture;
+
 
 uniform int NumDirectionalLights;
 uniform int NumPointLights;
@@ -30,8 +27,10 @@ uniform int NumSpotLights;
 
 //uniform mat4 lightSpaceMatrix;
 
-
-
+    in vec3 FragPos;
+    in vec2 TexCoord;
+    in vec3 Normal;
+    in vec4 FragPosLightSpace;
 
 
 
@@ -60,7 +59,7 @@ uniform DirectionalLight dirLight[NR_DIR_LIGHTS];
 struct PointLight{
     vec3 position;
     vec3 ambient;
-    
+   
     vec3 diffuse;
     vec3 specular;
     float constant;
@@ -72,6 +71,7 @@ uniform PointLight pointLight[NR_POINT_LIGHTS];
 
 
 struct SpotLight{
+
 vec3 position;
 vec3 direction;
 float cutOff;
@@ -110,24 +110,26 @@ uniform Material material;
 
     float ShadowCalculation(vec4 fragPosLightSpace, vec3 lightPos)
     {
-        //vec3 fragToLight = FragPos - lightPos;
-        // peform perspective divide
+        
+       // peform perspective divide
         vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
         // transform to [0,1] range
         projCoords = projCoords * 0.5 + 0.5;
         // get closest depth from light's perspective (using [0,1] range frogposlight as coords)
-       // float closestDepth = texture(shadowMap, projCoords.xy).r;
+        float closestDepth = texture(shadowMap, projCoords.xy).r;
         // just get the depth of current fragment from lights perspective
         float currentDepth = projCoords.z;
 
         vec3 normal = normalize(Normal);
-        vec3 lightDir = normalize(lightPos - FragPos);
+        //vec3 lightDir = normalize(lightPos - FragPos);
 
-        float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+        float bias = max(0.05 * (1.0 - dot(normal, lightPos)), 0.005);
         // check whetever current frag pos is in shadow
         //float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
         // PCF
         
+        
+
         
         
         float shadow = 0.0;
@@ -140,9 +142,10 @@ uniform Material material;
                 shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
             }
 
+            
         }
         
-        shadow /= 9.0;
+        shadow /= 9.0;  
 
         if (projCoords.z > 1.0)
             shadow = 0.0;
@@ -151,14 +154,25 @@ uniform Material material;
 
         return shadow;
     }
+
+    float ShadowCalc2(vec4 fragposLightSpace)
+    {
+    
+    vec3 projCoords = fragposLightSpace.xyz / fragposLightSpace.w;
+    projCoords = projCoords * 0.5 + 0.5;
+    float closestDepth = texture(shadowMap, projCoords.xy).r;
+    float currentDepth = projCoords.z;
+    float shadow = currentDepth > closestDepth ? 1.0 : 0.0;
+    return shadow;
+    }
    
     //out vec2 TexCoords;
    
-    vec3 dir;
+    
      vec3 CalculateDirLight(DirectionalLight dirLight, vec3 viewDir)
      {  
-        vec3 norm = normalize(Normal);
-         float shadow = ShadowCalculation(FragPosLightSpace, dir); // do i need multiple different fragPosLights? for each light type? to properly load shadows
+          vec3 norm = normalize(Normal);
+          float shadow = ShadowCalculation(FragPosLightSpace, dirLight.direction); // do i need multiple different fragPosLights? for each light type? to properly load shadows
           vec3 lightDir = normalize(-dirLight.direction);
           // diffuse shading
           float diff = max(dot(norm, lightDir), 0.0);
@@ -169,17 +183,17 @@ uniform Material material;
           vec3 ambient = dirLight.ambient * vec3(texture(material.diffuse, TexCoord));
           vec3 diffuse = dirLight.diffuse * diff * vec3(texture(material.diffuse, TexCoord));
           vec3 specular = dirLight.specular * spec * vec3(texture(material.specular, TexCoord));
-          return (ambient + (1.0 - shadow) * (diffuse + specular) * material.objectColor);
+          return (ambient + (1.0 - shadow) * (diffuse  + specular)) * material.objectColor;
      }
 
      vec3 CalculatePointLight(PointLight pointLight, vec3 fragPos, vec3 viewDir)
      { 
-     float shadow = ShadowCalculation(FragPosLightSpace, pointLight.position);
-        vec3 norm = normalize(Normal);
+         float shadow = ShadowCalculation(FragPosLightSpace, pointLight.position);
+         vec3 norm = normalize(Normal);
        
-        vec3 lightDir = normalize(pointLight.position - fragPos);
-        // diffuse shading
-        float diff = max(dot(norm, lightDir), 0.0);
+         vec3 lightDir = normalize(pointLight.position - fragPos);
+         // diffuse shading
+         float diff = max(dot(norm, lightDir), 0.0);
          // specular shading
          vec3 reflectDir = reflect(-lightDir, norm);
          float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
@@ -193,8 +207,8 @@ uniform Material material;
          ambient *= attenuation;
          diffuse *= attenuation;
          specular *= attenuation;
-          
-         return (ambient + (1 - shadow) * (diffuse + specular)) * material.objectColor; // shadow should maybe be somewhere else
+          // (1.0 - shadow) * 
+         return (ambient + (1.0 - shadow) * (diffuse  + specular)) * material.objectColor; // shadow should maybe be somewhere else
          //  return (ambient + diffuse + specular);
      }
 
@@ -222,7 +236,14 @@ uniform Material material;
         ambient *= attenuation * intensity;
         diffuse *= attenuation * intensity;
         specular *= attenuation * intensity;
-        return (ambient + (1.0 - shadow) * (diffuse + specular) * material.objectColor);
+        // (1.0 - shadow) *
+
+//        if (theta > spotLight.cutOff)
+//        {
+//            return (ambient + diffuse  + specular) * material.objectColor;
+//        }
+
+         return (ambient + (1.0 - shadow) * (diffuse  + specular)) * material.objectColor;
 
        
      }

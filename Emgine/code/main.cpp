@@ -151,7 +151,7 @@ int init_memory_tracker() {
 
 
 int init_managers() {
-	
+	GL_CHECK(glEnable(GL_DEPTH_TEST));
 	myShaderManager = new ShaderManager();
 	myLightingManager = new LightingManager();
 	myMeshManager = new MeshManager;
@@ -159,10 +159,10 @@ int init_managers() {
 	myTextureManager = new TextureManager();
 	MyColliderManager = new ColliderManager();
 	newLightdata = new LightData();
-	GL_CHECK(glEnable(GL_DEPTH_TEST));
+	
 	myLightingManager->InitDefaultLighting();
 	myShaderManager->Create("depthShader", "../Shader/ShadowMappingVS.glsl", "../Shader/ShadowMappingFS.glsl");
-	myShaderManager->Create("debugQuadShader", "../Shader/debugDepthQuadVS.glsl", "../Shader/debugDepthQuadFS.glsl");
+	myShaderManager->Create("PerspectiveShader", "../Shader/PerspectiveVS.glsl", "../Shader/PerspectiveFS.glsl");
 	myShaderManager->InitDefaultShader();
 	
 	//TODO: init shader, collider, and rigidbodymanager
@@ -340,7 +340,7 @@ int main()
 		myLightingManager->Create("SceneLight", myShaderManager->DefaultShader, myLightingManager->DefaultLighting),
 		NULL);
 
-	myObjectManager->FindAndSetProperties("SceneLight", pos2, size, glm::vec3(0.0f));
+	myObjectManager->FindAndSetProperties("SceneLight", pos2, size, glm::vec3(0.0f, glm::radians(-1.0f) , 0.0f));
 
 	myObjectManager->CreateCamera("SceneCamera",
 		NULL,
@@ -350,61 +350,48 @@ int main()
 		myCamera,
 		NULL);
 	
-	
-
-	//myShaderManager->Create(depthShader, "../Shader/ShadowMappingVS.glsl", "../Shader/ShadowMappingFS.glsl");
-	//glDepthFunc(GL_ALWAYS);
-	float near_plane = 1.0f, far_plane = 7.5f;
-	
 
 	myLightingManager->InitDepthMapping();
+
 	myShaderManager->DefaultShader->UseShader();
 	myShaderManager->DefaultShader->SetInt("shadowMap", 1);
 	myShaderManager->DefaultShader->SetInt("diffuseTexture", 0);
-	myShaderManager->Find("debugQuadShader")->UseShader();
-	myShaderManager->Find("debugQuadShader")->SetInt("depthMap", 0);
+	myShaderManager->Find("PerspectiveShader")->UseShader();
+	myShaderManager->Find("PerspectiveShader")->SetInt("depthMap", 0);
 	//
 	// loops until user closes window
+
+	Shader* depthShader = myShaderManager->Find("depthShader");
 	while (!glfwWindowShouldClose(window))
 	{
 		
 		GL_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 		GL_CHECK(glClearColor(0.1f, 0.1f, 0.1f, 1.0f));
 		
-	
-		//myThread->DoWork(deltatime);
-		
-		// poll for and process events ?
-		
-
-		//myMemory->LoadInMemory(myShaderManager->DefaultShader, myCamera, myLighting, myObjectManager, myUI, myMeshManager, fish, cubeColl);
 
 		myTime->Run();
 
-		myShaderManager->Find("depthShader")->UseShader();
-		for (auto& o : Object::Entities)
+		depthShader->UseShader();
+
+		myLightingManager->DebugShadow(depthShader);
+		myShaderManager->DefaultShader->UseShader();
+		myShaderManager->DefaultShader->SetInt("shadowMap", 1);
+
+		
+		myLightingManager->ShadowMapStep1(myShaderManager->DefaultShader, myCamera); // draws the scene as well
+		depthShader->UseShader();
+		
+
+		for (auto& lightObj : LightObject::LightEntities)
 		{
-			//o->Draw(myShaderManager->Find("depthShader"));
-
-			for (auto& lightObj : LightObject::LightEntities)
-			{
-				
-				myLightingManager->UseShadowDepth(myShaderManager->Find("depthShader"), lightObj->myLightData, o);
-			}
-			
+			myLightingManager->UseShadowDepth(depthShader, lightObj->myLightData);
 		}
-
-		//glCullFace(GL_FRONT);
-		myLightingManager->ShadowMapStep2(myShaderManager->Find("depthShader"), wall, myCamera);
-		//glCullFace(GL_BACK);
-		
-		//glBindTexture(GL_TEXTURE_2D, woodTexture);
-		
-		//depthShader->UseShader();
+		myLightingManager->ShadowMapStep2(depthShader); // draws the scene as well
+	;
 	
 		
 		myShaderManager->DefaultShader->UseShader();
-		myCamera->CameraSendToShader(myShaderManager->DefaultShader);
+		myShaderManager->DefaultShader->SetInt("shadowMap", 1);
 		//Drawcall objects
 		for (auto& o : Object::Entities)
 		{
@@ -412,21 +399,14 @@ int main()
 			for (auto& lightObj : LightObject::LightEntities)
 			{ 
 				myLightingManager->RunLightData(myShaderManager->DefaultShader, myCamera, lightObj);
-				myLightingManager->UseShadowDepth(myShaderManager->DefaultShader, lightObj->myLightData, lightObj);
+				myLightingManager->UseShadowDepth(myShaderManager->DefaultShader, lightObj->myLightData);
 				
 			}
 			
 		}
 		
-		myLightingManager->ShadowMapStep1(myShaderManager->DefaultShader, wall);
 
-		for (auto& o : Object::Entities) {
-
-			o->Draw(myShaderManager->DefaultShader);
-		}
-		myShaderManager->Find("debugQuadShader")->UseShader();
-
-		myLightingManager->DebugShadow(myShaderManager->Find("debugQuadShader"));
+		
 
 		myLightingManager->ShadowMapStep3(myShaderManager->DefaultShader);
 		

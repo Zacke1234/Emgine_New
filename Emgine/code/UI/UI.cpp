@@ -176,6 +176,7 @@ int uiObjectList(UI* ui)
 				ui->lightLinear = Object::Entities[i]->myLightData->linear;
 				ui->lightQuadratic = Object::Entities[i]->myLightData->quadtric;
 				ui->lightConstant = Object::Entities[i]->myLightData->constant;
+				// glm::cos(glm::radians(
 				ui->cutoff = Object::Entities[i]->myLightData->cutOff;
 				ui->outerCutOff = Object::Entities[i]->myLightData->outerCutOff;
 				//ui->left, ui->right, ui->bottom, ui->up, ui->zNear, ui->zFar = Object::Entities[i]->myLightData->projection;
@@ -225,7 +226,6 @@ int classes() {
 	meshmang = new MeshManager();
 	lightMang = new LightingManager();
 	myRigidbodyMang = new RigidbodyManager();
-	
 	
 	return 0;
 }

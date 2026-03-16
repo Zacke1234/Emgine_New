@@ -1,14 +1,9 @@
 ﻿#pragma once
 #include <string>
-#include "Collider.h"
-#include <glm.hpp>
 #include <vector>
-#include <list>
-#include <queue>
 #include "iostream"
 #include "Observer.h"
-#include "MeshManager.h"
-#include "MeshLoader.h"
+
 
 
 

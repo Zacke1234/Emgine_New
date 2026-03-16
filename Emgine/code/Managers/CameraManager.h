@@ -1,10 +1,11 @@
 #pragma once
-#include "Camera.h"
-#include <Shader.h>
+#include <string>
+#include <Camera.h>
+
 class CameraManager
 {
 public:
-	Camera* create(std::string name);
+	Camera* Create(std::string name = "new_camera");
 	
 };
 

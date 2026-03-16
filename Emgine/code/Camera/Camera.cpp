@@ -37,9 +37,9 @@ Camera::Camera()
 
 void Camera::CameraSendToShader(Shader* myShader)
 {
+	myShader->SetMatrix("projection", projection);
 	myShader->SetMatrix("view", myView);
 	myShader->SetVec3("viewPos", myPosition);
-	myShader->SetMatrix("projection", projection);
 }
 
 void Camera::CameraUpdate(GLFWwindow* window) // the mouse cursor is still not good, when you tab in, it will just snap to another position again, need to fix
@@ -52,7 +52,7 @@ void Camera::CameraUpdate(GLFWwindow* window) // the mouse cursor is still not g
 	myUp = glm::cross(myDirection, myRight);
 	
 	
-	
+	//lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.1f, 100.0f);
 	projection = glm::perspective(glm::radians(fieldOfView), myWidth / myHeight, 0.1f, cameraViewRange);
 
 	myRight = glm::normalize(glm::cross(WorldUp, myDirection));

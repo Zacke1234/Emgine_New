@@ -22,6 +22,8 @@ public:
 	Material* myMaterial;
 	Texture(const char* aPath, Material* mat);
 
+	unsigned char* data;
+
 	void SetMaterial(Material& mat);
 	static std::vector<Texture*> textures;
 	static std::vector<Material*> materials;
@@ -35,10 +37,8 @@ public:
 	int Height = 0;
 	int Channels = 0;
 
-	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 	unsigned int TextureObject = 0;
-	unsigned int depthMapFBO = 0;
-	unsigned int depthMap;
+	
 	
 	
 };
