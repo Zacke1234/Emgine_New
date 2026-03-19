@@ -18,9 +18,6 @@ public:
 	Lighting* UseShadowDepth(Shader* shader, LightData* lightData);
 	Lighting* LoadCubeMaps(Texture* shadowTexture);
 
-	Lighting* ShadowMapStep1(Shader* shader, Camera* myCamera);
-	Lighting* ShadowMapStep2(Shader* shader);
-	Lighting* ShadowMapStep3(Shader* shader);
 	Lighting* DebugShadow(Shader* shader);
 
 	LightData* SetDirectional(LightData* aLightData);

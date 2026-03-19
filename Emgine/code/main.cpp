@@ -349,19 +349,19 @@ int main()
 		NULL,
 		myCamera,
 		NULL);
-	
 
-	myLightingManager->InitDepthMapping();
+	Shader* depthShader = myShaderManager->Find("depthShader");
+	Shader* perspectiveShader = myShaderManager->Find("PerspectiveShader");
 
 	myShaderManager->DefaultShader->UseShader();
 	myShaderManager->DefaultShader->SetInt("shadowMap", 1);
 	myShaderManager->DefaultShader->SetInt("diffuseTexture", 0);
-	myShaderManager->Find("PerspectiveShader")->UseShader();
-	myShaderManager->Find("PerspectiveShader")->SetInt("depthMap", 0);
+	perspectiveShader->UseShader();
+	perspectiveShader->SetInt("depthMap", 0);
 	//
 	// loops until user closes window
 
-	Shader* depthShader = myShaderManager->Find("depthShader");
+	
 	while (!glfwWindowShouldClose(window))
 	{
 		
@@ -371,27 +371,31 @@ int main()
 
 		myTime->Run();
 
-		depthShader->UseShader();
-
-		myLightingManager->DebugShadow(depthShader);
+		perspectiveShader->UseShader();
+		myLightingManager->DebugShadow(perspectiveShader);
 		myShaderManager->DefaultShader->UseShader();
 		myShaderManager->DefaultShader->SetInt("shadowMap", 1);
+		myCamera->CameraSendToShader(myShaderManager->DefaultShader);
 
+		for (auto& o : Object::Entities)
+		{
+			o->Draw(myShaderManager->DefaultShader);
+		}
 		
-		myLightingManager->ShadowMapStep1(myShaderManager->DefaultShader, myCamera); // draws the scene as well
-		depthShader->UseShader();
-		
+		perspectiveShader->UseShader();
+		myLightingManager->DebugShadow(perspectiveShader); 
 
 		for (auto& lightObj : LightObject::LightEntities)
 		{
-			myLightingManager->UseShadowDepth(depthShader, lightObj->myLightData);
+			myLightingManager->UseShadowDepth(perspectiveShader, lightObj->myLightData);
 		}
-		myLightingManager->ShadowMapStep2(depthShader); // draws the scene as well
+		
 	;
 	
 		
 		myShaderManager->DefaultShader->UseShader();
 		myShaderManager->DefaultShader->SetInt("shadowMap", 1);
+
 		//Drawcall objects
 		for (auto& o : Object::Entities)
 		{
@@ -406,9 +410,6 @@ int main()
 		}
 		
 
-		
-
-		myLightingManager->ShadowMapStep3(myShaderManager->DefaultShader);
 		
 		Phys->Simulate(myTime->Deltatime, myTime);
 		

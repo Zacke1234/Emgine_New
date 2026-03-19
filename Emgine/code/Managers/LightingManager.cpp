@@ -193,11 +193,11 @@ LightData* LightingManager::Create(std::string name, Shader* shader, LightData* 
 	aLightData->Name = name;
 
 
-	//
+	
 	//SetPoint(aLightData);
 	SetDirectional(aLightData);
 	//SetSpot(aLightData);
-	//InitialiseLightData(shader, light);
+	
 	
 	return aLightData;
 }
@@ -477,72 +477,31 @@ Lighting* LightingManager::UseShadowDepth(Shader* shader, LightData* aLightData)
 
 		lightspaceMatrix = lightPerspective * lightLookAt;
 	}
-	
+	shader->SetFloat("far_plane", far_plane);
+	shader->SetFloat("near_plane", near_plane);
 
 	shader->SetMatrix("lightSpaceMatrix", lightspaceMatrix);
-	//FragPosLightSpace
-	
-	
-	
-	
+
 	return 0;
 }
 
 
 
-Lighting* LightingManager::ShadowMapStep1(Shader* shader, Camera* myCamera)
-{
-	
-	GL_CHECK(glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT));
-	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
-	GL_CHECK(glClear(GL_DEPTH_BUFFER_BIT));
 
-	myCamera->CameraSendToShader(shader);
-	for (auto& o : Object::Entities)
-	{
-		o->Draw(shader);
-	}
-	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
-	GL_CHECK(glViewport(0,0, SCR_WIDTH, SCR_HEIGHT));
-	GL_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-
-	GL_CHECK(glBindTexture(GL_TEXTURE_2D, depthMap));
-	GL_CHECK(glBindTexture(GL_TEXTURE_CUBE_MAP, depthCubemap));
-
-	myCamera->CameraSendToShader(shader);
-	for (auto& o : Object::Entities)
-	{
-		o->Draw(shader);
-	}
-	return 0;
-}
-
-Lighting* LightingManager::ShadowMapStep2(Shader* shader)
-{
-	
-	GL_CHECK(glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT));
-	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
-	GL_CHECK(glClear(GL_DEPTH_BUFFER_BIT));
-	for (auto& o : Object::Entities)
-	{
-		o->Draw(shader);
-	}
-	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
-	
-	return 0;
-}
-
-Lighting* LightingManager::ShadowMapStep3(Shader* shader)
-{
-	GL_CHECK(glActiveTexture(GL_TEXTURE0));
-	GL_CHECK(glBindTexture(GL_TEXTURE_2D, depthMap));
-	return 0;
-}
 
 Lighting* LightingManager::DebugShadow(Shader* shader)
 {
-	shader->SetFloat("near_plane", near_plane);
-	shader->SetFloat("far_plane", far_plane);
+	// depth shader
+	
+
+	for (auto& o : Object::Entities)
+	{
+		o->Draw(shader);
+	}
+	
+	
 	return 0;
 }
+
+
 
