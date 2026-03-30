@@ -7,19 +7,19 @@
 #include <Object.h>
 #include "MeshManager.h"
 #include <bitset>
-#include<cassert>
+#include <cassert>
 using namespace std;
 
 // do breakpoints
 int n;
 MeshLoader::MeshLoader()
 {
-	//delete(&mesh->data);
-	//delete(&mesh->elements);
-	//delete(&mesh->position);
-	//delete(&mesh->normals);
-	//delete(&mesh->uvs);
-	//delete(&mesh->uvs);
+
+}
+
+MeshLoader::~MeshLoader()
+{
+
 }
 
 // https://www.opengl-tutorial.org/beginners-tutorials/tutorial-7-model-loading/
@@ -584,60 +584,7 @@ bool MeshLoader::WriteObjToBinary(std::ofstream& binaryOutputFile,
 
 
 
-void Mesh::InitialiseMesh()
-{
-	
-	//std::cout << "initialise object file" << "\n";
-	
-	/*if (data.size() != NULL)
-	{
-		data.clear();
-		elements.clear();
-	}*/
-	
-	GL_CHECK(glGenVertexArrays(1, &VAO));
-	GL_CHECK(glGenBuffers(1, &VBO));
-	GL_CHECK(glGenBuffers(1, &EBO));
 
-	GL_CHECK(glBindVertexArray(VAO));
-
-	GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, VBO));
-
-	this->vertexbuffer = VBO;
-
-	GL_CHECK(glBufferData(GL_ARRAY_BUFFER, this->data.size() * sizeof(float), &this->data[0], GL_STATIC_DRAW)); // Data here is zero, for some reason
-
-	GL_CHECK(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO));
-
-	GL_CHECK(glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->elements.size() * sizeof(unsigned int), &this->elements[0], GL_STATIC_DRAW));
-
-	
-	GL_CHECK(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0));
-	GL_CHECK(glEnableVertexAttribArray(0));
-
-
-
-	GL_CHECK(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float))));
-	GL_CHECK(glEnableVertexAttribArray(1));
-
-
-	GL_CHECK(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float))));
-	
-	GL_CHECK(glEnableVertexAttribArray(2));
-	
-
-	//GL_CHECK(glBindVertexArray(0));
-	//data.clear();
-	//elements.clear();
-	//numberVertices = 0;
-	//VAO = 0;
-	//VBO = 0;
-	//EBO = 0;
-	//vertexbuffer = 0;
-	//faces.clear();
-	//vertices.clear();
-	
-}
 
 
 

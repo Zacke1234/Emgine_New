@@ -25,6 +25,13 @@ MeshManager::~MeshManager()
 
 
 
+void MeshManager::Update(std::string message_from_subject)
+{
+
+	std::cout << "MeshManager received message: " << message_from_subject << "\n";
+
+}
+
 Mesh* MeshManager::LoadMesh(std::string objPath, std::string name, Mesh* mesh)
 {
 	size_t fileSize = std::filesystem::file_size(objPath);

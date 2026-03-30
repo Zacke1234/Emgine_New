@@ -108,6 +108,10 @@ Texture::Texture(const char* aPath, Material* mat = NULL)
 	
 }
 
+Texture::~Texture()
+{
+}
+
 void Texture::SetMaterial(Material& mat)
 {
 	this->myMaterial = &mat;

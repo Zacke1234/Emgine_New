@@ -200,6 +200,8 @@
     <ClCompile Include="code\Util\GLChecking.cpp" />
     <ClCompile Include="code\Managers\RigidbodyManager.cpp" />
     <ClCompile Include="code\Time\Time.cpp" />
+    <ClCompile Include="code\Material\Material.cpp" />
+    <ClCompile Include="code\Mesh\Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Dependencies\GLFW\include\glfw3.h">
@@ -218,6 +220,7 @@
     <ClInclude Include="..\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\imgui\imstb_textedit.h" />
     <ClInclude Include="..\imgui\imstb_truetype.h" />
+    <ClInclude Include="code\Enums\E_MeshLoadStage.h" />
     <ClInclude Include="code\Managers\CameraManager.h" />
     <ClInclude Include="code\Camera\Camera.h" />
     <ClInclude Include="code\Physics\Collider.h" />
@@ -246,6 +249,10 @@
     <ClInclude Include="code\Util\GLChecking.h" />
     <ClInclude Include="code\Managers\RigidbodyManager.h" />
     <ClInclude Include="code\Time\Time.h" />
+    <ClInclude Include="code\Material\Material.h" />
+    <ClInclude Include="code\Mesh\Mesh.h" />
+    <ClInclude Include="code\Mesh\Structs\Face.h" />
+    <ClInclude Include="code\Mesh\Structs\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\Dependencies\GLFW\lib-vc2022\glfw3.lib" />

@@ -58,31 +58,23 @@ Message* myMessage;
 MessageQueue* myMessageQueue;
 CubeCollider* cubeColl;
 CubeCollider* planeColl;
-//CubeCollider* cubeColl2;
 SphereCollider* sphereColl;
 LightingManager* myLightingManager;
 RigidbodyManager* myRigidbodyManager;
 Physics* Phys;
-//Threading* myThreading;
-Thread* myThread; 
-LightData* newLightdata;
 CameraManager* myCameraManager;
 Time* myTime;
-
+unsigned int SCR_WIDTH = 1920;
+	unsigned int SCR_HEIGHT = 1080;
 int do_time()
 {
 	return 0;
 }
 
-int message_stuff() { // message passing between meshmanager and objectmanager
+int message_calling() { // message passing between meshmanager and objectmanager
 	myMessage = new Message;
 	myMessageQueue = new MessageQueue;
-
-	myThread = new Thread();
-	//myThread->DoWork(myMeshManager, myMessage);
-	//myMessage->setMessage("Thread started for MeshManager");
 	
-
 	myMessage->Attach(myMeshManager);
 	myMessage->setMessage(myObjectManager->message = "MeshManager attached to ObjectManager (Subject)"); // Subject attaches to Observer, because the observer observes the subject
 
@@ -112,8 +104,7 @@ int static init_window()
 		//myMessage->SendMessage(message, 0);
 		return -1;
 	}
-	unsigned int SCR_WIDTH = 1920;
-	unsigned int SCR_HEIGHT = 1080;
+	
 
 	window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Emgine", NULL, NULL);
 
@@ -127,11 +118,6 @@ int static init_window()
 	}
 
 	glfwMakeContextCurrent(window);
-
-
-	/*glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);*/
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -158,14 +144,12 @@ int init_managers() {
 	
 	myTextureManager = new TextureManager();
 	MyColliderManager = new ColliderManager();
-	newLightdata = new LightData();
 	
 	myLightingManager->InitDefaultLighting();
-	myShaderManager->Create("depthShader", "../Shader/ShadowMappingVS.glsl", "../Shader/ShadowMappingFS.glsl");
-	myShaderManager->Create("PerspectiveShader", "../Shader/PerspectiveVS.glsl", "../Shader/PerspectiveFS.glsl");
+	myShaderManager->Create("depthShader", "../Shader/DepthQuadVS.glsl", "../Shader/DepthQuadFS.glsl");
+	myShaderManager->Create("DirectionalShader", "../Shader/DirectionalVS.glsl", "../Shader/DirectionalFS.glsl");
 	myShaderManager->InitDefaultShader();
 	
-	//TODO: init shader, collider, and rigidbodymanager
 	myObjectManager = new ObjectManager;
 	myRigidbodyManager = new RigidbodyManager();
 	myCameraManager = new CameraManager();
@@ -190,7 +174,6 @@ int init_colliders() {
 	glm::vec3 scale = { 1,1,1 };
 
 	cubeColl = new CubeCollider(center, extents, pos);
-	//cubeColl2 = new CubeCollider(center, extents, pos);
 	planeColl = new CubeCollider(center, extents, pos);
 	sphereColl = new SphereCollider(center, radius, pos);
 	return 0;
@@ -198,12 +181,9 @@ int init_colliders() {
 
 int init_lightning() {
 	//init shader/lighting
-	glm::vec3 PointLight1;
-	glm::vec3 DirectionalLight1;
-	glm::vec3 SpotLight;
-	//myShader = new Shader("../Shader/VertexShader_1.glsl", "../Shader/FragmentShader_1.glsl");
+	
 	myLighting = new Lighting();
-	//myLightData = new LightData();
+	
 	return 0;
 }
 
@@ -229,16 +209,10 @@ int static update_camera(Camera* cam, UI* myUI, GLFWwindow* window)
 	return 0;
 }
 
-//Object* selectedobj = Object::Entities[Object::SelectedEntity];
+
 int static update_ui(UI* myUI, ShaderManager* myShader, ObjectManager* objManager)
 {
-	
-	
-	//glm::vec3 v(selectedobj->Rotation);
-	
-
 	myUI->RenderUI(myShader, objManager, myTime);
-	//test = glm::scale(test, Object::Entities[Object::SelectedEntity]->Scale);
 	
 	if (Object::Entities.size() > 0) {
 		Object::Entities[Object::SelectedEntity]->Position = glm::vec3(myUI->xPos, myUI->yPos, myUI->zPos);
@@ -248,12 +222,7 @@ int static update_ui(UI* myUI, ShaderManager* myShader, ObjectManager* objManage
 			glm::radians(myUI->zRot));
 		Object::Entities[Object::SelectedEntity]->Scale = glm::vec3(myUI->xScale, myUI->yScale, myUI->zScale);
 	}
-	/*Object::Entities[Object::SelectedEntity]->Rotation = glm::mat4(
-		glm::rotate(transform, glm::radians(myUI->yRot), glm::vec3(0, 0, 0)));*/
-
-	//
 	
-	//newLightData->lightPos = SelectedLight->Position;
 	return 0;
 }
 
@@ -277,10 +246,10 @@ int main()
 	//Create Textures
 	Texture* wall = myTextureManager->Create("wall", "wall.jpg");
 	Texture* defaultTex = myTextureManager->Create("default", "Default 1.png");
-	//myTextureManager->Create("Default", "Default 1.png");
+	
 	myCamera = myCameraManager->Create("Camera");
-	//Message calling
-	message_stuff();
+	
+	message_calling();
 
 
 
@@ -340,7 +309,7 @@ int main()
 		myLightingManager->Create("SceneLight", myShaderManager->DefaultShader, myLightingManager->DefaultLighting),
 		NULL);
 
-	myObjectManager->FindAndSetProperties("SceneLight", pos2, size, glm::vec3(0.0f, glm::radians(-1.0f) , 0.0f));
+	myObjectManager->FindAndSetProperties("SceneLight", glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(glm::radians(45.0f), glm::radians(45.0f), 0.0f));
 
 	myObjectManager->CreateCamera("SceneCamera",
 		NULL,
@@ -351,73 +320,83 @@ int main()
 		NULL);
 
 	Shader* depthShader = myShaderManager->Find("depthShader");
-	Shader* perspectiveShader = myShaderManager->Find("PerspectiveShader");
+	Shader* directionalShader = myShaderManager->Find("DirectionalShader");
+
+	myLightingManager->InitDepthMapping();
 
 	myShaderManager->DefaultShader->UseShader();
 	myShaderManager->DefaultShader->SetInt("shadowMap", 1);
 	myShaderManager->DefaultShader->SetInt("diffuseTexture", 0);
-	perspectiveShader->UseShader();
-	perspectiveShader->SetInt("depthMap", 0);
-	//
-	// loops until user closes window
-
+	directionalShader->UseShader();
+	directionalShader->SetInt("depthMap", 1);
 	
+
+
+	// loops until user closes window
 	while (!glfwWindowShouldClose(window))
 	{
 		
 		GL_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 		GL_CHECK(glClearColor(0.1f, 0.1f, 0.1f, 1.0f));
 		
-
 		myTime->Run();
 
-		perspectiveShader->UseShader();
-		myLightingManager->DebugShadow(perspectiveShader);
-		myShaderManager->DefaultShader->UseShader();
-		myShaderManager->DefaultShader->SetInt("shadowMap", 1);
-		myCamera->CameraSendToShader(myShaderManager->DefaultShader);
+		//update camera
+		update_camera(myCamera, myUI, window);
+		LightObject* lightobject = LightObject::LightEntities[0];
 
+		
+
+		// shadow pass 
+		directionalShader->UseShader();
+		
+
+		// View port 
+		myLightingManager->Viewport();
+		// Bind shadow frameBuffer 
+		myLightingManager->BindFrameBuffer();		
+		// Clear depth
+		GL_CHECK(glClear(GL_DEPTH_BUFFER_BIT));
+		// Configure shader and lightspacematrix
+		myLightingManager->UseShadowDepth(directionalShader, lightobject->myLightData);
+		// Render scene
 		for (auto& o : Object::Entities)
 		{
-			o->Draw(myShaderManager->DefaultShader);
-		}
-		
-		perspectiveShader->UseShader();
-		myLightingManager->DebugShadow(perspectiveShader); 
+			o->Draw(directionalShader); // Draws and binds the texture and sends the transform to the shader
 
-		for (auto& lightObj : LightObject::LightEntities)
-		{
-			myLightingManager->UseShadowDepth(perspectiveShader, lightObj->myLightData);
 		}
-		
-	;
-	
-		
+		// Bind default frameBuffer
+		GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+		// View port
+		GL_CHECK(glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT));
+		// Clear Depth
+		GL_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+
 		myShaderManager->DefaultShader->UseShader();
+
+		myLightingManager->RunMainFragmentShadows(myShaderManager->DefaultShader, lightobject->myLightData);
 		myShaderManager->DefaultShader->SetInt("shadowMap", 1);
+		myCamera->CameraSendToShader(myShaderManager->DefaultShader);
+		myLightingManager->RunLightData(myShaderManager->DefaultShader, myCamera, lightobject);
+		myLightingManager->ActiveTextureDepth();
 
 		//Drawcall objects
 		for (auto& o : Object::Entities)
 		{
-			
-			for (auto& lightObj : LightObject::LightEntities)
-			{ 
-				myLightingManager->RunLightData(myShaderManager->DefaultShader, myCamera, lightObj);
-				myLightingManager->UseShadowDepth(myShaderManager->DefaultShader, lightObj->myLightData);
-				
-			}
-			
-		}
-		
+			o->Draw(myShaderManager->DefaultShader);
 
-		
+		}
+
+		depthShader->UseShader();
+		depthShader->SetInt("depthMap", 0);
+		myLightingManager->UseShadowDepth(depthShader, lightobject->myLightData);
+
 		Phys->Simulate(myTime->Deltatime, myTime);
 		
 		// render UI (after/ON TOP OF drawcall)
 		update_ui(myUI, myShaderManager, myObjectManager);
 
-		//update camera
-		update_camera(myCamera, myUI, window);
+		
 		
 
 		// swaps front and back buffers
@@ -430,12 +409,9 @@ int main()
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
-	//myMemory->ClearMemory(myShaderManager->DefaultShader, myCamera, myLighting, myObjectManager, myUI, myMeshManager, MeshMesh, cubeColl);
-	//delete myMemory;
-	glfwTerminate();
-	//std::cout << "hello engime" << std::endl;
 	
-	/*delete myShader;*/
+	glfwTerminate();
+	
 	return 0;
 }
 

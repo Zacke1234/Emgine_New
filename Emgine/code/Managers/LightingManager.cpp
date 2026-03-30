@@ -3,15 +3,6 @@
 
 #pragma once
 std::vector<LightData*> lightsList;
-//LightObject::LightEntities.size();	
-//Camera* Cameron = new Camera();
-// 
-// shadow mapping  
-
-
-
-
-
 
 int PointLightShaderSetting(Shader* shader, LightData* aLightData) // done
 {
@@ -150,29 +141,28 @@ int DirectionalLightSetting(Shader* shader, LightData* aLightData)
 		std::string temp3 = "dirLight["; temp3.append(number);
 		std::string temp4 = "dirLight["; temp4.append(number);
 		std::string temp5 = "dirLight["; temp5.append(number);
+		
 
 		std::string tempAmb = "].ambient";
 		std::string tempDiff = "].diffuse";
 		std::string tempSpec = "].specular";
 		std::string tempDir = "].direction";
+		
 		std::string ambient = temp1.append(tempAmb);
 		std::string diffuse = temp2.append(tempDiff);
 		std::string specular = temp3.append(tempSpec);
 		std::string direction = temp4.append(tempDir);
 		std::string uniform = temp5.append("]");
+		
 
-		shader->SetVec3(ambient.c_str(), aLightData->ambient); // it appends the number at the start as well as in the middle field. SOLVED!
+		shader->SetVec3(ambient.c_str(), aLightData->ambient); 
 
 		shader->SetVec3(diffuse.c_str(), aLightData->diffuse);
 
 		shader->SetVec3(specular.c_str(), aLightData->specular);
 
 		shader->SetVec3(direction.c_str(), aLightData->lightDir);
-
-		//shader->SetMatrix(uniform.c_str(), lObjs);
-		//std::cout << "Directional lights: " + number << std::endl;
-
-
+	
 	}
 	return 0;
 }
@@ -227,6 +217,8 @@ LightData* LightingManager::SetDirectional(LightData* aLightData)
 	aLightData->constant = 1;
 	aLightData->linear = 1;
 	aLightData->quadtric = 0.5;
+	aLightData->near_plane = -aLightData->Range;
+	aLightData->far_plane = aLightData->Range;
 	Lighting::DirLightDirections.push_back(&aLightData->lightDir);
 	Lighting::speculars.push_back(&aLightData->specular);
 	Lighting::diffuses.push_back(&aLightData->diffuse);
@@ -267,6 +259,8 @@ LightData* LightingManager::SetPoint(LightData* aLightData)
 	aLightData->constant = 1;
 	aLightData->linear = 0;
 	aLightData->quadtric = 0.5;
+	aLightData->near_plane = 0.1f;
+	aLightData->far_plane = aLightData->Range;
 
 	Lighting::speculars.push_back(&aLightData->specular);
 	Lighting::diffuses.push_back(&aLightData->diffuse);
@@ -312,6 +306,9 @@ LightData* LightingManager::SetSpot(LightData* aLightData)
 	aLightData->quadtric = 0;
 	aLightData->cutOff = glm::cos(glm::radians(12.5f));
 	aLightData->outerCutOff = glm::cos(glm::radians(15.f));
+	aLightData->near_plane = 0.1f;
+	aLightData->far_plane = aLightData->Range;
+
 	Lighting::spotLightDirections.push_back(&aLightData->lightDir);
 	Lighting::spotLightPositions.push_back(&aLightData->lightPos);
 	Lighting::speculars.push_back(&aLightData->specular);
@@ -356,45 +353,26 @@ Lighting* LightingManager::LoadCubeMaps(Texture* shadowTexture)
 	return 0;
 }
 
-Lighting* LightingManager::InitDepthMapping(Texture* shadowTexture)
+Lighting* LightingManager::InitDepthMapping()
 {
-	
-	
 	GL_CHECK(glGenFramebuffers(1, &depthMapFBO));
 
 	GL_CHECK(glGenTextures(1, &depthMap));
-	
 	GL_CHECK(glBindTexture(GL_TEXTURE_2D, depthMap));
-
-
-	
-	// create depth texture
-	
-	
-
-	
-
-	
-
-	GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
-
+	GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
+		SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
 	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
 	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
-	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
-	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
-	
-	// attach depth texture as FBO's depth buffer
+	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+
 	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
 	GL_CHECK(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0));
-	
 	GL_CHECK(glDrawBuffer(GL_NONE));
 	GL_CHECK(glReadBuffer(GL_NONE));
 	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		std::cout << ("ShadowBuffer [Framebuffer] could not be initialized.");
-	//std::cout << "init depth mapping" << std::endl;
-
+	
 	return 0;
 }
 
@@ -405,7 +383,48 @@ Lighting* LightingManager::InitShaderMaps(Shader* shader)
 	return nullptr;
 }
 
+Lighting* LightingManager::BindFrameBuffer()
+{
+	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
+	return nullptr;
+}
 
+Lighting* LightingManager::BindDepthMap()
+{
+	return nullptr;
+}
+
+
+Lighting* LightingManager::ActiveTextureDepth()
+{
+	GL_CHECK(glActiveTexture(GL_TEXTURE1));
+	GL_CHECK(glBindTexture(GL_TEXTURE_2D, depthMap));
+	return nullptr;
+}
+
+Lighting* LightingManager::BindTexture()
+{
+	
+	for (auto& t : Texture::textures)
+	{
+		GL_CHECK(glBindTexture(GL_TEXTURE_2D, t->TextureObject));
+	}
+	
+	
+	return nullptr;
+}
+
+Lighting* LightingManager::BindDepthTexture()
+{
+	GL_CHECK(glBindTexture(GL_TEXTURE_2D, depthMap));
+	return nullptr;
+}
+
+Lighting* LightingManager::Viewport()
+{
+	GL_CHECK(glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT));
+	return nullptr;
+}
 
 LightData* LightingManager::RunLightData(Shader* shader, Camera* aCamera, LightObject* lightObj)
 {
@@ -438,51 +457,62 @@ void LightingManager::Destroy(Lighting* light, LightData* lightData)
 
 Lighting* LightingManager::UseShadowDepth(Shader* shader, LightData* aLightData)
 {
-	if (shader == NULL)
-	{
-		return 0;
-	}
 	
-	if (aLightData == NULL)
+	/*if (aLightData == NULL)
 	{
 		return 0;
 		aLightData = Object::Entities[Object::SelectedEntity]->myLightData;
-	}
+	}*/
 	
 	if (aLightData->LightVar == 2) // directional
 	{
 
-		lightOrtho = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+		lightOrtho = glm::ortho(-aLightData->Range, aLightData->Range, -aLightData->Range, aLightData->Range, aLightData->near_plane, aLightData->far_plane);
 
-		lightLookAt = glm::lookAt(aLightData->lightDir, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		lightLookAt = glm::translate(glm::lookAt(aLightData->lightDir, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)), aLightData->lightPos); 
 		
-		lightspaceMatrix = lightLookAt * lightOrtho;
+		lightspaceMatrix = lightOrtho * lightLookAt;
 		
 	}
-	if (aLightData->LightVar == 1) // point
+	else if (aLightData->LightVar == 1) // point
 	{
 
-		lightPerspective = glm::perspective(glm::radians(70.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
+		lightPerspective = glm::perspective(glm::radians(70.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, aLightData->near_plane, aLightData->far_plane);
 
 		lightLookAt = glm::lookAt(aLightData->lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
 
 		lightspaceMatrix = lightPerspective * lightLookAt;
 	}															
-	if (aLightData->LightVar == 3) // spot
+	else if (aLightData->LightVar == 3) // spot
 	{
 
-		lightPerspective = glm::perspective(glm::radians(70.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, near_plane, far_plane);
+		lightPerspective = glm::perspective(glm::radians(70.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, aLightData->near_plane, aLightData->far_plane);
 
 		lightLookAt = glm::lookAt(aLightData->lightPos, aLightData->lightDir, glm::vec3(0.0, 1.0, 0.0));
 
 		lightspaceMatrix = lightPerspective * lightLookAt;
 	}
-	shader->SetFloat("far_plane", far_plane);
-	shader->SetFloat("near_plane", near_plane);
+
+	
+
+	
+	shader->SetFloat("far_plane", aLightData->far_plane);
+	shader->SetFloat("near_plane", aLightData->near_plane);
 
 	shader->SetMatrix("lightSpaceMatrix", lightspaceMatrix);
 
+	
+
+
 	return 0;
+}
+
+Lighting* LightingManager::RunMainFragmentShadows(Shader* shader, LightData* lightData)
+{
+
+	shader->SetMatrix("lightSpaceMatrix", lightspaceMatrix);
+
+	return nullptr;
 }
 
 
@@ -493,15 +523,10 @@ Lighting* LightingManager::DebugShadow(Shader* shader)
 {
 	// depth shader
 	
-
-	for (auto& o : Object::Entities)
+	/*for (auto& o : Object::Entities)
 	{
 		o->Draw(shader);
-	}
-	
-	
+	}*/
+
 	return 0;
 }
-
-
-

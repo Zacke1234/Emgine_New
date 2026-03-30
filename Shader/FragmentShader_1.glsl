@@ -2,18 +2,11 @@
 
 uniform vec3 viewPos;
 
-
-
 in vec3 ourColor;
 
-
 layout (location = 3) uniform sampler2D shadowMapTex;
-//out mat4 view;
+
 out vec4 FragColor;
-
-  
-//uniform mat4 lightSpaceMatrix;
-
 
 uniform sampler2D ourTexture;
 uniform sampler2D depthMap;
@@ -25,23 +18,10 @@ uniform int NumDirectionalLights;
 uniform int NumPointLights;
 uniform int NumSpotLights;
 
-//uniform mat4 lightSpaceMatrix;
-
-    in vec3 FragPos;
-    in vec2 TexCoord;
-    in vec3 Normal;
-    in vec4 FragPosLightSpace;
-
-
-
-
-
-
-
-// mip mapping
-vec3 rgb_normal = Normal * 0.5 + 0.5; // transforms from [-1,1] to [0,1] 
-
-//layout (location = 1) out BasicLight baseLight;
+in vec3 FragPos;
+in vec2 TexCoord;
+in vec3 Normal;
+in vec4 FragPosLightSpace;
 
 struct DirectionalLight {
     
@@ -128,10 +108,6 @@ uniform Material material;
         //float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
         // PCF
         
-        
-
-        
-        
         float shadow = 0.0;
         vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
         for(int x = -1; x <= 1; ++x)
@@ -150,23 +126,19 @@ uniform Material material;
         if (projCoords.z > 1.0)
             shadow = 0.0;
             
-        //float shadow = currentDepth > closestDepth ? 1.0 : 0.0;
 
         return shadow;
     }
 
-    float ShadowCalc2(vec4 fragposLightSpace)
+    float DirectionalShadowCalc(vec4 fragposLightSpace)
     {
-    
-    vec3 projCoords = fragposLightSpace.xyz / fragposLightSpace.w;
-    projCoords = projCoords * 0.5 + 0.5;
-    float closestDepth = texture(shadowMap, projCoords.xy).r;
-    float currentDepth = projCoords.z;
-    float shadow = currentDepth > closestDepth ? 1.0 : 0.0;
-    return shadow;
+        vec3 projCoords = fragposLightSpace.xyz;
+        projCoords = projCoords * 0.5 + 0.5;
+        float closestDepth = texture(shadowMap, projCoords.xy).r;
+        float currentDepth = projCoords.z;
+        float shadow = currentDepth > closestDepth ? 1.0 : 0.0;
+        return shadow;
     }
-   
-    //out vec2 TexCoords;
    
     
      vec3 CalculateDirLight(DirectionalLight dirLight, vec3 viewDir)
@@ -183,7 +155,7 @@ uniform Material material;
           vec3 ambient = dirLight.ambient * vec3(texture(material.diffuse, TexCoord));
           vec3 diffuse = dirLight.diffuse * diff * vec3(texture(material.diffuse, TexCoord));
           vec3 specular = dirLight.specular * spec * vec3(texture(material.specular, TexCoord));
-          return (ambient + (1.0 - shadow) * (diffuse  + specular)) * material.objectColor;
+          return (ambient + (1.0 - shadow) * (diffuse + specular)) * material.objectColor;
      }
 
      vec3 CalculatePointLight(PointLight pointLight, vec3 fragPos, vec3 viewDir)
@@ -207,13 +179,14 @@ uniform Material material;
          ambient *= attenuation;
          diffuse *= attenuation;
          specular *= attenuation;
-          // (1.0 - shadow) * 
-         return (ambient + (1.0 - shadow) * (diffuse  + specular)) * material.objectColor; // shadow should maybe be somewhere else
-         //  return (ambient + diffuse + specular);
+        
+         return (ambient + (1.0 - shadow) * (diffuse  + specular)) * material.objectColor; 
+         
      }
 
      vec3 CalcSpotLight(SpotLight spotLight, vec3 fragPos, vec3 ViewDir)
      {
+
         vec3 norm = normalize(Normal);
         float shadow = ShadowCalculation(FragPosLightSpace, spotLight.position);
         vec3 lightDir = normalize(spotLight.position - fragPos);
@@ -236,16 +209,8 @@ uniform Material material;
         ambient *= attenuation * intensity;
         diffuse *= attenuation * intensity;
         specular *= attenuation * intensity;
-        // (1.0 - shadow) *
-
-//        if (theta > spotLight.cutOff)
-//        {
-//            return (ambient + diffuse  + specular) * material.objectColor;
-//        }
 
          return (ambient + (1.0 - shadow) * (diffuse  + specular)) * material.objectColor;
-
-       
      }
 
    
@@ -253,11 +218,8 @@ uniform Material material;
 void main()
 {
     
-     
-    
-
     vec3 viewDir = normalize(viewPos - FragPos); // the viewer is always at (0,0,0) in view-space, so viewDir is (0,0,0) - Position => -Position
-    //float shadow = ShadowCalculation(FragPosLightSpace, viewPos);
+   
     vec3 lighting;
       
        for(int i = 0; i < NumDirectionalLights; i++)
@@ -275,16 +237,6 @@ void main()
        lighting +=  CalculatePointLight(pointLight[i], FragPos, viewDir);
        }
 
-//       
-    float depthValue = texture(depthMap, TexCoord).r;
-
-    // texture(ourTexture, TexCoord) * 
-    //FragColor = vec4(result, 1.0);  // depthvValue
-    //FragColor = vec4(vec3(depthValue), 1.0) * vec4(result, 1.0);  // depthvValue
-    //FragColor = vec4(vec3(lighting), 1.0);
-    
-  
-    FragColor = vec4(lighting, 1.0); // lighting
-    //FragDepth = vec4(vec3(LinearizeDepth(depthValue) / far_plane), 1.0); // perspective
-     
+    FragColor = vec4(lighting, 1.0); 
+   
 } 

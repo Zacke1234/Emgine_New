@@ -14,25 +14,22 @@ class MeshManager : public Observer
 	
 	MeshLoader* meshLoader = nullptr;
 public:
+
+	static std::vector<Mesh> MeshCache;
+	static std::vector<std::string> MeshList;
+
+	std::string msg;
+
 	//Constructor and Destructor
 	MeshManager();
 	~MeshManager();
 
-
-
-	void Update(std::string message_from_subject) override {
-		std::cout << "MeshManager received message: " << message_from_subject << "\n";
-	};
-
-	std::string msg;
+	void Update(std::string message_from_subject) override;
 
 	// Mesh Management
-	static std::vector<Mesh> MeshCache;
-	static std::vector<std::string> MeshList;
 	Mesh* LoadMesh(std::string fromPath, std::string name, Mesh* mesh);
 	Mesh* LoadFromMeshCache(std::string fromPath, std::string name, Mesh* mesh);
 	Mesh* Create(std::string name = "newmesh", std::string path_end = NULL);
-	
 };
 
 

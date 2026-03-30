@@ -10,30 +10,22 @@ class Object;
 
 class Cube
 {
+private:
+	int IndicesSize = 0;
+
 public:
 	Cube();
-	/*const float* someVertices, size_t aVertexSize, unsigned int* someIndices, size_t aIndexSize*/
-	void Draw(Shader* myShader, Object* Object, Camera* myCamera);
-
-	void ApplyTexture(Texture* aTexture);
-
-	void InitializeCube();
-
-	//glm::mat4 MyTexture;
+	~Cube();
 
 	unsigned int VAO;
 	unsigned int VBO;
 	unsigned int EBO;
-
-	
-	//std::string Path; 
-
 	size_t indexCount, vertexCount;
-	/*static unsigned int &indices[];*/
-	
-	
 
-private:
-	int IndicesSize = 0;
+	void Draw(Shader* myShader, Object* Object, Camera* myCamera);
+	void ApplyTexture(Texture* aTexture);
+	void InitializeCube();
+
+
 };
 

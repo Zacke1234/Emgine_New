@@ -32,7 +32,12 @@ Camera::Camera()
 	curx = 0;
 	cury = 0;
 	cameraViewRange = 300.0f;
-	//cameraSpeed = 3.0f * deltatime;
+	
+}
+
+Camera::~Camera()
+{
+
 }
 
 void Camera::CameraSendToShader(Shader* myShader)
@@ -45,12 +50,7 @@ void Camera::CameraSendToShader(Shader* myShader)
 void Camera::CameraUpdate(GLFWwindow* window) // the mouse cursor is still not good, when you tab in, it will just snap to another position again, need to fix
 {
 	
-	/*if (!TabbedIn)
-	{
-		return;
-	}*/
 	myUp = glm::cross(myDirection, myRight);
-	
 	
 	//lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.1f, 100.0f);
 	projection = glm::perspective(glm::radians(fieldOfView), myWidth / myHeight, 0.1f, cameraViewRange);
@@ -61,13 +61,10 @@ void Camera::CameraUpdate(GLFWwindow* window) // the mouse cursor is still not g
 	//GetViewMatrix();
 	mouse_callback(lastX, lastY);
 
-	
 }
 
 void Camera::ProcessInput(GLFWwindow* window, float& deltatime)
 {
-	//ImGuiIO& io = ImGui::GetIO(); (void)io;
-
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 	{
 		myPosition += cameraSpeed * myDirection;
@@ -116,16 +113,11 @@ void Camera::ProcessInput(GLFWwindow* window, float& deltatime)
 		cameraSpeed = 3.0f * 0.5f;
 	}
 
-	/*GLFWscrollfun scrollfun;
-	if (glfwSetScrollCallback(window, scrollfun))
-	{
-		
-	}*/
 }
 
 void Camera::Mouse_Callback(GLFWwindow* window, double xpos, double ypos)
 {
- 	//ImGui_ImplGlfw_CursorPosCallback(window, xpos, ypos); //this was the fix to the mouse input not working with the imgui
+ 	
 	lastX = xpos;
 	lastY = ypos;
 }
@@ -143,20 +135,14 @@ void Camera::mouse_callback(double xpos, double ypos)
 		return;
 		
 	}
-	/*if (io.WantCaptureMouse)
-	{
-		return;
-	}*/
-
+	
 	bool firstMouse = true;
 	
-
-	//std::cout << xpos << "\n";
 	if (firstMouse)
 	{
-		/*lastX = xpos;
+		
 		lastY = ypos;
-		firstMouse = false;*/
+		firstMouse = false;
 	}
 
 	float xoffset = xpos - curx;
@@ -164,7 +150,6 @@ void Camera::mouse_callback(double xpos, double ypos)
 	curx = xpos;
 	cury = ypos;
 
-	//sensitivity = 0.1f;
 	xoffset *= sensitivity;
 	yoffset *= sensitivity;
 
@@ -175,6 +160,7 @@ void Camera::mouse_callback(double xpos, double ypos)
 	{
 		pitch = 89.0f;
 	}
+
 	if (pitch < -89.0)
 	{
 		pitch = -89.0f;

@@ -6,38 +6,30 @@
 #include <vector>
 #include "Shader.h"
 #include <glm.hpp>
+#include <Material/Material.h>
 
-struct Material {
-	
-	std::string name;
-	int diffuse;
-	int specular;
-	float shininess;
-	glm::vec3 color;
-};
 
 class Texture
 {
 public:
-	Material* myMaterial;
 	Texture(const char* aPath, Material* mat);
+	~Texture();	
 
-	unsigned char* data;
-
-	void SetMaterial(Material& mat);
 	static std::vector<Texture*> textures;
 	static std::vector<Material*> materials;
-	//vector<Object*> Object::Entities;
-	bool IsValid() const { return TextureObject == 0; };
-
+	Material* myMaterial; // This is wrong. a texture should be the child of a material, not the other way around
 	std::string texturePath = "";
-	//Message* message = new Message(msg);
 	std::string name;
 	int Width = 0;
 	int Height = 0;
 	int Channels = 0;
-
+	unsigned char* data;
 	unsigned int TextureObject = 0;
+
+	void SetMaterial(Material& mat);
+	bool IsValid() const { return TextureObject == 0; };
+
+
 	
 	
 	

@@ -22,6 +22,7 @@ public:
 	enum LightType lightType;
 	//ImGuiContext* context;
 	UI(GLFWwindow* window);
+	~UI();
 	void RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gameTime);
 	
 	bool errorTriggered;

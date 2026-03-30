@@ -25,9 +25,9 @@ public:
 		glm::vec3 lightUp;
 
 		
-		
+		float near_plane = 1.0f, far_plane = 7.5f;
 
-		
+		float Range = 100.0f;
 
 		
 		

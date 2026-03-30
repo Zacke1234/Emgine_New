@@ -1,4 +1,15 @@
 #include "ShaderManager.h"
+#include <iostream>
+
+ShaderManager::ShaderManager()
+{
+	std::cout << "Shader Manager constructor called" << std::endl;
+}
+
+ShaderManager::~ShaderManager()
+{
+	std::cout << "Shader Manager destructor called" << std::endl;
+}
 
 Shader* ShaderManager::InitDefaultShader()
 {

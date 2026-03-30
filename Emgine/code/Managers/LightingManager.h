@@ -16,24 +16,29 @@ public:
 	LightData* RunLightData(Shader* shader, Camera* aCamera, LightObject* lightObj);
 	void Destroy(Lighting* light, LightData* lightData);
 	Lighting* UseShadowDepth(Shader* shader, LightData* lightData);
+	Lighting* RunMainFragmentShadows(Shader* shader, LightData* lightData);
 	Lighting* LoadCubeMaps(Texture* shadowTexture);
 
 	Lighting* DebugShadow(Shader* shader);
-
+	
 	LightData* SetDirectional(LightData* aLightData);
 	LightData* SetPoint(LightData* aLightData);
 	LightData* SetSpot(LightData* aLightData);
 
-	Lighting* InitDepthMapping(Texture* shadowTexture = NULL);
+	Lighting* InitDepthMapping();
 	Lighting* InitShaderMaps(Shader* shader);
 
+	Lighting* BindFrameBuffer();
+	Lighting* BindDepthMap();
+	Lighting* ActiveTextureDepth();
+	Lighting* BindTexture();
+	Lighting* BindDepthTexture();
+	Lighting* Viewport();	
 	
-	glm::vec3 zeros = { 0.0f,0.0f,0.0f };
-	float near_plane = 1.0f, far_plane = 100.0f;
-	const unsigned int SHADOW_WIDTH = 1920, SHADOW_HEIGHT = 1080;
 	float aspect = (float)SHADOW_WIDTH / (float)SHADOW_HEIGHT;
-	unsigned int SCR_WIDTH = 1920;
-	unsigned int SCR_HEIGHT = 1080;
+	unsigned int SCR_WIDTH = 1024;
+	unsigned int SCR_HEIGHT = 1024;
+	const unsigned int SHADOW_WIDTH = SCR_WIDTH , SHADOW_HEIGHT = SCR_HEIGHT;
 	GLuint depthMapFBO;
 	GLuint depthMap;
 	GLuint ShadowMap;

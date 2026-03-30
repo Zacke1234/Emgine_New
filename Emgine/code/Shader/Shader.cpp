@@ -109,25 +109,23 @@ void Shader::UseShader()
 void Shader::SetMatrix(const char* transform, glm::mat4 aMatrix)
 {
 	GL_CHECK(glUniformMatrix4fv(glGetUniformLocation(ShaderProgram, transform), 1, GL_FALSE, glm::value_ptr(aMatrix)));
-	
 }
-
-void Shader::SetVec2(const char* texture, glm::vec2 aVec2)
+void Shader::SetVec2(const char* name, glm::vec2 aVec2)
 {
-	GL_CHECK(glUniformMatrix4fv(glGetUniformLocation(ShaderProgram, texture), 1, GL_FALSE, glm::value_ptr(aVec2)));
+	GL_CHECK(glUniformMatrix4fv(glGetUniformLocation(ShaderProgram, name), 1, GL_FALSE, glm::value_ptr(aVec2)));
 }
-void Shader::SetVec3(const char* texture, glm::vec3 aVec3)
+void Shader::SetVec3(const char* name, glm::vec3 aVec3)
 {
-	GL_CHECK(glUniform3fv(glGetUniformLocation(ShaderProgram, texture), 1, glm::value_ptr(aVec3)));
+	GL_CHECK(glUniform3fv(glGetUniformLocation(ShaderProgram, name), 1, glm::value_ptr(aVec3)));
 }
-void Shader::SetVec4(const char* texture, glm::vec4 aVec4)
+void Shader::SetVec4(const char* name, glm::vec4 aVec4)
 {
-	GL_CHECK(glUniform4fv(glGetUniformLocation(ShaderProgram, texture), 1, glm::value_ptr(aVec4)));
+	GL_CHECK(glUniform4fv(glGetUniformLocation(ShaderProgram, name), 1, glm::value_ptr(aVec4)));
 
 }
-void Shader::SetFloat(const std::string texcord, float aTexcord)
+void Shader::SetFloat(const std::string name, float aFloat)
 {
-	GL_CHECK(glUniform1f(glGetUniformLocation(ShaderProgram, texcord.c_str()), aTexcord));
+	GL_CHECK(glUniform1f(glGetUniformLocation(ShaderProgram, name.c_str()), aFloat));
 }
 void Shader::SetInt(const std::string depth, int aInt)
 {

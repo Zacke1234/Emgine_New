@@ -252,11 +252,6 @@ void LightObject::SetSpot(LightData* aLightData)
 	aLightData->LightVar = aLightData->SpotLight;
 }
 
-//void Object::SetLighting(Lighting& myLighting)
-//{
-//	type = ObjectType::Type_Light;
-//	//lighting = &myLighting;
-//}
 
 Mesh* Object::CreateMesh(Mesh* mesh) 
 {
@@ -291,15 +286,8 @@ void Object::Draw(Shader* myShader)
 	
 }
 
-void Object::DrawCube(Camera* aCamera, Shader* myShader)
-{
-	//thread T2(&Draw, this, aCamera);
-	myCube->Draw(myShader, this, aCamera);
-}
-
 void Object::UpdateTransform(Shader* myShader)
 {
-	
 	trans = Math::identity4;
 
 	trans = glm::translate(trans, Position);
@@ -316,56 +304,41 @@ void Object::UpdateTransform(Shader* myShader)
 
 void Object::DrawObject(Shader* myShader)
 {
-		if (myMesh == NULL)
-		{
-			//std::cout << "No mesh to draw in Object: " << namn << "\n";
-			return;
-		}
-		//Mesh* newMesh = new Mesh();
-		//std::cout << "draw object in Object" << "\n";
-		if (IsTransformValid == false)
-		{
-			/*thread T1(&Object::UpdateTransform);
-			T1.join();*/
-			UpdateTransform(myShader);
 
-		}
-		
+	if (myMesh == NULL)
+	{
+		//std::cout << "No mesh to draw in Object: " << namn << "\n";
+		return;
+	}
+	
+	if (IsTransformValid == false)
+	{
+		UpdateTransform(myShader);
+	}
+	
 
-		//myShader->SetMatrix("transform", trans);
-
-		
-		
-		
-		if (myTexture != NULL)
-		{
-			GL_CHECK(glActiveTexture(GL_TEXTURE0)); // Activate the texture unit before binding texture
-			GL_CHECK(glBindTexture(GL_TEXTURE_2D, myTexture->TextureObject));
-			GL_CHECK(glActiveTexture(GL_TEXTURE0));
-			GL_CHECK(glBindTexture(GL_TEXTURE_2D, myTexture->TextureObject));
-
-			
-			GL_CHECK(glActiveTexture(GL_TEXTURE1));
-			GL_CHECK(glBindTexture(GL_TEXTURE_2D, myTexture->TextureObject));
+	GL_CHECK(glActiveTexture(GL_TEXTURE0)); // Activate the texture unit before binding texture
+	GL_CHECK(glBindTexture(GL_TEXTURE_2D, myTexture->TextureObject));
 
 
-			if (myTexture->myMaterial != NULL)
-			{
-				myShader->SetInt("material.diffuse", myTexture->myMaterial->diffuse);
-				myShader->SetInt("material.specular", myTexture->myMaterial->specular);
-				myShader->SetFloat("material.shininess", myTexture->myMaterial->shininess);
-				myShader->SetVec3("material.objectColor", myTexture->myMaterial->color);
-			}
-			
+	/*GL_CHECK(glActiveTexture(GL_TEXTURE1));
+	GL_CHECK(glBindTexture(GL_TEXTURE_2D, 3));*/
 
-		}
-		
-		
-		GL_CHECK(glBindVertexArray(myMesh->VAO));
-		GL_CHECK(glDrawElements(GL_TRIANGLES, myMesh->elements.size(), GL_UNSIGNED_INT, (void*)0));
-		
-		GL_CHECK(glBindVertexArray(0));
 
-		IsTransformValid = false;
+	if (myTexture->myMaterial != NULL)
+	{
+		myShader->SetInt("material.diffuse", myTexture->myMaterial->diffuse);
+		myShader->SetInt("material.specular", myTexture->myMaterial->specular);
+		myShader->SetFloat("material.shininess", myTexture->myMaterial->shininess);
+		myShader->SetVec3("material.objectColor", myTexture->myMaterial->color);
+	}
+	
+	
+	GL_CHECK(glBindVertexArray(myMesh->VAO));
+	GL_CHECK(glDrawElements(GL_TRIANGLES, myMesh->elements.size(), GL_UNSIGNED_INT, (void*)0));
+	
+	GL_CHECK(glBindVertexArray(0));
+
+	IsTransformValid = false;
 }
 

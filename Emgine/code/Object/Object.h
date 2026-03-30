@@ -39,33 +39,18 @@ inline void CheckOpenGLError(const char* stmt, const char* fname, int line)
 
 class Object
 {
+private:
+
+
+	Shader* MyShader;
+	Cube* myCube;
+
 public:
-	
-	
+
 	Object(std::string _namn, Mesh* Mesh, Texture* aTexture, Shader* aShader, Collider* coll, Rigidbody* rb);
-	
 
-	// should a virtual object contain a IsKinematic bool?
-	void SetCube(Cube& aCube); 
-	//void CreateCube(Cube& aCube); 
-	void SetMesh(Mesh& mesh);
-	void SetTexture(Texture& aTexture);
-	void SetShader(Shader& aShader);
-	void SetCollider(Collider& collider);
-	void SetMaterial(Material& material);
-	void SetName(std::string name);
-	void SetRigidbody(Rigidbody& rb);
-	
-
-	//void SetLighting(Lighting& lighting);
-	Mesh* CreateMesh(Mesh* mesh);
-	
-	
-	
-	void Draw(Shader* myShader);
-	void DrawCube(Camera* aCamera, Shader* myShader);
-	void DrawObject(Shader* myShader);
-	void UpdateTransform(Shader* myShader);
+	static std::vector<Object*> Entities;
+	static int SelectedEntity;
 
 	glm::vec3 Position;
 	glm::vec3 Scale;
@@ -73,7 +58,7 @@ public:
 	glm::vec3 v;
 	enum ObjectType
 	{
-	
+
 		Type_NULL = 0,
 		Type_Light = 1,
 		Type_Mesh = 2,
@@ -83,21 +68,9 @@ public:
 
 	ObjectType ObjType;
 
-	
 	std::string namn;
-
-	
-
-	static std::vector<Object*> Entities;
-
-	static int SelectedEntity;
-	//static std::vector <Object*> SelectedEntityVec;
-
-	
 	bool IsTransformValid;
-	
-	//std::mutex mtx; can't do mutex in header files
-	//std::thread T1(); can't do thread in header files either
+
 	glm::mat4 trans;
 	Collider* myCollider;
 
@@ -106,23 +79,20 @@ public:
 	Texture* myTexture;
 	Camera* myCamera;
 	LightData* myLightData;
-private: 
 	
-	
-	Shader* MyShader;
-	Cube* myCube;
-	
-	
-	//Lighting* lighting;
-	
-	//ObjLoader* myObjLoader;
-	
-	//Lighting* myLight;
-	//std::shared_ptr<Mesh> aMesh = std::make_shared<Mesh>();
-	
-	//ObjLoader* myObjloader;
-	
+	void SetCube(Cube& aCube); 
+	void SetMesh(Mesh& mesh);
+	void SetTexture(Texture& aTexture);
+	void SetShader(Shader& aShader);
+	void SetCollider(Collider& collider);
+	void SetMaterial(Material& material);
+	void SetName(std::string name);
+	void SetRigidbody(Rigidbody& rb);
+	void Draw(Shader* myShader);
+	void DrawObject(Shader* myShader);
+	void UpdateTransform(Shader* myShader);
 
+	Mesh* CreateMesh(Mesh* mesh);
 
 };
 
@@ -131,22 +101,27 @@ class LightObject : public Object
 public:
 	
 	LightObject(std::string _namn, Mesh* Mesh, Texture* aTexture, Shader* aShader, Collider* coll, LightData* myLightData, Rigidbody* rb);
+
 	static std::vector<LightObject*> LightEntities;
-	
+	static int SelectedLightEntity;
 
 	void SetLightData(LightData& lightdata);
 	
 	void SetDirectional(LightData* aLightData);
 	void SetPoint(LightData* aLightData);
 	void SetSpot(LightData* aLightData);
-	static int SelectedLightEntity;
+	
 };
 
 class CameraObject : public Object
 {
 public:
+
 	CameraObject(std::string _namn, Mesh* Mesh, Texture* aTexture, Shader* aShader, Collider* coll, Camera* cam, Rigidbody* rb);
+
 	static std::vector<CameraObject*> CameraEntities;
-	void SetCamera(Camera& cam);
 	static int SelectedCameraEntity;
+
+	void SetCamera(Camera& cam);
+	
 };

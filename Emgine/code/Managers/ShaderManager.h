@@ -5,6 +5,10 @@ class ShaderManager
 {
 public:
 
+	ShaderManager();
+
+	~ShaderManager();
+
 	Shader* DefaultShader;
 
 	Shader* InitDefaultShader();

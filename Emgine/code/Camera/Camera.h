@@ -8,24 +8,27 @@
 
 class Camera
 {
+private:
+	glm::vec3 myDirection;
+
+	glm::vec3 myUp;
+	glm::vec3 myRight;
+	glm::vec3 myFront;
+
+	glm::vec3 myTarget;
+
+	unsigned int ShaderProgram;
+
+	double curx;
+	double cury;
+
 public:
 	static Camera* Instance;
 
 	Camera();
-	void CameraSendToShader(Shader* myShader);
-
-	void CameraUpdate(GLFWwindow* window);
-
-	void ProcessInput(GLFWwindow* window, float& deltatime);
-
-	static void Mouse_Callback(GLFWwindow* window, double xpos, double ypos);
-
-	void mouse_callback(double xpos, double ypos);
+	~Camera();
 	
-	static Camera* GetInstance();
-
 	std::string name;
-
 	glm::mat4 myView;
 	glm::mat4 projection;
 
@@ -37,45 +40,27 @@ public:
 
 	float yaw = -90.0f;
 	float pitch = 0;
-
 	float fieldOfView = 70;
-
-	static void Cursor_enter_callback(GLFWwindow* window, int entered);
-
-	void cursor_enter_callback(GLFWwindow* window,int entered);
-
-
 	float sensitivity = 0.1f;
-
 	bool TabbedIn = true;
-
 	glm::vec3 direction;
 	glm::vec3 myPosition;
-	
+
 	glm::mat4 GetViewMatrix()
 	{
 		return glm::lookAt(myPosition, myPosition + myDirection, myUp);
 	}
 
-private:
-	glm::vec3 myDirection;
-	
-	glm::vec3 myUp;
-	glm::vec3 myRight;
-	glm::vec3 myFront;
-	
-	
-	glm::vec3 myTarget;
-	
-	
-	//const float radius = 10.0f;
-	unsigned int ShaderProgram;
-	
+	static void Mouse_Callback(GLFWwindow* window, double xpos, double ypos);
 
-	double curx;
+	static Camera* GetInstance();
 
-	double cury;
+	void CameraSendToShader(Shader* myShader);
 
+	void CameraUpdate(GLFWwindow* window);
 
+	void ProcessInput(GLFWwindow* window, float& deltatime);
+
+	void mouse_callback(double xpos, double ypos);
 };
 

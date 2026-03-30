@@ -257,6 +257,11 @@ UI::UI(GLFWwindow* window) // unitilized
 	classes();
 }
 
+UI::~UI()
+{
+
+}
+
 void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gameTime)
 {
 
