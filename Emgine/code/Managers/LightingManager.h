@@ -1,5 +1,6 @@
 #pragma once
 #include <Lighting.h>
+
 class LightingManager
 {
 public: 
@@ -13,13 +14,12 @@ public:
 
 	LightData* InitDefaultLighting();
 	LightData* Create(std::string name = "newLight", Shader* shader = NULL, LightData* light = NULL);
-	LightData* RunLightData(Shader* shader, Camera* aCamera, LightObject* lightObj);
-	void Destroy(Lighting* light, LightData* lightData);
+	LightData* Destroy(Shader* aShader, Object* obj);
+	LightData* RunLightData(Shader* shader, Camera* aCamera);
+
 	Lighting* UseShadowDepth(Shader* shader, LightData* lightData);
 	Lighting* RunMainFragmentShadows(Shader* shader, LightData* lightData);
 	Lighting* LoadCubeMaps(Texture* shadowTexture);
-
-	Lighting* DebugShadow(Shader* shader);
 	
 	LightData* SetDirectional(LightData* aLightData);
 	LightData* SetPoint(LightData* aLightData);
@@ -29,13 +29,11 @@ public:
 	Lighting* InitShaderMaps(Shader* shader);
 
 	Lighting* BindFrameBuffer();
-	Lighting* BindDepthMap();
 	Lighting* ActiveTextureDepth();
 	Lighting* BindTexture();
 	Lighting* BindDepthTexture();
 	Lighting* Viewport();	
 	
-	float aspect = (float)SHADOW_WIDTH / (float)SHADOW_HEIGHT;
 	unsigned int SCR_WIDTH = 1024;
 	unsigned int SCR_HEIGHT = 1024;
 	const unsigned int SHADOW_WIDTH = SCR_WIDTH , SHADOW_HEIGHT = SCR_HEIGHT;
@@ -43,11 +41,6 @@ public:
 	GLuint depthMap;
 	GLuint ShadowMap;
 	unsigned int depthCubemap;
-
-
-	unsigned int* texture;
-
-	glm::mat4 viewTEST;
-
+	bool LightHasInitalised;
 };
 

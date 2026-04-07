@@ -1,4 +1,6 @@
 #include "ObjectManager.h"
+#include <ShaderManager.h>
+
 
 Object* ObjectManager::Create(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL, Rigidbody* rb = NULL)
 {
@@ -10,26 +12,14 @@ Object* ObjectManager::Create(std::string _namn = "new_object", Mesh* Mesh = NUL
 	return obj;
 }
 
-void ObjectManager::Destroy(Object* obj) {
+void ObjectManager::Destroy(Object* obj, Shader* aShader, LightingManager aLightManager) {
 	
-	/*obj->myMesh = NULL;
-	obj->myCollider = NULL;*/
-	
-	for (int i = Object::Entities.size() - 1; i >= 0; i--)
+	if (Object::Entities[Object::SelectedEntity]->ObjType == 1)
 	{
-		if (Object::Entities[i]) // crashes if i delete the last object int the list
-		{
-			Object::SelectedEntity = i;
-			obj->Entities.erase(std::remove(obj->Entities.begin(), obj->Entities.end(), obj), obj->Entities.end());
-			//++i;
-			std::cout << "Object destroyed\n";
-			
-		}
+		
+		aLightManager.Destroy(aShader, obj);
 	}
-	//
-	//  room.erase(room.begin()+2);
-	//Object::Entities.erase(obj->Entities.at());
-	//Object::Entities.pop_back();
+	obj->Entities.erase(obj->Entities.begin() + Object::SelectedEntity); // removes the selected Object, crashes when camera is deleted
 	
 }
 

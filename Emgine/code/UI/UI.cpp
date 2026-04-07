@@ -30,29 +30,33 @@ bool selectedCamera;
 int boolHandler()
 {
 	
-	if (Object::Entities[Object::SelectedEntity]->myTexture != nullptr)
+	if (Object::Entities.size() != 0)
 	{
-		selectedMaterial = true;
-	}
-	else
-	{
-		selectedMaterial = false;
-	}
-	if (Object::Entities[Object::SelectedEntity]->ObjType == 1)
-	{
-		SelectedLight = true;
-	}
-	else
-	{
-		SelectedLight = false;
-	}
-	if (Object::Entities[Object::SelectedEntity]->ObjType == 4)
-	{
-		selectedCamera = true;
-	}
-	else
-	{
-		selectedCamera = false;
+		if (Object::Entities[Object::SelectedEntity]->myTexture != nullptr)
+		{
+			selectedMaterial = true;
+		}
+		else
+		{
+			selectedMaterial = false;
+		}
+		if (Object::Entities[Object::SelectedEntity]->ObjType == 1)
+		{
+			SelectedLight = true;
+		}
+		else
+		{
+			SelectedLight = false;
+		}
+		if (Object::Entities[Object::SelectedEntity]->ObjType == 4)
+		{
+			selectedCamera = true;
+		}
+		else
+		{
+			selectedCamera = false;
+		}
+
 	}
 	
 	return 0;
@@ -83,7 +87,7 @@ int uiLightList(UI* myUI, ObjectManager* objectmanager)
 		{
 
 			Object::Entities[Object::SelectedEntity]->myLightData->lightPos = Object::Entities[Object::SelectedEntity]->Position;
-			Object::Entities[Object::SelectedEntity]->myLightData->lightDir = glm::vec3((myUI->xRot), (myUI->yRot), (myUI->zRot));
+			Object::Entities[Object::SelectedEntity]->myLightData->lightDir = Object::Entities[Object::SelectedEntity]->Rotation;
 			Object::Entities[Object::SelectedEntity]->myLightData->constant = myUI->lightConstant;
 			Object::Entities[Object::SelectedEntity]->myLightData->cutOff = myUI->cutoff;
 			Object::Entities[Object::SelectedEntity]->myLightData->outerCutOff = myUI->outerCutOff;
@@ -330,7 +334,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 				myRigidbodyMang->Create(0.0f)
 			);
 		}
-		if (meshBuffer[0] == '\0' && meshBuffer != NULL)
+		else if (meshBuffer[0] == '\0' && meshBuffer != NULL)
 		{
 			objectmanager->Create(
 				"Mesh", // Name
@@ -406,7 +410,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 			
 			
 		}
-		if (nameBuffer[0] != '\0' && nameBuffer != NULL)
+		else if (nameBuffer[0] != '\0' && nameBuffer != NULL)
 		{
 			objectmanager->CreateLight(nameBuffer,
 				NULL,
@@ -423,7 +427,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 	uiLightList(this, objectmanager);
 	if (LightObject::LightEntities.size() > 0)
 	{
-		ImGui::Text("Light properties");
+			ImGui::Text("Light properties");
 		
 		ImGui::DragFloat3("Ambient", &lightAmbient[0], step, step);
 		ImGui::DragFloat3("Specular", &lightspecular[0], step, step);
@@ -446,7 +450,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 	if (ImGui::Button("Delete Object"))
 	{
 		if (Object::Entities.size() > 0) {
-			objectmanager->Destroy(Object::Entities[Object::SelectedEntity]);
+ 			objectmanager->Destroy(Object::Entities[Object::SelectedEntity], shader->DefaultShader, *lightMang);
 		}
 		
 
@@ -455,30 +459,49 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 	
 	if (ImGui::Combo("Light type", &SelectedItem, Items, IM_ARRAYSIZE(Items)))
 	{
+		
 		if (SelectedLight)
 		{
 			
 		
 			if (SelectedItem == 0)
 			{	 
+				light = Directional;
 				
-				lightMang->SetDirectional(newLightData);
 				
 			}
-			if (SelectedItem == 1)
+			else if (SelectedItem == 1)
 			{
-				lightMang->SetPoint(newLightData);
+				light = Point;
+				
 			
 			}
-			if (SelectedItem == 2)
+			else if (SelectedItem == 2)
 			{
-				lightMang->SetSpot(newLightData);
+				light = Spot;
+				
 		
 			}
 		};
 			
 
 	}
+	if (ImGui::Button("Change Light type"))
+	{
+		switch (light)
+		{
+		case 1:
+			lightMang->SetDirectional(newLightData);
+			break;
+		case 2:
+			lightMang->SetPoint(newLightData);
+			break;
+		case 3:
+			lightMang->SetSpot(newLightData);
+			break;
+		}
+	}
+
 		// How do I check if the selected entity is the same as the selected light entity, Cause I want to know when the user is selecting the Light object:: SOLVED
 		
 	
@@ -525,7 +548,11 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 	ImGui::Text("Entity Manager");
 	//int n = sizeof(virtobj->Entities
 
-	//if (this == NULL){}
+	//if (Object::Entities.size() != 0)
+	//{
+
+	//}
+	
 		uiObjectList(this);
 
 	//ImGui::InputText("texture file", buf, sizeof(buf) - 1);

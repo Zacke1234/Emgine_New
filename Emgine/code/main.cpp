@@ -260,7 +260,7 @@ int main()
 
 	init_physics();
 
-	glm::vec3 size = {10,0.5f,10};
+	glm::vec3 size = {100,0.5f,100};
 	glm::vec3 pos = { 0,-1,0 };
 	glm::vec3 pos2 = { 0,1,1 };
 	glm::vec3 rotation = { 0,0,0 };
@@ -271,6 +271,8 @@ int main()
 	Mesh* fish = myMeshManager->Create("Fish", "fish.obj");
 	Mesh* quadplane = myMeshManager->Create("quadplane", "quadplane.obj");
 	Mesh* cube = myMeshManager->Create("Cube", "cube.obj");
+
+	myShaderManager->DefaultShader->UseShader();
 
 	myObjectManager->Create( // these also push entities to Object::Entities and etc
 		"Fish",
@@ -324,13 +326,13 @@ int main()
 
 	myLightingManager->InitDepthMapping();
 
-	myShaderManager->DefaultShader->UseShader();
+	
 	myShaderManager->DefaultShader->SetInt("shadowMap", 1);
 	myShaderManager->DefaultShader->SetInt("diffuseTexture", 0);
 	directionalShader->UseShader();
 	directionalShader->SetInt("depthMap", 1);
-	
 
+	LightObject* lightobject = LightObject::LightEntities[0];
 
 	// loops until user closes window
 	while (!glfwWindowShouldClose(window))
@@ -343,7 +345,7 @@ int main()
 
 		//update camera
 		update_camera(myCamera, myUI, window);
-		LightObject* lightobject = LightObject::LightEntities[0];
+		
 
 		
 
@@ -360,11 +362,13 @@ int main()
 		// Configure shader and lightspacematrix
 		myLightingManager->UseShadowDepth(directionalShader, lightobject->myLightData);
 		// Render scene
+
+		glCullFace(GL_FRONT);
 		for (auto& o : Object::Entities)
 		{
 			o->Draw(directionalShader); // Draws and binds the texture and sends the transform to the shader
-
 		}
+		glCullFace(GL_BACK);
 		// Bind default frameBuffer
 		GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 		// View port
@@ -377,7 +381,9 @@ int main()
 		myLightingManager->RunMainFragmentShadows(myShaderManager->DefaultShader, lightobject->myLightData);
 		myShaderManager->DefaultShader->SetInt("shadowMap", 1);
 		myCamera->CameraSendToShader(myShaderManager->DefaultShader);
-		myLightingManager->RunLightData(myShaderManager->DefaultShader, myCamera, lightobject);
+
+		
+		myLightingManager->RunLightData(myShaderManager->DefaultShader, myCamera);
 		myLightingManager->ActiveTextureDepth();
 
 		//Drawcall objects

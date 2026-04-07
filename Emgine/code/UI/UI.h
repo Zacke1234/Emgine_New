@@ -17,6 +17,19 @@
 #pragma once
 class UI
 {
+private:
+
+	Mesh* mesh;
+	Object* virtobj;
+	Shader* shade;
+	Texture* texture;
+	Material* material;
+
+	CubeCollider* cubeCollider;
+	Collider* newCollider;
+	Physics* physics;
+
+
 public:
 	enum ObjectType type;
 	enum LightType lightType;
@@ -98,19 +111,16 @@ public:
 	float sens = 0.1f;
 	float speed = 10.0f;
 	
-	MeshLoader* meshLoader;
-private:
+	enum tempLightType {
+		Null = 0,
+		Directional = 1,
+		Point = 2,
+		Spot = 3
 
-	Mesh* mesh;
-	Object* virtobj;
-	Shader* shade;
-	Texture* texture;
-	Material* material;
-	
-	CubeCollider* cubeCollider;
-	Collider* newCollider;
-	Physics* physics;
-	
+	};
+	enum tempLightType light = Null;
+	MeshLoader* meshLoader;
+
 	
 	
 	

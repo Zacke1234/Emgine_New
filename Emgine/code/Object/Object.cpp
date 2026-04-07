@@ -321,10 +321,6 @@ void Object::DrawObject(Shader* myShader)
 	GL_CHECK(glBindTexture(GL_TEXTURE_2D, myTexture->TextureObject));
 
 
-	/*GL_CHECK(glActiveTexture(GL_TEXTURE1));
-	GL_CHECK(glBindTexture(GL_TEXTURE_2D, 3));*/
-
-
 	if (myTexture->myMaterial != NULL)
 	{
 		myShader->SetInt("material.diffuse", myTexture->myMaterial->diffuse);

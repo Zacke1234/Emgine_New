@@ -17,11 +17,19 @@ uniform sampler2D normalMap;
 uniform int NumDirectionalLights;
 uniform int NumPointLights;
 uniform int NumSpotLights;
+uniform bool LightSwitch;
 
 in vec3 FragPos;
 in vec2 TexCoord;
 in vec3 Normal;
 in vec4 FragPosLightSpace;
+in mat3 TBN;
+
+in vec3 TangentLightPos;
+in vec3 TangentViewPos;
+in vec3 TangentFragPos;
+
+vec3 rgb_normal = Normal * 0.5 + 0.5;
 
 struct DirectionalLight {
     
@@ -143,7 +151,10 @@ uniform Material material;
     
      vec3 CalculateDirLight(DirectionalLight dirLight, vec3 viewDir)
      {  
+         
+         
           vec3 norm = normalize(Normal);
+
           float shadow = ShadowCalculation(FragPosLightSpace, dirLight.direction); // do i need multiple different fragPosLights? for each light type? to properly load shadows
           vec3 lightDir = normalize(-dirLight.direction);
           // diffuse shading
@@ -161,6 +172,7 @@ uniform Material material;
      vec3 CalculatePointLight(PointLight pointLight, vec3 fragPos, vec3 viewDir)
      { 
          float shadow = ShadowCalculation(FragPosLightSpace, pointLight.position);
+
          vec3 norm = normalize(Normal);
        
          vec3 lightDir = normalize(pointLight.position - fragPos);
@@ -186,8 +198,8 @@ uniform Material material;
 
      vec3 CalcSpotLight(SpotLight spotLight, vec3 fragPos, vec3 ViewDir)
      {
-
         vec3 norm = normalize(Normal);
+
         float shadow = ShadowCalculation(FragPosLightSpace, spotLight.position);
         vec3 lightDir = normalize(spotLight.position - fragPos);
         // diffuse shading
@@ -217,26 +229,25 @@ uniform Material material;
 
 void main()
 {
-    
     vec3 viewDir = normalize(viewPos - FragPos); // the viewer is always at (0,0,0) in view-space, so viewDir is (0,0,0) - Position => -Position
    
-    vec3 lighting;
-      
-       for(int i = 0; i < NumDirectionalLights; i++)
-       {
-       lighting += CalculateDirLight(dirLight[i], viewDir);
-       }
+    vec3 lighting = vec3(0);
+          
+    for(int i = 0; i < NumDirectionalLights; i++)
+    {
+        lighting += CalculateDirLight(dirLight[i], viewDir);
+    }    
 
-       for(int i = 0; i < NumSpotLights; i++)
-       {
-       lighting +=  CalcSpotLight(spotLight[i], FragPos, viewDir);
-       }
+    for(int i = 0; i < NumSpotLights; i++)
+    {
+        lighting +=  CalcSpotLight(spotLight[i], FragPos, viewDir);
+    }
 
-       for(int i = 0; i < NumPointLights; i++)
-       {
-       lighting +=  CalculatePointLight(pointLight[i], FragPos, viewDir);
-       }
-
+    for(int i = 0; i < NumPointLights; i++)
+    {
+        lighting +=  CalculatePointLight(pointLight[i], FragPos, viewDir);
+    }
+       
     FragColor = vec4(lighting, 1.0); 
-   
+
 } 

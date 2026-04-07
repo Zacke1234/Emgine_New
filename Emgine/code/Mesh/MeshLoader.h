@@ -43,7 +43,7 @@ public:
 	bool ObjParser(std::string fileName, Mesh* mesh);
 	bool BinParser(std::string fileName, Mesh* mesh);
 	void ParseFaceIndices(const std::string& string, Face& face, int vertexIndex);
-
+	void CalculateTangent(Vertex& A, const Vertex&  B, const Vertex& C);
 	
 
 	

@@ -1,13 +1,14 @@
 #pragma once
 #include <vector>
 #include <Object.h>
+#include <LightingManager.h>
 class ObjectManager : public Subject
 {
 public:
 
 	virtual Object* Create(std::string aName, Mesh* Mesh, Texture* aTexture, Shader* aShader, Collider* aCollider, Rigidbody* rb) ;
 
-	void Destroy(Object* obj);
+	void Destroy(Object* obj, Shader* aShader, LightingManager aLightManager);
 	
 	virtual LightObject* CreateLight(std::string aName, Mesh* Mesh, Texture* aTexture, Shader* aShader, Collider* aCollider, LightData* lightData, Rigidbody* rb);
 

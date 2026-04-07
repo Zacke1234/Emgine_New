@@ -36,18 +36,6 @@ std::string Shader::LoadShader(const char* aPath)
 
 Shader::Shader(const char* VertexPath, const char* FragmantPath)
 {
-	/*unsigned int shadowMappingFragmentShader;
-	unsigned int shadowMappingVertexShader;
-	unsigned int shaderShadowMappingProgram;
-
-	const char* vertexShadowMapping = "ShadowMappingVS.glsl";
-	const char* fragmentShadowMapping = "ShadowMappingFS.glsl";
-
-	LoadShader(vertexShadowMapping);
-	LoadShader(fragmentShadowMapping);*/
-
-	//"../Shader/FragmentShader_1.glsl"
-	
 	unsigned int shaderProgram;
 	unsigned int vertexShader;
 	unsigned int fragmantShader;
@@ -62,11 +50,11 @@ Shader::Shader(const char* VertexPath, const char* FragmantPath)
 	const char* fragmantCode = fragmantCodeString.c_str();
 	GL_CHECK(glShaderSource(fragmantShader, 1, &fragmantCode, NULL));
 
-	//std::vector<std::string> lines = fragmantCode.();
+	
 
 	GL_CHECK(glCompileShader(fragmantShader));
 	ShaderProgram = glCreateProgram();
-	//ShaderProgram = shaderProgram;
+	
 	GL_CHECK(glAttachShader(ShaderProgram, vertexShader));
 	GL_CHECK(glAttachShader(ShaderProgram, fragmantShader));
 	GL_CHECK(glLinkProgram(ShaderProgram));
@@ -80,10 +68,6 @@ Shader::Shader(const char* VertexPath, const char* FragmantPath)
 	
 	GL_CHECK(glGetShaderiv(fragmantShader, GL_COMPILE_STATUS, &result));
 	GL_CHECK(glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &vertexResult));
-	//if (fragmantCode == "#define NR_POINT_LIGHTS")
-	//{
-	//	int b = 0;
-	//}
 
 	if (!result)
 	{
@@ -96,7 +80,9 @@ Shader::Shader(const char* VertexPath, const char* FragmantPath)
 		std::cout << "Failed to compile vertex shader \n" << Log << std::endl;
 	}
 	
+	glDetachShader(ShaderProgram, fragmantShader);
 	glDeleteShader(fragmantShader);
+	glDetachShader(ShaderProgram, vertexShader);
 	glDeleteShader(vertexShader);
 
 }
@@ -106,9 +92,9 @@ void Shader::UseShader()
 	GL_CHECK(glUseProgram(ShaderProgram));
 }
 
-void Shader::SetMatrix(const char* transform, glm::mat4 aMatrix)
+void Shader::SetMatrix(const char* name, glm::mat4 aMatrix)
 {
-	GL_CHECK(glUniformMatrix4fv(glGetUniformLocation(ShaderProgram, transform), 1, GL_FALSE, glm::value_ptr(aMatrix)));
+	GL_CHECK(glUniformMatrix4fv(glGetUniformLocation(ShaderProgram, name), 1, GL_FALSE, glm::value_ptr(aMatrix)));
 }
 void Shader::SetVec2(const char* name, glm::vec2 aVec2)
 {
@@ -127,12 +113,7 @@ void Shader::SetFloat(const std::string name, float aFloat)
 {
 	GL_CHECK(glUniform1f(glGetUniformLocation(ShaderProgram, name.c_str()), aFloat));
 }
-void Shader::SetInt(const std::string depth, int aInt)
+void Shader::SetInt(const std::string name, int aInt)
 {
-	GL_CHECK(glUniform1i(glGetUniformLocation(ShaderProgram, depth.c_str()), aInt));
-}
-
-void Shader::SetUniformBlock(const std::string blockName, unsigned int bindingPoint)
-{
-	
+	GL_CHECK(glUniform1i(glGetUniformLocation(ShaderProgram, name.c_str()), aInt));
 }

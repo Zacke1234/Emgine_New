@@ -157,9 +157,8 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 	
 	for (int i = 0; i < temp_faces.size(); i++) 
 	{
-		glm::vec3 position;
-		glm::vec3 normal;
-		glm::vec2 uv;
+		Vertex vertices[3];
+		
 
 		//Vertex vertex = temp_vertices[i];
 		Face face = temp_faces[i];
@@ -167,57 +166,72 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 
 		for (int e = 0; e < 3; e++)
 		{
-			
-			int index = face.positionIndices[e]; 
-			
-			
-			if (index == -1)
-			{
-				mesh.data.push_back(0.0f);
-				mesh.data.push_back(0.0f);
-				mesh.data.push_back(0.0f);
-			}
-			else
-			{
-				position = temp_position[index - 1]; 
+			int index = face.positionIndices[e];
+			Vertex& v = vertices[e];
 
-				mesh.data.push_back(position.x);
-				mesh.data.push_back(position.y);
-				mesh.data.push_back(position.z);
-				
+			if (index != -1)
+			{
+				v.position = temp_position[index - 1];
+
 			}
 
 			index = face.normalIndices[e];
 
-			if (index == -1)
+			if (index != -1)
 			{
-				mesh.data.push_back(0.0f);
-				mesh.data.push_back(0.0f);
-				mesh.data.push_back(0.0f);
-			}
-			else
-			{
-				normal = temp_normals[index - 1];
-				mesh.data.push_back(normal.x);
-				mesh.data.push_back(normal.y);
-				mesh.data.push_back(normal.z);
-				
+				v.normal = temp_normals[index - 1];
+
+
 
 			}
-			
+
 			index = face.uvIndices[e];
 
-			if (index == -1)
+			if (index != -1)
 			{
-				mesh.data.push_back(0.0f);
-				mesh.data.push_back(0.0f);
+
+				v.uv = temp_uvs[index - 1];
+
 			}
-			else
-			{
-   				uv = temp_uvs[index - 1];
-				mesh.data.push_back(uv.x);
-				mesh.data.push_back(uv.y);
-			}
+
+
+
+		}
+		// calculate tangents
+
+		CalculateTangent(vertices[0], vertices[1], vertices[2]);
+		CalculateTangent(vertices[1], vertices[0], vertices[2]);
+		CalculateTangent(vertices[2], vertices[1], vertices[0]);
+
+		for (int e = 0; e < 3; e++)
+		{
+			
+			Vertex& v = vertices[e];
+			
+
+			mesh.data.push_back(v.position.x);
+			mesh.data.push_back(v.position.y);
+			mesh.data.push_back(v.position.z);
+				
+
+			mesh.data.push_back(v.normal.x);
+			mesh.data.push_back(v.normal.y);
+			mesh.data.push_back(v.normal.z);
+
+   			
+			mesh.data.push_back(v.uv.x);
+			mesh.data.push_back(v.uv.y);
+
+
+			// push back tangents
+
+			mesh.data.push_back(v.tangent.x);
+			mesh.data.push_back(v.tangent.y);
+			mesh.data.push_back(v.tangent.z);
+
+			mesh.data.push_back(v.binormal.x);
+			mesh.data.push_back(v.binormal.y);
+			mesh.data.push_back(v.binormal.z);
 			
 			mesh.elements.push_back(mesh.numberVertices);
 			temp_elements.push_back(mesh.numberVertices);
@@ -375,6 +389,41 @@ void MeshLoader::ParseFaceIndices(const std::string& string, Face& face, int ver
 		indexCounter++;
 		n++;
 	}
+}
+
+
+void MeshLoader::CalculateTangent(Vertex& A, const Vertex& B, const Vertex& C)
+{
+
+	glm::vec3 dpAB = B.position - A.position;
+
+	glm::vec3 dpAC = C.position - A.position;
+
+	glm::vec2 dtAB = B.uv - A.uv;
+
+	glm::vec2 dtAC = C.uv - A.uv;
+
+	float r = 1.0f / (dtAB.x * dtAC.y - dtAB.y * dtAC.x);
+
+	glm::vec3 T = (dpAB * dtAC.y - dpAC * dtAB.y) * r;
+
+	glm::vec3 Bn = (dpAC * dtAB.x - dpAB * dtAC.x) * r;
+
+	glm::vec3 N = (A.normal);
+
+	glm::vec3 X = glm::cross(N, T);
+
+	T = glm::cross(X, N);
+	T = glm::normalize(T);
+	// get updated bi-tangent
+	X = glm::cross(Bn, N);
+	Bn = glm::cross(N, X);
+	Bn = glm::normalize(Bn);
+
+	A.tangent = T;
+	A.binormal = Bn;
+
+
 }
 
 bool MeshLoader::ReadObjToBinary(std::string objPath, std::ifstream& objReadFile, Mesh* mesh) // read

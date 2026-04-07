@@ -4,37 +4,85 @@
 #pragma once
 std::vector<LightData*> lightsList;
 
-int PointLightShaderSetting(Shader* shader, LightData* aLightData) // done
+int NoLightShaderSetting(Shader* shader)
 {
+	return 0;
+}
+
+int LightShaderSetting(Shader* shader, std::string lightType) // done
+{
+	std::vector<LightData*> fragmentLightTypeSize;
+	std::vector<glm::vec3*> fragmentLightTypePositions;
+	std::string fragmentLightTypeName;
+	std::string fragmentLightAmount;
+	if (lightType == "Directional")
+	{
+		fragmentLightAmount = "NumDirectionalLights";
+		fragmentLightTypeSize = Lighting::dirLights;
+		fragmentLightTypePositions = Lighting::DirLightDirections;
+		fragmentLightTypeName = "dirLight";
+	}
+	else if (lightType == "Point")
+	{
+		fragmentLightAmount = "NumPointLights";
+		fragmentLightTypeSize = Lighting::pointLights;
+		fragmentLightTypePositions = Lighting::pointLightPositions;
+		fragmentLightTypeName = "pointLight";
+	}
+	else if (lightType == "Spot")
+	{
+		fragmentLightAmount = "NumSpotLights";
+		fragmentLightTypeSize = Lighting::spotLights;
+		fragmentLightTypePositions = Lighting::spotLightPositions;
+		
+		fragmentLightTypeName = "spotLight";
+	}
 	
 
-	for (int lObjs = 0; lObjs < Lighting::pointLights.size(); lObjs++)
+	for (int lObjs = 0; lObjs <= fragmentLightTypeSize.size() - 1; lObjs++)
 	{
 		std::string number = std::to_string(lObjs);
-		//pointLightPositions.push_back(&aLightData->lightPos);
-		//shader->SetInt("NR_POINTLIGHTS", lObjs);
-		//shader->SetInt("PLight[" + number + "]", 0.0f);
-		shader->SetInt("NumPointLights", Lighting::pointLights.size());
+		shader->SetInt(fragmentLightAmount, fragmentLightTypeSize.size());
 
-		shader->SetFloat("pointLight[" + number + "].constant", *Lighting::constants[lObjs]); 
-		shader->SetFloat("pointLight[" + number + "].linear", *Lighting::linears[lObjs]);
-		shader->SetFloat("pointLight[" + number + "].quadratic", *Lighting::quadtrics[lObjs]);
-		shader->SetFloat("pointLight[" + number + "].far_plane", 7.0f); // far plane
-
-		std::string temp1 = "pointLight[";  temp1.append(number);
-		std::string temp2 = "pointLight["; temp2.append(number);
-		std::string temp3 = "pointLight["; temp3.append(number);
-		std::string temp4 = "pointLight["; temp4.append(number);
-
+		shader->SetFloat(fragmentLightTypeName + "[" + number + "].constant", *Lighting::constants[lObjs]);
+		shader->SetFloat(fragmentLightTypeName + "[" + number + "].linear", *Lighting::linears[lObjs]);
+		shader->SetFloat(fragmentLightTypeName + "[" + number + "].quadratic", *Lighting::quadtrics[lObjs]);
+		if (lightType == "Spot")
+		{
+			shader->SetFloat(fragmentLightTypeName + "[" + number + "].cutOff", glm::cos(glm::radians(*Lighting::cutOffs[lObjs])));
+			shader->SetFloat(fragmentLightTypeName + "[" + number + "].outerCutOff", *Lighting::outerCutOffs[lObjs]);
+		}
+		
+		std::string temp1 = fragmentLightTypeName + "[";  temp1.append(number);
+		
 		std::string tempAmb = "].ambient";
 		std::string tempDiff = "].diffuse";
 		std::string tempSpec = "].specular";
+		std::string tempDir = "].direction";
 		std::string tempPos = "].position";
 		std::string ambient = temp1.append(tempAmb);
-		std::string diffuse = temp2.append(tempDiff);
-		std::string specular = temp3.append(tempSpec);
-		std::string position = temp4.append(tempPos);
+		temp1 = fragmentLightTypeName + "["; temp1.append(number);
+		std::string diffuse = temp1.append(tempDiff);
+		temp1 = fragmentLightTypeName + "["; temp1.append(number);
+		std::string specular = temp1.append(tempSpec);
+		temp1 = fragmentLightTypeName + "["; temp1.append(number);
+		std::string position = temp1.append(tempPos);
+		temp1 = fragmentLightTypeName + "["; temp1.append(number);
+		std::string direction = temp1.append(tempDir);
 
+		if (lightType == "Directional")
+		{
+			shader->SetVec3(direction.c_str(), *Lighting::DirLightDirections[lObjs]);
+		}
+		else if (lightType == "Spot")
+		{
+			shader->SetVec3(position.c_str(), *fragmentLightTypePositions[lObjs]);
+			shader->SetVec3(direction.c_str(), *Lighting::spotLightDirections[lObjs]);
+		}
+		else
+		{
+			shader->SetVec3(position.c_str(), *fragmentLightTypePositions[lObjs]);
+		}
 		
 		shader->SetVec3(ambient.c_str(), *Lighting::ambients[lObjs]); // it appends the number at the start as well as in the middle field. SOLVED!
 
@@ -42,130 +90,36 @@ int PointLightShaderSetting(Shader* shader, LightData* aLightData) // done
 
 		shader->SetVec3(specular.c_str(), *Lighting::speculars[lObjs]);
 
-		shader->SetVec3(position.c_str(), *Lighting::pointLightPositions[lObjs]);
-		
-		
-
-		/*shader->SetVec3("pointLight[0].position", glm::vec3(4, 3, 1));
-		shader->SetVec3("pointLight[1].position", glm::vec3(1, -3, 1));
-		shader->SetVec3("pointLight[2].position", glm::vec3(7, 0, 2));*/
 	}
 	
-	
-	//std::cout << "obj" << std::endl;
-	
-	//b++;
-	
-	//std::string PlightPos = "Plight["+lObjs + "].position";
-		//
-		//std::cout << lObjs <<< "\n";
-	
-
-
 	return 0;
 }
 
-int SpotLightShaderSetting(Shader* shader, LightData* aLightData)
+int ClearLightSetting(LightData* aLightData)
 {
-	
-	
-	for (int lObjs = 0; lObjs < Lighting::spotLights.size(); lObjs++)
-	{
-
-		//std::string PlightPos = "Plight["+lObjs + "].position";
-		//
-		//std::cout << lObjs <<< "\n";
-		std::string number = std::to_string(lObjs);
-		//shader->SetInt("NR_SPOTLIGHTS", lObjs);
-		
-		shader->SetInt("NumSpotLights", Lighting::spotLights.size());
-		shader->SetFloat("spotLight[" + number + "].constant", *Lighting::constants[lObjs]);
-		shader->SetFloat("spotLight[" + number + "].linear", *Lighting::linears[lObjs]);
-		shader->SetFloat("spotLight[" + number + "].quadratic", *Lighting::quadtrics[lObjs]);
-		shader->SetFloat("spotLight[" + number + "].cutOff", glm::cos(glm::radians(*Lighting::cutOffs[lObjs])));
-		shader->SetFloat("spotLight[" + number + "].outerCutOff", *Lighting::outerCutOffs[lObjs]);
-
-		std::string temp1 = "spotLight[";  temp1.append(number);
-		std::string temp2 = "spotLight["; temp2.append(number);
-		std::string temp3 = "spotLight["; temp3.append(number);
-		std::string temp4 = "spotLight["; temp4.append(number);
-		std::string temp5 = "spotLight["; temp5.append(number);
-
-		std::string tempAmb = "].ambient";
-		std::string tempDiff = "].diffuse";
-		std::string tempSpec = "].specular";
-		std::string tempPos = "].position";
-		std::string tempDir = "].direction";
-		std::string ambient = temp1.append(tempAmb);
-		std::string diffuse = temp2.append(tempDiff);
-		std::string specular = temp3.append(tempSpec);
-		std::string position = temp4.append(tempPos);
-		std::string direction = temp5.append(tempDir);
-
-
-		shader->SetVec3(ambient.c_str(), *Lighting::ambients[lObjs]); // it appends the number at the start as well as in the middle field. SOLVED!
-
-		shader->SetVec3(diffuse.c_str(), *Lighting::diffuses[lObjs]);
-
-		shader->SetVec3(specular.c_str(), *Lighting::speculars[lObjs]);
-
-		shader->SetVec3(position.c_str(), *Lighting::spotLightPositions[lObjs]);
-
-		shader->SetVec3(direction.c_str(), *Lighting::spotLightDirections[lObjs]);
-
-
-
-	}
+	aLightData->lightDir = { 0,0,0 };
+	aLightData->ambient = { 0.0,0.0,0.0 };
+	aLightData->diffuse = { 0.0,0.0,0.0 };
+	aLightData->specular = { 0.0,0.0,0.0 };
+	aLightData->constant = 0;
+	aLightData->linear = 0;
+	aLightData->quadtric = 0;
+	aLightData->Range = 0;
+	aLightData->near_plane = -aLightData->Range;
+	aLightData->far_plane = aLightData->Range;
+	aLightData->cutOff = 0;
+	aLightData->outerCutOff = 0;
+	Lighting::DirLightDirections.push_back(&aLightData->lightDir);
+	Lighting::speculars.push_back(&aLightData->specular);
+	Lighting::diffuses.push_back(&aLightData->diffuse);
+	Lighting::ambients.push_back(&aLightData->ambient);
+	Lighting::constants.push_back(&aLightData->constant);
+	Lighting::quadtrics.push_back(&aLightData->quadtric);
+	Lighting::linears.push_back(&aLightData->linear);
 	return 0;
 }
 
-int DirectionalLightSetting(Shader* shader, LightData* aLightData)
-{
-	for (int lObjs = 0; lObjs < Lighting::dirLights.size(); lObjs++)
-	{
 
-		//std::string PlightPos = "Plight["+lObjs + "].position";
-		//
-		//std::cout << lObjs <<< "\n";
-		std::string number = std::to_string(lObjs);
-
-		//shader->SetInt("NR_DIRLIGHTS", lObjs);
-		shader->SetInt("NumDirectionalLights", Lighting::dirLights.size());
-		shader->SetFloat("dirLight[" + number + "].constant", aLightData->constant);
-		shader->SetFloat("dirLight[" + number + "].linear", aLightData->linear);
-		shader->SetFloat("dirLight[" + number + "].quadratic", aLightData->quadtric);
-		//shader->SetInt("DLight[" + number + "].lights", lObjs);
-
-		std::string temp1 = "dirLight[";  temp1.append(number);
-		std::string temp2 = "dirLight["; temp2.append(number);
-		std::string temp3 = "dirLight["; temp3.append(number);
-		std::string temp4 = "dirLight["; temp4.append(number);
-		std::string temp5 = "dirLight["; temp5.append(number);
-		
-
-		std::string tempAmb = "].ambient";
-		std::string tempDiff = "].diffuse";
-		std::string tempSpec = "].specular";
-		std::string tempDir = "].direction";
-		
-		std::string ambient = temp1.append(tempAmb);
-		std::string diffuse = temp2.append(tempDiff);
-		std::string specular = temp3.append(tempSpec);
-		std::string direction = temp4.append(tempDir);
-		std::string uniform = temp5.append("]");
-		
-
-		shader->SetVec3(ambient.c_str(), aLightData->ambient); 
-
-		shader->SetVec3(diffuse.c_str(), aLightData->diffuse);
-
-		shader->SetVec3(specular.c_str(), aLightData->specular);
-
-		shader->SetVec3(direction.c_str(), aLightData->lightDir);
-	
-	}
-	return 0;
-}
 LightingManager::LightingManager()
 {
 	
@@ -175,21 +129,58 @@ LightingManager::LightingManager()
 LightData* LightingManager::InitDefaultLighting()
 {
 	DefaultLighting = new LightData();
+	
+	//SetPoint(DefaultLighting);
+	SetDirectional(DefaultLighting);
+	//SetSpot(DefaultLighting);
+
+	LightHasInitalised = true;
 	return DefaultLighting;
 }
-LightData* LightingManager::Create(std::string name, Shader* shader, LightData* aLightData)
+LightData* LightingManager::Create(std::string name, Shader* aShader, LightData* aLightData)
 {
-	aLightData = new LightData();
-	aLightData->Name = name;
-
-
 	
-	//SetPoint(aLightData);
-	SetDirectional(aLightData);
-	//SetSpot(aLightData);
+	if (LightHasInitalised)
+	{
+		aLightData = DefaultLighting;
+		DefaultLighting->Name = name;
+
+	}
+	else
+	{
+		aLightData = new LightData();
+		aLightData->Name = name;
+	}
+	
+	
 	
 	
 	return aLightData;
+}
+
+LightData* LightingManager::Destroy(Shader* aShader, Object* obj)
+{
+	switch (obj->myLightData->LightVar)
+	{
+	case 1: // point
+		Lighting::pointLights.erase(Lighting::pointLights.begin() + LightObject::SelectedLightEntity); // this crashes
+		aShader->SetInt("NumPointLights", Lighting::pointLights.size());
+		break;
+	case 2: // dir
+		Lighting::dirLights.erase(Lighting::dirLights.begin() + LightObject::SelectedLightEntity); // but this does not crash?
+		aShader->SetInt("NumDirectionalLights", Lighting::dirLights.size());
+		break;
+	case 3: // spot
+		//if (!Lighting::pointLights.empty())
+		Lighting::spotLights.erase(Lighting::spotLights.begin() + LightObject::SelectedLightEntity); // this also crashes
+		aShader->SetInt("NumSpotLights", Lighting::spotLights.size());
+		break;
+	}
+	
+	//ClearLightSetting(obj->myLightData);
+	LightObject::LightEntities.erase(LightObject::LightEntities.begin() + LightObject::SelectedLightEntity);
+
+	return nullptr;
 }
 
 LightData* LightingManager::SetDirectional(LightData* aLightData)
@@ -236,10 +227,6 @@ LightData* LightingManager::SetDirectional(LightData* aLightData)
 
 LightData* LightingManager::SetPoint(LightData* aLightData)
 {
-	/*if (!obj == NULL) {
-
-		aLightData = obj->Entities[obj->SelectedEntity]->myLightData;
-	}*/
 	if (aLightData == NULL)
 	{
 		aLightData = Object::Entities[Object::SelectedEntity]->myLightData;
@@ -298,14 +285,14 @@ LightData* LightingManager::SetSpot(LightData* aLightData)
 		Lighting::spotLights.pop_back();
 	}
 	aLightData->lightDir = { 0,0,0 };
-	aLightData->ambient = { 0.3,0.3,0.3 };
+	aLightData->ambient = { 0.0f, 0.0f, 0.0f };
 	aLightData->diffuse = { 0.3,0.3,0.3 };
 	aLightData->specular = { 0.3,0.3,0.3 };
 	aLightData->constant = 1;
-	aLightData->linear = 1;
-	aLightData->quadtric = 0;
-	aLightData->cutOff = glm::cos(glm::radians(12.5f));
-	aLightData->outerCutOff = glm::cos(glm::radians(15.f));
+	aLightData->linear = 0.09f;
+	aLightData->quadtric = 0.032f;
+	aLightData->cutOff = glm::cos(glm::radians(1.5f));
+	aLightData->outerCutOff = glm::cos(glm::radians(45.f));
 	aLightData->near_plane = 0.1f;
 	aLightData->far_plane = aLightData->Range;
 
@@ -363,8 +350,11 @@ Lighting* LightingManager::InitDepthMapping()
 		SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL));
 	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
 	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
-	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
-	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 
 	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
 	GL_CHECK(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0));
@@ -386,11 +376,6 @@ Lighting* LightingManager::InitShaderMaps(Shader* shader)
 Lighting* LightingManager::BindFrameBuffer()
 {
 	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO));
-	return nullptr;
-}
-
-Lighting* LightingManager::BindDepthMap()
-{
 	return nullptr;
 }
 
@@ -426,43 +411,45 @@ Lighting* LightingManager::Viewport()
 	return nullptr;
 }
 
-LightData* LightingManager::RunLightData(Shader* shader, Camera* aCamera, LightObject* lightObj)
+LightData* LightingManager::RunLightData(Shader* shader, Camera* aCamera)
 {
-
-	if (lightObj->myLightData == NULL)
+	
+	for (auto& lightObj : LightObject::LightEntities)
 	{
-		return 0;
-		lightObj->myLightData = Object::Entities[Object::SelectedEntity]->myLightData;
+		if (lightObj->myLightData == NULL)
+		{
+			return 0;
+			lightObj->myLightData = Object::Entities[Object::SelectedEntity]->myLightData;
+		}
+
+		lightObj->myLightData->lightPos = lightObj->Position;
+		lightObj->myLightData->lightDir = lightObj->Rotation;
+
+		switch (lightObj->myLightData->LightVar)
+		{
+		case 1: // point
+			LightShaderSetting(shader, "Point");
+			break;
+		case 2: // dir
+			LightShaderSetting(shader, "Directional");
+			break;
+		case 3: // spot
+			LightShaderSetting(shader, "Spot");
+			break;
+		}
+
+	}
+	if (LightObject::LightEntities.size() == 0)
+	{ 
+		std::cout << "No light entities exist" << std::endl;
 	}
 
-	lightObj->myLightData->lightPos = lightObj->Position;
-	lightObj->myLightData->lightDir = lightObj->Rotation;
 	
-	//shader->SetInt("shadowMap", 1);
-	
-	PointLightShaderSetting(shader, lightObj->myLightData);
-	DirectionalLightSetting(shader, lightObj->myLightData);
-	SpotLightShaderSetting(shader, lightObj->myLightData);
-
 	return 0;
 }
 
-
-
-void LightingManager::Destroy(Lighting* light, LightData* lightData)
-{
-	//Destroy(light, lightData);
-}
-
-
 Lighting* LightingManager::UseShadowDepth(Shader* shader, LightData* aLightData)
 {
-	
-	/*if (aLightData == NULL)
-	{
-		return 0;
-		aLightData = Object::Entities[Object::SelectedEntity]->myLightData;
-	}*/
 	
 	if (aLightData->LightVar == 2) // directional
 	{
@@ -513,20 +500,4 @@ Lighting* LightingManager::RunMainFragmentShadows(Shader* shader, LightData* lig
 	shader->SetMatrix("lightSpaceMatrix", lightspaceMatrix);
 
 	return nullptr;
-}
-
-
-
-
-
-Lighting* LightingManager::DebugShadow(Shader* shader)
-{
-	// depth shader
-	
-	/*for (auto& o : Object::Entities)
-	{
-		o->Draw(shader);
-	}*/
-
-	return 0;
 }
