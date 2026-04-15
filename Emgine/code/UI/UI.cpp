@@ -9,6 +9,7 @@
 #include <imgui_impl_glfw.h>
 #include <iostream>
 
+
 #pragma once
 
 CubeCollider* cubeColl2;
@@ -83,7 +84,7 @@ int uiLightList(UI* myUI, ObjectManager* objectmanager)
 	if (Object::Entities.size() > 0) {
 		
 
-		if (SelectedLight)
+		if (SelectedLight && Object::Entities.size() != 0)
 		{
 
 			Object::Entities[Object::SelectedEntity]->myLightData->lightPos = Object::Entities[Object::SelectedEntity]->Position;
@@ -131,14 +132,14 @@ int uiMaterialList(UI* myUI)
 int uiObjectList(UI* ui) 
 {
 	
+	
 	for (int i = 0; i < Object::Entities.size(); i++)
 	{
 		ImGui::PushID(i);
 		if (ImGui::Button(Object::Entities[i]->namn.c_str()))
 		{
-			
 			Object::SelectedEntity = i;
-			
+					
 			ui->xPos = Object::Entities[i]->Position[0];
 			ui->yPos = Object::Entities[i]->Position[1]; 
 			ui->zPos = Object::Entities[i]->Position[2];
@@ -233,7 +234,7 @@ int classes() {
 	
 	return 0;
 }
-
+GLFWwindow* wwindow;
 UI::UI(GLFWwindow* window) // unitilized
 {
 	
@@ -257,7 +258,7 @@ UI::UI(GLFWwindow* window) // unitilized
 	ImGui_ImplOpenGL3_Init("#version 330");
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	
-	
+	light = Directional;
 	classes();
 }
 
@@ -437,20 +438,32 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 		ImGui::DragFloat("Light outer cut off", &outerCutOff, step, step_fast);
 		ImGui::DragFloat("Light linear", &lightLinear, step, step_fast);
 		ImGui::DragFloat("Light quadratic", &lightQuadratic, step, step_fast);
-
-		/*ImGui::DragFloat("Light projection left", &left, step, step_fast);
-		ImGui::DragFloat("Light projection right", &right, step, step_fast);
-		ImGui::DragFloat("Light projection bottom", &bottom, step, step_fast);
-		ImGui::DragFloat("Light projection up", &up, step, step_fast);
-		ImGui::DragFloat("Light projection near", &zNear, step, step_fast);
-		ImGui::DragFloat("Light projection far", &zFar, step, step_fast);*/
 		
 	}
 
 	if (ImGui::Button("Delete Object"))
 	{
 		if (Object::Entities.size() > 0) {
- 			objectmanager->Destroy(Object::Entities[Object::SelectedEntity], shader->DefaultShader, *lightMang);
+			
+			
+ 			objectmanager->Destroy(Object::Entities[Object::SelectedEntity], shader->DefaultShader, *lightMang); 
+			xPos = Object::Entities[Object::SelectedEntity]->Position.x; // This fixed one of the problems with deleting objects
+			yPos = Object::Entities[Object::SelectedEntity]->Position.y;
+			zPos = Object::Entities[Object::SelectedEntity]->Position.z;
+
+			xScale = Object::Entities[Object::SelectedEntity]->Scale.x;
+			yScale = Object::Entities[Object::SelectedEntity]->Scale.y;
+			zScale = Object::Entities[Object::SelectedEntity]->Scale.z;
+
+			xRot = Object::Entities[Object::SelectedEntity]->Rotation.x;
+			yRot = Object::Entities[Object::SelectedEntity]->Rotation.y;
+			zRot = Object::Entities[Object::SelectedEntity]->Rotation.z;
+			if (Object::Entities[Object::SelectedEntity]->myTexture != NULL || texture != NULL)
+			{
+				texture = Object::Entities[Object::SelectedEntity]->myTexture;
+			}
+			
+			
 		}
 		
 

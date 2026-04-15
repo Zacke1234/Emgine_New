@@ -4,22 +4,52 @@
 #pragma once
 std::vector<LightData*> lightsList;
 
-int NoLightShaderSetting(Shader* shader)
+int DeleteLightVariables(std::string lightType)
 {
+	// crashes the second time something is deleted
+
+	if (lightType == "Directional")
+	{
+		Lighting::DirLightDirections.erase(Lighting::DirLightDirections.begin() + LightObject::SelectedLightEntity);
+	}
+	else if (lightType == "Point")
+	{
+		Lighting::pointLightPositions.erase(Lighting::pointLightPositions.begin() + LightObject::SelectedLightEntity);
+
+	}
+	else if (lightType == "Spot")
+	{
+		
+		Lighting::spotLightDirections.erase(Lighting::spotLightDirections.begin() + LightObject::SelectedLightEntity);
+		Lighting::spotLightPositions.erase(Lighting::spotLightPositions.begin() + LightObject::SelectedLightEntity);
+
+		Lighting::cutOffs.erase(Lighting::cutOffs.begin() + LightObject::SelectedLightEntity);
+		Lighting::outerCutOffs.erase(Lighting::outerCutOffs.begin() + LightObject::SelectedLightEntity);
+
+	}
+
+	
+	
+	Lighting::constants.erase(Lighting::constants.begin() + LightObject::SelectedLightEntity);
+	Lighting::linears.erase(Lighting::linears.begin() + LightObject::SelectedLightEntity);
+	Lighting::quadtrics.erase(Lighting::quadtrics.begin() + LightObject::SelectedLightEntity);
+
+	
 	return 0;
 }
 
-int LightShaderSetting(Shader* shader, std::string lightType) // done
+int LightShaderSetting(Shader* shader, std::string lightType)
 {
 	std::vector<LightData*> fragmentLightTypeSize;
 	std::vector<glm::vec3*> fragmentLightTypePositions;
+	std::vector<glm::vec3*> fragmentLightTypeDirections;
 	std::string fragmentLightTypeName;
 	std::string fragmentLightAmount;
 	if (lightType == "Directional")
 	{
 		fragmentLightAmount = "NumDirectionalLights";
 		fragmentLightTypeSize = Lighting::dirLights;
-		fragmentLightTypePositions = Lighting::DirLightDirections;
+		fragmentLightTypeDirections = Lighting::DirLightDirections;
 		fragmentLightTypeName = "dirLight";
 	}
 	else if (lightType == "Point")
@@ -34,15 +64,16 @@ int LightShaderSetting(Shader* shader, std::string lightType) // done
 		fragmentLightAmount = "NumSpotLights";
 		fragmentLightTypeSize = Lighting::spotLights;
 		fragmentLightTypePositions = Lighting::spotLightPositions;
-		
+		fragmentLightTypeDirections = Lighting::spotLightDirections;
 		fragmentLightTypeName = "spotLight";
 	}
 	
+	shader->SetInt(fragmentLightAmount, fragmentLightTypeSize.size());
 
-	for (int lObjs = 0; lObjs <= fragmentLightTypeSize.size() - 1; lObjs++)
+	for (int lObjs = 0; lObjs < fragmentLightTypeSize.size(); lObjs++)
 	{
 		std::string number = std::to_string(lObjs);
-		shader->SetInt(fragmentLightAmount, fragmentLightTypeSize.size());
+		//shader->SetInt(fragmentLightAmount, fragmentLightTypeSize.size());
 
 		shader->SetFloat(fragmentLightTypeName + "[" + number + "].constant", *Lighting::constants[lObjs]);
 		shader->SetFloat(fragmentLightTypeName + "[" + number + "].linear", *Lighting::linears[lObjs]);
@@ -72,14 +103,14 @@ int LightShaderSetting(Shader* shader, std::string lightType) // done
 
 		if (lightType == "Directional")
 		{
-			shader->SetVec3(direction.c_str(), *Lighting::DirLightDirections[lObjs]);
+			shader->SetVec3(direction.c_str(), *fragmentLightTypeDirections[lObjs]); // need to erase these variables as well
 		}
 		else if (lightType == "Spot")
 		{
 			shader->SetVec3(position.c_str(), *fragmentLightTypePositions[lObjs]);
-			shader->SetVec3(direction.c_str(), *Lighting::spotLightDirections[lObjs]);
+			shader->SetVec3(direction.c_str(), *fragmentLightTypeDirections[lObjs]);
 		}
-		else
+		else if (lightType == "Point")
 		{
 			shader->SetVec3(position.c_str(), *fragmentLightTypePositions[lObjs]);
 		}
@@ -163,16 +194,19 @@ LightData* LightingManager::Destroy(Shader* aShader, Object* obj)
 	switch (obj->myLightData->LightVar)
 	{
 	case 1: // point
-		Lighting::pointLights.erase(Lighting::pointLights.begin() + LightObject::SelectedLightEntity); // this crashes
+		Lighting::pointLights.erase(Lighting::pointLights.begin() + LightObject::SelectedLightEntity); 
+		DeleteLightVariables("Point");
 		aShader->SetInt("NumPointLights", Lighting::pointLights.size());
 		break;
 	case 2: // dir
-		Lighting::dirLights.erase(Lighting::dirLights.begin() + LightObject::SelectedLightEntity); // but this does not crash?
+		Lighting::dirLights.erase(Lighting::dirLights.begin() + LightObject::SelectedLightEntity);
+		DeleteLightVariables("Directional");
 		aShader->SetInt("NumDirectionalLights", Lighting::dirLights.size());
 		break;
 	case 3: // spot
 		//if (!Lighting::pointLights.empty())
-		Lighting::spotLights.erase(Lighting::spotLights.begin() + LightObject::SelectedLightEntity); // this also crashes
+		Lighting::spotLights.erase(Lighting::spotLights.begin() + LightObject::SelectedLightEntity); 
+		DeleteLightVariables("Spot");
 		aShader->SetInt("NumSpotLights", Lighting::spotLights.size());
 		break;
 	}
@@ -439,11 +473,21 @@ LightData* LightingManager::RunLightData(Shader* shader, Camera* aCamera)
 		}
 
 	}
-	if (LightObject::LightEntities.size() == 0)
+	if (Lighting::dirLights.size() == 0)
 	{ 
-		std::cout << "No light entities exist" << std::endl;
+		LightShaderSetting(shader, "Directional");
+		//std::cout << "No light entities exist" << std::endl;
 	}
-
+	if (Lighting::pointLights.size() == 0)
+	{
+		LightShaderSetting(shader, "Point");
+		//std::cout << "No light entities exist" << std::endl;
+	}
+	if (Lighting::spotLights.size() == 0)
+	{
+		LightShaderSetting(shader, "Spot");
+		//std::cout << "No light entities exist" << std::endl;
+	}
 	
 	return 0;
 }

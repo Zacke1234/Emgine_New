@@ -13,6 +13,7 @@
 
 
 
+
 class Cube;
 struct Mesh;
 struct LightData;
@@ -50,7 +51,7 @@ public:
 	Object(std::string _namn, Mesh* Mesh, Texture* aTexture, Shader* aShader, Collider* coll, Rigidbody* rb);
 
 	static std::vector<Object*> Entities;
-	static int SelectedEntity;
+	static unsigned int SelectedEntity;
 
 	glm::vec3 Position;
 	glm::vec3 Scale;

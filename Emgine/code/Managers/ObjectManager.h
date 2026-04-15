@@ -2,6 +2,7 @@
 #include <vector>
 #include <Object.h>
 #include <LightingManager.h>
+
 class ObjectManager : public Subject
 {
 public:

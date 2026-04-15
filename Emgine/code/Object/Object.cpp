@@ -11,8 +11,8 @@ std::mutex mtx;
 using namespace std;
 
 vector<Object*> Object::Entities;
-int Object::SelectedEntity;
-//vector<Object*> SelectedEntityVec;
+unsigned int Object::SelectedEntity;
+
 int LightObject::SelectedLightEntity;
 vector<LightObject*> LightObject::LightEntities;
 vector<CameraObject*> CameraObject::CameraEntities;

@@ -2,6 +2,7 @@
 #include <ShaderManager.h>
 
 
+
 Object* ObjectManager::Create(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL, Rigidbody* rb = NULL)
 {
 	
@@ -19,7 +20,16 @@ void ObjectManager::Destroy(Object* obj, Shader* aShader, LightingManager aLight
 		
 		aLightManager.Destroy(aShader, obj);
 	}
-	obj->Entities.erase(obj->Entities.begin() + Object::SelectedEntity); // removes the selected Object, crashes when camera is deleted
+	Object::Entities.erase(Object::Entities.begin() + Object::SelectedEntity);
+	// everything with a higher number in the list of the object that was deleted. moves a spot down, everything with a lower number stays still
+	// current this has the effect of the object that now has the same index as the old one, will receive all the variables (position, rotation, texture etc) instead of keeping their own variables (FIXED)
+	// Still have the problem with crashing if the last object in the list is deleted ( FIXED)
+	
+	if (Object::SelectedEntity >= Object::Entities.size())
+	{
+		Object::SelectedEntity -= 1;
+	}
+	//
 	
 }
 
