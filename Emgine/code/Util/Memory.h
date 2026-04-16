@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "Managers/ObjectManager.h"
 #include "Shader.h"
-#include "Cube.h"
+
 #include "Camera.h"
 #include "Lighting.h"
 #include <Object.h>

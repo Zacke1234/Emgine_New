@@ -6,7 +6,7 @@
 class Shader
 {
 public:
-	Shader(const char* VertexPath, const char* FragmantPath);
+	Shader(const char* VertexPath, const char* FragmantPath, const char* GSPath = NULL);
 
 	void UseShader();
 

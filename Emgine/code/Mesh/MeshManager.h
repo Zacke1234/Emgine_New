@@ -5,7 +5,7 @@
 #include <filesystem>
 #include <Message.h>
 #include <map>
-#include "Cube.h"
+
 class MeshLoader;
 class Cube;
 

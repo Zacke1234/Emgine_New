@@ -1,7 +1,6 @@
 #include <Object.h>
 #include "Physics.h"
 #include <cassert>
-#include <glad.h>
 #include <thread>
 #include <mutex>
 #include "Texture.h" 

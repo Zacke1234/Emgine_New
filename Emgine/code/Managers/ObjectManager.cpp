@@ -27,9 +27,13 @@ void ObjectManager::Destroy(Object* obj, Shader* aShader, LightingManager aLight
 	
 	if (Object::SelectedEntity >= Object::Entities.size())
 	{
-		Object::SelectedEntity -= 1;
+		if (Object::SelectedEntity != 0)
+		{
+			Object::SelectedEntity -= 1;
+		}
+		
 	}
-	//
+
 	
 }
 

@@ -1,28 +1,10 @@
 #include "Texture.h"
-#include <glfw3.h>
-#include <glad.h>
-#include "stb_image.h"
+#include <GLChecking.h>
 #include <iostream>
 #include "glm.hpp"
-#define STB_IMAGE_IMPLEMENTATION
-inline void CheckOpenGLError(const char* stmt, const char* fname, int line)
-{
-	GLenum err = glGetError();
-	if (err != GL_NO_ERROR)
-	{
-		printf("OpenGL error %08x, at %s:%i - for %s\n", err, fname, line, stmt);
-		__debugbreak();
-	}
-}
 
-#ifdef _DEBUG
-#define GL_CHECK(stmt) do { \
-            stmt; \
-            CheckOpenGLError(#stmt, __FILE__, __LINE__); \
-        } while (0)
-#else
-#define GL_CHECK(stmt) stmt
-#endif
+
+
 
 #pragma once
 float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
@@ -74,6 +56,9 @@ Texture::Texture(const char* aPath, Material* mat = NULL)
 		{
 			Channels = GL_RGBA;
 		}
+
+
+		
 
 		GL_CHECK(glGenTextures(1, &TextureObject));
 		GL_CHECK(glBindTexture(GL_TEXTURE_2D, TextureObject));

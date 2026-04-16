@@ -21,13 +21,7 @@
     <ClCompile Include="code\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Dependencies\glad\glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="code\Shader\Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="code\Mesh\Cube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="code\Camera\Camera.cpp">
@@ -135,15 +129,21 @@
     <ClCompile Include="code\Mesh\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="code\Shader\Cubemap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\glad\gl.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Dependencies\GLFW\include\glfw3native.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Dependencies\GLFW\include\glfw3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="code\Shader\Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="code\Mesh\Cube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="code\Camera\Camera.h">
@@ -267,6 +267,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="code\Enums\E_MeshLoadStage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="code\Shader\Cubemap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\gl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

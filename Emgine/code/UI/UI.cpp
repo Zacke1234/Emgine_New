@@ -8,6 +8,7 @@
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
 #include <iostream>
+#include <glfw3.h>
 
 
 #pragma once
@@ -446,7 +447,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 		if (Object::Entities.size() > 0) {
 			
 			
- 			objectmanager->Destroy(Object::Entities[Object::SelectedEntity], shader->DefaultShader, *lightMang); 
+			objectmanager->Destroy(Object::Entities[Object::SelectedEntity], shader->DefaultShader, *lightMang);
 			xPos = Object::Entities[Object::SelectedEntity]->Position.x; // This fixed one of the problems with deleting objects
 			yPos = Object::Entities[Object::SelectedEntity]->Position.y;
 			zPos = Object::Entities[Object::SelectedEntity]->Position.z;

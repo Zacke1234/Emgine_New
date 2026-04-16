@@ -13,7 +13,7 @@ uniform sampler2D depthMap;
 uniform sampler2D shadowMap;
 uniform sampler2D normalMap; 
 
-
+uniform samplerCube cubemap; // cubemap texture sampler
 uniform int NumDirectionalLights;
 uniform int NumPointLights;
 uniform int NumSpotLights;

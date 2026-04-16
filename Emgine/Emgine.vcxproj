@@ -123,7 +123,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLM_FORCE_XYZW_ONLY</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include\;$(SolutionDir)Dependencies\KHR\;$(SolutionDir)Dependencies\glm\;$(SolutionDir)Dependencies\glad\;$(SolutionDir)imgui\;$(SolutionDir)Emgine\code\Camera\;$(SolutionDir)Emgine\code\Physics\;$(SolutionDir)Emgine\code\Shader\;$(SolutionDir)Emgine\code\Texture\;$(SolutionDir)Emgine\code\Mesh\;$(SolutionDir)Emgine\code\UI\;$(SolutionDir)Emgine\code\Util\;$(SolutionDir)Emgine\code\Object\;$(SolutionDir)Emgine\code\Message\;$(SolutionDir)Emgine\code\;$(SolutionDir)Emgine\resource\materials\;$(SolutionDir)Emgine\resource\textures\;$(SolutionDir)Emgine\code\Patterns\Observer;$(SolutionDir)Emgine\code\Managers\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include\;$(SolutionDir)Dependencies\KHR\;$(SolutionDir)Dependencies\glm\;$(SolutionDir)Dependencies\glad\;$(SolutionDir)imgui\;$(SolutionDir)Emgine\code\Camera\;$(SolutionDir)Emgine\code\Physics\;$(SolutionDir)Emgine\code\Shader\;$(SolutionDir)Emgine\code\Texture\;$(SolutionDir)Emgine\code\Mesh\;$(SolutionDir)Emgine\code\UI\;$(SolutionDir)Emgine\code\Util\;$(SolutionDir)Emgine\code\Object\;$(SolutionDir)Emgine\code\Message\;$(SolutionDir)Emgine\code\;$(SolutionDir)Emgine\resource\materials\;$(SolutionDir)Emgine\resource\textures\;$(SolutionDir)Emgine\code\Patterns\Observer;$(SolutionDir)Emgine\code\Managers\;$(SolutionDir)Dependencies\gl\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <FloatingPointModel>Strict</FloatingPointModel>
       <FloatingPointExceptions>true</FloatingPointExceptions>
@@ -162,7 +162,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Dependencies\glad\glad.c" />
+    <ClCompile Include="..\Dependencies\glad\gl.c" />
+    <ClCompile Include="..\Dependencies\GLFW\include\glfw3native.cpp" />
     <ClCompile Include="..\imgui\imgui.cpp" />
     <ClCompile Include="..\imgui\imgui_demo.cpp" />
     <ClCompile Include="..\imgui\imgui_draw.cpp" />
@@ -173,7 +174,6 @@
     <ClCompile Include="code\Managers\CameraManager.cpp" />
     <ClCompile Include="code\Camera\Camera.cpp" />
     <ClCompile Include="code\Physics\Collider.cpp" />
-    <ClCompile Include="code\Mesh\Cube.cpp" />
     <ClCompile Include="code\Emgine.cpp" />
     <ClCompile Include="code\Shader\Lighting.cpp" />
     <ClCompile Include="code\main.cpp" />
@@ -195,6 +195,7 @@
     <ClCompile Include="code\Managers\TextureManager.cpp" />
     <ClCompile Include="code\Managers\ColliderManager.cpp" />
     <ClCompile Include="code\Managers\ShaderManager.cpp" />
+    <ClCompile Include="code\Shader\Cubemap.cpp" />
     <ClCompile Include="DisplayMessage.cpp" />
     <ClCompile Include="code\Managers\LightingManager.cpp" />
     <ClCompile Include="code\Util\GLChecking.cpp" />
@@ -204,6 +205,7 @@
     <ClCompile Include="code\Mesh\Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Dependencies\gl.h" />
     <ClInclude Include="..\Dependencies\GLFW\include\glfw3.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -224,7 +226,6 @@
     <ClInclude Include="code\Managers\CameraManager.h" />
     <ClInclude Include="code\Camera\Camera.h" />
     <ClInclude Include="code\Physics\Collider.h" />
-    <ClInclude Include="code\Mesh\Cube.h" />
     <ClInclude Include="code\Shader\Lighting.h" />
     <ClInclude Include="code\Util\Memory.h" />
     <ClInclude Include="code\Mesh\MeshManager.h" />
@@ -244,6 +245,7 @@
     <ClInclude Include="code\Managers\TextureManager.h" />
     <ClInclude Include="code\Managers\ColliderManager.h" />
     <ClInclude Include="code\Managers\ShaderManager.h" />
+    <ClInclude Include="code\Shader\Cubemap.h" />
     <ClInclude Include="DisplayMessage.h" />
     <ClInclude Include="code\Managers\LightingManager.h" />
     <ClInclude Include="code\Util\GLChecking.h" />

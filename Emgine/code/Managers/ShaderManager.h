@@ -13,7 +13,7 @@ public:
 
 	Shader* InitDefaultShader();
 
-	Shader* Create(std::string name, const char* VertexPath, const char* FragmantPath);
+	Shader* Create(std::string name, const char* VertexPath, const char* FragmantPath, const char* GSPath = NULL);
 
 	Shader* Find(std::string name);
 

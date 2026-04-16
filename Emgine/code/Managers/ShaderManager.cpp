@@ -22,10 +22,10 @@ Shader* ShaderManager::InitDefaultShader()
 	return DefaultShader;
 }
 
-Shader* ShaderManager::Create(std::string name, const char* VertexPath, const char* FragmantPath)
+Shader* ShaderManager::Create(std::string name, const char* VertexPath, const char* FragmantPath, const char* GSPath)
 {
 	
-	Shader* myShader = new Shader(VertexPath, FragmantPath);
+	Shader* myShader = new Shader(VertexPath, FragmantPath, GSPath);
 	myShader->shaderName = name;
 	Shader::shaderList.push_back(myShader);
 	//DefaultShader =+ myShader;

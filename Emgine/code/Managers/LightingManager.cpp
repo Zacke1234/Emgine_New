@@ -1,5 +1,5 @@
 #include "LightingManager.h"
-#include <stb_image.h>
+
 
 #pragma once
 std::vector<LightData*> lightsList;
@@ -161,8 +161,8 @@ LightData* LightingManager::InitDefaultLighting()
 {
 	DefaultLighting = new LightData();
 	
-	//SetPoint(DefaultLighting);
-	SetDirectional(DefaultLighting);
+	SetPoint(DefaultLighting);
+	//SetDirectional(DefaultLighting);
 	//SetSpot(DefaultLighting);
 
 	LightHasInitalised = true;

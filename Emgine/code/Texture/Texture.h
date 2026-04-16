@@ -2,13 +2,13 @@
 //using namespace std;
 #pragma once
 #include <string>
-#include <glad.h>
+#include <stb_image.h>
 #include <vector>
 #include "Shader.h"
 #include <glm.hpp>
 #include <Material/Material.h>
 
-
+#define STB_IMAGE_IMPLEMENTATION
 class Texture
 {
 public:

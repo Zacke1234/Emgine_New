@@ -2,8 +2,6 @@
 #include "vector"
 #include "Message.h"
 #include <gtc/matrix_transform.hpp>
-#include <glad.h>
-#include <glfw3.h>
 #include <iostream>
 #include <list>
 #include "fstream"

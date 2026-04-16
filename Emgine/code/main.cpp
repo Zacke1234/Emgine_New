@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include "imgui.h"
 #include <iostream>
-#include <glad.h>
-#include <glfw3.h>
+#include "../../Dependencies/gl.h"
+ 
 #include <fstream>
 #include <sstream>
 #include "Shader.h"
@@ -36,6 +36,8 @@
 #include <RigidbodyManager.h>
 #include <CameraManager.h>
 #include <Time/Time.h>
+#include <glfw3.h>
+
 
 
 
@@ -101,10 +103,13 @@ int static init_window()
 	{
 
 		std::cout << "Failed to initialize glfw" << endl;
-		//myMessage->SendMessage(message, 0);
+		
 		return -1;
 	}
 	
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Emgine", NULL, NULL);
 
@@ -119,7 +124,7 @@ int static init_window()
 
 	glfwMakeContextCurrent(window);
 
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	if (!gladLoadGL((GLADloadfunc)glfwGetProcAddress))
 	{
 		//message = "Failed to initialize GLAD";
 		std::cout << "Failed to initialize GLAD" << endl;
@@ -148,6 +153,7 @@ int init_managers() {
 	myLightingManager->InitDefaultLighting();
 	myShaderManager->Create("depthShader", "../Shader/DepthQuadVS.glsl", "../Shader/DepthQuadFS.glsl");
 	myShaderManager->Create("DirectionalShader", "../Shader/DirectionalVS.glsl", "../Shader/DirectionalFS.glsl");
+	myShaderManager->Create("PointShader", "../Shader/PointVS.glsl", "../Shader/PointFS.glsl", "../Shader/PointGS.glsl");
 	myShaderManager->InitDefaultShader();
 	
 	myObjectManager = new ObjectManager;

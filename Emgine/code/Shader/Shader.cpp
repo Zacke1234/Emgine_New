@@ -1,11 +1,15 @@
 #include <iostream>
-#include <glad.h>
-#include <glfw3.h>
+#include <glm.hpp>
+#include "../../../Dependencies/gl.h"
+ 
 #include "Shader.h"
 #include <fstream>
 #include <sstream>
 #include <gtc/type_ptr.hpp>
 #include <Object.h>
+
+
+
 
 std::vector<Shader*> Shader::shaderList;
 
@@ -34,42 +38,68 @@ std::string Shader::LoadShader(const char* aPath)
 	}
 }
 
-Shader::Shader(const char* VertexPath, const char* FragmantPath)
+Shader::Shader(const char* VertexPath, const char* FragmantPath, const char* GeometryPath)
 {
 	unsigned int shaderProgram;
 	unsigned int vertexShader;
 	unsigned int fragmantShader;
+	unsigned int geometryShader;
+
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	std::string vertexCodeString = LoadShader(VertexPath);
 	const char* vertexCode = vertexCodeString.c_str();
 	GL_CHECK(glShaderSource(vertexShader, 1, &vertexCode, NULL));
 
 	GL_CHECK(glCompileShader(vertexShader));
+
 	fragmantShader = glCreateShader(GL_FRAGMENT_SHADER);
 	std::string fragmantCodeString = LoadShader(FragmantPath);
 	const char* fragmantCode = fragmantCodeString.c_str();
 	GL_CHECK(glShaderSource(fragmantShader, 1, &fragmantCode, NULL));
 
+	GL_CHECK(glCompileShader(fragmantShader));
+
+	if (GeometryPath != nullptr)
+	{
+		geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
+		std::string geometryCodeString = LoadShader(GeometryPath);
+		const char* geometryCode = geometryCodeString.c_str();
+		GL_CHECK(glShaderSource(geometryShader, 1, &geometryCode, NULL));
+
+		GL_CHECK(glCompileShader(geometryShader));
+
+	}
 	
 
-	GL_CHECK(glCompileShader(fragmantShader));
 	ShaderProgram = glCreateProgram();
 	
 	GL_CHECK(glAttachShader(ShaderProgram, vertexShader));
 	GL_CHECK(glAttachShader(ShaderProgram, fragmantShader));
+
+	if (GeometryPath != nullptr)
+	{
+		GL_CHECK(glAttachShader(ShaderProgram, geometryShader));
+	}
+	
 	GL_CHECK(glLinkProgram(ShaderProgram));
 	
 	
 	char Log[512];
 	
 
-	int result;
+	int fragmentResult;
 	int vertexResult;
+	int geometryResult;
 	
-	GL_CHECK(glGetShaderiv(fragmantShader, GL_COMPILE_STATUS, &result));
+	GL_CHECK(glGetShaderiv(fragmantShader, GL_COMPILE_STATUS, &fragmentResult));
 	GL_CHECK(glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &vertexResult));
+	if (GeometryPath != nullptr)
+	{
+		GL_CHECK(glGetShaderiv(geometryShader, GL_COMPILE_STATUS, &geometryResult));
+	}
 
-	if (!result)
+
+	if (!fragmentResult)
 	{
 		GL_CHECK(glGetShaderInfoLog(fragmantShader, 512, NULL, Log));
 		std::cout << "Failed to compile fragment shader \n" << Log << std::endl;
@@ -79,11 +109,26 @@ Shader::Shader(const char* VertexPath, const char* FragmantPath)
 		GL_CHECK(glGetShaderInfoLog(vertexShader, 512, NULL, Log));
 		std::cout << "Failed to compile vertex shader \n" << Log << std::endl;
 	}
+	if (GeometryPath != nullptr)
+	{
+		if (!geometryResult)
+		{
+			GL_CHECK(glGetShaderInfoLog(geometryShader, 512, NULL, Log));
+			std::cout << "Failed to compile geometry shader \n" << Log << std::endl;
+		}
+	
+	}
 	
 	glDetachShader(ShaderProgram, fragmantShader);
 	glDeleteShader(fragmantShader);
 	glDetachShader(ShaderProgram, vertexShader);
 	glDeleteShader(vertexShader);
+
+	if (GeometryPath != nullptr)
+	{
+		glDetachShader(ShaderProgram, geometryShader);
+		glDeleteShader(geometryShader);
+	}
 
 }
 
