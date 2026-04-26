@@ -129,13 +129,13 @@
     <ClCompile Include="code\Mesh\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="code\Shader\Cubemap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\Dependencies\glad\gl.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Dependencies\GLFW\include\glfw3native.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="code\Mesh\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -269,10 +269,10 @@
     <ClInclude Include="code\Enums\E_MeshLoadStage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="code\Shader\Cubemap.h">
+    <ClInclude Include="..\Dependencies\gl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Dependencies\gl.h">
+    <ClInclude Include="code\Mesh\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

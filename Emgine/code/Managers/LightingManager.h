@@ -1,7 +1,7 @@
 #pragma once
+
+
 #include <Lighting.h>
-
-
 
 class LightingManager
 {
@@ -21,7 +21,7 @@ public:
 
 	Lighting* UseShadowDepth(Shader* shader, LightData* lightData);
 	Lighting* RunMainFragmentShadows(Shader* shader, LightData* lightData);
-	Lighting* LoadCubeMaps(Texture* shadowTexture);
+	Lighting* AllLighting(Shader* myShader);
 	
 	LightData* SetDirectional(LightData* aLightData);
 	LightData* SetPoint(LightData* aLightData);
@@ -30,19 +30,22 @@ public:
 	Lighting* InitDepthMapping();
 	Lighting* InitShaderMaps(Shader* shader);
 
+	Lighting* FrameBufferTexture();
 	Lighting* BindFrameBuffer();
 	Lighting* ActiveTextureDepth();
-	Lighting* BindTexture();
 	Lighting* BindDepthTexture();
 	Lighting* Viewport();	
 	
+	
+	std::vector<glm::mat4> shadowTransforms;
 	unsigned int SCR_WIDTH = 1024;
 	unsigned int SCR_HEIGHT = 1024;
 	const unsigned int SHADOW_WIDTH = SCR_WIDTH , SHADOW_HEIGHT = SCR_HEIGHT;
+	unsigned int depthCubemap = 0;
 	GLuint depthMapFBO;
 	GLuint depthMap;
 	GLuint ShadowMap;
-	unsigned int depthCubemap;
+	//unsigned int depthCubemap;
 	bool LightHasInitalised;
 };
 

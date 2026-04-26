@@ -12,6 +12,15 @@ std::vector<Texture*> Texture::textures;
 std::vector<Material*> Texture::materials;
 
 
+Texture::Texture()
+{
+	std::string name = "texture";
+	data = 0;
+	Channels = 0;
+	Width = 0;
+	Height = 0;
+}
+
 Texture::Texture(const char* aPath, Material* mat = NULL)
 {
 	
@@ -71,6 +80,7 @@ Texture::Texture(const char* aPath, Material* mat = NULL)
 		GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, Channels == GL_RGBA ? GL_CLAMP_TO_EDGE : GL_REPEAT));	// set texture wrapping to GL_REPEAT (default wrapping method)
 		GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, Channels == GL_RGBA ? GL_CLAMP_TO_EDGE : GL_REPEAT));
 		// set texture filtering parameters
+
 		GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
 		GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 		

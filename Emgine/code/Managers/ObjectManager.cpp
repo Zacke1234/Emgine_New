@@ -21,9 +21,6 @@ void ObjectManager::Destroy(Object* obj, Shader* aShader, LightingManager aLight
 		aLightManager.Destroy(aShader, obj);
 	}
 	Object::Entities.erase(Object::Entities.begin() + Object::SelectedEntity);
-	// everything with a higher number in the list of the object that was deleted. moves a spot down, everything with a lower number stays still
-	// current this has the effect of the object that now has the same index as the old one, will receive all the variables (position, rotation, texture etc) instead of keeping their own variables (FIXED)
-	// Still have the problem with crashing if the last object in the list is deleted ( FIXED)
 	
 	if (Object::SelectedEntity >= Object::Entities.size())
 	{
@@ -70,11 +67,3 @@ Object* ObjectManager::FindAndSetProperties(std::string aName, glm::vec3 aPos, g
 	std::cout << "Object not found: " << aName << "\n";
 	return nullptr;
 }
-
-// Lightdata is part of Object Yes?
-// So Do I have lightdata in object.h/cpp?
-// and slash or?
-// ponder on this
-
-// Obviously I want a object to be able to hold a light, depending on whatever
-// that light is 

@@ -1,6 +1,8 @@
 #include "Mesh.h"
 #include <Object.h>
 
+std::vector<Mesh*> Mesh::MeshEntities;
+
 void Mesh::InitialiseMesh()
 {
 	GL_CHECK(glGenVertexArrays(1, &VAO));

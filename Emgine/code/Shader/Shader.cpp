@@ -1,6 +1,6 @@
 #include <iostream>
 #include <glm.hpp>
-#include "../../../Dependencies/gl.h"
+#include "gl.h"
  
 #include "Shader.h"
 #include <fstream>

@@ -123,7 +123,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLM_FORCE_XYZW_ONLY</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include\;$(SolutionDir)Dependencies\KHR\;$(SolutionDir)Dependencies\glm\;$(SolutionDir)Dependencies\glad\;$(SolutionDir)imgui\;$(SolutionDir)Emgine\code\Camera\;$(SolutionDir)Emgine\code\Physics\;$(SolutionDir)Emgine\code\Shader\;$(SolutionDir)Emgine\code\Texture\;$(SolutionDir)Emgine\code\Mesh\;$(SolutionDir)Emgine\code\UI\;$(SolutionDir)Emgine\code\Util\;$(SolutionDir)Emgine\code\Object\;$(SolutionDir)Emgine\code\Message\;$(SolutionDir)Emgine\code\;$(SolutionDir)Emgine\resource\materials\;$(SolutionDir)Emgine\resource\textures\;$(SolutionDir)Emgine\code\Patterns\Observer;$(SolutionDir)Emgine\code\Managers\;$(SolutionDir)Dependencies\gl\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include\;$(SolutionDir)Dependencies\KHR\;$(SolutionDir)Dependencies\glm\;$(SolutionDir)Dependencies\glad\;$(SolutionDir)Dependencies\;$(SolutionDir)Emgine\code\Camera\;$(SolutionDir)Emgine\code\Physics\;$(SolutionDir)Emgine\code\Shader\;$(SolutionDir)Emgine\code\Texture\;$(SolutionDir)Emgine\code\Mesh\;$(SolutionDir)Emgine\code\UI\;$(SolutionDir)Emgine\code\Util\;$(SolutionDir)Emgine\code\Object\;$(SolutionDir)Emgine\code\Message\;$(SolutionDir)Emgine\code\;$(SolutionDir)Emgine\resource\materials\;$(SolutionDir)Emgine\resource\textures\;$(SolutionDir)Emgine\code\Patterns\Observer;$(SolutionDir)Emgine\code\Managers\;$(SolutionDir)imgui\;$(SolutionDir)Dependencies\assimp\include\assimp\;$(SolutionDir)Dependencies\assimp\;$(SolutionDir)Dependencies\assimp\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <FloatingPointModel>Strict</FloatingPointModel>
       <FloatingPointExceptions>true</FloatingPointExceptions>
@@ -132,7 +132,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;$(SolutionDir)Dependencies\GLFW\lib-vc2022\glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;$(SolutionDir)Dependencies\GLFW\lib-vc2022\glfw3.lib;$(SolutionDir)Dependencies\assimp\assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
@@ -195,7 +195,6 @@
     <ClCompile Include="code\Managers\TextureManager.cpp" />
     <ClCompile Include="code\Managers\ColliderManager.cpp" />
     <ClCompile Include="code\Managers\ShaderManager.cpp" />
-    <ClCompile Include="code\Shader\Cubemap.cpp" />
     <ClCompile Include="DisplayMessage.cpp" />
     <ClCompile Include="code\Managers\LightingManager.cpp" />
     <ClCompile Include="code\Util\GLChecking.cpp" />
@@ -203,6 +202,7 @@
     <ClCompile Include="code\Time\Time.cpp" />
     <ClCompile Include="code\Material\Material.cpp" />
     <ClCompile Include="code\Mesh\Mesh.cpp" />
+    <ClCompile Include="code\Mesh\Model.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Dependencies\gl.h" />
@@ -245,7 +245,6 @@
     <ClInclude Include="code\Managers\TextureManager.h" />
     <ClInclude Include="code\Managers\ColliderManager.h" />
     <ClInclude Include="code\Managers\ShaderManager.h" />
-    <ClInclude Include="code\Shader\Cubemap.h" />
     <ClInclude Include="DisplayMessage.h" />
     <ClInclude Include="code\Managers\LightingManager.h" />
     <ClInclude Include="code\Util\GLChecking.h" />
@@ -255,6 +254,7 @@
     <ClInclude Include="code\Mesh\Mesh.h" />
     <ClInclude Include="code\Mesh\Structs\Face.h" />
     <ClInclude Include="code\Mesh\Structs\Vertex.h" />
+    <ClInclude Include="code\Mesh\Model.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\Dependencies\GLFW\lib-vc2022\glfw3.lib" />

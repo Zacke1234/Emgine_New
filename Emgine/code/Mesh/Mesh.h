@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "Texture.h"
 #include <vector>
 #include "glm.hpp"
 #include "Structs/Face.h"
@@ -8,6 +9,16 @@
 class Mesh
 {
 public:
+	
+
+	std::vector<Vertex> vertices;
+
+	std::vector<unsigned int> elements;
+
+	std::vector<Texture> textures;
+
+	std::vector<glm::vec2> uvs;
+
 	std::string name;
 
 	int vertexbuffer = 0;
@@ -20,13 +31,17 @@ public:
 
 	std::vector<glm::vec3> position;
 	std::vector<glm::vec3> normals;
-	std::vector<glm::vec2> uvs;
-	std::vector<Vertex> vertices;
+	
+	
 	std::vector<Face> faces;
 	std::vector<float> data;
-	std::vector<unsigned int> elements;
 
 	void InitialiseMesh();
 
+	static std::vector<Mesh*> MeshEntities;
+
+	bool IsTransformValid;
+
 };
+
 

@@ -1,6 +1,6 @@
 #pragma once
 #include <stdio.h>
-#include "../../../Dependencies/gl.h"
+#include "gl.h"
 #define STB_IMAGE_IMPLEMENTATION
 inline void CheckOpenGLError(const char* stmt, const char* fname, int line)
 {
@@ -8,6 +8,7 @@ inline void CheckOpenGLError(const char* stmt, const char* fname, int line)
 	if (err != GL_NO_ERROR)
 	{
 		printf("OpenGL error %08x, at %s:%i - for %s\n", err, fname, line, stmt);
+		
 		__debugbreak();
 	}
 }

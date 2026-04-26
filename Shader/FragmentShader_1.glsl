@@ -10,6 +10,7 @@ out vec4 FragColor;
 
 uniform sampler2D ourTexture;
 uniform sampler2D depthMap;
+uniform samplerCube depthCubeMap;
 uniform sampler2D shadowMap;
 uniform sampler2D normalMap; 
 
@@ -77,6 +78,14 @@ vec3 specular;
 #define NR_SPOT_LIGHTS 10
 uniform SpotLight spotLight[NR_SPOT_LIGHTS];
  
+vec3 gridSamplingDisk[20] = vec3[]
+(
+   vec3(1, 1,  1), vec3( 1, -1,  1), vec3(-1, -1,  1), vec3(-1, 1,  1), 
+   vec3(1, 1, -1), vec3( 1, -1, -1), vec3(-1, -1, -1), vec3(-1, 1, -1),
+   vec3(1, 1,  0), vec3( 1, -1,  0), vec3(-1, -1,  0), vec3(-1, 1,  0),
+   vec3(1, 0,  1), vec3(-1,  0,  1), vec3( 1,  0, -1), vec3(-1, 0, -1),
+   vec3(0, 1,  1), vec3( 0, -1,  1), vec3( 0, -1, -1), vec3( 0, 1, -1)
+);
 
 vec3 CalculateDirLight(DirectionalLight dirLight, vec3 viewDir, float shadow);
 
@@ -95,6 +104,34 @@ struct Material {
 uniform Material material;
 
     int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+
+    float PointShadowCalculation(vec3 fragposLightspace, vec3 lightpos)
+    {
+
+    vec3 fragToLight = FragPos - lightpos;
+
+    float currentDepth = length(fragToLight);
+
+    float bias = 0.15;
+    float shadow = 0;
+    int samples = 20;
+
+    float viewDistance = length(viewPos - FragPos);
+    float diskRadius = (1.0 + (viewDistance / 25.0)) / 25.0;
+
+    for(int i = 0; i < samples; ++i)
+    {
+        float closestDepth = texture(depthCubeMap, fragToLight + gridSamplingDisk[i] * diskRadius).r;
+        closestDepth *= 25.0;
+        if(currentDepth - bias > closestDepth)
+        shadow += 1.0;
+    }
+    shadow /= float(samples);
+
+        return shadow;
+    }
+
+   
 
     float ShadowCalculation(vec4 fragPosLightSpace, vec3 lightPos)
     {
@@ -115,7 +152,6 @@ uniform Material material;
         // check whetever current frag pos is in shadow
         //float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
         // PCF
-        
         float shadow = 0.0;
         vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
         for(int x = -1; x <= 1; ++x)
@@ -135,16 +171,6 @@ uniform Material material;
             shadow = 0.0;
             
 
-        return shadow;
-    }
-
-    float DirectionalShadowCalc(vec4 fragposLightSpace)
-    {
-        vec3 projCoords = fragposLightSpace.xyz;
-        projCoords = projCoords * 0.5 + 0.5;
-        float closestDepth = texture(shadowMap, projCoords.xy).r;
-        float currentDepth = projCoords.z;
-        float shadow = currentDepth > closestDepth ? 1.0 : 0.0;
         return shadow;
     }
    

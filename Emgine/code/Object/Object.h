@@ -10,10 +10,6 @@
 #include "GLChecking.h"
 #include <Rigidbody.h>
 
-
-
-
-class Cube;
 struct Mesh;
 struct LightData;
 

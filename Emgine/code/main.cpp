@@ -1,10 +1,7 @@
-#include <stdio.h>
+
 #include "imgui.h"
 #include <iostream>
-#include "../../Dependencies/gl.h"
- 
-#include <fstream>
-#include <sstream>
+#include "gl.h"
 #include "Shader.h"
 #include "Camera.h"
 #include "Lighting.h"
@@ -22,7 +19,6 @@
 #include "Message.h"
 #include "Threading.h"
 #include "Observer.h"
-#include <float.h>
 #include <thread>
 #include <mutex>
 #include <ColliderManager.h>
@@ -31,7 +27,6 @@
 #include "imgui_impl_opengl3.h"
 #include <ObjectManager.h>
 #include <TextureManager.h>
-#include "../DisplayMessage.h"
 #include <LightingManager.h>
 #include <RigidbodyManager.h>
 #include <CameraManager.h>
@@ -66,8 +61,10 @@ RigidbodyManager* myRigidbodyManager;
 Physics* Phys;
 CameraManager* myCameraManager;
 Time* myTime;
+
 unsigned int SCR_WIDTH = 1920;
 	unsigned int SCR_HEIGHT = 1080;
+
 int do_time()
 {
 	return 0;
@@ -146,14 +143,17 @@ int init_managers() {
 	myShaderManager = new ShaderManager();
 	myLightingManager = new LightingManager();
 	myMeshManager = new MeshManager;
+	//myCubeMap = new Cubemap;
 	
 	myTextureManager = new TextureManager();
 	MyColliderManager = new ColliderManager();
 	
+	
+	//myModel = new Model();
 	myLightingManager->InitDefaultLighting();
 	myShaderManager->Create("depthShader", "../Shader/DepthQuadVS.glsl", "../Shader/DepthQuadFS.glsl");
 	myShaderManager->Create("DirectionalShader", "../Shader/DirectionalVS.glsl", "../Shader/DirectionalFS.glsl");
-	myShaderManager->Create("PointShader", "../Shader/PointVS.glsl", "../Shader/PointFS.glsl", "../Shader/PointGS.glsl");
+	//myShaderManager->Create("PointShader", "../Shader/PointVS.glsl", "../Shader/PointFS.glsl", "../Shader/PointGS.glsl");
 	myShaderManager->InitDefaultShader();
 	
 	myObjectManager = new ObjectManager;
@@ -220,11 +220,6 @@ int static update_ui(UI* myUI, ShaderManager* myShader, ObjectManager* objManage
 {
 	myUI->RenderUI(myShader, objManager, myTime);
 	
-	/*if (Object::Entities.size() <= Object::SelectedEntity)
-	{
-		Object::SelectedEntity -= 1;
-	}*/
-	
 	if (Object::Entities.size() > 0) {
 		Object::Entities[Object::SelectedEntity]->Position = glm::vec3(myUI->xPos, myUI->yPos, myUI->zPos); // vector subscript out of range. Meaning something is wrong with how the selected entity is done. (FIXED)
 		Object::Entities[Object::SelectedEntity]->Rotation = glm::vec3(
@@ -247,23 +242,16 @@ int main()
 	myTime = new Time();
 	init_window();
 
-
-
 	init_managers();
 
 	init_camera();
 
-	
-	//Create Textures
 	Texture* wall = myTextureManager->Create("wall", "wall.jpg");
 	Texture* defaultTex = myTextureManager->Create("default", "Default 1.png");
 	
 	myCamera = myCameraManager->Create("Camera");
 	
 	message_calling();
-
-
-
 
 	init_colliders();
 
@@ -283,8 +271,12 @@ int main()
 	Mesh* quadplane = myMeshManager->Create("quadplane", "quadplane.obj");
 	Mesh* cube = myMeshManager->Create("Cube", "cube.obj");
 
-	myShaderManager->DefaultShader->UseShader();
+	/*Mesh* vikinghouse = myMeshManager->Create("Viking_House", "Viking_House.obj");
 
+	Mesh* backpack = myMeshManager->Create("backpack", "backpack.obj");*/
+
+	myShaderManager->DefaultShader->UseShader();
+	
 	myObjectManager->Create( // these also push entities to Object::Entities and etc
 		"Fish",
 		fish,
@@ -293,6 +285,15 @@ int main()
 		MyColliderManager->Create("SphereColl", sphereColl),
 		myRigidbodyManager->Create(0.96f, false)
 	);
+
+	//myObjectManager->Create( // these also push entities to Object::Entities and etc
+	//	"backpack",
+	//	backpack,
+	//	defaultTex,
+	//	myShaderManager->DefaultShader,
+	//	MyColliderManager->Create("SphereColl", sphereColl),
+	//	myRigidbodyManager->Create(0.96f, false)
+	//);
 
 	myObjectManager->Create("Cube",
 		cube,
@@ -334,14 +335,19 @@ int main()
 
 	Shader* depthShader = myShaderManager->Find("depthShader");
 	Shader* directionalShader = myShaderManager->Find("DirectionalShader");
+	//Shader* pointShader = myShaderManager->Find("PointShader");
 
 	myLightingManager->InitDepthMapping();
-
 	
 	myShaderManager->DefaultShader->SetInt("shadowMap", 1);
-	myShaderManager->DefaultShader->SetInt("diffuseTexture", 0);
+	
 	directionalShader->UseShader();
+
 	directionalShader->SetInt("depthMap", 1);
+	directionalShader->SetInt("depthCubeMap", 1);
+
+	myShaderManager->DefaultShader->SetInt("depthMap", 1);
+	myShaderManager->DefaultShader->SetInt("depthCubeMap", 1);
 
 	LightObject* lightobject = LightObject::LightEntities[0];
 
@@ -368,8 +374,13 @@ int main()
 		myLightingManager->Viewport();
 		// Bind shadow frameBuffer 
 		myLightingManager->BindFrameBuffer();		
-		// Clear depth
 		GL_CHECK(glClear(GL_DEPTH_BUFFER_BIT));
+		// bind frame buffer texture to the depth cube map
+		//myLightingManager->FrameBufferTexture();
+		myLightingManager->ActiveTextureDepth();
+
+		// Clear depth
+		
 		// Configure shader and lightspacematrix
 		myLightingManager->UseShadowDepth(directionalShader, lightobject->myLightData);
 		// Render scene
@@ -379,6 +390,7 @@ int main()
 		{
 			o->Draw(directionalShader); // Draws and binds the texture and sends the transform to the shader
 		}
+		//myModel->Draw(*directionalShader);
 		glCullFace(GL_BACK);
 		// Bind default frameBuffer
 		GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
@@ -386,6 +398,8 @@ int main()
 		GL_CHECK(glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT));
 		// Clear Depth
 		GL_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+
+		//myLightingManager->BindCubeMapTexture();
 
 		myShaderManager->DefaultShader->UseShader();
 
@@ -403,6 +417,8 @@ int main()
 			o->Draw(myShaderManager->DefaultShader);
 
 		}
+
+		//myModel->Draw(*myShaderManager->DefaultShader);
 
 		depthShader->UseShader();
 		depthShader->SetInt("depthMap", 0);

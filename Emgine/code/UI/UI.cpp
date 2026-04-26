@@ -321,7 +321,6 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 		}
 		ImGui::EndPopup();
 	}
-	
 
 	if (ImGui::Button("Create new mesh"))
 	{
@@ -474,28 +473,25 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 	if (ImGui::Combo("Light type", &SelectedItem, Items, IM_ARRAYSIZE(Items)))
 	{
 		
-		if (SelectedLight)
+		switch(SelectedItem)
 		{
 			
 		
-			if (SelectedItem == 0)
-			{	 
+		case 0:
+			
 				light = Directional;
 				
-				
-			}
-			else if (SelectedItem == 1)
-			{
-				light = Point;
-				
+				break;
 			
-			}
-			else if (SelectedItem == 2)
-			{
+		case 1:
+
+				light = Point;
+				break;
+
+		case 2:
 				light = Spot;
-				
-		
-			}
+				break;
+
 		};
 			
 

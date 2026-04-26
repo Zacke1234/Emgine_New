@@ -8,10 +8,11 @@
 #include <glm.hpp>
 #include <Material/Material.h>
 
-#define STB_IMAGE_IMPLEMENTATION
+//#define STB_IMAGE_IMPLEMENTATION
 class Texture
 {
 public:
+	Texture();
 	Texture(const char* aPath, Material* mat);
 	~Texture();	
 

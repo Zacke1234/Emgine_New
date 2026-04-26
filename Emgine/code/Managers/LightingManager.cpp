@@ -12,12 +12,13 @@ int DeleteLightVariables(std::string lightType)
 	{
 		Lighting::DirLightDirections.erase(Lighting::DirLightDirections.begin() + LightObject::SelectedLightEntity);
 	}
-	else if (lightType == "Point")
+	if (lightType == "Point")
 	{
 		Lighting::pointLightPositions.erase(Lighting::pointLightPositions.begin() + LightObject::SelectedLightEntity);
+		//Lighting::pointlightspaceMatrixes.erase(Lighting::pointlightspaceMatrixes.begin() + LightObject::SelectedLightEntity);
 
 	}
-	else if (lightType == "Spot")
+	if (lightType == "Spot")
 	{
 		
 		Lighting::spotLightDirections.erase(Lighting::spotLightDirections.begin() + LightObject::SelectedLightEntity);
@@ -29,7 +30,10 @@ int DeleteLightVariables(std::string lightType)
 	}
 
 	
-	
+	Lighting::speculars.erase(Lighting::speculars.begin() + LightObject::SelectedLightEntity);
+	Lighting::diffuses.erase(Lighting::diffuses.begin() + LightObject::SelectedLightEntity);
+	Lighting::ambients.erase(Lighting::ambients.begin() + LightObject::SelectedLightEntity);
+
 	Lighting::constants.erase(Lighting::constants.begin() + LightObject::SelectedLightEntity);
 	Lighting::linears.erase(Lighting::linears.begin() + LightObject::SelectedLightEntity);
 	Lighting::quadtrics.erase(Lighting::quadtrics.begin() + LightObject::SelectedLightEntity);
@@ -38,7 +42,7 @@ int DeleteLightVariables(std::string lightType)
 	return 0;
 }
 
-int LightShaderSetting(Shader* shader, std::string lightType)
+int LightShaderSetting(Shader* shader, std::string lightType) // why does this string randomly become a directionl string? ( has nothing to do with the crashes )
 {
 	std::vector<LightData*> fragmentLightTypeSize;
 	std::vector<glm::vec3*> fragmentLightTypePositions;
@@ -154,15 +158,15 @@ int ClearLightSetting(LightData* aLightData)
 LightingManager::LightingManager()
 {
 	
-
+	//Cubemap *cubemap = new Cubemap();
 	
 }
 LightData* LightingManager::InitDefaultLighting()
 {
 	DefaultLighting = new LightData();
 	
-	SetPoint(DefaultLighting);
-	//SetDirectional(DefaultLighting);
+	//SetPoint(DefaultLighting);
+	SetDirectional(DefaultLighting);
 	//SetSpot(DefaultLighting);
 
 	LightHasInitalised = true;
@@ -193,25 +197,27 @@ LightData* LightingManager::Destroy(Shader* aShader, Object* obj)
 {
 	switch (obj->myLightData->LightVar)
 	{
+
 	case 1: // point
 		Lighting::pointLights.erase(Lighting::pointLights.begin() + LightObject::SelectedLightEntity); 
 		DeleteLightVariables("Point");
-		aShader->SetInt("NumPointLights", Lighting::pointLights.size());
+
 		break;
 	case 2: // dir
+
 		Lighting::dirLights.erase(Lighting::dirLights.begin() + LightObject::SelectedLightEntity);
 		DeleteLightVariables("Directional");
-		aShader->SetInt("NumDirectionalLights", Lighting::dirLights.size());
+	
 		break;
+
 	case 3: // spot
 		//if (!Lighting::pointLights.empty())
 		Lighting::spotLights.erase(Lighting::spotLights.begin() + LightObject::SelectedLightEntity); 
 		DeleteLightVariables("Spot");
-		aShader->SetInt("NumSpotLights", Lighting::spotLights.size());
+		
 		break;
 	}
 	
-	//ClearLightSetting(obj->myLightData);
 	LightObject::LightEntities.erase(LightObject::LightEntities.begin() + LightObject::SelectedLightEntity);
 
 	return nullptr;
@@ -222,6 +228,10 @@ LightData* LightingManager::SetDirectional(LightData* aLightData)
 	if (aLightData == NULL)
 	{
 		aLightData = Object::Entities[Object::SelectedEntity]->myLightData;
+		if (aLightData == NULL)
+		{
+			return NULL;
+		}
 	}
 	
 	
@@ -231,14 +241,11 @@ LightData* LightingManager::SetDirectional(LightData* aLightData)
 		std::cout << "dir light!" << std::endl;
 
 	}
-	else
-	{
-		Lighting::dirLights.pop_back();
-	}
+
 	aLightData->lightDir = { 0,0,0 };
-	aLightData->ambient = { 0.3,0.3,0.3 };
-	aLightData->diffuse = { 0.3,0.3,0.3 };
-	aLightData->specular = { 0.3,0.3,0.3 };
+	aLightData->ambient = { 1.0,1.0,1.0 };
+	aLightData->diffuse = { 1.0,1.0,1.0 };
+	aLightData->specular = { 1.0,1.0,1.0 };
 	aLightData->constant = 1;
 	aLightData->linear = 1;
 	aLightData->quadtric = 0.5;
@@ -264,19 +271,20 @@ LightData* LightingManager::SetPoint(LightData* aLightData)
 	if (aLightData == NULL)
 	{
 		aLightData = Object::Entities[Object::SelectedEntity]->myLightData;
+		if (aLightData == NULL)
+		{
+			return NULL;
+		}
 	}
 	if (aLightData->LightVar != 1)
 	{
 		Lighting::pointLights.push_back(aLightData);
 	}
-	else
-	{
-		Lighting::pointLights.pop_back();
-	}
+
 	Lighting::pointLightPositions.push_back(&aLightData->lightPos);
-	aLightData->ambient = { 0.3,0.3,0.3 };
-	aLightData->diffuse = { 0.3,0.3,0.3 };
-	aLightData->specular = { 0.3,0.3,0.3 };
+	aLightData->ambient = { 1.0,1.0,1.0 };
+	aLightData->diffuse = { 1.0,1.0,1.0 };
+	aLightData->specular = { 1.0,1.0,1.0 };
 	aLightData->constant = 1;
 	aLightData->linear = 0;
 	aLightData->quadtric = 0.5;
@@ -309,19 +317,20 @@ LightData* LightingManager::SetSpot(LightData* aLightData)
 	if (aLightData == NULL)
 	{
 		aLightData = Object::Entities[Object::SelectedEntity]->myLightData;
+		if (aLightData == NULL)
+		{
+			return NULL;
+		}
 	}
 	if (aLightData->LightVar != 3)
 	{
 		Lighting::spotLights.push_back(aLightData);
 	}
-	else
-	{
-		Lighting::spotLights.pop_back();
-	}
+
 	aLightData->lightDir = { 0,0,0 };
-	aLightData->ambient = { 0.0f, 0.0f, 0.0f };
-	aLightData->diffuse = { 0.3,0.3,0.3 };
-	aLightData->specular = { 0.3,0.3,0.3 };
+	aLightData->ambient = { 1.0,1.0,1.0 };
+	aLightData->diffuse = { 1.0,1.0,1.0 };
+	aLightData->specular = { 1.0,1.0,1.0 };
 	aLightData->constant = 1;
 	aLightData->linear = 0.09f;
 	aLightData->quadtric = 0.032f;
@@ -345,33 +354,6 @@ LightData* LightingManager::SetSpot(LightData* aLightData)
 	std::cout << "Spotlight" << std::endl;
 	aLightData->LightVar = aLightData->SpotLight;
 	return aLightData;
-}
-
-Lighting* LightingManager::LoadCubeMaps(Texture* shadowTexture)
-{
-	std::vector<std::string> faces;
-	int width, height, nrComponents;
-	GL_CHECK(glGenTextures(1, &depthCubemap));
-	GL_CHECK(glBindTexture(GL_TEXTURE_CUBE_MAP, depthCubemap));
-	for (unsigned int i = 0; i < 6; ++i)
-	{
-		/*unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrComponents, 0);
-		if (data)
-		{
-
-		}*/
-		GL_CHECK(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT,
-			SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, shadowTexture->data));
-	}
-
-	GL_CHECK(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
-	GL_CHECK(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
-	GL_CHECK(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
-	GL_CHECK(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
-
-	//GL_CHECK(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthCubemap, 0));
-
-	return 0;
 }
 
 Lighting* LightingManager::InitDepthMapping()
@@ -402,8 +384,15 @@ Lighting* LightingManager::InitDepthMapping()
 
 Lighting* LightingManager::InitShaderMaps(Shader* shader)
 {
-	//shader->SetInt("shadowMap", 1);
+	shader->SetInt("shadowMap", 1);
 
+	return nullptr;
+}
+
+Lighting* LightingManager::FrameBufferTexture()
+{
+	GL_CHECK(glActiveTexture(GL_TEXTURE0)); // Activate the texture unit before binding texture
+	GL_CHECK(glBindTexture(GL_TEXTURE_2D, depthCubemap));
 	return nullptr;
 }
 
@@ -421,23 +410,13 @@ Lighting* LightingManager::ActiveTextureDepth()
 	return nullptr;
 }
 
-Lighting* LightingManager::BindTexture()
-{
-	
-	for (auto& t : Texture::textures)
-	{
-		GL_CHECK(glBindTexture(GL_TEXTURE_2D, t->TextureObject));
-	}
-	
-	
-	return nullptr;
-}
 
 Lighting* LightingManager::BindDepthTexture()
 {
 	GL_CHECK(glBindTexture(GL_TEXTURE_2D, depthMap));
 	return nullptr;
 }
+
 
 Lighting* LightingManager::Viewport()
 {
@@ -473,6 +452,7 @@ LightData* LightingManager::RunLightData(Shader* shader, Camera* aCamera)
 		}
 
 	}
+
 	if (Lighting::dirLights.size() == 0)
 	{ 
 		LightShaderSetting(shader, "Directional");
@@ -543,5 +523,10 @@ Lighting* LightingManager::RunMainFragmentShadows(Shader* shader, LightData* lig
 
 	shader->SetMatrix("lightSpaceMatrix", lightspaceMatrix);
 
+	return nullptr;
+}
+
+Lighting* LightingManager::AllLighting(Shader* myShader)
+{
 	return nullptr;
 }

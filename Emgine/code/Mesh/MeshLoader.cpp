@@ -27,33 +27,15 @@ MeshLoader::~MeshLoader()
 bool runOnce = false;
 bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 {
-	
 
-	
-
-	string message = "ObjLoaderStart";
-	//Message* mess = new Message(message);
-	 // if bin file, return?
-	
-	
 	if (INmesh == nullptr)
 	{
 		return false;
 	}
 
-	Vertex vertex;
-	Vertex vertexNor;
-	Vertex vertexUV;
 	Mesh& mesh = *INmesh;
 
 	std::ifstream file(fileName);
-	//bin.FileName = fileName;
-
-
-	
-	//printf("%s", file.binary);
-
-	
 	
 	std::string line;
 	
@@ -68,11 +50,6 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 		std::string prefix;
 		iss >> prefix;
 		
-		if (prefix == "o")
-		{
-			/*iss >> name;
-			name.push_back();*/
-		}
 		if (prefix == "v")
 		{
 			
@@ -104,15 +81,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 			vertexIndex++;
 			
 			iss >> newFace;
-			//if (mesh.numberVertices == 4 && runOnce == false) // This can't actually tell triangulated and non triangulated meshes apart.
-			//{
-			//	runOnce = true;
-			//	//std::cout << "This engine does not support mesh files with quads, please make sure the file is triangulated" << "\n";
-			//	//std::exit(EXIT_FAILURE);
-			//	//std::abort();
-			//	
-			//}
-
+		
 			temp_faces.push_back(face);
 			mesh.faces.push_back(face);
 			
@@ -147,10 +116,6 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 		
 	}
 
-	//bin.ReadFile();
-	//bin.WriteFile();
-
-	
 
 	file.close();
 	
@@ -251,8 +216,6 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 	temp_vertices.clear();
 	temp_elements.clear();
 
-	/*ParseObjToBinary(fileName, &file);
-	ParseObjToBinary(fileName, *file);*/
 	return true;
 }
 
@@ -622,7 +585,7 @@ bool MeshLoader::WriteObjToBinary(std::ofstream& binaryOutputFile,
 	//std::cout << reinterpret_cast<char*>(&TEST) << std::endl;
 	
 	binaryOutputFile.close();
-
+	return true;
 	
 }
 

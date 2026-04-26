@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Shader\DirectionalFS.glsl = Shader\DirectionalFS.glsl
 		Shader\DirectionalVS.glsl = Shader\DirectionalVS.glsl
 		Shader\FragmentShader_1.glsl = Shader\FragmentShader_1.glsl
+		Dependencies\gl.h = Dependencies\gl.h
 		Shader\PointFS.glsl = Shader\PointFS.glsl
 		Shader\PointGS.glsl = Shader\PointGS.glsl
 		Shader\PointVS.glsl = Shader\PointVS.glsl

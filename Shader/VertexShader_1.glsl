@@ -19,6 +19,8 @@ uniform mat4 transform;
 uniform mat4 projection;
 uniform mat4 lightSpaceMatrix;
 
+uniform bool reverse_normals;
+
 void main()
 { 
      // normal mapping
@@ -32,7 +34,11 @@ void main()
 
      FragPos = vec3(transform * vec4(aPos, 1.0));
     
+//     if(reverse_normals)
+//     Normal = transpose(inverse(mat3(transform))) * (-1.0 * aNormal);
+//     else
      Normal = transpose(inverse(mat3(transform))) * aNormal;
+
      TexCoord = aTexCoord;
   
      viewPos = vec3(view * transform); 
