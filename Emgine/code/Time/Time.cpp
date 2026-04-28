@@ -4,24 +4,19 @@
 #pragma once
 Time::Time()
 {
-	
+	LastTime = 0;
+	Deltatime = 0;
+	CurrentTime = 0;
+
 }
 
 void Time::Run()
 {
 
 
-	if (IsPaused == false)
-	{
-		CurrentFrame = glfwGetTime();
-		Deltatime = CurrentFrame - Lastframe;
-		Lastframe = CurrentFrame;
-		
-	}
-	else
-	{
-		CurrentFrame = 0;
-	}
+	LastTime = CurrentTime;
+	CurrentTime = glfwGetTime();
+	Deltatime = CurrentTime - LastTime;
 	
 }
 
@@ -33,4 +28,5 @@ void Time::Pause()
 void Time::UnPause()
 {
 	IsPaused = false;
+	Deltatime = 0;
 }

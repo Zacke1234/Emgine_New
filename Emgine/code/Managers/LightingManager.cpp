@@ -243,9 +243,9 @@ LightData* LightingManager::SetDirectional(LightData* aLightData)
 	}
 
 	aLightData->lightDir = { 0,0,0 };
-	aLightData->ambient = { 1.0,1.0,1.0 };
-	aLightData->diffuse = { 1.0,1.0,1.0 };
-	aLightData->specular = { 1.0,1.0,1.0 };
+	aLightData->ambient = { 0.6,0.6,0.6 };
+	aLightData->diffuse = { 0.6,0.6,0.6 };
+	aLightData->specular = { 0.6,0.6,0.6 };
 	aLightData->constant = 1;
 	aLightData->linear = 1;
 	aLightData->quadtric = 0.5;

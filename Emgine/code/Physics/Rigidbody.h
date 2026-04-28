@@ -25,14 +25,14 @@ public:
 	
 };
 
-struct Motion
+struct MotionCollision
 {
-	Motion();
-	Rigidbody* rig1;
-	Rigidbody* rig2;
+	MotionCollision();
+	
+	
 	glm::vec3 origin;
 	glm::vec3 direction;
 	float restitution; 
-	glm::mat3 LinearDrag; 
+	float LinearDrag; 
 };
 

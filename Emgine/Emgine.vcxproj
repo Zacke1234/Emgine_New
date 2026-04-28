@@ -203,6 +203,7 @@
     <ClCompile Include="code\Material\Material.cpp" />
     <ClCompile Include="code\Mesh\Mesh.cpp" />
     <ClCompile Include="code\Mesh\Model.cpp" />
+    <ClCompile Include="code\CustomGame\MainGameplay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Dependencies\gl.h" />
@@ -255,6 +256,7 @@
     <ClInclude Include="code\Mesh\Structs\Face.h" />
     <ClInclude Include="code\Mesh\Structs\Vertex.h" />
     <ClInclude Include="code\Mesh\Model.h" />
+    <ClInclude Include="code\CustomGame\MainGameplay.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\Dependencies\GLFW\lib-vc2022\glfw3.lib" />

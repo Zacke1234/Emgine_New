@@ -10,9 +10,9 @@ public:
 
 
 	float Deltatime = 0;
-	float Lastframe = 0;
+	float LastTime = 0;
 	float PausedTime = 0;
-	double CurrentFrame = 0;
+	double CurrentTime = 0;
 	bool IsPaused = true;
 
 	

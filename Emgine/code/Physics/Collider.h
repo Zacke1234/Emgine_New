@@ -23,7 +23,6 @@ public:
 	bool autoColliderSize = true;
 	
 	std::string name;
-	//void UpdateCollider(SphereCollider* sphere, CubeCollider* cube);
 	
 	glm::vec3 extents;
 	
@@ -41,18 +40,9 @@ public:
 
 	ColliderType CollType; // = ColliderType::Null;
 	
-	//glm::vec3 extents;
-
-	// auto* r : Rigidbody::rbEntities
-	// Rigidbody r : rigidbodies
-
 	void SetTheCollision();
 	
 	static std::vector<Collider*> CollEntities;
-	
-	//SphereCollider* mySphereColl;
-	//CubeCollider* myCubeColl;
-
 };
 
 struct Collision {

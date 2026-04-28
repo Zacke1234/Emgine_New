@@ -13,13 +13,15 @@ Rigidbody::Rigidbody(float gravity, bool isKinematic)
 	transform = Math::identity4;
 	angularVelocity = glm::vec3(0, 0, 0);
 	position = glm::vec3(0, 0, 0);
+	gravity = 0.0f;
+	isKinematic = false;
 
 }
 
-Motion::Motion()
+MotionCollision::MotionCollision()
 {
 	origin = glm::vec3(0, 0, 0);
 	direction = glm::vec3(0, 0, 0);
-	LinearDrag = Math::identity3;
+	LinearDrag = 0;
 	restitution = 0;
 }

@@ -19,21 +19,23 @@ public:
 	void Simulate(const float& aDeltaTime, Time* physicsTime);
 
 	void UpdateColliderProperties(std::vector<Collider*> colliders);
+	void UpdateRigidbodyProperties();
 
 	void ApplyVelocity(std::vector<Collider*> colliders, float dt);
 	void ApplyGravity(std::vector<Collider*> colliders, float dt);
 
 	void HandleCollisions(std::vector<Collision> collisions);
 	void HandleDynamicDynamic(std::vector<Collision> collisions);
-	void HandleStaticDynamic(std::vector <Collision> collisions, std::vector <Motion> motions);
+	void HandleStaticDynamic(std::vector <Collision> collisions, std::vector <MotionCollision> motions);
 	void UpdateVisuals(Time* physicsTime);
+
 
 	glm::vec3 SafeNormalise(glm::vec3 vector);
 	
 	bool BoolCheckIntersect(Collider* c1, Collider* c2);
 	std::vector<Collider*> UpdatePhysicsScene();
 	std::vector<Collision> CheckIntersections(std::vector<Collider*> colliders);
-	std::vector<Motion> CheckMotions(std::vector<Rigidbody*> rbs);
+	std::vector<MotionCollision> CheckMotions(std::vector<Rigidbody*> rbs);
 	glm::mat3 ComputeMomentOfInertiaSPhere(float mass, float radius);
 	bool SphereSphereIntersect(SphereCollider& c1, SphereCollider& c2);
 	bool CubeSphereIntersect(CubeCollider& aCube1, SphereCollider& aSpher2);
@@ -52,7 +54,7 @@ public:
 
 	bool TimeTicking = true;
 	std::vector<Collision> collisions;
-	std::vector<Motion> motions;
+	std::vector<MotionCollision> motions;
 	Collider* coll; 
 	//ColliderType* type;
 private:
