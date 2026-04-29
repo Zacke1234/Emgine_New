@@ -261,7 +261,7 @@ int main()
 	init_physics();
 
 	glm::vec3 size = {100,0.5f,100};
-	glm::vec3 pos = { 0,-2,0 };
+	glm::vec3 pos = { 0, -3, 0 };
 	glm::vec3 pos2 = { 0,1,1 };
 	glm::vec3 rotation = { 0,0,0 };
 	myUI = new UI(window);

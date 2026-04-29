@@ -54,8 +54,10 @@ public:
 
 	bool TimeTicking = true;
 	std::vector<Collision> collisions;
+	std::vector<Rigidbody> rigidbodies;
 	std::vector<MotionCollision> motions;
-	Collider* coll; 
+
+	std::vector<Collider*> colliders;
 	//ColliderType* type;
 private:
 	
