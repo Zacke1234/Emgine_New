@@ -26,15 +26,17 @@ Collider::Collider()
 	
 	center = glm::vec3(0, 0, 0);
 	radius = 0.0f;
-	velocity = glm::vec3(0, 0, 0);
-	mass = 0.0f;
+
 	transform = Math::identity4;
 	position = glm::vec3(0, 0, 0);
 	extents = glm::vec3(0, 0, 0);
-	isKinematic = false;
-	hasGravity = true;
-	std::cout << "test";
-	//SetTheCollision();
+
+	//isKinematic = false;
+	//hasGravity = true;
+	//velocity = glm::vec3(0, 0, 0);
+	//mass = 0.0f;
+	autoColliderSize = true;
+
 
 }
 

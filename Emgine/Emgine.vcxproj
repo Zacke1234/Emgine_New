@@ -171,6 +171,7 @@
     <ClCompile Include="..\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="BasicMenus.cpp" />
     <ClCompile Include="code\Managers\CameraManager.cpp" />
     <ClCompile Include="code\Camera\Camera.cpp" />
     <ClCompile Include="code\Physics\Collider.cpp" />
@@ -204,6 +205,12 @@
     <ClCompile Include="code\Mesh\Mesh.cpp" />
     <ClCompile Include="code\Mesh\Model.cpp" />
     <ClCompile Include="code\CustomGame\MainGameplay.cpp" />
+    <ClCompile Include="code\CustomGame\Player.cpp" />
+    <ClCompile Include="code\CustomGame\Levels.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="code\CustomGame\Interactable.cpp" />
+    <ClCompile Include="code\CustomGame\RecordTimes.cpp" />
+    <ClCompile Include="code\CustomGame\Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Dependencies\gl.h" />
@@ -223,6 +230,7 @@
     <ClInclude Include="..\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\imgui\imstb_textedit.h" />
     <ClInclude Include="..\imgui\imstb_truetype.h" />
+    <ClInclude Include="BasicMenus.h" />
     <ClInclude Include="code\Enums\E_MeshLoadStage.h" />
     <ClInclude Include="code\Managers\CameraManager.h" />
     <ClInclude Include="code\Camera\Camera.h" />
@@ -257,6 +265,12 @@
     <ClInclude Include="code\Mesh\Structs\Vertex.h" />
     <ClInclude Include="code\Mesh\Model.h" />
     <ClInclude Include="code\CustomGame\MainGameplay.h" />
+    <ClInclude Include="code\CustomGame\Player.h" />
+    <ClInclude Include="code\CustomGame\Levels.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="code\CustomGame\Interactable.h" />
+    <ClInclude Include="code\CustomGame\RecordTimes.h" />
+    <ClInclude Include="code\CustomGame\Terrain.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\Dependencies\GLFW\lib-vc2022\glfw3.lib" />

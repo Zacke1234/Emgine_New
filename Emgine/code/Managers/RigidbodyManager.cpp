@@ -2,10 +2,10 @@
 
 Rigidbody* RigidbodyManager::Create(float gravity, bool isKinematic, bool hasGrav)
 {
-	Rigidbody* rb = new Rigidbody(gravity, isKinematic);
-	rb->gravity = gravity;
+	Rigidbody* rb = new Rigidbody();
+	rb->gravity = 0.9;
 	rb->isKinematic = isKinematic;
-	rb->hasGravity = hasGrav;
+	rb->hasGravity = true;
 	rb->mass = 1;
 	Rigidbody::rbEntities.push_back(rb);
 	//rb->name = "rigidbody";

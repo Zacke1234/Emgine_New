@@ -62,6 +62,7 @@ RigidbodyManager* myRigidbodyManager;
 Physics* Phys;
 CameraManager* myCameraManager;
 Time* myTime;
+MainGameplay* myGameplay;
 
 unsigned int SCR_WIDTH = 1920;
 	unsigned int SCR_HEIGHT = 1080;
@@ -160,7 +161,7 @@ int init_managers() {
 	myObjectManager = new ObjectManager;
 	myRigidbodyManager = new RigidbodyManager();
 	myCameraManager = new CameraManager();
-	
+	myGameplay = new MainGameplay();
 	return 0;
 } 
 
@@ -176,12 +177,12 @@ int init_camera() {
 
 int init_colliders() {
 	glm::vec3 extents = { 1,1, 1 };
-	glm::vec3 extentsPlane = { 1, 0.5f, 1 };
+	glm::vec3 extentsPlane = { 100, 0.5f,100 };
 	glm::vec3 center = { 0, 0,0 }; float radius = 0.5f; glm::vec3 pos = { 0,0,0 };
 	glm::vec3 scale = { 1,1,1 };
 
 	cubeColl = new CubeCollider(center, extents, pos);
-	planeColl = new CubeCollider(center, extents, pos);
+	planeColl = new CubeCollider(center, extentsPlane, pos);
 	sphereColl = new SphereCollider(center, radius, pos);
 	return 0;
 }
@@ -287,6 +288,7 @@ int main()
 		myRigidbodyManager->Create(0.96f, false)
 	);
 
+
 	//myObjectManager->Create( // these also push entities to Object::Entities and etc
 	//	"backpack",
 	//	backpack,
@@ -305,6 +307,10 @@ int main()
 	);
 
 	myObjectManager->FindAndSetProperties("Cube", glm::vec3(2,1,3), glm::vec3(1,1,1), rotation);
+
+	
+
+	//planeColl->isKinematic = true;
 
 	myObjectManager->Create("Plane",
 		cube,
@@ -351,6 +357,8 @@ int main()
 	myShaderManager->DefaultShader->SetInt("depthCubeMap", 1);
 
 	LightObject* lightobject = LightObject::LightEntities[0];
+
+	myGameplay->Start(window);
 
 	// loops until user closes window
 	while (!glfwWindowShouldClose(window))
@@ -430,7 +438,7 @@ int main()
 		// render UI (after/ON TOP OF drawcall)
 		update_ui(myUI, myShaderManager, myObjectManager);
 
-		
+		myGameplay->Run();
 		
 
 		// swaps front and back buffers

@@ -2,7 +2,7 @@
 #include <Physics.h>
 std::vector<Rigidbody*> Rigidbody::rbEntities;
 //std::vector<Motion*> Rigidbody::motions;
-Rigidbody::Rigidbody(float gravity, bool isKinematic)
+Rigidbody::Rigidbody()
 {
 	name = "rigidbody";
 	hasGravity = true;
@@ -13,15 +13,17 @@ Rigidbody::Rigidbody(float gravity, bool isKinematic)
 	transform = Math::identity4;
 	angularVelocity = glm::vec3(0, 0, 0);
 	position = glm::vec3(0, 0, 0);
-	gravity = 0.0f;
 	isKinematic = false;
+	hasGravity = true;
+	velocity = glm::vec3(0, 0, 0);
+	mass = 0.0f;
 
 }
 
-MotionCollision::MotionCollision()
-{
-	origin = glm::vec3(0, 0, 0);
-	direction = glm::vec3(0, 0, 0);
-	LinearDrag = 0;
-	restitution = 0;
-}
+//MotionCollision::MotionCollision()
+//{
+//	origin = glm::vec3(0, 0, 0);
+//	direction = glm::vec3(0, 0, 0);
+//	LinearDrag = 0;
+//	restitution = 0;
+//}

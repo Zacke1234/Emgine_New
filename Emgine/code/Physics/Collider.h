@@ -22,13 +22,13 @@ public:
 	// Determines if the collider will automatically scale with the object
 	bool autoColliderSize = true;
 	
-	bool isKinematic;
+	/*bool isKinematic;
 
 	float mass;
 
 	bool hasGravity;
 
-	glm::vec3 velocity;
+	glm::vec3 velocity;*/
 
 	std::string name;
 	
