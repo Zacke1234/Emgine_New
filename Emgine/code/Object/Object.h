@@ -23,7 +23,7 @@ private:
 
 public:
 
-	Object(std::string _namn, Mesh* Mesh, Texture* aTexture, Shader* aShader, Collider* coll, Rigidbody* rb);
+	Object(std::string _namn, Mesh* Mesh, Texture* aTexture, Collider* coll, Rigidbody* rb);
 
 	static std::vector<Object*> Entities;
 	static unsigned int SelectedEntity;
@@ -59,7 +59,7 @@ public:
 	void SetCube(Cube& aCube); 
 	void SetMesh(Mesh& mesh);
 	void SetTexture(Texture& aTexture);
-	void SetShader(Shader& aShader);
+	
 	void SetCollider(Collider& collider);
 	void SetMaterial(Material& material);
 	void SetName(std::string name);
@@ -76,7 +76,7 @@ class LightObject : public Object
 {
 public:
 	
-	LightObject(std::string _namn, Mesh* Mesh, Texture* aTexture, Shader* aShader, Collider* coll, LightData* myLightData, Rigidbody* rb);
+	LightObject(std::string _namn, Mesh* Mesh, Texture* aTexture, Collider* coll, LightData* myLightData, Rigidbody* rb);
 
 	static std::vector<LightObject*> LightEntities;
 	static int SelectedLightEntity;
@@ -93,7 +93,7 @@ class CameraObject : public Object
 {
 public:
 
-	CameraObject(std::string _namn, Mesh* Mesh, Texture* aTexture, Shader* aShader, Collider* coll, Camera* cam, Rigidbody* rb);
+	CameraObject(std::string _namn, Mesh* Mesh, Texture* aTexture, Collider* coll, Camera* cam, Rigidbody* rb);
 
 	static std::vector<CameraObject*> CameraEntities;
 	static int SelectedCameraEntity;

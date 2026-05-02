@@ -25,14 +25,14 @@ public:
 	
 };
 
-//struct MotionCollision
-//{
-//	MotionCollision();
-//	
-//	
-//	glm::vec3 origin;
-//	glm::vec3 direction;
-//	float restitution; 
-//	float LinearDrag; 
-//};
-//
+struct Force
+{
+	Force();
+	
+	
+	glm::vec3 origin;
+	glm::vec3 direction;
+	float restitution; 
+	float LinearDrag; 
+};
+

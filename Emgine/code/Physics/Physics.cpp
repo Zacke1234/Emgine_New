@@ -183,12 +183,6 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 
 	}
 	
-
-	
-	
-
-	
-	
 }
 
 

@@ -7,13 +7,13 @@ class ObjectManager : public Subject
 {
 public:
 
-	virtual Object* Create(std::string aName, Mesh* Mesh, Texture* aTexture, Shader* aShader, Collider* aCollider, Rigidbody* rb) ;
+	virtual Object* Create(std::string aName, Mesh* Mesh, Texture* aTexture, Collider* aCollider, Rigidbody* rb) ;
 
 	void Destroy(Object* obj, Shader* aShader, LightingManager aLightManager);
 	
-	virtual LightObject* CreateLight(std::string aName, Mesh* Mesh, Texture* aTexture, Shader* aShader, Collider* aCollider, LightData* lightData, Rigidbody* rb);
+	virtual LightObject* CreateLight(std::string aName, Mesh* Mesh, Texture* aTexture, Collider* aCollider, LightData* lightData, Rigidbody* rb);
 
-	virtual CameraObject* CreateCamera(std::string aName, Mesh* Mesh , Texture* aTexture , Shader* aShader , Collider* aCollider , Camera* aCamera , Rigidbody* rb);
+	virtual CameraObject* CreateCamera(std::string aName, Mesh* Mesh , Texture* aTexture ,Collider* aCollider , Camera* aCamera , Rigidbody* rb);
 
 	virtual Object* FindAndSetProperties(std::string name, glm::vec3 aPos, glm::vec3 aScale, glm::vec3 aRot);
 

@@ -3,10 +3,10 @@
 
 
 
-Object* ObjectManager::Create(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL, Rigidbody* rb = NULL)
+Object* ObjectManager::Create(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTexture = NULL,  Collider* aCollider = NULL, Rigidbody* rb = NULL)
 {
 	
-	Object* obj = new Object(_namn, Mesh, aTexture, aShader, aCollider, rb);
+	Object* obj = new Object(_namn, Mesh, aTexture, aCollider, rb);
 	
 	Object::Entities.push_back(obj);
 	
@@ -34,18 +34,18 @@ void ObjectManager::Destroy(Object* obj, Shader* aShader, LightingManager aLight
 	
 }
 
-LightObject* ObjectManager::CreateLight(std::string aName = "new_lightObject", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL, LightData* aLightData = NULL, Rigidbody* rb = NULL)
+LightObject* ObjectManager::CreateLight(std::string aName = "new_lightObject", Mesh* Mesh = NULL, Texture* aTexture = NULL, Collider* aCollider = NULL, LightData* aLightData = NULL, Rigidbody* rb = NULL)
 {
-	LightObject* lightObj = new LightObject(aName, Mesh, aTexture, aShader, aCollider, aLightData, rb);
+	LightObject* lightObj = new LightObject(aName, Mesh, aTexture, aCollider, aLightData, rb);
 	 aLightData->lightPos = lightObj->Position;
 	Object::Entities.push_back(lightObj);
 	LightObject::LightEntities.push_back(lightObj);
 	return lightObj;
 }
 
-CameraObject* ObjectManager::CreateCamera(std::string aName = "new_cameraObject", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL, Camera* aCamera = NULL, Rigidbody* rb = NULL)
+CameraObject* ObjectManager::CreateCamera(std::string aName = "new_cameraObject", Mesh* Mesh = NULL, Texture* aTexture = NULL, Collider* aCollider = NULL, Camera* aCamera = NULL, Rigidbody* rb = NULL)
 {
-	CameraObject* cameraObj = new CameraObject(aName, Mesh, aTexture, aShader, aCollider, aCamera, rb);
+	CameraObject* cameraObj = new CameraObject(aName, Mesh, aTexture, aCollider, aCamera, rb);
 	Object::Entities.push_back(cameraObj);
 	CameraObject::CameraEntities.push_back(cameraObj);
 	return cameraObj;

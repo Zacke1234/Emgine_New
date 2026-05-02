@@ -283,7 +283,6 @@ int main()
 		"Fish",
 		fish,
 		defaultTex,
-		myShaderManager->DefaultShader,
 		MyColliderManager->Create("SphereColl", sphereColl),
 		myRigidbodyManager->Create(0.96f, false)
 	);
@@ -301,7 +300,6 @@ int main()
 	myObjectManager->Create("Cube",
 		cube,
 		wall,
-		myShaderManager->DefaultShader,
 		MyColliderManager->Create("CubeColl", cubeColl),
 		myRigidbodyManager->Create(0.96f, false)
 	);
@@ -315,7 +313,6 @@ int main()
 	myObjectManager->Create("Plane",
 		cube,
 		defaultTex,
-		myShaderManager->DefaultShader,
 		MyColliderManager->Create("PlaneColl", planeColl),
 		NULL()
 	);
@@ -325,7 +322,6 @@ int main()
 	myObjectManager->CreateLight("SceneLight", 
 		NULL,
 		NULL,
-		myShaderManager->DefaultShader,
 		NULL,
 		myLightingManager->Create("SceneLight", myShaderManager->DefaultShader, myLightingManager->DefaultLighting),
 		NULL);
@@ -335,7 +331,6 @@ int main()
 	myObjectManager->CreateCamera("SceneCamera",
 		NULL,
 		NULL,
-		myShaderManager->DefaultShader,
 		NULL,
 		myCamera,
 		NULL);

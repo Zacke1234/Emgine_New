@@ -21,7 +21,7 @@ vector<CameraObject*> CameraObject::CameraEntities;
 
 
 
-Object::Object(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL, Rigidbody* rb = NULL)
+Object::Object(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTexture = NULL, Collider* aCollider = NULL, Rigidbody* rb = NULL)
 {
 	
 	ObjType = Type_Mesh;
@@ -48,13 +48,6 @@ Object::Object(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTe
 	else {
 		std::cout << "No texture assigned to object: " << _namn << "\n";
 	}
-	if (aShader)
-	{
-		SetShader(*aShader);
-	}
-	else {
-		std::cout << "No shader assigned to object: " << _namn << "\n";
-	}
 	if (aCollider)
 	{
 		SetCollider(*aCollider);
@@ -72,7 +65,7 @@ Object::Object(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTe
 	
 }
 
-LightObject::LightObject(std::string _namn = "new_lightObject", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* aShader = NULL, Collider* aCollider = NULL, LightData* aLightData = NULL, Rigidbody* rb = NULL)
+LightObject::LightObject(std::string _namn = "new_lightObject", Mesh* Mesh = NULL, Texture* aTexture = NULL, Collider* aCollider = NULL, LightData* aLightData = NULL, Rigidbody* rb = NULL)
 {
 	ObjType = Type_Light;
 	// Name
@@ -98,13 +91,7 @@ LightObject::LightObject(std::string _namn = "new_lightObject", Mesh* Mesh = NUL
 	else {
 		std::cout << "No texture assigned to light object: " << _namn << "\n";
 	}
-	if (aShader)
-	{
-		SetShader(*aShader);
-	}
-	else {
-		std::cout << "No shader assigned to light object: " << _namn << "\n";
-	}
+	
 	if (aCollider)
 	{
 		SetCollider(*aCollider);
@@ -129,7 +116,7 @@ LightObject::LightObject(std::string _namn = "new_lightObject", Mesh* Mesh = NUL
 	}
 }
 
-CameraObject::CameraObject(std::string _namn = "new_cameraObject", Mesh* Mesh = NULL, Texture* aTexture = NULL, Shader* _shader = NULL, Collider* coll = NULL, Camera* _camera = NULL, Rigidbody* rb = NULL)
+CameraObject::CameraObject(std::string _namn = "new_cameraObject", Mesh* Mesh = NULL, Texture* aTexture = NULL, Collider* coll = NULL, Camera* _camera = NULL, Rigidbody* rb = NULL)
 {
 	ObjType = Type_Camera;
 	// Name
@@ -149,14 +136,6 @@ CameraObject::CameraObject(std::string _namn = "new_cameraObject", Mesh* Mesh = 
 		std::cout << "No camera assigned to object: " << _namn << "\n";
 	}
 
-	// shader
-	if (_shader)
-	{
-		SetShader(*_shader);
-	}
-	else {
-		std::cout << "No shader assigned to object: " << _namn << "\n";
-	}
 	//Components
 	if (Mesh)
 	{
@@ -209,11 +188,6 @@ void Object::SetMesh(Mesh& mesh)
 void Object::SetTexture(Texture& aTexture)
 {
 	myTexture = &aTexture;
-}
-
-void Object::SetShader(Shader& aShader)
-{
-	MyShader = &aShader;
 }
 
 void Object::SetCollider(Collider& aCollider)

@@ -330,7 +330,6 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 				"Mesh", // Name
 				meshmang->Create("Mesh", meshBuffer),
 				textureMang->Create(std::string(nameBuffer + tex), "Default 1.png"),
-				shader->DefaultShader,
 				colliderMang->Create("CubeColl", cubeColl2),
 				myRigidbodyMang->Create(0.0f)
 			);
@@ -341,7 +340,6 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 				"Mesh", // Name
 				meshmang->Create("Fish", "fish.obj"),
 				textureMang->Create(std::string(nameBuffer + tex), "Default 1.png"),
-				shader->DefaultShader,
 				colliderMang->Create("CubeColl", cubeColl2),
 				myRigidbodyMang->Create(0.0f)
 			);
@@ -357,7 +355,6 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 			objectmanager->Create("Cube",
 				meshmang->Create("Cube", "cube.obj"),
 				textureMang->Create(std::string("Cube" + tex), "Default 1.png"),
-				shader->DefaultShader,
 				colliderMang->Create("CubeColl", cubeColl2),
 				myRigidbodyMang->Create(0.0f)
 			);
@@ -367,7 +364,6 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 			objectmanager->Create(nameBuffer,
 				meshmang->Create(nameBuffer, "cube.obj"),
 				textureMang->Create(std::string(nameBuffer + tex), textureBuffer),
-				shader->DefaultShader,
 				colliderMang->Create("CubeColl", cubeColl2),
 				myRigidbodyMang->Create(0.0f)
 			);
@@ -402,7 +398,6 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 			objectmanager->CreateLight("Light",
 				NULL,
 				textureMang->Create(std::string(nameBuffer + tex), textureBuffer),
-				shader->DefaultShader,
 				NULL,
 				lightMang->Create("Light", shader->DefaultShader, newLightData),
 				myRigidbodyMang->Create(0.0f)
@@ -416,7 +411,6 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 			objectmanager->CreateLight(nameBuffer,
 				NULL,
 				textureMang->Create(std::string(nameBuffer + tex), textureBuffer),
-				shader->DefaultShader,
 				NULL,
 				lightMang->Create(nameBuffer, shader->DefaultShader, newLightData),
 				myRigidbodyMang->Create(0.0f)

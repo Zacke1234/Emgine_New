@@ -20,10 +20,10 @@ Rigidbody::Rigidbody()
 
 }
 
-//MotionCollision::MotionCollision()
-//{
-//	origin = glm::vec3(0, 0, 0);
-//	direction = glm::vec3(0, 0, 0);
-//	LinearDrag = 0;
-//	restitution = 0;
-//}
+Force::Force()
+{
+	origin = glm::vec3(0, 0, 0);
+	direction = glm::vec3(0, 0, 0);
+	LinearDrag = 0;
+	restitution = 0;
+}
