@@ -19,16 +19,12 @@ public:
 	template<typename T>
 	bool isOf() { return (dynamic_cast<T*>(this) != NULL); }; // do i need multiple of these in the structs?
 
+	enum ColliderType {
+		Null = 0, Sphere, Cube, Raycast
+	};
+
 	// Determines if the collider will automatically scale with the object
 	bool autoColliderSize = true;
-	
-	/*bool isKinematic;
-
-	float mass;
-
-	bool hasGravity;
-
-	glm::vec3 velocity;*/
 
 	std::string name;
 	
@@ -42,9 +38,7 @@ public:
 
 	float radius;
 
-	enum ColliderType {
-		Null = 0 , Sphere, Cube, Raycast
-	};
+	
 
 	ColliderType CollType; // = ColliderType::Null;
 	

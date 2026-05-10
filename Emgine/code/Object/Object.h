@@ -17,9 +17,10 @@ class Object
 {
 private:
 
-
-	Shader* MyShader;
-	Cube* myCube;
+	// some sort of parent and child system?
+	/*Object* ChildObject;
+	Object* ParentObject;*/
+	
 
 public:
 

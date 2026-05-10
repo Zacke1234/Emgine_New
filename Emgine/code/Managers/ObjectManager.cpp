@@ -6,7 +6,7 @@
 Object* ObjectManager::Create(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTexture = NULL,  Collider* aCollider = NULL, Rigidbody* rb = NULL)
 {
 	
-	Object* obj = new Object(_namn, Mesh, aTexture, aCollider, rb);
+	obj = new Object(_namn, Mesh, aTexture, aCollider, rb);
 	
 	Object::Entities.push_back(obj);
 	

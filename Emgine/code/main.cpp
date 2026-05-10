@@ -1,68 +1,12 @@
 
-#include "imgui.h"
-#include <iostream>
-#include "gl.h"
-#include "Shader.h"
-#include "Camera.h"
-#include "Lighting.h"
-#include "string"
-#include <cstdlib>
-#include <gtc/matrix_transform.hpp>
-#include <vector>
-#include "Object.h"
-#include "UI.h"
-#include "MeshManager.h"
-#include "MeshLoader.h"
-#include "Physics.h"
-#include "Memory.h"
-#include "Collider.h"
-#include "Message.h"
-#include "Threading.h"
-#include "Observer.h"
-#include <thread>
-#include <mutex>
-#include <ColliderManager.h>
-#include <ShaderManager.h>
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
-#include <ObjectManager.h>
-#include <TextureManager.h>
-#include <LightingManager.h>
-#include <RigidbodyManager.h>
-#include <CameraManager.h>
-#include <CustomGame/MainGameplay.h>
-#include <Time/Time.h>
-#include <glfw3.h>
-
-
-
+#include "main.h"
 
 using namespace std;
+
 #pragma once
 
 
-GLFWwindow* window;
-Lighting* myLighting;
-Camera* myCamera;
-MeshManager* myMeshManager;
-ObjectManager* myObjectManager;
-ShaderManager* myShaderManager;
-ColliderManager* MyColliderManager;
-TextureManager* myTextureManager;
-Memory* myMemory;
-MeshLoader* myMeshLoader = nullptr;
-UI* myUI;
-Message* myMessage;
-MessageQueue* myMessageQueue;
-CubeCollider* cubeColl;
-CubeCollider* planeColl;
-SphereCollider* sphereColl;
-LightingManager* myLightingManager;
-RigidbodyManager* myRigidbodyManager;
-Physics* Phys;
-CameraManager* myCameraManager;
-Time* myTime;
-MainGameplay* myGameplay;
+
 
 unsigned int SCR_WIDTH = 1920;
 	unsigned int SCR_HEIGHT = 1080;
@@ -217,12 +161,33 @@ int static update_camera(Camera* cam, UI* myUI, GLFWwindow* window)
 	return 0;
 }
 
+bool UIRunOnce = false;
 
 int static update_ui(UI* myUI, ShaderManager* myShader, ObjectManager* objManager)
 {
 	myUI->RenderUI(myShader, objManager, myTime);
 	
-	if (Object::Entities.size() > 0) {
+	if (!UIRunOnce)
+	{
+		if (Object::Entities.size() > 0)
+		{
+			myUI->xPos = Object::Entities[Object::SelectedEntity]->Position.x;
+			myUI->yPos = Object::Entities[Object::SelectedEntity]->Position.y;
+			myUI->zPos = Object::Entities[Object::SelectedEntity]->Position.z;
+
+			myUI->xRot = Object::Entities[Object::SelectedEntity]->Rotation.x;
+			myUI->yRot = Object::Entities[Object::SelectedEntity]->Rotation.y;
+			myUI->zRot = Object::Entities[Object::SelectedEntity]->Rotation.z;
+
+			myUI->xScale = Object::Entities[Object::SelectedEntity]->Scale.x;
+			myUI->yScale = Object::Entities[Object::SelectedEntity]->Scale.y;
+			myUI->zScale = Object::Entities[Object::SelectedEntity]->Scale.z;
+
+		}
+		UIRunOnce = true;
+	}
+
+	if (Object::Entities.size() > 0) { // rework this
 		Object::Entities[Object::SelectedEntity]->Position = glm::vec3(myUI->xPos, myUI->yPos, myUI->zPos); // vector subscript out of range. Meaning something is wrong with how the selected entity is done. (FIXED)
 		Object::Entities[Object::SelectedEntity]->Rotation = glm::vec3(
 			glm::radians(myUI->xRot),
@@ -261,10 +226,6 @@ int main()
 
 	init_physics();
 
-	glm::vec3 size = {100,0.5f,100};
-	glm::vec3 pos = { 0, -3, 0 };
-	glm::vec3 pos2 = { 0,1,1 };
-	glm::vec3 rotation = { 0,0,0 };
 	myUI = new UI(window);
 	init_memory_tracker();
 
@@ -279,45 +240,17 @@ int main()
 
 	myShaderManager->DefaultShader->UseShader();
 	
-	myObjectManager->Create( // these also push entities to Object::Entities and etc
-		"Fish",
-		fish,
-		defaultTex,
-		MyColliderManager->Create("SphereColl", sphereColl),
-		myRigidbodyManager->Create(0.96f, false)
-	);
 
-
-	//myObjectManager->Create( // these also push entities to Object::Entities and etc
-	//	"backpack",
-	//	backpack,
-	//	defaultTex,
-	//	myShaderManager->DefaultShader,
-	//	MyColliderManager->Create("SphereColl", sphereColl),
-	//	myRigidbodyManager->Create(0.96f, false)
-	//);
-
-	myObjectManager->Create("Cube",
-		cube,
-		wall,
-		MyColliderManager->Create("CubeColl", cubeColl),
-		myRigidbodyManager->Create(0.96f, false)
-	);
-
-	myObjectManager->FindAndSetProperties("Cube", glm::vec3(2,1,3), glm::vec3(1,1,1), rotation);
-
-	
-
-	//planeColl->isKinematic = true;
-
+	// whatever is first in the list (being selected) can't be changed by the find and set properties function when initialising
 	myObjectManager->Create("Plane",
 		cube,
 		defaultTex,
-		MyColliderManager->Create("PlaneColl", planeColl),
+		MyColliderManager->Create("Cube"),
 		NULL()
 	);
 
-	myObjectManager->FindAndSetProperties("Plane", pos, size, rotation);
+
+	myObjectManager->FindAndSetProperties("Plane", glm::vec3(0.0f), glm::vec3( 100.0f ,0.5f,100.0f ), glm::vec3(0.0f));
 
 	myObjectManager->CreateLight("SceneLight", 
 		NULL,
@@ -353,7 +286,9 @@ int main()
 
 	LightObject* lightobject = LightObject::LightEntities[0];
 
-	myGameplay->Start(window);
+	bool OnceCheck = false;
+	
+	myGameplay->Initialise(window, myObjectManager, myMeshManager, myTextureManager, MyColliderManager, myRigidbodyManager);
 
 	// loops until user closes window
 	while (!glfwWindowShouldClose(window))
@@ -362,6 +297,13 @@ int main()
 		GL_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 		GL_CHECK(glClearColor(0.1f, 0.1f, 0.1f, 1.0f));
 		
+		if (!OnceCheck)
+		{
+			myGameplay->Start();
+			OnceCheck = true;
+		}
+		
+
 		myTime->Run();
 
 		//update camera
@@ -433,7 +375,12 @@ int main()
 		// render UI (after/ON TOP OF drawcall)
 		update_ui(myUI, myShaderManager, myObjectManager);
 
-		myGameplay->Run();
+
+		if (OnceCheck)
+		{
+			myGameplay->Run();
+		}
+		
 		
 
 		// swaps front and back buffers

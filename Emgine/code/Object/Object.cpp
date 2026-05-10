@@ -170,12 +170,6 @@ CameraObject::CameraObject(std::string _namn = "new_cameraObject", Mesh* Mesh = 
 	}
 }
 
-void Object::SetCube(Cube& aCube)
-{
-	
-	myCube = &aCube;
-}
-
 void Object::SetMesh(Mesh& mesh)
 {
 	myMesh = &mesh;

@@ -9,30 +9,21 @@
 
 struct LightData {
 public:
-	glm::vec3 WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
 		enum LightType {
 			Null = 0, Point, Directional, Spot
 		};
-		float ambientStrength = 0.1f;
+
 		glm::vec3 lightPos = { 0,0,0 };
 		glm::vec3 lightDir = { 0,0,0 };
 		
 		glm::vec3 ambient = { 1,1,1 };
 		glm::vec3 diffuse = { 1,1,1 };
 		glm::vec3 specular = {1,1,1};
-
-		glm::vec3 lightRight;
-		glm::vec3 lightUp;
-
 		
 		float near_plane = 1.0f, far_plane = 7.5f;
 
 		float Range = 100.0f;
-
-		
-		
-		
-		
 
 		float linear = 1; 
 		float quadtric = 1; 
@@ -55,12 +46,6 @@ public:
 class Lighting
 {
 public:
-	
-	
-	//std::vector<LightData> Lightdata;
-	
-	//LightData* myLightData
-	
 
 	static std::vector<glm::vec3*> pointLightPositions;
 	static std::vector<glm::vec3*> spotLightPositions;
@@ -89,15 +74,3 @@ public:
 	static std::vector<LightData*> pointLights;
 };
 
-class SpotLight{
-	glm::vec3 lightDir = { 0,0,0 };
-	glm::vec3 lightPos = { 0,0,0 };
-};
-
-class DirectionalLight{
-	glm::vec3 lightDir = { 0,0,0 };
-};
-
-class PointLight{
-	glm::vec3 lightPos = { 0,0,0 };
-};

@@ -38,7 +38,7 @@ Camera::Camera()
 
 Camera::~Camera()
 {
-
+	delete this;
 }
 
 void Camera::CameraSendToShader(Shader* myShader)

@@ -7,6 +7,7 @@ class ObjectManager : public Subject
 {
 public:
 
+
 	virtual Object* Create(std::string aName, Mesh* Mesh, Texture* aTexture, Collider* aCollider, Rigidbody* rb) ;
 
 	void Destroy(Object* obj, Shader* aShader, LightingManager aLightManager);
@@ -32,6 +33,9 @@ public:
 		}
 	}
 
+
+
+	Object* obj;
 	
 	
 };
