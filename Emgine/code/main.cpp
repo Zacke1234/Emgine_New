@@ -152,8 +152,8 @@ int init_physics() {
 
 int static update_camera(Camera* cam, UI* myUI, GLFWwindow* window)
 {
-	cam->ProcessInput(window, myTime->Deltatime);
-	cam->CameraUpdate(window);
+	cam->ProcessInput(myTime->Deltatime);
+	cam->CameraUpdate();
 	
 	cam->fieldOfView = myUI->fov;
 	cam->sensitivity = myUI->sens;
@@ -216,7 +216,7 @@ int main()
 	Texture* wall = myTextureManager->Create("wall", "wall.jpg");
 	Texture* defaultTex = myTextureManager->Create("default", "Default 1.png");
 	
-	myCamera = myCameraManager->Create("Camera");
+	myCamera = myCameraManager->Create("Camera", window);
 	
 	message_calling();
 

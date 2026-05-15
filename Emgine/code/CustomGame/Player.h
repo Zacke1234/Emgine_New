@@ -20,6 +20,9 @@ private:
 	float jumpHeight;
 	float dashStrength;
 	GLFWwindow* window;
-	
+	Mesh* fish;
+	Texture* defaultTex;
+	Collider* playerColl;
+	Rigidbody* playerRB;
 };
 

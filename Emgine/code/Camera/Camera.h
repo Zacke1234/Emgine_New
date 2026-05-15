@@ -2,14 +2,20 @@
 
 #include <gtc/type_ptr.hpp>
 #include <iostream>
+//#include <glfw3.h>
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "Controller.h"
 #include <Shader.h>
 
 class Camera
 {
 private:
+
+	
+
 	glm::vec3 myDirection;
+
 
 	glm::vec3 myUp;
 	glm::vec3 myRight;
@@ -23,9 +29,16 @@ private:
 	double cury;
 
 public:
+
+
 	static Camera* Instance;
 
-	Camera();
+	Camera(GLFWwindow* getWindow);
+
+	GLFWwindow* window;
+
+	Controller* CameraController;
+
 	~Camera();
 	
 	std::string name;
@@ -53,13 +66,13 @@ public:
 
 	static void Mouse_Callback(GLFWwindow* window, double xpos, double ypos);
 
-	static Camera* GetInstance();
+	//static Camera* GetInstance();
 
 	void CameraSendToShader(Shader* myShader);
 
-	void CameraUpdate(GLFWwindow* window);
+	void CameraUpdate();
 
-	void ProcessInput(GLFWwindow* window, float& deltatime);
+	void ProcessInput(float& deltatime);
 
 	void mouse_callback(double xpos, double ypos);
 };

@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include <glfw3.h>
+
 
 
 
@@ -12,10 +12,10 @@ int Entered;
 
 //Shader* myShader = new Shader("../Shader/VertexShader_1.glsl", "../Shader/FragmentShader_1.glsl");
 
-Camera::Camera()
+Camera::Camera(GLFWwindow* getWindow)
 {
-
 	
+	window = getWindow;
 	myTarget = glm::vec3(0.0f, 0.0f, 0.0f);
 	direction = glm::vec3(0, 0, 0);
 	myDirection = glm::vec3(0.0f, 0.0f, -1.0f);
@@ -33,7 +33,8 @@ Camera::Camera()
 	curx = 0;
 	cury = 0;
 	cameraViewRange = 300.0f;
-	
+
+	CameraController = new Controller();
 }
 
 Camera::~Camera()
@@ -48,7 +49,7 @@ void Camera::CameraSendToShader(Shader* myShader)
 	myShader->SetVec3("viewPos", myPosition);
 }
 
-void Camera::CameraUpdate(GLFWwindow* window) // the mouse cursor is still not good, when you tab in, it will just snap to another position again, need to fix
+void Camera::CameraUpdate() // the mouse cursor is still not good, when you tab in, it will just snap to another position again, need to fix
 {
 	
 	myUp = glm::cross(myDirection, myRight);
@@ -64,54 +65,55 @@ void Camera::CameraUpdate(GLFWwindow* window) // the mouse cursor is still not g
 
 }
 
-void Camera::ProcessInput(GLFWwindow* window, float& deltatime)
+void Camera::ProcessInput(float& deltatime)
 {
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+	
+	if (CameraController->W_KEY(window))
 	{
 		myPosition += cameraSpeed * myDirection;
 	}
-	if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+
+	if (CameraController->S_KEY(window))
 	{
 		myPosition -= cameraSpeed * myDirection;
 	}
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-	{
-		
-		myPosition -= glm::normalize(glm::cross(myDirection, myUp)) * cameraSpeed;
 
+	if (CameraController->A_KEY(window))
+	{
+		myPosition -= glm::normalize(glm::cross(myDirection, myUp)) * cameraSpeed;
 	}
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+
+	if (CameraController->D_KEY(window))
 	{
 		myPosition += glm::normalize(glm::cross(myDirection, myUp)) * cameraSpeed;
-		
 	}
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+
+	if (CameraController->ESCAPE_KEY(window))
 	{
-		
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		CameraController->glfwSetInputMode_normal(window);
+		//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
 		TabbedIn = false;
-		
 	}
-	if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS)
+
+	if (CameraController->TAB_KEY(window))
 	{
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CENTER_CURSOR);
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_UNAVAILABLE);
-		
+		CameraController->glfwSetInputMode_cursor(window);
+		CameraController->glfwSetInputMode_disabled(window);
+		CameraController->glfwSetInputMode_unavailable(window);
 		TabbedIn = true;
-		//io.ConfigFlags |= ImGuiConfigFlags_NoMouse;
-		
-	}			
-	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+	}
+
+	if (CameraController->SHIFT_KEY(window))
 	{
 		//std::cout << "shift" << "\n";
 		cameraSpeed = 9.0f * 0.5;
 	}
-	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)
+
+	if (CameraController->SHIFT_KEY_RELEASE(window))
 	{
-		//std::cout << "let go of shift" << "\n";
-		cameraSpeed = 3.0f * 0.5f;
+			//std::cout << "let go of shift" << "\n";
+			cameraSpeed = 3.0f * 0.5f;
 	}
 
 }
@@ -173,13 +175,13 @@ void Camera::mouse_callback(double xpos, double ypos)
 
 }
 
-Camera* Camera::GetInstance()
-{
-	if (Camera::Instance == nullptr)
-	{
-		Camera::Instance = new Camera();
-	}
-	return Camera::Instance;
-}
+//Camera* Camera::GetInstance()
+//{
+//	if (Camera::Instance == nullptr)
+//	{
+//		Camera::Instance = new Camera(window);
+//	}
+//	return Camera::Instance;
+//}
 
 

@@ -5,7 +5,8 @@
 class CameraManager
 {
 public:
-	Camera* Create(std::string name = "new_camera");
+	//  GLFWwindow* aWindow
+	Camera* Create(std::string name = "new_camera", GLFWwindow* aWindow = NULL);
 	
 };
 

@@ -3,7 +3,7 @@
 
 Collider* ColliderManager::Create(std::string collName = "new_collider")
 {
-	glm::vec3 test = { 0.0f,0.0f,0.0f };
+	glm::vec3 test = { 1.0f,1.0f,1.0f };
 	Collider* myColl = new Collider();
 	myColl->name = collName;
 
