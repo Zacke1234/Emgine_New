@@ -11,10 +11,6 @@ using namespace std;
 unsigned int SCR_WIDTH = 1920;
 	unsigned int SCR_HEIGHT = 1080;
 
-int do_time()
-{
-	return 0;
-}
 
 int message_calling() { // message passing between meshmanager and objectmanager
 	myMessage = new Message;
@@ -35,8 +31,6 @@ int message_calling() { // message passing between meshmanager and objectmanager
 	
 	return 0;
 }
-
-
 
 //Init Functions
 
@@ -307,7 +301,11 @@ int main()
 		myTime->Run();
 
 		//update camera
-		update_camera(myCamera, myUI, window);
+		if (myTime->IsPaused == true)
+		{
+			update_camera(myCamera, myUI, window);
+		}
+		
 		
 
 		
@@ -376,7 +374,7 @@ int main()
 		update_ui(myUI, myShaderManager, myObjectManager);
 
 
-		if (OnceCheck)
+		if (myTime->IsPaused == false)
 		{
 			myGameplay->Run();
 		}

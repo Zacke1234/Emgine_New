@@ -1,20 +1,13 @@
 #include "Camera.h"
 
-
-
-
-
 glm::vec3 WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
 float lastX = 400, lastY = 300;
 Camera* Camera::Instance;
 int Entered;
 
-
-//Shader* myShader = new Shader("../Shader/VertexShader_1.glsl", "../Shader/FragmentShader_1.glsl");
-
-Camera::Camera(GLFWwindow* getWindow)
+Camera::Camera(GLFWwindow* getWindow, std::string aName)
 {
-	
+	name = aName;
 	window = getWindow;
 	myTarget = glm::vec3(0.0f, 0.0f, 0.0f);
 	direction = glm::vec3(0, 0, 0);
@@ -34,7 +27,11 @@ Camera::Camera(GLFWwindow* getWindow)
 	cury = 0;
 	cameraViewRange = 300.0f;
 
-	CameraController = new Controller();
+	if (name == "SceneCamera")
+	{
+		CameraController = new Controller();
+	}
+	
 }
 
 Camera::~Camera()
@@ -51,16 +48,14 @@ void Camera::CameraSendToShader(Shader* myShader)
 
 void Camera::CameraUpdate() // the mouse cursor is still not good, when you tab in, it will just snap to another position again, need to fix
 {
-	
 	myUp = glm::cross(myDirection, myRight);
 	
-	//lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.1f, 100.0f);
 	projection = glm::perspective(glm::radians(fieldOfView), myWidth / myHeight, 0.1f, cameraViewRange);
 
 	myRight = glm::normalize(glm::cross(WorldUp, myDirection));
 	myUp = glm::cross(myDirection, myRight);
 	myView = glm::lookAt(myPosition, myPosition + myDirection, myUp);
-	//GetViewMatrix();
+
 	mouse_callback(lastX, lastY);
 
 }
@@ -120,13 +115,9 @@ void Camera::ProcessInput(float& deltatime)
 
 void Camera::Mouse_Callback(GLFWwindow* window, double xpos, double ypos)
 {
- 	
 	lastX = xpos;
 	lastY = ypos;
 }
-
-
-
 
 void Camera::mouse_callback(double xpos, double ypos)
 {
@@ -174,14 +165,5 @@ void Camera::mouse_callback(double xpos, double ypos)
 	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 
 }
-
-//Camera* Camera::GetInstance()
-//{
-//	if (Camera::Instance == nullptr)
-//	{
-//		Camera::Instance = new Camera(window);
-//	}
-//	return Camera::Instance;
-//}
 
 

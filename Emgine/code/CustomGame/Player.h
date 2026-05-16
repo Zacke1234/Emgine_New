@@ -24,5 +24,7 @@ private:
 	Texture* defaultTex;
 	Collider* playerColl;
 	Rigidbody* playerRB;
+	Controller* playerController;
+	Camera* playerCamera;
 };
 

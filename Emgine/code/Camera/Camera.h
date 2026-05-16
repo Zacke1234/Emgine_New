@@ -33,7 +33,7 @@ public:
 
 	static Camera* Instance;
 
-	Camera(GLFWwindow* getWindow);
+	Camera(GLFWwindow* getWindow, std::string aName);
 
 	GLFWwindow* window;
 
