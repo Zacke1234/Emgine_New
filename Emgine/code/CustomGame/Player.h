@@ -26,5 +26,6 @@ private:
 	Rigidbody* playerRB;
 	Controller* playerController;
 	Camera* playerCamera;
+	Object* player;
 };
 

@@ -14,13 +14,14 @@ Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager
 	playerRB = aRigidbodyManager->Create("playerRB", 0.5, true, true);
 	playerController = new Controller();
 
-	aObjectManager->Create("Player", fish, defaultTex, playerColl, playerRB);
-	dashStrength = 0.0f;
-	jumpHeight = 0.0f;
-	movementSpeed = 0.0f;
+	player = aObjectManager->Create("Player", fish, defaultTex, playerColl, playerRB);
+	dashStrength = 1.0f;
+	jumpHeight = 1.0f;
+	movementSpeed = 1.0f;
 
 	playerCamera = new Camera(window, "PlayerCamera");
 	
+	// How to get a functional camera for the player?
 }
 
 void Player::InputMovement()
@@ -29,27 +30,27 @@ void Player::InputMovement()
 	// 
 	if(playerController->W_KEY(window))
 	{
-		playerRB->velocity += glm::vec3(0.0f, 0.0f, 1.0f * movementSpeed);
+		player->Position += glm::vec3(0.0f, 0.0f, 1.0f * movementSpeed);
 	}
 
 	if (playerController->S_KEY(window))
 	{
-		playerRB->velocity += glm::vec3(0.0f, 0.0f, -1.0f * movementSpeed);
+		player->Position += glm::vec3(0.0f, 0.0f, -1.0f * movementSpeed);
 	}
 
 	if (playerController->D_KEY(window))
 	{
-		playerRB->velocity += glm::vec3(1.0f * movementSpeed, 0.0f, 0.0f);
+		player->Position += glm::vec3(1.0f * movementSpeed, 0.0f, 0.0f);
 	}
 
 	if (playerController->A_KEY(window))
 	{
-		playerRB->velocity += glm::vec3(-1.0f * movementSpeed, 0.0f, 0.0f);
+		player->Position += glm::vec3(-1.0f * movementSpeed, 0.0f, 0.0f);
 	}
 
 	if (playerController->SPACE_KEY(window))
 	{
-		playerRB->velocity += glm::vec3(0.0f, 5.0f * jumpHeight, 0.0f);
+		player->Position += glm::vec3(0.0f, 5.0f * jumpHeight, 0.0f);
 	}
 }
 
