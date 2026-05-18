@@ -5,7 +5,7 @@ using namespace std;
 
 
 
-Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager)
+Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager, CameraManager* aCamManager)
 {
 	window = getWindow;
 	fish = aMeshManager->Create("Fish", "fish.obj");
@@ -19,7 +19,9 @@ Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager
 	jumpHeight = 1.0f;
 	movementSpeed = 1.0f;
 
-	playerCamera = new Camera(window, "PlayerCamera");
+	playerCamera = aCamManager->Create("PlayerCamera", window);
+
+	
 	
 	// How to get a functional camera for the player?
 }
@@ -52,6 +54,13 @@ void Player::InputMovement()
 	{
 		player->Position += glm::vec3(0.0f, 5.0f * jumpHeight, 0.0f);
 	}
+
+	
+
+	playerCamera->myPosition = player->Position;
+	playerCamera->direction = player->Rotation;
+
+	playerCamera->CameraUpdate();
 }
 
  // opengl header already inluded error , remove previous include

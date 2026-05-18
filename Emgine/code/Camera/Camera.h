@@ -59,6 +59,8 @@ public:
 	glm::vec3 direction;
 	glm::vec3 myPosition;
 
+	static std::vector<Camera*> cameras;
+
 	glm::mat4 GetViewMatrix()
 	{
 		return glm::lookAt(myPosition, myPosition + myDirection, myUp);

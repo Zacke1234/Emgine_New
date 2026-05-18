@@ -282,7 +282,7 @@ int main()
 
 	bool OnceCheck = false;
 	
-	myGameplay->Initialise(window, myObjectManager, myMeshManager, myTextureManager, MyColliderManager, myRigidbodyManager);
+	myGameplay->Initialise(window, myObjectManager, myMeshManager, myTextureManager, MyColliderManager, myRigidbodyManager, myCameraManager);
 
 	// loops until user closes window
 	while (!glfwWindowShouldClose(window))
@@ -307,7 +307,6 @@ int main()
 		}
 		
 		
-
 		
 
 		// shadow pass 

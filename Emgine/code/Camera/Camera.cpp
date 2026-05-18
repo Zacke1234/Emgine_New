@@ -5,6 +5,8 @@ float lastX = 400, lastY = 300;
 Camera* Camera::Instance;
 int Entered;
 
+std::vector<Camera*> Camera::cameras;
+
 Camera::Camera(GLFWwindow* getWindow, std::string aName)
 {
 	name = aName;

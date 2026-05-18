@@ -2,17 +2,18 @@
 //#include "main.h"
 //#include <glfw3.h>
 
-#include "ObjectManager.h"
+#include <ObjectManager.h>
 #include <TextureManager.h>
 #include <ColliderManager.h>
 #include <RigidbodyManager.h>
+#include <CameraManager.h>
 
 
 
 class Player
 {
 public:
-	Player(GLFWwindow* getWindow, ObjectManager* myObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager);
+	Player(GLFWwindow* getWindow, ObjectManager* myObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager, CameraManager* aCamManager);
 
 	void InputMovement();
 private:
