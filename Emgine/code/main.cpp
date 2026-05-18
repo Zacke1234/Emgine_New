@@ -282,7 +282,7 @@ int main()
 
 	bool OnceCheck = false;
 	
-	myGameplay->Initialise(window, myObjectManager, myMeshManager, myTextureManager, MyColliderManager, myRigidbodyManager, myCameraManager);
+	myGameplay->Initialise(window, myObjectManager, myMeshManager, myTextureManager, MyColliderManager, myRigidbodyManager, myCameraManager, myTime, myShaderManager);
 
 	// loops until user closes window
 	while (!glfwWindowShouldClose(window))
@@ -303,6 +303,7 @@ int main()
 		//update camera
 		if (myTime->IsPaused == true)
 		{
+			
 			update_camera(myCamera, myUI, window);
 		}
 		
@@ -351,7 +352,7 @@ int main()
 		myCamera->CameraSendToShader(myShaderManager->DefaultShader);
 
 		
-		myLightingManager->RunLightData(myShaderManager->DefaultShader, myCamera);
+		myLightingManager->RunLightData(myShaderManager->DefaultShader);
 		myLightingManager->ActiveTextureDepth();
 
 		//Drawcall objects
@@ -376,6 +377,7 @@ int main()
 		if (myTime->IsPaused == false)
 		{
 			myGameplay->Run();
+			//Object::SelectedEntity = -1;
 		}
 		
 		

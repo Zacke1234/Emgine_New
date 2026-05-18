@@ -17,7 +17,7 @@ public:
 	LightData* InitDefaultLighting();
 	LightData* Create(std::string name = "newLight", Shader* shader = NULL, LightData* light = NULL);
 	LightData* Destroy(Shader* aShader, Object* obj);
-	LightData* RunLightData(Shader* shader, Camera* aCamera);
+	LightData* RunLightData(Shader* shader);
 
 	Lighting* UseShadowDepth(Shader* shader, LightData* lightData);
 	Lighting* RunMainFragmentShadows(Shader* shader, LightData* lightData);

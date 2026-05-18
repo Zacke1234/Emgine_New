@@ -7,14 +7,15 @@
 #include <ColliderManager.h>
 #include <RigidbodyManager.h>
 #include <CameraManager.h>
-
+#include <Time/Time.h>
+#include <ShaderManager.h>
 
 
 class Player
 {
 public:
-	Player(GLFWwindow* getWindow, ObjectManager* myObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager, CameraManager* aCamManager);
-
+	Player(GLFWwindow* getWindow, ObjectManager* myObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager, CameraManager* aCamManager, Time* aTime);
+	ShaderManager* aShaderManager;
 	void InputMovement();
 private:
 	float movementSpeed;
@@ -26,7 +27,11 @@ private:
 	Collider* playerColl;
 	Rigidbody* playerRB;
 	Controller* playerController;
+	Shader* getShader;
 	Camera* playerCamera;
 	Object* player;
+	Time* getTime;
+
+	
 };
 

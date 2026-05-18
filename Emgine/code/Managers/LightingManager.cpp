@@ -424,7 +424,7 @@ Lighting* LightingManager::Viewport()
 	return nullptr;
 }
 
-LightData* LightingManager::RunLightData(Shader* shader, Camera* aCamera)
+LightData* LightingManager::RunLightData(Shader* shader)
 {
 	
 	for (auto& lightObj : LightObject::LightEntities)

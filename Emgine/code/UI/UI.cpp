@@ -136,11 +136,13 @@ int uiObjectList(UI* ui)
 	
 	for (int i = 0; i < Object::Entities.size(); i++)
 	{
+		
 		ImGui::PushID(i);
 		if (ImGui::Button(Object::Entities[i]->namn.c_str()))
 		{
+			
 			Object::SelectedEntity = i;
-					
+			
 			ui->xPos = Object::Entities[i]->Position[0];
 			ui->yPos = Object::Entities[i]->Position[1]; 
 			ui->zPos = Object::Entities[i]->Position[2];

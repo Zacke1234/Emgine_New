@@ -1,12 +1,17 @@
 #include "Player.h"
 #include <iostream>
 
+
+
 using namespace std;
 
 
 
-Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager, CameraManager* aCamManager)
+Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager, CameraManager* aCamManager, Time* aTime)
 {
+	
+	//getShader = aShaderManager->DefaultShader;
+	getTime = aTime;
 	window = getWindow;
 	fish = aMeshManager->Create("Fish", "fish.obj");
 	defaultTex = aTextureManager->Create("default", "Default 1.png");
@@ -21,14 +26,17 @@ Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager
 
 	playerCamera = aCamManager->Create("PlayerCamera", window);
 
-	
+	playerCamera->fieldOfView = 80.0f;
+	playerCamera->sensitivity = 0.1f;
 	
 	// How to get a functional camera for the player?
 }
 
 void Player::InputMovement()
 {
-	
+	/*playerController->glfwSetInputMode_cursor(window);
+	playerController->glfwSetInputMode_disabled(window);
+	playerController->glfwSetInputMode_unavailable(window);*/
 	// 
 	if(playerController->W_KEY(window))
 	{
@@ -56,11 +64,15 @@ void Player::InputMovement()
 	}
 
 	
-
+	getShader = aShaderManager->DefaultShader;
+	
 	playerCamera->myPosition = player->Position;
 	playerCamera->direction = player->Rotation;
 
 	playerCamera->CameraUpdate();
+	playerCamera->CameraSendToShader(getShader);
+
+	
 }
 
  // opengl header already inluded error , remove previous include

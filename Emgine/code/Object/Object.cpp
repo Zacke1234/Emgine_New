@@ -272,7 +272,7 @@ void Object::UpdateTransform(Shader* myShader)
 void Object::DrawObject(Shader* myShader)
 {
 
-	if (myMesh == NULL)
+	if (!myMesh)
 	{
 		//std::cout << "No mesh to draw in Object: " << namn << "\n";
 		return;
