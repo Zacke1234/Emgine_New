@@ -147,7 +147,7 @@ int init_physics() {
 int static update_camera(Camera* cam, UI* myUI, GLFWwindow* window)
 {
 	cam->ProcessInput(myTime->Deltatime);
-	cam->CameraUpdate();
+	//cam->CameraUpdate();
 	
 	cam->fieldOfView = myUI->fov;
 	cam->sensitivity = myUI->sens;
@@ -301,9 +301,13 @@ int main()
 		myTime->Run();
 
 		//update camera
+		for (auto& cameraEntity : Camera::cameras)
+		{
+			cameraEntity->CameraUpdate();
+		}
+
 		if (myTime->IsPaused == true)
 		{
-			
 			update_camera(myCamera, myUI, window);
 		}
 		
@@ -349,7 +353,12 @@ int main()
 
 		myLightingManager->RunMainFragmentShadows(myShaderManager->DefaultShader, lightobject->myLightData);
 		myShaderManager->DefaultShader->SetInt("shadowMap", 1);
-		myCamera->CameraSendToShader(myShaderManager->DefaultShader);
+
+		if (myTime->IsPaused == true)
+		{
+			myCamera->CameraSendToShader(myShaderManager->DefaultShader);
+		}
+		
 
 		
 		myLightingManager->RunLightData(myShaderManager->DefaultShader);

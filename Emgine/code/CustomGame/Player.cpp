@@ -21,7 +21,7 @@ Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager
 
 	player = aObjectManager->Create("Player", fish, defaultTex, playerColl, playerRB);
 	dashStrength = 1.0f;
-	jumpHeight = 1.0f;
+	jumpHeight = 4.0f;
 	movementSpeed = 1.0f;
 
 	playerCamera = aCamManager->Create("PlayerCamera", window);
@@ -34,45 +34,41 @@ Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager
 
 void Player::InputMovement()
 {
-	/*playerController->glfwSetInputMode_cursor(window);
-	playerController->glfwSetInputMode_disabled(window);
-	playerController->glfwSetInputMode_unavailable(window);*/
-	// 
 	if(playerController->W_KEY(window))
 	{
-		player->Position += glm::vec3(0.0f, 0.0f, 1.0f * movementSpeed);
+		player->Position += glm::vec3(0.0f, 0.0f, movementSpeed);
 	}
 
 	if (playerController->S_KEY(window))
 	{
-		player->Position += glm::vec3(0.0f, 0.0f, -1.0f * movementSpeed);
+		player->Position += glm::vec3(0.0f, 0.0f, -movementSpeed);
 	}
 
 	if (playerController->D_KEY(window))
 	{
-		player->Position += glm::vec3(1.0f * movementSpeed, 0.0f, 0.0f);
+		player->Position += glm::vec3(movementSpeed, 0.0f, 0.0f);
 	}
 
 	if (playerController->A_KEY(window))
 	{
-		player->Position += glm::vec3(-1.0f * movementSpeed, 0.0f, 0.0f);
+		player->Position += glm::vec3(-movementSpeed, 0.0f, 0.0f);
 	}
 
 	if (playerController->SPACE_KEY(window))
 	{
-		player->Position += glm::vec3(0.0f, 5.0f * jumpHeight, 0.0f);
+		player->Position += glm::vec3(0.0f, jumpHeight, 0.0f);
 	}
 
 	
 	getShader = aShaderManager->DefaultShader;
 	
-	playerCamera->myPosition = player->Position;
-	playerCamera->direction = player->Rotation;
+	//playerCamera->myPosition = player->Position;
+	//playerCamera->myDirection = player->Rotation;
+	
 
-	playerCamera->CameraUpdate();
-	playerCamera->CameraSendToShader(getShader);
+	//playerCamera->CameraUpdate();
+	//
+	//playerCamera->CameraSendToShader(getShader); // something wrong here
 
 	
 }
-
- // opengl header already inluded error , remove previous include

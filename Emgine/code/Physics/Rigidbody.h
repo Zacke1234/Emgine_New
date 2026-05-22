@@ -8,6 +8,7 @@ public:
 	std::string name;
 
 	glm::vec3 velocity;
+	glm::vec3 force;
 	glm::vec3 position;
 	float friction;
 	float mass;

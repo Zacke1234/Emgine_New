@@ -14,9 +14,9 @@ private:
 
 	
 
+	
+
 	glm::vec3 myDirection;
-
-
 	glm::vec3 myUp;
 	glm::vec3 myRight;
 	glm::vec3 myFront;
@@ -32,6 +32,8 @@ public:
 
 
 	static Camera* Instance;
+
+	//static unsigned int selectedCamera;
 
 	Camera(GLFWwindow* getWindow, std::string aName);
 
@@ -56,8 +58,11 @@ public:
 	float fieldOfView = 70;
 	float sensitivity = 0.1f;
 	bool TabbedIn = true;
+	bool activeCamera = false;
+	
 	glm::vec3 direction;
 	glm::vec3 myPosition;
+	
 
 	static std::vector<Camera*> cameras;
 
