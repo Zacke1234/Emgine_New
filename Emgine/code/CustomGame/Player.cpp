@@ -13,13 +13,13 @@ Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager
 	//getShader = aShaderManager->DefaultShader;
 	getTime = aTime;
 	window = getWindow;
-	fish = aMeshManager->Create("Fish", "fish.obj");
+	playerMesh = aMeshManager->Create("Cube", "cube.obj");
 	defaultTex = aTextureManager->Create("default", "Default 1.png");
 	playerColl = aColliderManager->Create("Sphere");
 	playerRB = aRigidbodyManager->Create("playerRB", 0.5, true, true);
 	playerController = new Controller();
 
-	player = aObjectManager->Create("Player", fish, defaultTex, playerColl, playerRB);
+	player = aObjectManager->Create("Player", playerMesh, defaultTex, playerColl, playerRB);
 	dashStrength = 1.0f;
 	jumpHeight = 4.0f;
 	movementSpeed = 1.0f;
@@ -62,8 +62,8 @@ void Player::InputMovement()
 	
 	getShader = aShaderManager->DefaultShader;
 	
-	//playerCamera->myPosition = player->Position;
-	//playerCamera->myDirection = player->Rotation;
+	playerCamera->myPosition = player->Position + glm::vec3(0,3, -0.2);
+	playerCamera->myDirection = player->Rotation + glm::normalize(glm::vec3(20, 20, 20));
 	
 
 	//playerCamera->CameraUpdate();

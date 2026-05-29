@@ -16,7 +16,7 @@ private:
 
 	
 
-	glm::vec3 myDirection;
+
 	glm::vec3 myUp;
 	glm::vec3 myRight;
 	glm::vec3 myFront;
@@ -62,7 +62,7 @@ public:
 	
 	glm::vec3 direction;
 	glm::vec3 myPosition;
-	
+	glm::vec3 myDirection;
 
 	static std::vector<Camera*> cameras;
 

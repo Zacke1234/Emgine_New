@@ -210,7 +210,7 @@ int main()
 	Texture* wall = myTextureManager->Create("wall", "wall.jpg");
 	Texture* defaultTex = myTextureManager->Create("default", "Default 1.png");
 	
-	myCamera = myCameraManager->Create("Camera", window);
+	myCamera = myCameraManager->Create("SceneCamera", window);
 	
 	message_calling();
 
@@ -301,9 +301,9 @@ int main()
 		myTime->Run();
 
 		//update camera
-		for (auto& cameraEntity : Camera::cameras)
+		for (auto& gameCameraEntity : Camera::cameras)
 		{
-			cameraEntity->CameraUpdate();
+			gameCameraEntity->CameraUpdate();
 		}
 
 		if (myTime->IsPaused == true)
@@ -357,6 +357,17 @@ int main()
 		if (myTime->IsPaused == true)
 		{
 			myCamera->CameraSendToShader(myShaderManager->DefaultShader);
+		}
+		else 
+		{
+			for (auto& gameCameraEntity : Camera::cameras)
+			{
+				if (gameCameraEntity->name != "SceneCamera")
+				{
+					gameCameraEntity->CameraSendToShader(myShaderManager->DefaultShader);
+				}
+				
+			}
 		}
 		
 

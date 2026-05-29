@@ -36,6 +36,10 @@ void ObjectManager::Destroy(Object* obj, Shader* aShader, LightingManager aLight
 
 LightObject* ObjectManager::CreateLight(std::string aName = "new_lightObject", Mesh* Mesh = NULL, Texture* aTexture = NULL, Collider* aCollider = NULL, LightData* aLightData = NULL, Rigidbody* rb = NULL)
 {
+	if (aLightData == NULL)
+	{
+		aLightData = new LightData();
+	}
 	LightObject* lightObj = new LightObject(aName, Mesh, aTexture, aCollider, aLightData, rb);
 	 aLightData->lightPos = lightObj->Position;
 	Object::Entities.push_back(lightObj);
@@ -45,6 +49,10 @@ LightObject* ObjectManager::CreateLight(std::string aName = "new_lightObject", M
 
 CameraObject* ObjectManager::CreateCamera(std::string aName = "new_cameraObject", Mesh* Mesh = NULL, Texture* aTexture = NULL, Collider* aCollider = NULL, Camera* aCamera = NULL, Rigidbody* rb = NULL)
 {
+	if (aCamera == NULL)
+	{
+		aCamera = new Camera(NULL, "createdCamera");
+	}
 	CameraObject* cameraObj = new CameraObject(aName, Mesh, aTexture, aCollider, aCamera, rb);
 	Object::Entities.push_back(cameraObj);
 	CameraObject::CameraEntities.push_back(cameraObj);

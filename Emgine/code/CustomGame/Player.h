@@ -22,7 +22,7 @@ private:
 	float jumpHeight;
 	float dashStrength;
 	GLFWwindow* window;
-	Mesh* fish;
+	Mesh* playerMesh;
 	Texture* defaultTex;
 	Collider* playerColl;
 	Rigidbody* playerRB;
