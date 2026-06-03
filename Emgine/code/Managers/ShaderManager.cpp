@@ -13,7 +13,7 @@ ShaderManager::~ShaderManager()
 
 Shader* ShaderManager::InitDefaultShader()
 {
-	DefaultShader = new Shader("../Shader/VertexShader_1.glsl", "../Shader/FragmentShader_1.glsl");
+	DefaultShader = new Shader("../Shader/VertexShader.glsl", "../Shader/FragmentShader.glsl");
 	
 	// "depthShader", "../Shader/ShadowMappingVS.glsl", "../Shader/ShadowMappingFS.glsl"
 	// "debugQuadShader", "../Shader/debugDepthQuadVS.glsl", "../Shader/debugDepthQuadFS.glsl"

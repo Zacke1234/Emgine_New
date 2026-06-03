@@ -14,7 +14,6 @@
 #else
 #define GLAD_IMPL_UTIL_SSCANF sscanf
 #endif
-
 #endif /* GLAD_IMPL_UTIL_C_ */
 
 #ifdef __cplusplus

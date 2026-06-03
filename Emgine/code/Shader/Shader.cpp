@@ -18,12 +18,12 @@ std::string Shader::LoadShader(const char* aPath)
 	std::string shaderCode;
 	std::ifstream shaderFile;
 	shaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-
 	try
 	{
 		shaderFile.open(aPath);
-
+		
 		std::stringstream shaderStream;
+		
 		shaderStream << shaderFile.rdbuf();
 
 		shaderFile.close();
@@ -40,10 +40,10 @@ std::string Shader::LoadShader(const char* aPath)
 
 Shader::Shader(const char* VertexPath, const char* FragmantPath, const char* GeometryPath)
 {
-	unsigned int shaderProgram;
-	unsigned int vertexShader;
-	unsigned int fragmantShader;
-	unsigned int geometryShader;
+	unsigned int shaderProgram = 0;
+	unsigned int vertexShader = 0;
+	unsigned int fragmantShader = 0;
+	unsigned int geometryShader = 0;
 
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	std::string vertexCodeString = LoadShader(VertexPath);
@@ -113,7 +113,7 @@ Shader::Shader(const char* VertexPath, const char* FragmantPath, const char* Geo
 	{
 		if (!geometryResult)
 		{
-			GL_CHECK(glGetShaderInfoLog(geometryShader, 512, NULL, Log));
+			GL_CHECK(glGetShaderInfoLog(geometryShader, 512, NULL, Log)); 
 			std::cout << "Failed to compile geometry shader \n" << Log << std::endl;
 		}
 	

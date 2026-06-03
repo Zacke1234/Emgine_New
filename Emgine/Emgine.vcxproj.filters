@@ -132,9 +132,6 @@
     <ClCompile Include="..\Dependencies\GLFW\include\glfw3native.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="code\Mesh\Model.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="code\CustomGame\MainGameplay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -293,9 +290,6 @@
     <ClInclude Include="..\Dependencies\gl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="code\Mesh\Model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="code\CustomGame\MainGameplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -336,6 +330,27 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="resource\materials\fish.mtl" />
+    <None Include="resource\bins\.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\bins\backpack.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\bins\Viking_House.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\bins\Cube.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\bins\Fish.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\bins\Mesh.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\bins\quadplane.bin">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resource\textures\fish_texture.png">
@@ -350,5 +365,8 @@
     <Image Include="resource\textures\Default 1.png">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="resource\bins\TestFile.txt" />
   </ItemGroup>
 </Project>

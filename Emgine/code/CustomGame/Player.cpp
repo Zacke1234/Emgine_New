@@ -13,7 +13,7 @@ Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager
 	//getShader = aShaderManager->DefaultShader;
 	getTime = aTime;
 	window = getWindow;
-	playerMesh = aMeshManager->Create("Cube", "cube.obj");
+	playerMesh = aMeshManager->Create("fish", "fish.obj");
 	defaultTex = aTextureManager->Create("default", "Default 1.png");
 	playerColl = aColliderManager->Create("Sphere");
 	playerRB = aRigidbodyManager->Create("playerRB", 0.5, true, true);
@@ -71,4 +71,9 @@ void Player::InputMovement()
 	//playerCamera->CameraSendToShader(getShader); // something wrong here
 
 	
+}
+
+void Player::SwitchPressed()
+{
+
 }

@@ -202,7 +202,6 @@
     <ClCompile Include="code\Time\Time.cpp" />
     <ClCompile Include="code\Material\Material.cpp" />
     <ClCompile Include="code\Mesh\Mesh.cpp" />
-    <ClCompile Include="code\Mesh\Model.cpp" />
     <ClCompile Include="code\CustomGame\MainGameplay.cpp" />
     <ClCompile Include="code\CustomGame\Player.cpp" />
     <ClCompile Include="code\CustomGame\Levels.cpp" />
@@ -262,7 +261,6 @@
     <ClInclude Include="code\Mesh\Mesh.h" />
     <ClInclude Include="code\Mesh\Structs\Face.h" />
     <ClInclude Include="code\Mesh\Structs\Vertex.h" />
-    <ClInclude Include="code\Mesh\Model.h" />
     <ClInclude Include="code\CustomGame\MainGameplay.h" />
     <ClInclude Include="code\CustomGame\Player.h" />
     <ClInclude Include="code\CustomGame\Levels.h" />
@@ -279,6 +277,13 @@
   <ItemGroup>
     <None Include="imgui.ini" />
     <None Include="code\out.bin" />
+    <None Include="resource\bins\.bin" />
+    <None Include="resource\bins\backpack.bin" />
+    <None Include="resource\bins\Cube.bin" />
+    <None Include="resource\bins\Fish.bin" />
+    <None Include="resource\bins\Mesh.bin" />
+    <None Include="resource\bins\quadplane.bin" />
+    <None Include="resource\bins\Viking_House.bin" />
     <None Include="resource\materials\fish.mtl" />
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +291,9 @@
     <Image Include="resource\textures\fish_texture.png" />
     <Image Include="resource\textures\Screenshot.png" />
     <Image Include="resource\textures\wall.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="resource\bins\TestFile.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

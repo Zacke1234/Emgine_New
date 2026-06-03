@@ -91,10 +91,11 @@ int init_managers() {
 	
 	//myModel = new Model();
 	myLightingManager->InitDefaultLighting();
+	myShaderManager->InitDefaultShader();
 	myShaderManager->Create("depthShader", "../Shader/DepthQuadVS.glsl", "../Shader/DepthQuadFS.glsl");
 	myShaderManager->Create("DirectionalShader", "../Shader/DirectionalVS.glsl", "../Shader/DirectionalFS.glsl");
 	//myShaderManager->Create("PointShader", "../Shader/PointVS.glsl", "../Shader/PointFS.glsl", "../Shader/PointGS.glsl");
-	myShaderManager->InitDefaultShader();
+	
 	
 	myObjectManager = new ObjectManager;
 	myRigidbodyManager = new RigidbodyManager();
@@ -225,14 +226,14 @@ int main()
 
 	// Object Creation
 	Mesh* fish = myMeshManager->Create("Fish", "fish.obj");
-	Mesh* quadplane = myMeshManager->Create("quadplane", "quadplane.obj");
-	Mesh* cube = myMeshManager->Create("Cube", "cube.obj");
+	//Mesh* quadplane = myMeshManager->Create("quadplane", "quadplane.obj");
+	Mesh* cube = myMeshManager->Create("plane", "plane.obj");
 
 	/*Mesh* vikinghouse = myMeshManager->Create("Viking_House", "Viking_House.obj");
 
 	Mesh* backpack = myMeshManager->Create("backpack", "backpack.obj");*/
 
-	myShaderManager->DefaultShader->UseShader();
+	
 	
 
 	// whatever is first in the list (being selected) can't be changed by the find and set properties function when initialising
@@ -267,7 +268,8 @@ int main()
 	//Shader* pointShader = myShaderManager->Find("PointShader");
 
 	myLightingManager->InitDepthMapping();
-	
+
+	myShaderManager->DefaultShader->UseShader();
 	myShaderManager->DefaultShader->SetInt("shadowMap", 1);
 	
 	directionalShader->UseShader();

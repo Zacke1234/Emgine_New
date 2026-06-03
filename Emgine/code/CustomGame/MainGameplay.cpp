@@ -6,6 +6,8 @@ void MainGameplay::Initialise(GLFWwindow* getWindow, ObjectManager* myObjectMana
 {
 	
 	player = new Player(getWindow, myObjectManager, aMeshManager, aTextureManager, aColliderManager, aRigidbodyManager, aCamManager, aTime);
+	
+	iSwitch = new Interactable();
 	player->aShaderManager = aShaderManager;
 }
 

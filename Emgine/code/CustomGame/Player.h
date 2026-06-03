@@ -17,6 +17,7 @@ public:
 	Player(GLFWwindow* getWindow, ObjectManager* myObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager, CameraManager* aCamManager, Time* aTime);
 	ShaderManager* aShaderManager;
 	void InputMovement();
+	void SwitchPressed();
 private:
 	float movementSpeed;
 	float jumpHeight;

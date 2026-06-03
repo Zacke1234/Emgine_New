@@ -1,4 +1,4 @@
-﻿#version 430 core
+#version 430
 
 uniform vec3 viewPos;
 
