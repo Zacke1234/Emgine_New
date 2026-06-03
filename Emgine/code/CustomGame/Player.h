@@ -1,6 +1,3 @@
-#pragma once
-//#include "main.h"
-//#include <glfw3.h>
 
 #include <ObjectManager.h>
 #include <TextureManager.h>
@@ -17,9 +14,11 @@ public:
 	Player(GLFWwindow* getWindow, ObjectManager* myObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager, CameraManager* aCamManager, Time* aTime);
 	ShaderManager* aShaderManager;
 	void InputMovement();
+	void CheckGround();
+
 
 	
-private:
+
 	float movementSpeed;
 	float jumpHeight;
 	float dashStrength;
@@ -33,7 +32,7 @@ private:
 	Camera* playerCamera;
 	Object* player;
 	Time* getTime;
-
+	bool onGround;
 	
 };
 

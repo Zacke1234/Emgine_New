@@ -3,6 +3,7 @@
 
 
 
+
 using namespace std;
 
 
@@ -56,7 +57,11 @@ void Player::InputMovement()
 
 	if (playerController->SPACE_KEY(window))
 	{
-		player->Position += glm::vec3(0.0f, jumpHeight, 0.0f);
+		if (onGround)
+		{
+			player->Position += glm::vec3(0.0f, jumpHeight, 0.0f);
+		}
+		
 	}
 
 	if (playerController->ESCAPE_KEY(window))
@@ -74,13 +79,13 @@ void Player::InputMovement()
 	
 	getShader = aShaderManager->DefaultShader;
 	
-	playerCamera->myPosition = player->Position + glm::vec3(0,3, -0.2);
-	//player->Rotation.y = playerCamera->myDirection.y;
-	
-	//playerCamera->CameraUpdate();
-	//
-	//playerCamera->CameraSendToShader(getShader); // something wrong here
+	playerCamera->myPosition = player->Position + glm::vec3(0.0 ,3.0, -0.2);
 
+	
+}
+
+void Player::CheckGround()
+{
 	
 }
 

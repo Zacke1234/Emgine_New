@@ -4,7 +4,7 @@ Interactable::Interactable(ObjectManager* aObjectManager, MeshManager* aMeshMana
 {
 	switchtexture = aTextureManager->Find("wall");
 	switchMesh = aMeshManager->Create("well", "well.obj");
-	switchCollider = aColliderManager->Create("switchCollider");
+	switchCollider = aColliderManager->Create("Sphere");
 	switchObject = aObjectManager->Create("Switch", switchMesh, switchtexture, switchCollider, NULL);
 	
 }

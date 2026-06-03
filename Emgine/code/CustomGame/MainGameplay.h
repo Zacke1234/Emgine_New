@@ -15,7 +15,7 @@ public:
 	void Start();
 	void Run();
 
-protected:
+
 	Interactable* iSwitch;
 	Player* player;
 	GLFWwindow* getWindow;
