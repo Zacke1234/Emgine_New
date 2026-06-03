@@ -227,7 +227,7 @@ int main()
 	// Object Creation
 	Mesh* fish = myMeshManager->Create("Fish", "fish.obj");
 	//Mesh* quadplane = myMeshManager->Create("quadplane", "quadplane.obj");
-	Mesh* cube = myMeshManager->Create("plane", "plane.obj");
+	Mesh* cube = myMeshManager->Create("Cube", "cube.obj");
 
 	/*Mesh* vikinghouse = myMeshManager->Create("Viking_House", "Viking_House.obj");
 

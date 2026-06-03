@@ -32,3 +32,13 @@ Collider* ColliderManager::Create(std::string collName = "new_collider")
 	return myColl;
 }
 
+Collider* ColliderManager::Find(std::string collName)
+{
+	for (Collider* colliders : Collider::CollEntities)
+	{
+		if (colliders->name == collName)
+		{
+			return colliders;
+		}
+	}
+}

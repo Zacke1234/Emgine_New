@@ -1,7 +1,12 @@
 #include "Interactable.h"
 
-Interactable::Interactable()
+Interactable::Interactable(ObjectManager* aObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager)
 {
+	switchtexture = aTextureManager->Find("wall");
+	switchMesh = aMeshManager->Create("well", "well.obj");
+	switchCollider = aColliderManager->Create("switchCollider");
+	switchObject = aObjectManager->Create("Switch", switchMesh, switchtexture, switchCollider, NULL);
+	
 }
 
 bool Interactable::Collided(Collider* PlayerColl)

@@ -19,5 +19,6 @@ protected:
 	Interactable* iSwitch;
 	Player* player;
 	GLFWwindow* getWindow;
+	ColliderManager* theColliderManager;
 };
 

@@ -8,6 +8,6 @@ class ColliderManager
 {
 public:
 	Collider* Create(std::string collName);
-
+	Collider* Find(std::string collName);
 };
 

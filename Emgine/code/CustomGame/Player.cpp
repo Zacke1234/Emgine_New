@@ -59,13 +59,24 @@ void Player::InputMovement()
 		player->Position += glm::vec3(0.0f, jumpHeight, 0.0f);
 	}
 
+	if (playerController->ESCAPE_KEY(window))
+	{
+		playerCamera->TabbedIn = false;
+		playerController->glfwSetInputMode_normal(window);
+	}
+
+	if (playerController->TAB_KEY(window))
+	{
+		playerCamera->TabbedIn = true;
+		playerController->glfwSetInputMode_cursor(window);
+		playerController->glfwSetInputMode_disabled(window);
+	}
 	
 	getShader = aShaderManager->DefaultShader;
 	
 	playerCamera->myPosition = player->Position + glm::vec3(0,3, -0.2);
-	playerCamera->myDirection = player->Rotation + glm::normalize(glm::vec3(20, 20, 20));
+	//player->Rotation.y = playerCamera->myDirection.y;
 	
-
 	//playerCamera->CameraUpdate();
 	//
 	//playerCamera->CameraSendToShader(getShader); // something wrong here
@@ -73,7 +84,3 @@ void Player::InputMovement()
 	
 }
 
-void Player::SwitchPressed()
-{
-
-}
