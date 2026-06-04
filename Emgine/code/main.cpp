@@ -283,7 +283,7 @@ int main()
 
 	bool OnceCheck = false;
 	
-	myGameplay->Initialise(window, myObjectManager, myMeshManager, myTextureManager, MyColliderManager, myRigidbodyManager, myCameraManager, myTime, myShaderManager);
+	myGameplay->Initialise(window, myObjectManager, myMeshManager, myTextureManager, MyColliderManager, myRigidbodyManager, myCameraManager, myTime, myShaderManager, Phys);
 
 	// loops until user closes window
 	while (!glfwWindowShouldClose(window))

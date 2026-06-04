@@ -2,10 +2,10 @@
 
 
 
-void MainGameplay::Initialise(GLFWwindow* getWindow, ObjectManager* myObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager, CameraManager* aCamManager, Time* aTime, ShaderManager* aShaderManager) // runs once when initialising the game
+void MainGameplay::Initialise(GLFWwindow* getWindow, ObjectManager* myObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager, CameraManager* aCamManager, Time* aTime, ShaderManager* aShaderManager, Physics* aPhysics) // runs once when initialising the game
 {
 	theColliderManager = aColliderManager;
-	iSwitch = new Interactable(myObjectManager, aMeshManager, aTextureManager, aColliderManager);
+	iSwitch = new Interactable(myObjectManager, aMeshManager, aTextureManager, aColliderManager, aPhysics);
 	player = new Player(getWindow, myObjectManager, aMeshManager, aTextureManager, aColliderManager, aRigidbodyManager, aCamManager, aTime);
 	
 	
@@ -25,13 +25,10 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 
 	if (iSwitch->Collided(player->playerColl))
 	{
-		player->onGround = true;
-		std::cout << "collided" << std::endl;
-	}
-	else
-	{
 		
+		//std::cout << " switch collided" << std::endl;
 	}
+	
 	
 
 }

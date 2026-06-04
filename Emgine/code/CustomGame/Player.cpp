@@ -17,11 +17,11 @@ Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager
 	playerMesh = aMeshManager->Create("fish", "fish.obj");
 	defaultTex = aTextureManager->Create("default", "Default 1.png");
 
-	SphereCollider* PlayerColl = new SphereCollider(4.0f, glm::vec3(0,0,0));
+	SphereCollider* PlayerColl = new SphereCollider(1.5f, glm::vec3(0,0,0));
 	playerColl = aColliderManager->Create("Sphere", PlayerColl);
 	playerRB = aRigidbodyManager->Create("playerRB", 0.5, true, true);
 	playerController = new Controller();
-
+	
 	player = aObjectManager->Create("Player", playerMesh, defaultTex, playerColl, playerRB);
 	dashStrength = 1.0f;
 	jumpHeight = 4.0f;

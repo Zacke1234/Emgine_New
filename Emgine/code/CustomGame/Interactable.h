@@ -2,16 +2,18 @@
 #include <ObjectManager.h>
 #include <TextureManager.h>
 #include <ColliderManager.h>
+#include <Physics.h>
+
 #pragma once
 class Interactable
 {
 public:
-	Interactable(ObjectManager* aObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager);
+	Interactable(ObjectManager* aObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, Physics* aPhysics);
 
 	bool Collided(Collider* PlayerColl);
 
 	
-
+	Physics* switchPhysics;
 	Texture* switchtexture;
 	Mesh* switchMesh;
 	Collider* switchCollider;
