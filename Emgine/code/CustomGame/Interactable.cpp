@@ -4,7 +4,7 @@ Interactable::Interactable(ObjectManager* aObjectManager, MeshManager* aMeshMana
 {
 	switchtexture = aTextureManager->Find("wall");
 	switchMesh = aMeshManager->Create("well", "well.obj");
-	switchCollider = aColliderManager->Create("Sphere");
+	switchCollider = aColliderManager->Create("Cube");
 	switchObject = aObjectManager->Create("Switch", switchMesh, switchtexture, switchCollider, NULL);
 	
 }
@@ -13,10 +13,11 @@ bool Interactable::Collided(Collider* PlayerColl)
 {
 	if (PlayerColl != switchCollider)
 	{
-		return true;
+		return false;
 	}
 	else
 	{
-		return false;
+		return true;
+		
 	}
 }

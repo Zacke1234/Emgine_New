@@ -25,7 +25,12 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 
 	if (iSwitch->Collided(player->playerColl))
 	{
+		player->onGround = true;
 		std::cout << "collided" << std::endl;
+	}
+	else
+	{
+		
 	}
 	
 

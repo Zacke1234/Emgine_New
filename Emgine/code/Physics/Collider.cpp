@@ -45,10 +45,11 @@ void Collider::test()
 
 }
 
-SphereCollider::SphereCollider(const glm::vec3& aCenter, const float& aRadius, glm::vec3 Apos) : Collider()
+SphereCollider::SphereCollider(const float& aRadius, glm::vec3 Apos) : Collider()
 {
 	CollType = ColliderType::Sphere;
 
+	aCenter = glm::vec3(aRadius / 2, aRadius / 2, aRadius / 2);
 	center = aCenter;
 	radius = aRadius;
 
@@ -56,9 +57,10 @@ SphereCollider::SphereCollider(const glm::vec3& aCenter, const float& aRadius, g
 	std::cout << "SphereCollider";
 }
 
-CubeCollider::CubeCollider(const glm::vec3& aCenter, const glm::vec3& someExtents, glm::vec3 Apos) : Collider()
+CubeCollider::CubeCollider(const glm::vec3& someExtents, glm::vec3 Apos) : Collider()
 {
 	CollType = ColliderType::Cube;
+	aCenter = glm::vec3(someExtents.x / 2, someExtents.y / 2, someExtents.z / 2);
 	center = aCenter;
 	extents = someExtents;
 	position = Apos;

@@ -115,14 +115,13 @@ int init_camera() {
 }
 
 int init_colliders() {
-	glm::vec3 extents = { 1,1, 1 };
 	glm::vec3 extentsPlane = { 100, 0.5f,100 };
 	glm::vec3 center = { 0, 0,0 }; float radius = 0.5f; glm::vec3 pos = { 0,0,0 };
 	glm::vec3 scale = { 1,1,1 };
 
-	cubeColl = new CubeCollider(center, extents, pos);
-	planeColl = new CubeCollider(center, extentsPlane, pos);
-	sphereColl = new SphereCollider(center, radius, pos);
+	cubeColl = new CubeCollider(scale, pos);
+	planeColl = new CubeCollider(extentsPlane, pos);
+	sphereColl = new SphereCollider(radius, pos);
 	return 0;
 }
 

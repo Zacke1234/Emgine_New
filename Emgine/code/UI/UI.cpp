@@ -226,7 +226,7 @@ int classes() {
 	glm::vec3 center = { 0, 0,0 }; float radius = 0.5f; glm::vec3 pos = { 0,0,0 };
 	glm::vec3 scale = { 1,1,1 };
 	
-	cubeColl2 = new CubeCollider(center, extents, pos);
+	cubeColl2 = new CubeCollider(extents, pos);
 	//newLightData = new LightData();
 	shaderMang = new ShaderManager();
 	colliderMang = new ColliderManager();

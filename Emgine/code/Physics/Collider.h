@@ -62,16 +62,17 @@ struct Collision {
 class SphereCollider : public Collider{
 
 public:
-
-	SphereCollider(const glm::vec3& aCenter, const float& aRadius, glm::vec3 Apos);
+	glm::vec3 aCenter;
+	SphereCollider(const float& aRadius, glm::vec3 Apos);
 
 };
 
 class CubeCollider : public Collider
 {
 public:
+	glm::vec3 aCenter;
 	// glm::vec3 aScale
-	CubeCollider(const glm::vec3& aCenter, const glm::vec3& someExtents, glm::vec3 Apos);
+	CubeCollider(const glm::vec3& someExtents, glm::vec3 Apos);
 	
 };
 

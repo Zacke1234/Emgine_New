@@ -16,7 +16,9 @@ Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager
 	window = getWindow;
 	playerMesh = aMeshManager->Create("fish", "fish.obj");
 	defaultTex = aTextureManager->Create("default", "Default 1.png");
-	playerColl = aColliderManager->Create("Sphere");
+
+	SphereCollider* PlayerColl = new SphereCollider(4.0f, glm::vec3(0,0,0));
+	playerColl = aColliderManager->Create("Sphere", PlayerColl);
 	playerRB = aRigidbodyManager->Create("playerRB", 0.5, true, true);
 	playerController = new Controller();
 

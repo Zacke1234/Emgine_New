@@ -452,7 +452,7 @@ bool Physics::RayOBBIntersect(Ray& aRay, CubeCollider& aCube)
 	glm::vec3 localOrigin = glm::transpose(rotation) * (aRay.origin - center);
 	glm::vec3 localDirection = glm::transpose(rotation) * aRay.direction;
 
-	CubeCollider localCube = CubeCollider(glm::vec3(0, 0, 0), aCube.extents, aCube.position);
+	CubeCollider localCube = CubeCollider(aCube.extents, aCube.position);
 	localCube.extents = aCube.extents;
 
 	Ray localRay(localOrigin, localDirection);
