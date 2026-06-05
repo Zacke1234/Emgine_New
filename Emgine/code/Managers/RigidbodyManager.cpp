@@ -4,7 +4,7 @@ Rigidbody* RigidbodyManager::Create(std::string name, float gravity, bool isKine
 {
 	Rigidbody* rb = new Rigidbody();
 	rb->name = name;
-	rb->gravity = 0.9;
+	rb->gravity = gravity;
 	rb->isKinematic = isKinematic;
 	rb->hasGravity = true;
 	rb->mass = 1;

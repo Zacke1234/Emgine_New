@@ -20,6 +20,7 @@ public:
 	Interactable* iSwitch;
 	Player* player;
 	GLFWwindow* getWindow;
-	ColliderManager* theColliderManager;
+	ObjectManager* theObjectManager;
+	Object* Door;
 };
 

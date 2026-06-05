@@ -150,7 +150,7 @@ void Physics::ApplyGravity(	std::vector<Rigidbody*> rbs, float dt)
 	{
 		if (r->hasGravity && !r->isKinematic)
 		{
-			r->velocity += glm::vec3(0, -1.8, 0) * dt;
+			r->velocity += glm::vec3(0, -r->gravity, 0) * dt;
 			int b = 1;
 
 		}
