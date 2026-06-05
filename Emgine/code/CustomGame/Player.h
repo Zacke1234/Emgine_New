@@ -6,15 +6,15 @@
 #include <CameraManager.h>
 #include <Time/Time.h>
 #include <ShaderManager.h>
-
+#include <Physics.h>
 
 class Player
 {
 public:
-	Player(GLFWwindow* getWindow, ObjectManager* myObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager, CameraManager* aCamManager, Time* aTime);
+	Player(GLFWwindow* getWindow, ObjectManager* myObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager, CameraManager* aCamManager, Time* aTime, Physics* aPhysics);
 	ShaderManager* aShaderManager;
 	void InputMovement();
-	void CheckGround();
+	void CheckCollision();
 
 
 	
@@ -33,6 +33,9 @@ public:
 	Object* player;
 	Time* getTime;
 	bool onGround;
+	Physics* playerPhysics;
+
+	
 	
 };
 

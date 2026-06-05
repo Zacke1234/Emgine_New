@@ -8,7 +8,7 @@ using namespace std;
 
 
 
-Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager, CameraManager* aCamManager, Time* aTime)
+Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager, CameraManager* aCamManager, Time* aTime, Physics* aPhysics)
 {
 	
 	//getShader = aShaderManager->DefaultShader;
@@ -26,11 +26,13 @@ Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager
 	dashStrength = 1.0f;
 	jumpHeight = 4.0f;
 	movementSpeed = 1.0f;
-
+	player->Position = glm::vec3(-2, 4, -2);
 	playerCamera = aCamManager->Create("PlayerCamera", window);
 
 	playerCamera->fieldOfView = 80.0f;
 	playerCamera->sensitivity = 0.1f;
+
+	playerPhysics = aPhysics;
 	
 	// How to get a functional camera for the player?
 }
@@ -62,6 +64,7 @@ void Player::InputMovement()
 		if (onGround)
 		{
 			player->Position += glm::vec3(0.0f, jumpHeight, 0.0f);
+			onGround = false;
 		}
 		
 	}
@@ -86,8 +89,22 @@ void Player::InputMovement()
 	
 }
 
-void Player::CheckGround()
+void Player::CheckCollision()
 {
-	
+	for (auto& colls : Collider::CollEntities)
+	{
+		if (colls != playerColl)
+		{
+			if (playerPhysics->BoolCheckIntersect(colls, playerColl))
+			{
+				onGround = true;
+
+			}
+			
+		}
+		
+	}
+
+
 }
 

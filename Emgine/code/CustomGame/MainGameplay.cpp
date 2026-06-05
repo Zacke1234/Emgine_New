@@ -6,7 +6,7 @@ void MainGameplay::Initialise(GLFWwindow* getWindow, ObjectManager* myObjectMana
 {
 	theColliderManager = aColliderManager;
 	iSwitch = new Interactable(myObjectManager, aMeshManager, aTextureManager, aColliderManager, aPhysics);
-	player = new Player(getWindow, myObjectManager, aMeshManager, aTextureManager, aColliderManager, aRigidbodyManager, aCamManager, aTime);
+	player = new Player(getWindow, myObjectManager, aMeshManager, aTextureManager, aColliderManager, aRigidbodyManager, aCamManager, aTime, aPhysics);
 	
 	
 	player->aShaderManager = aShaderManager;
@@ -22,6 +22,8 @@ void MainGameplay::Start() // runs once in the update loop
 void MainGameplay::Run() // repeatedly runs in the update loop
 {
 	player->InputMovement();
+
+	player->CheckCollision();
 
 	if (iSwitch->Collided(player->playerColl))
 	{
