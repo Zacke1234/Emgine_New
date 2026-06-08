@@ -137,13 +137,14 @@ void Physics::ApplyVelocity(std::vector<Rigidbody*> rbs, float dt)
 			pos += r->velocity * dt;
 			r->position = pos;
 			r->transform[3] = glm::vec4(pos, 1.0f);
+			int b = 0;
 		}
 	}
 
 
 }
 
-void Physics::ApplyGravity(	std::vector<Rigidbody*> rbs, float dt)
+void Physics::ApplyGravity(std::vector<Rigidbody*> rbs, float dt)
 {
 	
 	for (Rigidbody* r : rbs)
@@ -151,8 +152,7 @@ void Physics::ApplyGravity(	std::vector<Rigidbody*> rbs, float dt)
 		if (r->hasGravity && !r->isKinematic)
 		{
 			r->velocity += glm::vec3(0, -r->gravity, 0) * dt;
-			int b = 1;
-
+			int b = 0;
 		}
 	}
 }
@@ -165,12 +165,12 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 		{
 			for (Collision* c : collisions)
 			{
-				if (c->col1)
+				if (c->col1 && r->mass > 1)
 				{
 					r->velocity *= 0;
 				}
 
-				if (c->col2)
+				if (c->col2 && r->mass > 1)
 				{
 					r->velocity *= 0;
 				}

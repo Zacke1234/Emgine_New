@@ -30,7 +30,7 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 
 	player->CheckCollision();
 
-	if (iSwitch->Collided(player->playerColl))
+	if (iSwitch->Collided(player->playerColl))  
 	{
 		
 		//std::cout << " switch collided" << std::endl;

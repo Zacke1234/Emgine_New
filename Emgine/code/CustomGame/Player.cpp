@@ -43,7 +43,7 @@ void Player::InputMovement()
 	{
 		playerRB->velocity += glm::vec3(0.0f, 0.0f, movementSpeed) * getTime->Deltatime;
 	}
-
+	 
 	if (playerController->S_KEY(window))
 	{
 		player->Position += glm::vec3(0.0f, 0.0f, -movementSpeed) * getTime->Deltatime;
@@ -51,19 +51,19 @@ void Player::InputMovement()
 
 	if (playerController->D_KEY(window))
 	{
-		player->Position += glm::vec3(movementSpeed, 0.0f, 0.0f);
+		player->Position += glm::vec3(movementSpeed, 0.0f, 0.0f) * getTime->Deltatime;
 	}
 
 	if (playerController->A_KEY(window))
 	{
-		player->Position += glm::vec3(-movementSpeed, 0.0f, 0.0f);
+		player->Position += glm::vec3(-movementSpeed, 0.0f, 0.0f) * getTime->Deltatime;
 	}
 
 	if (playerController->SPACE_KEY(window))
 	{
 		if (onGround)
 		{
-			player->Position += glm::vec3(0.0f, jumpHeight, 0.0f);
+			player->Position += glm::vec3(0.0f, jumpHeight, 0.0f); // worst jump in history
 			onGround = false;
 		}
 		

@@ -7,7 +7,9 @@ Collider* ColliderManager::Create(std::string collName = "new_collider", Collide
 	
 	if (aCollider == NULL)
 	{
+		
 		aCollider = new Collider();
+		aCollider->autoColliderSize = true;
 		if (collName == "Cube")
 		{
 

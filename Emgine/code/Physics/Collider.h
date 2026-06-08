@@ -24,7 +24,7 @@ public:
 	};
 
 	// Determines if the collider will automatically scale with the object
-	bool autoColliderSize = true;
+	bool autoColliderSize = false;
 
 	std::string name;
 	
