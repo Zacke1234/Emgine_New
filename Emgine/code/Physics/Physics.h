@@ -4,6 +4,8 @@
 #include "Rigidbody.h"
 #include <Object.h>
 #include "Time/Time.h"
+#include "math.h"
+
 
 
 namespace Math {
@@ -24,6 +26,7 @@ public:
 
 	void ApplyVelocity(std::vector<Rigidbody*> rbs, float dt);
 	void ApplyGravity(std::vector<Rigidbody*> rbs, float dt);
+	void ApplyForce(std::vector<Rigidbody*> rbs, float dt);
 
 	void HandleCollisions(std::vector<Collision*> collisions, std::vector<Rigidbody*> rbs);
 	
@@ -50,6 +53,11 @@ public:
 	bool RaySphereIntersect(Ray& aRay, SphereCollider aSphere);
 
 	bool RayOBBIntersect(Ray& aRay, CubeCollider& aCube);
+
+	float float_lerp(float a, float b, float t)
+	{
+		return a + t * (b - a);
+	}
 	
 	bool Testgravity = true;
 

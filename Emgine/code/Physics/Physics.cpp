@@ -50,6 +50,8 @@ void Physics::Simulate(const float& aDeltaTime, Time* physicsTime)
 
 		ApplyVelocity(rigidbodies, aDeltaTime);
 
+		ApplyForce(rigidbodies, aDeltaTime);
+
 		UpdateVisuals(physicsTime);
 	
 
@@ -71,6 +73,7 @@ void Physics::UpdateColliderProperties(std::vector<Collider*> colliders)
 				o->myCollider->transform = o->trans;
 				o->myCollider->center = glm::vec3(0.5f * o->Scale.x, 0.5f * o->Scale.y, 0.5f * o->Scale.z);
 				std::cout << "";
+				
 			}
 			
 		}
@@ -152,8 +155,24 @@ void Physics::ApplyGravity(std::vector<Rigidbody*> rbs, float dt)
 		if (r->hasGravity && !r->isKinematic)
 		{
 			r->velocity += glm::vec3(0, -r->gravity, 0) * dt;
+
+		}
+	}
+}
+
+void Physics::ApplyForce(std::vector<Rigidbody*> rbs, float dt)
+{
+	for (Rigidbody* r : rbs)
+	{
+		if (r->force != glm::vec3(0))
+		{
+			glm::vec3 pos = glm::vec3(r->transform[3]);
+			pos += (r->force - 1.1f) * dt;
+			r->position = pos;
+			r->transform[3] = glm::vec4(pos, 1.0f);
 			int b = 0;
 		}
+		
 	}
 }
 
@@ -165,14 +184,14 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 		{
 			for (Collision* c : collisions)
 			{
-				if (c->col1 && r->mass > 1)
+				if (c->col1)
 				{
-					r->velocity *= 0;
+					r->velocity.y *= 0;
 				}
 
-				if (c->col2 && r->mass > 1)
+				if (c->col2)
 				{
-					r->velocity *= 0;
+					r->velocity.y *= 0;
 				}
 
 				//c.col1->transform 

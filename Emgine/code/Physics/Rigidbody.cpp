@@ -17,6 +17,7 @@ Rigidbody::Rigidbody()
 	hasGravity = true;
 	velocity = glm::vec3(0, 0, 0);
 	mass = 0.0f;
+	force = glm::vec3(0, 0, 0);
 
 }
 

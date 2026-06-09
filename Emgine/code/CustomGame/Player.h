@@ -20,7 +20,7 @@ public:
 	
 
 	float movementSpeed;
-	float jumpHeight;
+	float jumpStrength;
 	float dashStrength;
 	GLFWwindow* window;
 	Mesh* playerMesh;

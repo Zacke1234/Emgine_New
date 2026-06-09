@@ -24,7 +24,7 @@ Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager
 	
 	player = aObjectManager->Create("Player", playerMesh, defaultTex, playerColl, playerRB);
 	dashStrength = 1.0f;
-	jumpHeight = 4.0f;
+	jumpStrength = 4.0f;
 	movementSpeed = 5.0f;
 	player->Position = glm::vec3(-2, 4, -2);
 	playerCamera = aCamManager->Create("PlayerCamera", window);
@@ -33,6 +33,9 @@ Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager
 	playerCamera->sensitivity = 0.1f;
 
 	playerPhysics = aPhysics;
+
+	playerController->glfwSetInputMode_cursor(window);
+	playerController->glfwSetInputMode_disabled(window);
 	
 	// How to get a functional camera for the player?
 }
@@ -41,29 +44,29 @@ void Player::InputMovement()
 {
 	if(playerController->W_KEY(window))
 	{
-		playerRB->velocity += glm::vec3(0.0f, 0.0f, movementSpeed) * getTime->Deltatime;
+		playerRB->force += glm::vec3(0.0f, 0.0f, movementSpeed) * getTime->Deltatime;
 	}
 	 
 	if (playerController->S_KEY(window))
 	{
-		player->Position += glm::vec3(0.0f, 0.0f, -movementSpeed) * getTime->Deltatime;
+		playerRB->force += glm::vec3(0.0f, 0.0f, -movementSpeed) * getTime->Deltatime;
 	}
 
 	if (playerController->D_KEY(window))
 	{
-		player->Position += glm::vec3(movementSpeed, 0.0f, 0.0f) * getTime->Deltatime;
+		playerRB->force += glm::vec3(movementSpeed, 0.0f, 0.0f) * getTime->Deltatime;
 	}
 
 	if (playerController->A_KEY(window))
 	{
-		player->Position += glm::vec3(-movementSpeed, 0.0f, 0.0f) * getTime->Deltatime;
+		playerRB->force += glm::vec3(-movementSpeed, 0.0f, 0.0f) * getTime->Deltatime;
 	}
 
 	if (playerController->SPACE_KEY(window))
 	{
 		if (onGround)
 		{
-			player->Position += glm::vec3(0.0f, jumpHeight, 0.0f); // worst jump in history
+			playerRB->force += glm::vec3(0.0f, jumpStrength, 0.0f); // worst jump in history
 			onGround = false;
 		}
 		

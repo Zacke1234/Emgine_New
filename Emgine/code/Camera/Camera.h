@@ -82,5 +82,6 @@ public:
 	void ProcessInput(float& deltatime);
 
 	void mouse_callback(double xpos, double ypos);
+
 };
 
