@@ -219,7 +219,7 @@ LightData* LightingManager::Destroy(Shader* aShader, Object* obj)
 	}
 	
 	LightObject::LightEntities.erase(LightObject::LightEntities.begin() + LightObject::SelectedLightEntity);
-
+	delete(obj);
 	return nullptr;
 }
 

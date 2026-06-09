@@ -27,6 +27,7 @@ public:
 	Object(std::string _namn, Mesh* Mesh, Texture* aTexture, Collider* coll, Rigidbody* rb);
 
 	static std::vector<Object*> Entities;
+	unsigned int ObjectID = 0;
 	static unsigned int SelectedEntity;
 
 	glm::vec3 Position;
@@ -68,6 +69,7 @@ public:
 	void Draw(Shader* myShader);
 	void DrawObject(Shader* myShader);
 	void UpdateTransform(Shader* myShader);
+	
 
 	Mesh* CreateMesh(Mesh* mesh);
 

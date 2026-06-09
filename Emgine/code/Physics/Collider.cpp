@@ -40,9 +40,8 @@ Collider::Collider()
 
 }
 
-void Collider::test()
+void Collider::test() // polymorphic class type
 {
-
 }
 
 SphereCollider::SphereCollider(const float& aRadius, glm::vec3 Apos) : Collider()
@@ -54,6 +53,7 @@ SphereCollider::SphereCollider(const float& aRadius, glm::vec3 Apos) : Collider(
 	radius = aRadius;
 
 	position = Apos;
+
 	std::cout << "SphereCollider";
 }
 
@@ -64,8 +64,9 @@ CubeCollider::CubeCollider(const glm::vec3& someExtents, glm::vec3 Apos) : Colli
 	center = aCenter;
 	extents = someExtents;
 	position = Apos;
+	
 	//scale = aScale;
-	std::cout << "CubeCollider";
+	
 }
 
 void Collider::SetTheCollision()

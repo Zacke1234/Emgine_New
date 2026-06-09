@@ -13,11 +13,11 @@ class Collider
 {
 public: 
 	Collider();
-	virtual void test();
+	virtual void test(); // polymorphic
 	//virtual ~Collider() {};
 
 	template<typename T>
-	bool isOf() { return (dynamic_cast<T*>(this) != NULL); }; // do i need multiple of these in the structs?
+	bool isOf() { return (dynamic_cast<T*>(this) != NULL); };
 
 	enum ColliderType {
 		Null = 0, Sphere, Cube, Raycast

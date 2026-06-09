@@ -167,7 +167,7 @@ void Physics::ApplyForce(std::vector<Rigidbody*> rbs, float dt)
 		if (r->force != glm::vec3(0))
 		{
 			glm::vec3 pos = glm::vec3(r->transform[3]);
-			pos += (r->force - 1.1f) * dt;
+			pos += r->force * dt;
 			r->position = pos;
 			r->transform[3] = glm::vec4(pos, 1.0f);
 			int b = 0;
@@ -186,12 +186,12 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 			{
 				if (c->col1)
 				{
-					r->velocity.y *= 0;
+					r->velocity *= 0;
 				}
 
 				if (c->col2)
 				{
-					r->velocity.y *= 0;
+					r->velocity *= 0;
 				}
 
 				//c.col1->transform 

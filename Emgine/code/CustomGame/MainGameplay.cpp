@@ -8,10 +8,14 @@ void MainGameplay::Initialise(GLFWwindow* getWindow, ObjectManager* myObjectMana
 	iSwitch = new Interactable(myObjectManager, aMeshManager, aTextureManager, aColliderManager, aPhysics);
 	player = new Player(getWindow, myObjectManager, aMeshManager, aTextureManager, aColliderManager, aRigidbodyManager, aCamManager, aTime, aPhysics);
 
-	CubeCollider* cubeColl = new CubeCollider(glm::vec3(1,1,1), glm::vec3(0));
+	CubeCollider* doorColl = new CubeCollider(glm::vec3(1,1,1), glm::vec3(0));
 	Texture* wall = aTextureManager->Create("wall", "wall.jpg");
 	Mesh* cube = aMeshManager->Create("Cube", "cube.obj");
-	Door = myObjectManager->Create("Door", cube, wall, cubeColl, NULL);
+	aColliderManager->Create("doorColl", doorColl);
+	Door = myObjectManager->Create("Door", cube, wall, doorColl, NULL);
+	Door->Position = glm::vec3(10, 0, 0);
+	Door->Scale = glm::vec3(2, 6, 0.5);
+
 	
 	theObjectManager = myObjectManager;
 	player->aShaderManager = aShaderManager;
@@ -32,7 +36,7 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 
 	if (iSwitch->Collided(player->playerColl))  
 	{
-		
+		theObjectManager->Destroy(Door);
 		//std::cout << " switch collided" << std::endl;
 	}
 	

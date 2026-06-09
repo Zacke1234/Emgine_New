@@ -5,9 +5,12 @@ Interactable::Interactable(ObjectManager* aObjectManager, MeshManager* aMeshMana
 	switchtexture = aTextureManager->Find("wall");
 	switchMesh = aMeshManager->Create("well", "well.obj");
 	switchCollider = aColliderManager->Create("Cube");
+	aColliderManager->Create("switchCollider", switchCollider);
 	switchObject = aObjectManager->Create("Switch", switchMesh, switchtexture, switchCollider, NULL);
 	switchPhysics = aPhysics;
-	switchObject->Position = glm::vec3(4.0f, 1.0f, 4.0f);
+	switchObject->Position = glm::vec3(4.0f, 10.0f, 8.0f);
+	switchCollider->position = switchObject->Position;
+	switchCollider->transform = switchObject->trans;
 }
 
 bool Interactable::Collided(Collider* PlayerColl)

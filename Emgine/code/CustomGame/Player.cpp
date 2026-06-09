@@ -18,7 +18,7 @@ Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager
 	defaultTex = aTextureManager->Create("default", "Default 1.png");
 
 	SphereCollider* PlayerColl = new SphereCollider(1.5f, glm::vec3(0,0,0));
-	playerColl = aColliderManager->Create("Sphere", PlayerColl);
+	playerColl = aColliderManager->Create("PlayerSphere", PlayerColl);
 	playerRB = aRigidbodyManager->Create("playerRB", 1.5, true, true);
 	playerController = new Controller();
 	
@@ -44,22 +44,23 @@ void Player::InputMovement()
 {
 	if(playerController->W_KEY(window))
 	{
-		playerRB->force += glm::vec3(0.0f, 0.0f, movementSpeed) * getTime->Deltatime;
+		// playerCamera->myDirection*
+		playerRB->force = glm::vec3(0.0f, 0.0f, movementSpeed) * getTime->Deltatime;
 	}
 	 
 	if (playerController->S_KEY(window))
 	{
-		playerRB->force += glm::vec3(0.0f, 0.0f, -movementSpeed) * getTime->Deltatime;
+		playerRB->force = glm::vec3(0.0f, 0.0f, -movementSpeed) * getTime->Deltatime;
 	}
 
 	if (playerController->D_KEY(window))
 	{
-		playerRB->force += glm::vec3(movementSpeed, 0.0f, 0.0f) * getTime->Deltatime;
+		playerRB->force = glm::vec3(movementSpeed, 0.0f, 0.0f) * getTime->Deltatime;
 	}
 
 	if (playerController->A_KEY(window))
 	{
-		playerRB->force += glm::vec3(-movementSpeed, 0.0f, 0.0f) * getTime->Deltatime;
+		playerRB->force = glm::vec3(-movementSpeed, 0.0f, 0.0f) * getTime->Deltatime;
 	}
 
 	if (playerController->SPACE_KEY(window))

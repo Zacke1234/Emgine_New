@@ -441,8 +441,15 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 	{
 		if (Object::Entities.size() > 0) {
 			
+			if (Object::Entities[Object::SelectedEntity]->ObjType == 1)
+			{
+				objectmanager->DestroyLight(Object::Entities[Object::SelectedEntity], shader->DefaultShader, *lightMang);
+			}
+			else
+			{
+				objectmanager->Destroy(Object::Entities[Object::SelectedEntity]);
+			}
 			
-			objectmanager->Destroy(Object::Entities[Object::SelectedEntity], shader->DefaultShader, *lightMang);
 			xPos = Object::Entities[Object::SelectedEntity]->Position.x; // This fixed one of the problems with deleting objects
 			yPos = Object::Entities[Object::SelectedEntity]->Position.y;
 			zPos = Object::Entities[Object::SelectedEntity]->Position.z;

@@ -15,15 +15,17 @@ unsigned int Object::SelectedEntity;
 int LightObject::SelectedLightEntity;
 vector<LightObject*> LightObject::LightEntities;
 vector<CameraObject*> CameraObject::CameraEntities;
+
 // Objects should hold all my meshes and lights
 // Meshes should hold meshses like teapots, fishes and cubes
 // Lighting should have lights, like directional, pointlight and spotlight etc (is that lightdata?)
 
-
+int ID = 0;
 
 Object::Object(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTexture = NULL, Collider* aCollider = NULL, Rigidbody* rb = NULL)
 {
-	
+	ID++;
+	ObjectID+= ID;
 	ObjType = Type_Mesh;
 		// Name
 	if (_namn != "new_object")
@@ -269,10 +271,12 @@ void Object::UpdateTransform(Shader* myShader)
 	IsTransformValid = true; 
 }
 
+
+
 void Object::DrawObject(Shader* myShader)
 {
 
-	if (!myMesh)
+	if (!myMesh || !this)
 	{
 		//std::cout << "No mesh to draw in Object: " << namn << "\n";
 		return;
@@ -283,7 +287,6 @@ void Object::DrawObject(Shader* myShader)
 		UpdateTransform(myShader);
 	}
 	
-
 	GL_CHECK(glActiveTexture(GL_TEXTURE0)); // Activate the texture unit before binding texture
 	GL_CHECK(glBindTexture(GL_TEXTURE_2D, myTexture->TextureObject));
 

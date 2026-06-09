@@ -10,7 +10,9 @@ public:
 
 	virtual Object* Create(std::string aName, Mesh* Mesh, Texture* aTexture, Collider* aCollider, Rigidbody* rb) ;
 
-	void Destroy(Object* obj, Shader* aShader, LightingManager aLightManager);
+	void Destroy(Object* obj);
+
+	void DestroyLight(Object* obj, Shader* aShader, LightingManager aLightManager);
 	
 	virtual LightObject* CreateLight(std::string aName, Mesh* Mesh, Texture* aTexture, Collider* aCollider, LightData* lightData, Rigidbody* rb);
 
