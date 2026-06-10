@@ -64,6 +64,50 @@ bool Controller::D_KEY(GLFWwindow* window)
 	return false;
 }
 
+bool Controller::W_KEY_RELEASE(GLFWwindow* window)
+{
+	
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_RELEASE|| glfwGetKey(window, GLFW_KEY_UP) == GLFW_RELEASE)
+	{
+		return true;
+
+	}
+	return false;
+}
+
+bool Controller::A_KEY_RELEASE(GLFWwindow* window)
+{
+	
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_RELEASE || glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_RELEASE)
+	{
+		return true;
+
+	}
+	return false;
+}
+
+bool Controller::S_KEY_RELEASE(GLFWwindow* window)
+{
+	
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_RELEASE || glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_RELEASE)
+	{
+		return true;
+
+	}
+	return false;
+}
+
+bool Controller::D_KEY_RELEASE(GLFWwindow* window)
+{
+	
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_RELEASE || glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_RELEASE)
+	{
+		return true;
+		
+	}
+	return false;
+}
+
 bool Controller::SPACE_KEY(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
@@ -133,3 +177,12 @@ void Controller::glfwSetInputMode_unavailable(GLFWwindow* window)
 {
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_UNAVAILABLE);
 }
+
+void Controller::Controller_glfwSetKeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	GLFWkeyfun getkey();
+	glfwSetKeyCallback(window, getkey());
+	
+}
+
+

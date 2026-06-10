@@ -46,6 +46,8 @@ void Physics::Simulate(const float& aDeltaTime, Time* physicsTime)
 		//std::vector<Rigidbody> rigidbodies = 
 		ApplyGravity(rigidbodies, aDeltaTime);
 
+		CalculateDirection();
+
 		HandleCollisions(collisions, rigidbodies);
 
 		ApplyVelocity(rigidbodies, aDeltaTime);
@@ -170,7 +172,8 @@ void Physics::ApplyForce(std::vector<Rigidbody*> rbs, float dt)
 			pos += r->force * dt;
 			r->position = pos;
 			r->transform[3] = glm::vec4(pos, 1.0f);
-			int b = 0;
+			
+			
 		}
 		
 	}
@@ -202,6 +205,30 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 
 	}
 	
+}
+glm::vec3 PhysicsUp = glm::vec3(0.0f, 1.0f, 0.0f);
+void Physics::CalculateDirection()
+{
+	
+	for (auto& oRb : Object::Entities)
+	{
+		if (oRb->myRigidbody != NULL)
+		{
+			oRb->myRigidbody->direction = glm::normalize(oRb->Rotation);
+
+			oRb->myRigidbody->direction.y = 0;
+
+			oRb->myRigidbody->up = glm::cross(oRb->myRigidbody->direction, oRb->myRigidbody->right);
+
+			oRb->myRigidbody->right = glm::normalize(glm::cross(PhysicsUp, oRb->myRigidbody->direction));
+
+			oRb->myRigidbody->forward = glm::lookAt(oRb->Position, oRb->Position + oRb->myRigidbody->direction, oRb->myRigidbody->up);
+		}
+		
+
+		
+		int b = 0;
+	}
 }
 
 

@@ -22,5 +22,6 @@ public:
 	GLFWwindow* getWindow;
 	ObjectManager* theObjectManager;
 	Object* Door;
+	Levels* FirstLevels;
 };
 

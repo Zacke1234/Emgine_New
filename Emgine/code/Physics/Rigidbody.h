@@ -1,6 +1,6 @@
 #pragma once
 #include <Collider.h>
-class Rigidbody
+class Rigidbody 
 {
 public:
 	Rigidbody();
@@ -8,7 +8,7 @@ public:
 	std::string name;
 
 	glm::vec3 velocity;
-	glm::vec3 force;
+	
 	glm::vec3 position;
 	float friction;
 	float mass;
@@ -24,16 +24,13 @@ public:
 	glm::mat4 transform;
 
 	
+	
+	glm::vec3 direction;
+	glm::vec3 up;
+	glm::vec3 right;
+	glm::mat4 forward;
+	glm::vec3 force;
+	
 };
 
-struct Force
-{
-	Force();
-	
-	
-	glm::vec3 origin;
-	glm::vec3 direction;
-	float restitution; 
-	float LinearDrag; 
-};
 

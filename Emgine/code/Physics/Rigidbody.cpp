@@ -17,14 +17,12 @@ Rigidbody::Rigidbody()
 	hasGravity = true;
 	velocity = glm::vec3(0, 0, 0);
 	mass = 0.0f;
+	
 	force = glm::vec3(0, 0, 0);
-
+	up = glm::vec3(0.0f, 1.0f, 0.0f);
+	right = glm::vec3(0.0f);
+	direction = glm::vec3(0.0f, 0.0f, 0.0f);
+	
+	
 }
 
-Force::Force()
-{
-	origin = glm::vec3(0, 0, 0);
-	direction = glm::vec3(0, 0, 0);
-	LinearDrag = 0;
-	restitution = 0;
-}

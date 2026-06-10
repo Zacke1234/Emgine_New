@@ -15,7 +15,7 @@ void MainGameplay::Initialise(GLFWwindow* getWindow, ObjectManager* myObjectMana
 	Door = myObjectManager->Create("Door", cube, wall, doorColl, NULL);
 	Door->Position = glm::vec3(10, 0, 0);
 	Door->Scale = glm::vec3(2, 6, 0.5);
-
+	FirstLevels = new Levels();
 	
 	theObjectManager = myObjectManager;
 	player->aShaderManager = aShaderManager;

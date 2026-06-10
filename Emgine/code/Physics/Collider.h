@@ -16,6 +16,8 @@ public:
 	virtual void test(); // polymorphic
 	//virtual ~Collider() {};
 
+	std::string name;
+
 	template<typename T>
 	bool isOf() { return (dynamic_cast<T*>(this) != NULL); };
 
@@ -26,7 +28,7 @@ public:
 	// Determines if the collider will automatically scale with the object
 	bool autoColliderSize = false;
 
-	std::string name;
+	
 	
 	glm::vec3 extents;
 	

@@ -30,6 +30,7 @@ public:
 
 	void HandleCollisions(std::vector<Collision*> collisions, std::vector<Rigidbody*> rbs);
 	
+	void CalculateDirection();
 
 	void UpdateVisuals(Time* physicsTime);
 

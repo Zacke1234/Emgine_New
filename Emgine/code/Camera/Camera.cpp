@@ -16,7 +16,7 @@ Camera::Camera(GLFWwindow* getWindow, std::string aName)
 	myDirection = glm::vec3(0.0f, 0.0f, -1.0f);
 	myPosition = glm::vec3(0.0f, 0.0f, 10.0f);
 	myFront = glm::vec3(1.0f, 0.0f, 0.0f);
-	myUp = glm::vec3(0.0f, -1.0f, 0.0f);
+	myUp = glm::vec3(0.0f, 1.0f, 0.0f);
 	
 	myWidth = 800.0f;
 	myHeight = 600.0f;
@@ -55,7 +55,7 @@ void Camera::CameraUpdate() // the mouse cursor is still not good, when you tab 
 	projection = glm::perspective(glm::radians(fieldOfView), myWidth / myHeight, 0.1f, cameraViewRange);
 
 	myRight = glm::normalize(glm::cross(WorldUp, myDirection));
-	myUp = glm::cross(myDirection, myRight);
+	
 	myView = glm::lookAt(myPosition, myPosition + myDirection, myUp);
 
 	mouse_callback(lastX, lastY);
