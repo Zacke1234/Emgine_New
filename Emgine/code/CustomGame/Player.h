@@ -22,7 +22,7 @@ public:
 	float movementSpeed;
 	float jumpStrength;
 	float dashStrength;
-	GLFWwindow* window;
+	
 	Mesh* playerMesh;
 	Texture* defaultTex;
 	Collider* playerColl;
@@ -35,8 +35,8 @@ public:
 	bool onGround;
 	Physics* playerPhysics;
 
-
-	
+private:
+	GLFWwindow* window;
 	
 };
 

@@ -4,26 +4,13 @@
 Controller::Controller()
 {
 	//window = getWindow;
-	//if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-	//{
-	//	myPosition -= cameraSpeed * myDirection;
-	//}
-	//if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-	//{
-	//	
-	//	myPosition -= glm::normalize(glm::cross(myDirection, myUp)) * cameraSpeed;
-
-	//}
-	//if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-	//{
-	//	myPosition += glm::normalize(glm::cross(myDirection, myUp)) * cameraSpeed;
-	//	
+	
 	//}
 }
 
 bool Controller::W_KEY(GLFWwindow* window)
 {
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
 		
 		return true;
@@ -35,31 +22,31 @@ bool Controller::W_KEY(GLFWwindow* window)
 bool Controller::A_KEY(GLFWwindow* window)
 {
 	
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
 
 		return true;
-		//myPosition += cameraSpeed * myDirection;
+		
 	}
 	return false;
 }
 
 bool Controller::S_KEY(GLFWwindow* window)
 {
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
 		return true;
-		//myPosition += cameraSpeed * myDirection;
+		
 	}
 	return false;
 }
 
 bool Controller::D_KEY(GLFWwindow* window)
 {
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
 		return true;
-		//myPosition += cameraSpeed * myDirection;
+		
 	}
 	return false;
 }
@@ -67,7 +54,7 @@ bool Controller::D_KEY(GLFWwindow* window)
 bool Controller::W_KEY_RELEASE(GLFWwindow* window)
 {
 	
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_RELEASE|| glfwGetKey(window, GLFW_KEY_UP) == GLFW_RELEASE)
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_RELEASE)
 	{
 		return true;
 
@@ -78,7 +65,7 @@ bool Controller::W_KEY_RELEASE(GLFWwindow* window)
 bool Controller::A_KEY_RELEASE(GLFWwindow* window)
 {
 	
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_RELEASE || glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_RELEASE)
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_RELEASE)
 	{
 		return true;
 
@@ -89,7 +76,7 @@ bool Controller::A_KEY_RELEASE(GLFWwindow* window)
 bool Controller::S_KEY_RELEASE(GLFWwindow* window)
 {
 	
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_RELEASE || glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_RELEASE)
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_RELEASE)
 	{
 		return true;
 
@@ -100,7 +87,7 @@ bool Controller::S_KEY_RELEASE(GLFWwindow* window)
 bool Controller::D_KEY_RELEASE(GLFWwindow* window)
 {
 	
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_RELEASE || glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_RELEASE)
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_RELEASE)
 	{
 		return true;
 		
@@ -178,10 +165,9 @@ void Controller::glfwSetInputMode_unavailable(GLFWwindow* window)
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_UNAVAILABLE);
 }
 
-void Controller::Controller_glfwSetKeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods)
+void Controller::Controller_glfwSetKeyCallBack(GLFWwindow* window)
 {
-	GLFWkeyfun getkey();
-	glfwSetKeyCallback(window, getkey());
+	
 	
 }
 

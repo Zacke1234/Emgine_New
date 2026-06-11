@@ -24,7 +24,7 @@ public:
 	void glfwSetInputMode_disabled(GLFWwindow* window);
 	void glfwSetInputMode_unavailable(GLFWwindow* window);
 
-	void Controller_glfwSetKeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods);
+	void Controller_glfwSetKeyCallBack(GLFWwindow* window);
 
 	void Callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 	

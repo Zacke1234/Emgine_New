@@ -18,7 +18,7 @@ Rigidbody::Rigidbody()
 	velocity = glm::vec3(0, 0, 0);
 	mass = 0.0f;
 	
-	force = glm::vec3(0, 0, 0);
+	force = glm::vec3(0.0f, 0.0f, 0.0f);
 	up = glm::vec3(0.0f, 1.0f, 0.0f);
 	right = glm::vec3(0.0f);
 	direction = glm::vec3(0.0f, 0.0f, 0.0f);
