@@ -73,7 +73,7 @@ void Physics::UpdateColliderProperties(std::vector<Collider*> colliders)
 			{
 				o->myCollider->extents = o->Scale;
 				o->myCollider->transform = o->trans;
-				o->myCollider->center = glm::vec3(0.5f * o->Scale.x, 0.5f * o->Scale.y, 0.5f * o->Scale.z);
+				o->myCollider->center = glm::vec3(o->Scale.x / 2, o->Scale.y / 2, o->Scale.z / 2);
 				std::cout << "";
 				
 			}
@@ -233,7 +233,7 @@ void Physics::CalculateDirection()
 
 
 bool Physics::BoolCheckIntersect(Collider* c1, Collider* c2)
-{	
+	{	
 	//CheckIntersect(c1, c2);
 	if (c1->isOf<SphereCollider>() && c2->isOf<SphereCollider>())
 	{
@@ -253,17 +253,6 @@ bool Physics::BoolCheckIntersect(Collider* c1, Collider* c2)
 		return CubeSphereIntersect(*cube1, *sphere1);
 		
 		
-	}
-
-	if (c1->isOf<SphereCollider>() && c2->isOf<CubeCollider>())
-	{
-		//std::cout << "check with cubes & spheres intersect";
-		SphereCollider* sphere1 = dynamic_cast<SphereCollider*>(c1);
-		CubeCollider* cube1 = dynamic_cast<CubeCollider*>(c2);
-
-		return CubeSphereIntersect(*cube1, *sphere1);
-
-
 	}
 
 	if (c1->isOf<CubeCollider>() && c2->isOf<CubeCollider>()) // cube colliding is hard to get to work
@@ -368,7 +357,14 @@ bool Physics::CubeSphereIntersect(CubeCollider& aCube1, SphereCollider& aSphere2
 	glm::vec3 closestPoint = glm::clamp(localSphereCenter, -aCube1.extents, aCube1.extents);
 	float dist2 = glm::length(localSphereCenter - closestPoint); 
 	
-	return dist2 < aSphere2.radius * aSphere2.radius;
+	if (dist2 < aSphere2.radius * aSphere2.radius)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 bool Physics::CubeCubeIntersect(CubeCollider& aCube1, CubeCollider& aCube2)

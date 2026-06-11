@@ -8,11 +8,12 @@ void MainGameplay::Initialise(GLFWwindow* getWindow, ObjectManager* myObjectMana
 	iSwitch = new Interactable(myObjectManager, aMeshManager, aTextureManager, aColliderManager, aPhysics);
 	player = new Player(getWindow, myObjectManager, aMeshManager, aTextureManager, aColliderManager, aRigidbodyManager, aCamManager, aTime, aPhysics);
 
-	CubeCollider* doorColl = new CubeCollider(glm::vec3(1,1,1), glm::vec3(0));
+	CubeCollider* cube = new CubeCollider(glm::vec3(1,1,1), glm::vec3(0));
+	Collider* doorColl;
 	Texture* wall = aTextureManager->Create("wall", "wall.jpg");
-	Mesh* cube = aMeshManager->Create("Cube", "cube.obj");
-	aColliderManager->Create("doorColl", doorColl);
-	Door = myObjectManager->Create("Door", cube, wall, doorColl, NULL);
+	Mesh* cubeMesh = aMeshManager->Create("Cube", "cube.obj");
+	doorColl = aColliderManager->Create("doorColl", cube);
+	Door = myObjectManager->Create("Door", cubeMesh, wall, doorColl, NULL);
 	Door->Position = glm::vec3(10, 0, 0);
 	Door->Scale = glm::vec3(2, 6, 0.5);
 	FirstLevels = new Levels();

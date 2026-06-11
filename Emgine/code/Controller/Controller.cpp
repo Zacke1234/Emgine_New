@@ -100,7 +100,17 @@ bool Controller::SPACE_KEY(GLFWwindow* window)
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
 		return true;
-		//myPosition += cameraSpeed * myDirection;
+	
+	}
+	return false;
+}
+
+bool Controller::SPACE_KEY_RELEASE(GLFWwindow* window)
+{
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE)
+	{
+		return true;
+
 	}
 	return false;
 }

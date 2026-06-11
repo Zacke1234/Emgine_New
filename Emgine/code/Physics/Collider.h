@@ -26,7 +26,7 @@ public:
 	};
 
 	// Determines if the collider will automatically scale with the object
-	bool autoColliderSize = false;
+	bool autoColliderSize = true;
 
 	
 	

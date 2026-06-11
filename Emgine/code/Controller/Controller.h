@@ -14,6 +14,7 @@ public:
 	bool D_KEY_RELEASE(GLFWwindow* window);
 
 	bool SPACE_KEY(GLFWwindow* window);
+	bool SPACE_KEY_RELEASE(GLFWwindow* window);
 	bool ESCAPE_KEY(GLFWwindow* window);
 	bool SHIFT_KEY(GLFWwindow* window);
 	bool SHIFT_KEY_RELEASE(GLFWwindow* window);

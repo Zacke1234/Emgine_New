@@ -48,6 +48,8 @@ bool akeyCallBack = false;
 bool skeyCallBack = false;
 bool dkeyCallBack = false;
 
+bool jumpedCallBack = false;
+
 void Player::InputMovement()
 {
 	playerCamera->myPosition = player->Position + glm::vec3(0.0, 3.0, -0.2);
@@ -57,15 +59,24 @@ void Player::InputMovement()
 	float xSpeed = playerRB->force.x;
 	float zSpeed = playerRB->force.z;
 	// acceleration and max acceleration
-	
-	if (xSpeed > 2)
+	glm::vec3 max(0.7,0, 0.7);
+	if (xSpeed > max.x)
 	{
-		playerRB->force.x = 2;
+		playerRB->force * playerRB->direction = max;
 	}
 
-	if (zSpeed > 2)
+	if (zSpeed < -max.x)
 	{
-		playerRB->force.z = 2;
+		playerRB->force * playerRB->direction = -max;
+	}
+
+	if (zSpeed < -max.z)
+	{
+		playerRB->force* playerRB->direction = -max;
+	}
+	if (zSpeed < -max.z)
+	{
+		playerRB->force* playerRB->direction = -max;
 	}
 	/*printf("xforce: %4.2f %+.0e %E \n", playerRB->force.x);
 	printf("zforce: %4.2f %+.0e %E \n", playerRB->force.z);
@@ -75,8 +86,7 @@ void Player::InputMovement()
 
 	if (playerController->W_KEY(window))
 	{
-		// playerCamera->myDirection*
-		playerRB->force += movementSpeed * playerRB->direction * getTime->Deltatime;
+		playerRB->force += movementSpeed * playerRB->direction * max * getTime->Deltatime;
 		wkeyCallBack = true;
 		
 	}
@@ -89,7 +99,7 @@ void Player::InputMovement()
 	 
 	if (playerController->S_KEY(window))
 	{
-		playerRB->force -= movementSpeed * playerRB->direction * getTime->Deltatime;
+		playerRB->force -= movementSpeed * playerRB->direction * max * getTime->Deltatime;
 		skeyCallBack = true;
 	}
 
@@ -101,7 +111,7 @@ void Player::InputMovement()
 
 	if (playerController->D_KEY(window))
 	{
-		playerRB->force -= movementSpeed * playerRB->right * getTime->Deltatime;
+		playerRB->force -= movementSpeed * playerRB->right * max * getTime->Deltatime;
 		dkeyCallBack = true;
 	}
 
@@ -113,7 +123,7 @@ void Player::InputMovement()
 
 	if (playerController->A_KEY(window))
 	{
-		playerRB->force += movementSpeed * playerRB->right * getTime->Deltatime;
+		playerRB->force += movementSpeed * playerRB->right * max * getTime->Deltatime;
 		akeyCallBack = true;
 		
 	}
@@ -124,13 +134,18 @@ void Player::InputMovement()
 		akeyCallBack = false;
 	}
 
-	if (playerController->SPACE_KEY(window))
+
+	if (playerController->SPACE_KEY(window) && onGround && !jumpedCallBack)
 	{
-		if (onGround)
-		{
-			playerRB->force += glm::vec3(0.0f, jumpStrength, 0.0f); // worst jump in history
-			onGround = false;
-		}
+
+		playerRB->force += glm::vec3(0.0f, jumpStrength / 3, 0.0f); // worst jump in history
+		onGround = false;
+		jumpedCallBack = true;
+	}
+
+	if (playerController->SPACE_KEY_RELEASE(window) && jumpedCallBack)
+	{
+		jumpedCallBack = false;
 	}
 
 	if (playerController->ESCAPE_KEY(window))

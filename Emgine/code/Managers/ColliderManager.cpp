@@ -27,6 +27,7 @@ Collider* ColliderManager::Create(std::string collName = "new_collider", Collide
 			std::cout << "other collider" << std::endl;
 		}
 	}
+	aCollider->autoColliderSize = true;
 	
 	aCollider->name = collName;
 
