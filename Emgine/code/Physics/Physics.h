@@ -6,6 +6,10 @@
 #include "Time/Time.h"
 #include "math.h"
 
+#define GLM_ENABLE_EXPERIMENTAL
+
+#include "gtx/norm.hpp"
+
 
 
 namespace Math {

@@ -8,8 +8,9 @@ void MainGameplay::Initialise(GLFWwindow* getWindow, ObjectManager* myObjectMana
 	iSwitch = new Interactable(myObjectManager, aMeshManager, aTextureManager, aColliderManager, aPhysics);
 	player = new Player(getWindow, myObjectManager, aMeshManager, aTextureManager, aColliderManager, aRigidbodyManager, aCamManager, aTime, aPhysics);
 
-	CubeCollider* cube = new CubeCollider(glm::vec3(1,1,1), glm::vec3(0));
+	SphereCollider* sphere = new SphereCollider(1.0f, glm::vec3(0, 0, 0));
 	Collider* doorColl;
+	CubeCollider* cube = new CubeCollider(glm::vec3(1, 1, 1), glm::vec3(0));
 	Texture* wall = aTextureManager->Create("wall", "wall.jpg");
 	Mesh* cubeMesh = aMeshManager->Create("Cube", "cube.obj");
 	doorColl = aColliderManager->Create("doorColl", cube);
@@ -23,7 +24,7 @@ void MainGameplay::Initialise(GLFWwindow* getWindow, ObjectManager* myObjectMana
 }
 
 void MainGameplay::Start() // runs once in the update loop
-{
+{ 
 	
 	
 	

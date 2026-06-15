@@ -3,6 +3,7 @@
 #include "Collider.h"
 #include "Physics.h"
 #include <Time/Time.h>
+#include <math.h>
 
 const glm::mat4 Math::identity4{
 	
@@ -352,19 +353,12 @@ bool Physics::SphereSphereIntersect(SphereCollider& sphere1, SphereCollider& sph
 
 bool Physics::CubeSphereIntersect(CubeCollider& aCube1, SphereCollider& aSphere2)
 {	
-	glm::vec3 sphereCenter = glm::vec3(aSphere2.transform[3]);
-	glm::vec3 localSphereCenter = glm::inverse(aCube1.transform) * glm::vec4(sphereCenter, 1.0f);
-	glm::vec3 closestPoint = glm::clamp(localSphereCenter, -aCube1.extents, aCube1.extents);
-	float dist2 = glm::length(localSphereCenter - closestPoint); 
+	glm::vec3 sphereCenter = glm::vec3(aSphere2.position);
+	//glm::vec3 localSphereCenter = glm::inverse(aCube1.transform) * glm::vec4(sphereCenter, 1.0f);
+	glm::vec3 closestPoint = glm::clamp(sphereCenter, -aCube1.extents, aCube1.extents);
+	float dist2 = glm::length2(sphereCenter - closestPoint); 
 	
-	if (dist2 < aSphere2.radius * aSphere2.radius)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return (dist2 < aSphere2.radius * aSphere2.radius);
 }
 
 bool Physics::CubeCubeIntersect(CubeCollider& aCube1, CubeCollider& aCube2)
@@ -377,24 +371,29 @@ bool Physics::CubeCubeIntersect(CubeCollider& aCube1, CubeCollider& aCube2)
 	translation = glm::transpose(rotation1) * translation;
 
 	glm::mat3 rotation = glm::transpose(rotation1) * rotation2;
-	glm::mat3 absRotation;// = glm::abs(rotation) + glm::mat3(0.0001f); // this just won't compile! 
+	
+	glm::mat3 absRotation; // = glm::abs(rotation) + glm::mat3(0.0001f); // this just won't compile! 
+	glm::vec3 vectorAbsRotation = glm::abs(translation);
 	//glm::vec3 absRotation2 = glm::abs(translation) + glm::vec3(0.0001f);
+
+
+
  	glm::vec3 halfSize1 = aCube1.extents * 0.5f;
 	glm::vec3 halfSize2 = aCube2.extents * 0.5f;
 
 	// SAT (seperating axis theorem
 	for (int i = 0; i < 3; ++i)
 	{
-		float ra = aCube1.extents[i];
-		float rb  = glm::dot(absRotation[i], aCube2.extents);
-		if (glm::abs(translation[i]) > ra + rb) return false;
+		float ra = halfSize1[i];
+		float rb  = glm::dot(absRotation[i], halfSize2);	
+		if (glm::cos(translation[i]) > ra + rb) return false;
 	}
 
 	for (int i = 0; i < 3; ++i)
 	{
-		float ra = glm::dot(absRotation[i], aCube1.extents);
-		float rb = aCube2.extents[i];
-		if (glm::abs(glm::dot(rotation[i], translation)) > ra + rb) return false;
+		float ra = glm::dot(absRotation[i], halfSize1);
+		float rb = halfSize2[i];
+		if (glm::cos(glm::dot(rotation[i], translation)) > ra + rb) return false;
 	}
 
 	return true;

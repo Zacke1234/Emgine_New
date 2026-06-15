@@ -17,7 +17,8 @@ Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager
 	playerMesh = aMeshManager->Create("fish", "fish.obj");
 	defaultTex = aTextureManager->Create("default", "Default 1.png");
 
-	SphereCollider* PlayerColl = new SphereCollider(1.5f, glm::vec3(0, 0, 0));
+	SphereCollider* PlayerColl = new SphereCollider(1.0f, glm::vec3(0, 0, 0));
+	//CubeCollider* cube = new CubeCollider(glm::vec3(1, 1, 1), glm::vec3(0));
 	playerColl = aColliderManager->Create("PlayerSphere", PlayerColl);
 	playerRB = aRigidbodyManager->Create("playerRB", 1.5, true, true);
 	playerController = new Controller();
@@ -93,7 +94,7 @@ void Player::InputMovement()
 
 	if (playerController->W_KEY_RELEASE(window) && wkeyCallBack)
 	{
-		playerRB->force *= 0.0f * playerRB->direction;
+		playerRB->force *= 0;
 		wkeyCallBack = false;
 	}
 	 
@@ -105,7 +106,7 @@ void Player::InputMovement()
 
 	if (playerController->S_KEY_RELEASE(window) && skeyCallBack)
 	{
-		playerRB->force *= 0.0f * playerRB->direction;
+		playerRB->force *= 0;
 		skeyCallBack = false;
 	}
 
@@ -117,7 +118,7 @@ void Player::InputMovement()
 
 	if (playerController->D_KEY_RELEASE(window) && dkeyCallBack)
 	{
-		playerRB->force *= 0.0f * playerRB->direction;
+		playerRB->force *= 0;
 		dkeyCallBack = false;
 	}
 
@@ -130,7 +131,7 @@ void Player::InputMovement()
 
 	if (playerController->A_KEY_RELEASE(window) && akeyCallBack)
 	{
-		playerRB->force *= 0.0f * playerRB->direction;
+		playerRB->force *= 0;
 		akeyCallBack = false;
 	}
 
