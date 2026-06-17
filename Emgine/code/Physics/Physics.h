@@ -75,7 +75,7 @@ public:
 	//ColliderType* type;
 private:
 	
-
+	
 
 	//std::vector<Object*> m_Objects;
 };

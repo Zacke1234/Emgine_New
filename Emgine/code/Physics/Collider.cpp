@@ -30,7 +30,7 @@ Collider::Collider()
 	transform = Math::identity4;
 	position = glm::vec3(0, 0, 0);
 	extents = glm::vec3(0, 0, 0);
-
+	velocity = glm::vec3(0);
 	//isKinematic = false;
 	//hasGravity = true;
 	//velocity = glm::vec3(0, 0, 0);

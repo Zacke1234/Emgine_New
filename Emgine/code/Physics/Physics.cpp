@@ -70,14 +70,20 @@ void Physics::UpdateColliderProperties(std::vector<Collider*> colliders)
 		if (o->myCollider != NULL)
 		{
 			o->myCollider->position = o->Position;
+			
 			if (o->myCollider->autoColliderSize)
 			{
 				o->myCollider->extents = o->Scale;
 				o->myCollider->transform = o->trans;
 				o->myCollider->center = glm::vec3(o->Scale.x / 2, o->Scale.y / 2, o->Scale.z / 2);
-				std::cout << "";
+
+				if (o->myRigidbody != NULL)
+				{
+					o->myCollider->velocity = o->myRigidbody->velocity;
+				}
 				
 			}
+
 			
 		}
 		
@@ -170,9 +176,9 @@ void Physics::ApplyForce(std::vector<Rigidbody*> rbs, float dt)
 		if (r->force != glm::vec3(0))
 		{
 			glm::vec3 pos = glm::vec3(r->transform[3]);
-			pos += r->force * dt;
-			r->position = pos;
-			r->transform[3] = glm::vec4(pos, 1.0f);
+			//pos += r->force * dt;
+			r->velocity += r->force * dt;
+			//r->transform[3] = glm::vec4(pos, 1.0f);
 			
 			
 		}
@@ -182,23 +188,44 @@ void Physics::ApplyForce(std::vector<Rigidbody*> rbs, float dt)
 
 void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<Rigidbody*> rbs)
 {
+	float impulse = 0.0f;
+
 	for (Rigidbody* r : rbs)
 	{
 		if (!r->isKinematic)
 		{
 			for (Collision* c : collisions)
 			{
-				if (c->col1)
+				
+				
+				// 
+				glm::vec3 normal = glm::normalize(c->col1->position - c->col2->position);
+
+				glm::vec3 relativeVelocity = c->col1->velocity - c->col2->velocity;
+
+				float velocityAlongNormal = glm::dot(relativeVelocity, normal);
+
+				if (velocityAlongNormal < 0)
 				{
-					r->velocity *= 0;
+					float restituion = 0.2f;
+
+					impulse = (1 + restituion) * velocityAlongNormal;
+
+					if (!r->isKinematic)
+					{
+						glm::vec3 impulseVector = impulse * normal;
+						r->velocity += impulseVector;
+					}
+
+					if (!r->isKinematic)
+					{
+						glm::vec3 impulseVector = impulse * normal;
+						r->velocity -= impulseVector;
+					}
+
 				}
 
-				if (c->col2)
-				{
-					r->velocity *= 0;
-				}
-
-				//c.col1->transform 
+				
 
 			}
 			

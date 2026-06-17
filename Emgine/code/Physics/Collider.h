@@ -41,12 +41,15 @@ public:
 	float radius;
 
 	
-
+	glm::vec3 velocity;
 	ColliderType CollType; // = ColliderType::Null;
 	
 	void SetTheCollision();
 	
 	static std::vector<Collider*> CollEntities;
+
+private:
+	
 };
 
 struct Collision {
