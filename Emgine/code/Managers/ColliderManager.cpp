@@ -1,7 +1,7 @@
 #include "ColliderManager.h"
 
 
-Collider* ColliderManager::Create(std::string collName = "new_collider", Collider* aCollider)
+Collider* ColliderManager::Create(std::string collName = "new_collider", Collider* aCollider, bool isKinematic)
 {
 	glm::vec3 test = { 1.0f,1.0f,1.0f };
 	
@@ -9,15 +9,16 @@ Collider* ColliderManager::Create(std::string collName = "new_collider", Collide
 	{
 		
 		aCollider = new Collider();
-		aCollider->autoColliderSize = true;
-		if (collName == "Cube")
+		
+		
+		if (collName == "Cube" && !aCollider)
 		{
 
-
+			
 			aCollider = new CubeCollider(test, test);
 
 		}
-		if (collName == "Sphere")
+		if (collName == "Sphere" && !aCollider)
 		{
 			aCollider = new SphereCollider(1.0f, test);
 
@@ -27,6 +28,7 @@ Collider* ColliderManager::Create(std::string collName = "new_collider", Collide
 			std::cout << "other collider" << std::endl;
 		}
 	}
+	aCollider->isKinematic = isKinematic;
 	aCollider->autoColliderSize = true;
 	
 	aCollider->name = collName;

@@ -60,3 +60,5 @@ Physics* Phys;
 CameraManager* myCameraManager;
 Time* myTime;
 MainGameplay* myGameplay;
+
+Collider* PlaneCollider;

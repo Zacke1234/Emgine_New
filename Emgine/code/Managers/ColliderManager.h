@@ -7,7 +7,7 @@
 class ColliderManager
 {
 public:
-	Collider* Create(std::string collName, Collider* aCollider = NULL);
+	Collider* Create(std::string collName, Collider* aCollider = NULL, bool isKinematic = NULL);
 	Collider* Find(std::string collName);
 };
 

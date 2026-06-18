@@ -121,6 +121,8 @@ int init_colliders() {
 
 	cubeColl = new CubeCollider(scale, pos);
 	planeColl = new CubeCollider(extentsPlane, pos);
+	planeColl->isKinematic = true;
+	PlaneCollider = MyColliderManager->Create("PlaneColl", PlaneCollider, true);
 	sphereColl = new SphereCollider(radius, pos);
 	return 0;
 }
@@ -239,7 +241,7 @@ int main()
 	myObjectManager->Create("Plane",
 		cube,
 		defaultTex,
-		MyColliderManager->Create("Cube"),
+		planeColl,
 		NULL()
 	);
 
