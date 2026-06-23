@@ -17,9 +17,9 @@ Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager
 	playerMesh = aMeshManager->Create("fish", "fish.obj");
 	defaultTex = aTextureManager->Create("default", "Default 1.png");
 
-	SphereCollider* PlayerColl = new SphereCollider(1.0f, glm::vec3(0, 0, 0));
+	SphereCollider* sphereColl = new SphereCollider(1.0f, glm::vec3(0, 0, 0));
 	//CubeCollider* cube = new CubeCollider(glm::vec3(1, 1, 1), glm::vec3(0));
-	playerColl = aColliderManager->Create("PlayerSphere", PlayerColl);
+	playerColl = aColliderManager->Create("PlayerSphere", sphereColl);
 	playerRB = aRigidbodyManager->Create("playerRB", 1.5, true, true);
 	playerController = new Controller();
 
@@ -28,6 +28,8 @@ Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager
 	jumpStrength = 4.0f;
 	movementSpeed = 10.0f;
 	player->Position = glm::vec3(-2, 4, -2);
+	playerColl->position = player->Position;
+	playerColl->transform = player->trans;
 	playerCamera = aCamManager->Create("PlayerCamera", window);
 
 	playerCamera->fieldOfView = 80.0f;
@@ -88,6 +90,7 @@ void Player::InputMovement()
 	if (playerController->W_KEY(window))
 	{
 		playerRB->force += movementSpeed * playerRB->direction * max * getTime->Deltatime;
+
 		wkeyCallBack = true;
 		
 	}
@@ -167,7 +170,7 @@ void Player::InputMovement()
 	
 }
 
-void Player::CheckCollision()
+bool Player::CheckCollision()
 {
 	for (auto& colls : Collider::CollEntities)
 	{
@@ -176,6 +179,7 @@ void Player::CheckCollision()
 			if (playerPhysics->BoolCheckIntersect(colls, playerColl))
 			{
 				onGround = true;
+				return true;
 
 			}
 			

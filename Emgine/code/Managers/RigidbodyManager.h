@@ -8,7 +8,7 @@ class RigidbodyManager
 {
 public:
 
-	Rigidbody* Create(std::string name, float gravity = 0.0f, bool isKinematic = false, bool hasGrav = true);
+	Rigidbody* Create(std::string name, float gravity = 0.0f, bool isKinematic = true, bool hasGrav = true);
 	
 };
 

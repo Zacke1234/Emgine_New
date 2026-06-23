@@ -14,11 +14,11 @@ public:
 	Player(GLFWwindow* getWindow, ObjectManager* myObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager, CameraManager* aCamManager, Time* aTime, Physics* aPhysics);
 	ShaderManager* aShaderManager;
 	void InputMovement();
-	void CheckCollision();
+	bool CheckCollision();
 
 
 	
-
+	bool CheckIntersect = false;
 	float movementSpeed;
 	float jumpStrength;
 	float dashStrength;

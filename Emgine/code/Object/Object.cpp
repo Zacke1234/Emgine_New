@@ -191,7 +191,7 @@ void Object::SetCollider(Collider& aCollider)
 	myCollider = &aCollider;
 	myCollider->position = this->Position;
 	
-	myCollider->extents = Scale;
+	//myCollider->extents = Scale;
 	//myCollider->SetTheCollision();
 }
 

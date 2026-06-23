@@ -23,5 +23,8 @@ public:
 	ObjectManager* theObjectManager;
 	Object* Door;
 	Levels* FirstLevels;
+	Time* theTime;
+
+	bool MainGameplayRunOnce = false;
 };
 

@@ -21,6 +21,7 @@ void MainGameplay::Initialise(GLFWwindow* getWindow, ObjectManager* myObjectMana
 	
 	theObjectManager = myObjectManager;
 	player->aShaderManager = aShaderManager;
+	theTime = aTime;
 }
 
 void MainGameplay::Start() // runs once in the update loop
@@ -34,13 +35,17 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 {
 	player->InputMovement();
 
-	player->CheckCollision();
+	
 
-	if (iSwitch->Collided(player->playerColl))  
+	if (iSwitch->Collided(player->playerColl) && !MainGameplayRunOnce)
 	{
 		theObjectManager->Destroy(Door);
+		MainGameplayRunOnce = true;
 		//std::cout << " switch collided" << std::endl;
 	}
+
+	player->CheckCollision();
+	
 	
 	
 

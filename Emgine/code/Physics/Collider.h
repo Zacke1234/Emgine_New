@@ -2,12 +2,14 @@
 #include <glm.hpp>
 #include <iostream>
 #include <vector>
+#include <Rigidbody.h>
 
 
 
 
 glm::mat3 ComputeMomentOfInertiaCube(float mass, glm::vec3 extents);
 glm::mat3 ComputeMomentOfInertiaSphere(float mass, float radius);
+class Rigidbody;
 
 class Collider
 {
@@ -26,7 +28,7 @@ public:
 	};
 
 	// Determines if the collider will automatically scale with the object
-	bool autoColliderSize = true;
+	bool autoColliderSize = false;
 
 	
 	
@@ -41,14 +43,12 @@ public:
 	float radius;
 
 	
-	glm::vec3 velocity;
+
 	ColliderType CollType; // = ColliderType::Null;
 	
 	void SetTheCollision();
 	
 	static std::vector<Collider*> CollEntities;
-
-private:
 	
 };
 
@@ -56,6 +56,10 @@ struct Collision {
 	Collision();
 	Collider* col1;
 	Collider* col2;
+
+	Rigidbody* rig1;
+	Rigidbody* rig2;
+
 	glm::vec3 point;
 	glm::vec3 normal1;
 	glm::vec3 normal2;

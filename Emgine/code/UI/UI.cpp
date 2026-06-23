@@ -245,14 +245,14 @@ UI::UI(GLFWwindow* window) // unitilized
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	/*io.ConfigFlags |= ImGuiViewportFlags_None;
-	io.ConfigFlags |= ImGuiConfigFlags_None;
-	
+
+
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{
 		ImGui::UpdatePlatformWindows();
 		ImGui::RenderPlatformWindowsDefault();
-	}*/
+		// TODO for OpenGL: restore current GL context.
+	}
 	
 	//camera = new Camera();
 	ImGui::StyleColorsDark();
@@ -587,6 +587,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 	//ImGui_ImplGlfw_Shutdown();
 	ImGui::End();
 	ImGui::EndFrame();;
+
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	//glfwSwapBuffers(window);

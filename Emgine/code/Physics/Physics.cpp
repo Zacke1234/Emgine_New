@@ -42,7 +42,7 @@ void Physics::Simulate(const float& aDeltaTime, Time* physicsTime)
 		
 		colliders = UpdateCollidersScene();
 		rigidbodies = UpdateRigidbodiesScene();
-		std::vector<Collision*> collisions = CheckIntersections(colliders);
+		std::vector<Collision*> collisions = CheckIntersections(colliders, rigidbodies);
 
 		//std::vector<Rigidbody> rigidbodies = 
 		ApplyGravity(rigidbodies, aDeltaTime);
@@ -71,16 +71,15 @@ void Physics::UpdateColliderProperties(std::vector<Collider*> colliders)
 		{
 			o->myCollider->position = o->Position;
 			
+			o->myCollider->transform = o->trans;
+			o->myCollider->center = glm::vec3(o->myCollider->extents.x / 2, o->myCollider->extents.y / 2, o->myCollider->extents.z / 2);
+
 			if (o->myCollider->autoColliderSize)
 			{
 				o->myCollider->extents = o->Scale;
-				o->myCollider->transform = o->trans;
-				o->myCollider->center = glm::vec3(o->Scale.x / 2, o->Scale.y / 2, o->Scale.z / 2);
+				
 
-				if (o->myRigidbody != NULL)
-				{
-					o->myCollider->velocity = o->myRigidbody->velocity;
-				}
+				
 				
 			}
 
@@ -164,6 +163,7 @@ void Physics::ApplyGravity(std::vector<Rigidbody*> rbs, float dt)
 		if (r->hasGravity && !r->isKinematic)
 		{
 			r->velocity += glm::vec3(0, -r->gravity, 0) * dt;
+			int b = 0;
 
 		}
 	}
@@ -176,9 +176,9 @@ void Physics::ApplyForce(std::vector<Rigidbody*> rbs, float dt)
 		if (r->force != glm::vec3(0))
 		{
 			glm::vec3 pos = glm::vec3(r->transform[3]);
-			//pos += r->force * dt;
-			r->velocity += r->force * dt;
-			//r->transform[3] = glm::vec4(pos, 1.0f);
+			r->position = pos;
+			r->position += r->force * dt;
+			r->transform[3] = glm::vec4(pos, 1.0f);
 			
 			
 		}
@@ -188,50 +188,59 @@ void Physics::ApplyForce(std::vector<Rigidbody*> rbs, float dt)
 
 void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<Rigidbody*> rbs)
 {
-	float impulse = 0.0f;
+	
 
-	for (Rigidbody* r : rbs)
+	for (Collision* c : collisions)
 	{
-		if (!r->isKinematic)
+		//  == glm::greaterThan()
+		if (!c->rig1->isKinematic)
 		{
-			for (Collision* c : collisions)
-			{
-				
-				
-				// 
-				glm::vec3 normal = glm::normalize(c->col1->position - c->col2->position);
-
-				glm::vec3 relativeVelocity = c->col1->velocity - c->col2->velocity;
-
-				float velocityAlongNormal = glm::dot(relativeVelocity, normal);
-
-				if (velocityAlongNormal < 0)
-				{
-					float restituion = 0.2f;
-
-					impulse = (1 + restituion) * velocityAlongNormal;
-
-					if (!r->isKinematic)
-					{
-						glm::vec3 impulseVector = impulse * normal;
-						r->velocity += impulseVector;
-					}
-
-					if (!r->isKinematic)
-					{
-						glm::vec3 impulseVector = impulse * normal;
-						r->velocity -= impulseVector;
-					}
-
-				}
-
-				
-
-			}
 			
+			c->rig1->velocity *= 0;
+			
+
 		}
 
+		if (!c->rig2->isKinematic)
+		{
+			c->rig2->velocity *= 0;
+
+		}
+		// 
+
+		/*for (Collision* c : collisions)
+		{
+			glm::vec3 normal = glm::normalize(c->rig2->position - c->rig1->position);
+
+			glm::vec3 relativeVelocity = c->rig2->velocity - c->rig1->velocity;
+
+			float velocityAlongNormal = glm::dot(relativeVelocity, normal);
+
+			if (velocityAlongNormal < 0)
+			{
+				float restitution = 0.2f;
+				float impulse = (1 + restitution) * velocityAlongNormal;
+
+				if (!c->rig1->isKinematic)
+				{
+					glm::vec3 impulseVector = impulse * normal;
+					impulseVector.y *= 4;
+					c->rig1->velocity += impulseVector;
+					int b = 0;
+				}
+
+				if (!c->rig2->isKinematic)
+				{
+					glm::vec3 impulseVector = impulse * normal;
+					c->rig2->velocity -= impulseVector;
+				}
+
+			}
+		}*/
+
+
 	}
+	//  
 	
 }
 glm::vec3 PhysicsUp = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -261,7 +270,11 @@ void Physics::CalculateDirection()
 
 
 bool Physics::BoolCheckIntersect(Collider* c1, Collider* c2)
-	{	
+{
+	if (!c1 || !c2)
+	{
+		return false;
+	}
 	//CheckIntersect(c1, c2);
 	if (c1->isOf<SphereCollider>() && c2->isOf<SphereCollider>())
 	{
@@ -327,23 +340,49 @@ std::vector<Rigidbody*> Physics::UpdateRigidbodiesScene()
 	return returnrbs;
 }
 
-std::vector<Collision*> Physics::CheckIntersections(std::vector<Collider*> colliders)
+std::vector<Collision*> Physics::CheckIntersections(std::vector<Collider*> colliders, std::vector<Rigidbody*> rbs)
 {
 	
 	std::vector<Collision*> collisions;
+	Collision* collision = new Collision;
+
+	
 
 	for (Collider* c1 : colliders)
 	{
+		
 		for (Collider* c2 : colliders)
 		{
 			if (c1 != c2)
 			{
 				if (BoolCheckIntersect(c1, c2))
 				{
-					Collision* collision = new Collision;
+					
 					
 					collision->col1 = c1;
 					collision->col2 = c2;
+					
+					for (Rigidbody* rb1 : rbs)
+					{
+						for (Rigidbody* rb2 : rbs)
+						{	
+							if (rb1 != rb2)
+							{
+								collision->rig1 = rb1;
+								collision->rig2 = rb2;
+							}
+							else
+							{
+								Rigidbody* tempRB = new Rigidbody();
+								
+								tempRB->isKinematic = true;
+								collision->rig1 = rb1;
+								collision->rig2 = tempRB;
+							}
+
+						}
+					}
+
 					collisions.push_back(collision);
 				}
 			}
@@ -379,13 +418,27 @@ bool Physics::SphereSphereIntersect(SphereCollider& sphere1, SphereCollider& sph
 }
 
 bool Physics::CubeSphereIntersect(CubeCollider& aCube1, SphereCollider& aSphere2)
-{	
-	glm::vec3 sphereCenter = glm::vec3(aSphere2.position);
-	//glm::vec3 localSphereCenter = glm::inverse(aCube1.transform) * glm::vec4(sphereCenter, 1.0f);
-	glm::vec3 closestPoint = glm::clamp(sphereCenter, -aCube1.extents, aCube1.extents);
-	float dist2 = glm::length2(sphereCenter - closestPoint); 
+{
 	
-	return (dist2 < aSphere2.radius * aSphere2.radius);
+	glm::vec3 sphereCenter = glm::vec3(aSphere2.transform[3]);
+	glm::vec3 localSphereCenter = glm::inverse(aCube1.transform) * glm::vec4(sphereCenter, 1.0f);
+	glm::vec3 closestPoint = glm::clamp(localSphereCenter, -aCube1.extents, aCube1.extents);
+	float dist2 = glm::length2(localSphereCenter - closestPoint);
+	
+	if (dist2 < aSphere2.radius * aSphere2.radius)
+	{
+		if (aCube1.name == "switchCollider")
+		{
+			int b = 0;
+		}
+		return true;
+	}
+	else
+	{
+		return false;
+		
+	}
+
 }
 
 bool Physics::CubeCubeIntersect(CubeCollider& aCube1, CubeCollider& aCube2)

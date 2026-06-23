@@ -44,7 +44,7 @@ public:
 	bool BoolCheckIntersect(Collider* c1, Collider* c2);
 	std::vector<Collider*> UpdateCollidersScene();
 	std::vector<Rigidbody*> UpdateRigidbodiesScene();
-	std::vector<Collision*> CheckIntersections(std::vector<Collider*> colliders);
+	std::vector<Collision*> CheckIntersections(std::vector<Collider*> colliders, std::vector<Rigidbody*> rbs);
 	glm::mat3 ComputeMomentOfInertiaSPhere(float mass, float radius);
 	bool SphereSphereIntersect(SphereCollider& c1, SphereCollider& c2);
 	bool CubeSphereIntersect(CubeCollider& aCube1, SphereCollider& aSpher2);
