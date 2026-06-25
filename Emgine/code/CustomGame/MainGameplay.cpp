@@ -14,6 +14,7 @@ void MainGameplay::Initialise(GLFWwindow* getWindow, ObjectManager* myObjectMana
 	Texture* wall = aTextureManager->Create("wall", "wall.jpg");
 	Mesh* cubeMesh = aMeshManager->Create("Cube", "cube.obj");
 	doorColl = aColliderManager->Create("doorColl", cube);
+	doorColl->tag = "Wall";
 	Door = myObjectManager->Create("Door", cubeMesh, wall, doorColl, NULL);
 	Door->Position = glm::vec3(10, 0, 0);
 	Door->Scale = glm::vec3(2, 6, 0.5);

@@ -25,10 +25,10 @@ public:
 
 	
 	
-	glm::vec3 direction;
+	glm::vec3 forward;
 	glm::vec3 up;
 	glm::vec3 right;
-	glm::mat4 forward;
+	glm::mat4 direction;
 	glm::vec3 force;
 	
 };

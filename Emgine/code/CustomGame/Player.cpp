@@ -62,25 +62,7 @@ void Player::InputMovement()
 	float xSpeed = playerRB->force.x;
 	float zSpeed = playerRB->force.z;
 	// acceleration and max acceleration
-	glm::vec3 max(0.7,0, 0.7);
-	if (xSpeed > max.x)
-	{
-		playerRB->force * playerRB->direction = max;
-	}
 
-	if (zSpeed < -max.x)
-	{
-		playerRB->force * playerRB->direction = -max;
-	}
-
-	if (zSpeed < -max.z)
-	{
-		playerRB->force* playerRB->direction = -max;
-	}
-	if (zSpeed < -max.z)
-	{
-		playerRB->force* playerRB->direction = -max;
-	}
 	/*printf("xforce: %4.2f %+.0e %E \n", playerRB->force.x);
 	printf("zforce: %4.2f %+.0e %E \n", playerRB->force.z);
 
@@ -89,7 +71,7 @@ void Player::InputMovement()
 
 	if (playerController->W_KEY(window))
 	{
-		playerRB->force += movementSpeed * playerRB->direction * max * getTime->Deltatime;
+		playerRB->force += movementSpeed * playerRB->forward * getTime->Deltatime;
 
 		wkeyCallBack = true;
 		
@@ -98,36 +80,39 @@ void Player::InputMovement()
 	if (playerController->W_KEY_RELEASE(window) && wkeyCallBack)
 	{
 		playerRB->force *= 0;
+		playerRB->velocity *= 0;
 		wkeyCallBack = false;
 	}
 	 
 	if (playerController->S_KEY(window))
 	{
-		playerRB->force -= movementSpeed * playerRB->direction * max * getTime->Deltatime;
+		playerRB->force -= movementSpeed * playerRB->forward * getTime->Deltatime;
 		skeyCallBack = true;
 	}
 
 	if (playerController->S_KEY_RELEASE(window) && skeyCallBack)
 	{
 		playerRB->force *= 0;
+		playerRB->velocity *= 0;
 		skeyCallBack = false;
 	}
 
 	if (playerController->D_KEY(window))
 	{
-		playerRB->force -= movementSpeed * playerRB->right * max * getTime->Deltatime;
+		playerRB->force -= movementSpeed * playerRB->right  * getTime->Deltatime;
 		dkeyCallBack = true;
 	}
 
 	if (playerController->D_KEY_RELEASE(window) && dkeyCallBack)
 	{
 		playerRB->force *= 0;
+		playerRB->velocity *= 0;
 		dkeyCallBack = false;
 	}
 
 	if (playerController->A_KEY(window))
 	{
-		playerRB->force += movementSpeed * playerRB->right * max * getTime->Deltatime;
+		playerRB->force += movementSpeed * playerRB->right * getTime->Deltatime;
 		akeyCallBack = true;
 		
 	}
@@ -135,6 +120,7 @@ void Player::InputMovement()
 	if (playerController->A_KEY_RELEASE(window) && akeyCallBack)
 	{
 		playerRB->force *= 0;
+		playerRB->velocity *= 0;
 		akeyCallBack = false;
 	}
 
@@ -179,14 +165,34 @@ bool Player::CheckCollision()
 			if (playerPhysics->BoolCheckIntersect(colls, playerColl))
 			{
 				onGround = true;
-				return true;
 
+
+				if (colls->tag != "Wall")
+				{
+					atWall = false;
+				}
+				if (colls->tag == "Wall")
+				{
+					playerRB->velocity *= glm::vec3(-0.1, 0, -0.1);
+					playerRB->velocity += glm::vec3(-0.5, 0, -0.5);
+					atWall = true;
+
+				}
+				
+				
+				
 			}
+
+			//if (playerPhysics->BoolCheckIntersect(colls, playerColl)) 
+			//{
+
+			//}
+			
 			
 		}
 		
 	}
-
+	return true;
 
 }
 

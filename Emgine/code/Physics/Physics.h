@@ -63,7 +63,8 @@ public:
 	{
 		return a + t * (b - a);
 	}
-	
+	inline float squared(float v) { return v * v; }
+
 	bool Testgravity = true;
 
 	bool TimeTicking = true;

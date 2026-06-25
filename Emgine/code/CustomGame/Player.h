@@ -22,6 +22,8 @@ public:
 	float movementSpeed;
 	float jumpStrength;
 	float dashStrength;
+
+	bool moveButtons;
 	
 	Mesh* playerMesh;
 	Texture* defaultTex;
@@ -33,6 +35,7 @@ public:
 	Object* player;
 	Time* getTime;
 	bool onGround;
+	bool atWall;
 	Physics* playerPhysics;
 
 private:

@@ -9,7 +9,7 @@ Collider* ColliderManager::Create(std::string collName = "new_collider", Collide
 	{
 	
 		aCollider = new Collider();
-		aCollider->autoColliderSize = true;
+		
 		aCollider = new CubeCollider(test, glm::vec3(0,0,0));
 
 	}
@@ -17,7 +17,7 @@ Collider* ColliderManager::Create(std::string collName = "new_collider", Collide
 	
 	
 	aCollider->name = collName;
-
+	aCollider->autoColliderSize = true;
 	
 	
 	

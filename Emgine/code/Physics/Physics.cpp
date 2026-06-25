@@ -148,6 +148,7 @@ void Physics::ApplyVelocity(std::vector<Rigidbody*> rbs, float dt)
 			pos += r->velocity * dt;
 			r->position = pos;
 			r->transform[3] = glm::vec4(pos, 1.0f);
+			
 			int b = 0;
 		}
 	}
@@ -175,10 +176,11 @@ void Physics::ApplyForce(std::vector<Rigidbody*> rbs, float dt)
 	{
 		if (r->force != glm::vec3(0))
 		{
-			glm::vec3 pos = glm::vec3(r->transform[3]);
-			r->position = pos;
-			r->position += r->force * dt;
-			r->transform[3] = glm::vec4(pos, 1.0f);
+			//glm::vec3 pos = glm::vec3(r->transform[3]);
+			
+			r->velocity += r->force * dt;
+			//r->force = r->velocity;
+			//r->transform[3] = glm::vec4(pos, 1.0f);
 			
 			
 		}
@@ -195,16 +197,17 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 		//  == glm::greaterThan()
 		if (!c->rig1->isKinematic)
 		{
+			c->rig1->velocity.y *= 0;
 			
-			c->rig1->velocity *= 0;
+		//	c->rig1->force = c->rig1->velocity;
 			
 
 		}
 
 		if (!c->rig2->isKinematic)
 		{
-			c->rig2->velocity *= 0;
-
+			c->rig2->velocity.y *= 0;
+		
 		}
 		// 
 
@@ -251,15 +254,15 @@ void Physics::CalculateDirection()
 	{
 		if (oRb->myRigidbody != NULL)
 		{
-			oRb->myRigidbody->direction = glm::normalize(oRb->Rotation);
+			oRb->myRigidbody->forward = glm::normalize(oRb->Rotation);
 
-			oRb->myRigidbody->direction.y = 0;
+			oRb->myRigidbody->forward.y = 0;
 
-			oRb->myRigidbody->up = glm::cross(oRb->myRigidbody->direction, oRb->myRigidbody->right);
+			oRb->myRigidbody->up = glm::cross(oRb->myRigidbody->forward, oRb->myRigidbody->right);
 
-			oRb->myRigidbody->right = glm::normalize(glm::cross(PhysicsUp, oRb->myRigidbody->direction));
+			oRb->myRigidbody->right = glm::normalize(glm::cross(PhysicsUp, oRb->myRigidbody->forward));
 
-			oRb->myRigidbody->forward = glm::lookAt(oRb->Position, oRb->Position + oRb->myRigidbody->direction, oRb->myRigidbody->up);
+			oRb->myRigidbody->direction = glm::lookAt(oRb->Position, oRb->Position + oRb->myRigidbody->forward, oRb->myRigidbody->up);
 		}
 		
 

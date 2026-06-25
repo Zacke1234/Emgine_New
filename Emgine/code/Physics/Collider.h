@@ -42,7 +42,7 @@ public:
 
 	float radius;
 
-	
+	std::string tag;
 
 	ColliderType CollType; // = ColliderType::Null;
 	
