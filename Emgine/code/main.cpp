@@ -114,19 +114,6 @@ int init_camera() {
 	return 0;
 }
 
-int init_colliders() {
-	glm::vec3 extentsPlane = { 100, 0.5f,100 };
-	glm::vec3 center = { 0, 0,0 }; float radius = 0.5f; glm::vec3 pos = { 0,0,0 };
-	glm::vec3 scale = { 1,1,1 };
-
-	cubeColl = new CubeCollider(scale, pos);
-	planeColl = new CubeCollider(extentsPlane, pos);
-	
-	PlaneCollider = MyColliderManager->Create("PlaneColl", planeColl, true);
-	sphereColl = new SphereCollider(radius, pos);
-	return 0;
-}
-
 int init_lightning() {
 	//init shader/lighting
 	
@@ -209,14 +196,11 @@ int main()
 
 	init_camera();
 
-	Texture* wall = myTextureManager->Create("wall", "wall.jpg");
-	Texture* defaultTex = myTextureManager->Create("default", "Default 1.png");
+	
 	
 	myCamera = myCameraManager->Create("SceneCamera", window);
 	
 	message_calling();
-
-	init_colliders();
 
 	init_lightning();
 
@@ -226,9 +210,7 @@ int main()
 	init_memory_tracker();
 
 	// Object Creation
-	Mesh* fish = myMeshManager->Create("Fish", "fish.obj");
-	//Mesh* quadplane = myMeshManager->Create("quadplane", "quadplane.obj");
-	Mesh* cube = myMeshManager->Create("Cube", "cube.obj");
+	
 
 	/*Mesh* vikinghouse = myMeshManager->Create("Viking_House", "Viking_House.obj");
 
@@ -238,31 +220,7 @@ int main()
 	
 
 	// whatever is first in the list (being selected) can't be changed by the find and set properties function when initialising
-	myObjectManager->Create("Plane",
-		cube,
-		defaultTex,
-		planeColl,
-		NULL()
-	);
-
-
-	myObjectManager->FindAndSetProperties("Plane", glm::vec3(0.0f), glm::vec3( 100.0f ,0.5f,100.0f ), glm::vec3(0.0f));
-
-	myObjectManager->CreateLight("SceneLight", 
-		NULL,
-		NULL,
-		NULL,
-		myLightingManager->Create("SceneLight", myShaderManager->DefaultShader, myLightingManager->DefaultLighting),
-		NULL);
-
-	myObjectManager->FindAndSetProperties("SceneLight", glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(glm::radians(45.0f), glm::radians(45.0f), 0.0f));
-
-	myObjectManager->CreateCamera("SceneCamera",
-		NULL,
-		NULL,
-		NULL,
-		myCamera,
-		NULL);
+	
 
 	Shader* depthShader = myShaderManager->Find("depthShader");
 	Shader* directionalShader = myShaderManager->Find("DirectionalShader");
@@ -281,11 +239,11 @@ int main()
 	myShaderManager->DefaultShader->SetInt("depthMap", 1);
 	myShaderManager->DefaultShader->SetInt("depthCubeMap", 1);
 
-	LightObject* lightobject = LightObject::LightEntities[0];
+	//LightObject* lightobject = LightObject::LightEntities[0];
 
 	bool OnceCheck = false;
 	
-	myGameplay->Initialise(window, myObjectManager, myMeshManager, myTextureManager, MyColliderManager, myRigidbodyManager, myCameraManager, myTime, myShaderManager, Phys);
+	myGameplay->Initialise(window, myObjectManager, myMeshManager, myTextureManager, MyColliderManager, myRigidbodyManager, myCameraManager, myTime, myShaderManager, Phys, myLightingManager);
 
 	// loops until user closes window
 	while (!glfwWindowShouldClose(window))
@@ -294,11 +252,6 @@ int main()
 		GL_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 		GL_CHECK(glClearColor(0.1f, 0.1f, 0.1f, 1.0f));
 		
-		if (!OnceCheck)
-		{
-			myGameplay->Start();
-			OnceCheck = true;
-		}
 		
 
 		myTime->Run();
@@ -333,7 +286,11 @@ int main()
 		// Clear depth
 		
 		// Configure shader and lightspacematrix
-		myLightingManager->UseShadowDepth(directionalShader, lightobject->myLightData);
+		for (auto& l : LightObject::LightEntities)
+		{
+			myLightingManager->UseShadowDepth(directionalShader, l->myLightData);
+		}
+		
 		// Render scene
 
 		glCullFace(GL_FRONT);
@@ -354,7 +311,11 @@ int main()
 
 		myShaderManager->DefaultShader->UseShader();
 
-		myLightingManager->RunMainFragmentShadows(myShaderManager->DefaultShader, lightobject->myLightData);
+		for (auto& l : LightObject::LightEntities)
+		{
+			myLightingManager->RunMainFragmentShadows(myShaderManager->DefaultShader, l->myLightData);
+		}
+	
 		myShaderManager->DefaultShader->SetInt("shadowMap", 1);
 
 		if (myTime->IsPaused == true)
@@ -389,13 +350,25 @@ int main()
 
 		depthShader->UseShader();
 		depthShader->SetInt("depthMap", 0);
-		myLightingManager->UseShadowDepth(depthShader, lightobject->myLightData);
+
+		for (auto& l : LightObject::LightEntities)
+		{
+			myLightingManager->UseShadowDepth(depthShader, l->myLightData);
+		}
+		
 
 		Phys->Simulate(myTime->Deltatime, myTime);
 		
+		
+
 		// render UI (after/ON TOP OF drawcall)
 		update_ui(myUI, myShaderManager, myObjectManager);
 
+		if (!OnceCheck)
+		{
+			myGameplay->Start();
+			OnceCheck = true;
+		}
 
 		if (myTime->IsPaused == false)
 		{

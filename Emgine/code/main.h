@@ -51,14 +51,10 @@ MeshLoader* myMeshLoader = nullptr;
 UI* myUI;
 Message* myMessage;
 MessageQueue* myMessageQueue;
-CubeCollider* cubeColl;
-CubeCollider* planeColl;
-SphereCollider* sphereColl;
+
 LightingManager* myLightingManager;
 RigidbodyManager* myRigidbodyManager;
 Physics* Phys;
 CameraManager* myCameraManager;
 Time* myTime;
 MainGameplay* myGameplay;
-
-Collider* PlaneCollider;

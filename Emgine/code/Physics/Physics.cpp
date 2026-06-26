@@ -176,11 +176,11 @@ void Physics::ApplyForce(std::vector<Rigidbody*> rbs, float dt)
 	{
 		if (r->force != glm::vec3(0))
 		{
-			//glm::vec3 pos = glm::vec3(r->transform[3]);
+			glm::vec3 pos = glm::vec3(r->transform[3]);
 			
-			r->velocity += r->force * dt;
-			//r->force = r->velocity;
-			//r->transform[3] = glm::vec4(pos, 1.0f);
+			pos += r->force * dt;
+			r->position = pos;
+			r->transform[3] = glm::vec4(pos, 1.0f);
 			
 			
 		}
@@ -198,9 +198,6 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 		if (!c->rig1->isKinematic)
 		{
 			c->rig1->velocity.y *= 0;
-			
-		//	c->rig1->force = c->rig1->velocity;
-			
 
 		}
 
@@ -209,38 +206,7 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 			c->rig2->velocity.y *= 0;
 		
 		}
-		// 
-
-		/*for (Collision* c : collisions)
-		{
-			glm::vec3 normal = glm::normalize(c->rig2->position - c->rig1->position);
-
-			glm::vec3 relativeVelocity = c->rig2->velocity - c->rig1->velocity;
-
-			float velocityAlongNormal = glm::dot(relativeVelocity, normal);
-
-			if (velocityAlongNormal < 0)
-			{
-				float restitution = 0.2f;
-				float impulse = (1 + restitution) * velocityAlongNormal;
-
-				if (!c->rig1->isKinematic)
-				{
-					glm::vec3 impulseVector = impulse * normal;
-					impulseVector.y *= 4;
-					c->rig1->velocity += impulseVector;
-					int b = 0;
-				}
-
-				if (!c->rig2->isKinematic)
-				{
-					glm::vec3 impulseVector = impulse * normal;
-					c->rig2->velocity -= impulseVector;
-				}
-
-			}
-		}*/
-
+		
 
 	}
 	//  

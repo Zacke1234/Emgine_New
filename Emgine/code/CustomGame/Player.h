@@ -8,7 +8,7 @@
 #include <ShaderManager.h>
 #include <Physics.h>
 
-class Player
+class Player 
 {
 public:
 	Player(GLFWwindow* getWindow, ObjectManager* myObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager, CameraManager* aCamManager, Time* aTime, Physics* aPhysics);

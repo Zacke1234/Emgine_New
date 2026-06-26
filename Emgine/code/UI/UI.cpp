@@ -245,19 +245,9 @@ UI::UI(GLFWwindow* window) // unitilized
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
-
-
-	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-	{
-		ImGui::UpdatePlatformWindows();
-		ImGui::RenderPlatformWindowsDefault();
-		// TODO for OpenGL: restore current GL context.
-	}
 	
-	//camera = new Camera();
 	ImGui::StyleColorsDark();
-	//ImGui_ImplGlfw_InitForOpenGL(window, true); // changing this to false makes the hover over highlight effect work on the button, but I still
-	// can't interact with it, nvm fixed all of this now
+	
 	ImGui_ImplOpenGL3_Init("#version 330");
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	
@@ -276,6 +266,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 	
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
+
 	ImGui::NewFrame();
 	//ImGui::NewFrame();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -466,6 +457,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 				texture = Object::Entities[Object::SelectedEntity]->myTexture;
 			}
 			
+			//Object::SelectedEntity -= 1;
 			
 		}
 		
@@ -586,12 +578,15 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 
 	//ImGui_ImplGlfw_Shutdown();
 	ImGui::End();
-	ImGui::EndFrame();;
 
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	//glfwSwapBuffers(window);
-	glfwPollEvents();
+	if (gameTime->IsPaused)
+	{
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		//glfwSwapBuffers(window);
+		glfwPollEvents();
+	}
+	
 
 }
 

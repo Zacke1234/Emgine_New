@@ -3,6 +3,7 @@
 #include <TextureManager.h>
 #include <ColliderManager.h>
 #include <Physics.h>
+#include <Object.h>
 
 #pragma once
 class Interactable

@@ -175,6 +175,10 @@ bool Player::CheckCollision()
 				{
 					playerRB->velocity *= glm::vec3(-0.1, 0, -0.1);
 					playerRB->velocity += glm::vec3(-0.5, 0, -0.5);
+
+					playerRB->force *= glm::vec3(-0.1, 0, -0.1);
+					playerRB->force += glm::vec3(-0.5, 0, -0.5);
+
 					atWall = true;
 
 				}
