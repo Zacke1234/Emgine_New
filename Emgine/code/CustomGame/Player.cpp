@@ -14,6 +14,7 @@ Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager
 	//getShader = aShaderManager->DefaultShader;
 	getTime = aTime;
 	window = getWindow;
+	aMeshManager;
 	playerMesh = aMeshManager->Create("fish", "fish.obj");
 	defaultTex = aTextureManager->Create("default", "Default 1.png");
 
@@ -181,6 +182,11 @@ bool Player::CheckCollision()
 
 					atWall = true;
 
+				}
+				if (colls->tag == "Enemy")
+				{
+					playerRB->velocity += glm::vec3(-5, 6, -5);
+					playerRB->force += glm::vec3(-5, 6, -5);
 				}
 				
 				

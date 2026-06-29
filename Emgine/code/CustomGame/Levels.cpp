@@ -2,10 +2,13 @@
 
 std::vector<Levels*> Levels::levelList;
 
-Levels::Levels(ShaderManager* aShaderManager)
+int Levels::SelectedLevel;
+
+Levels::Levels(ShaderManager* aShaderManager, Time* aTime)
 {
 	theShaderManager = aShaderManager;
-
+	tempTime = aTime;
+	this->levelID += 1;
 	levelList.push_back(this);
 }
 

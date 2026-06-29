@@ -197,12 +197,19 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 		//  == glm::greaterThan()
 		if (!c->rig1->isKinematic)
 		{
+			if (c->col1->name == "PlayerSphere")
+			{
+				int b = 0;
+			}
+
 			c->rig1->velocity.y *= 0;
+
 
 		}
 
 		if (!c->rig2->isKinematic)
 		{
+
 			c->rig2->velocity.y *= 0;
 		
 		}
@@ -340,14 +347,14 @@ std::vector<Collision*> Physics::CheckIntersections(std::vector<Collider*> colli
 								collision->rig1 = rb1;
 								collision->rig2 = rb2;
 							}
-							else
+							/*else
 							{
 								Rigidbody* tempRB = new Rigidbody();
 								
 								tempRB->isKinematic = true;
 								collision->rig1 = rb1;
 								collision->rig2 = tempRB;
-							}
+							}*/
 
 						}
 					}
@@ -393,10 +400,10 @@ bool Physics::CubeSphereIntersect(CubeCollider& aCube1, SphereCollider& aSphere2
 	glm::vec3 localSphereCenter = glm::inverse(aCube1.transform) * glm::vec4(sphereCenter, 1.0f);
 	glm::vec3 closestPoint = glm::clamp(localSphereCenter, -aCube1.extents, aCube1.extents);
 	float dist2 = glm::length2(localSphereCenter - closestPoint);
-	
+
 	if (dist2 < aSphere2.radius * aSphere2.radius)
 	{
-		if (aCube1.name == "switchCollider")
+		if (aSphere2.name == "PlayerSphere")
 		{
 			int b = 0;
 		}

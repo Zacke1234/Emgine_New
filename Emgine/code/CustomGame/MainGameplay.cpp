@@ -5,6 +5,8 @@
 void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager, CameraManager* aCamManager, Time* aTime, ShaderManager* aShaderManager, Physics* aPhysics, LightingManager* aLightingManager) // runs once when initialising the game
 {
 	getWindow = aWindow;
+	theObjectManager = myObjectManager;
+	
 	glm::vec3 extentsPlane = { 100, 0.5f,100 };
 	CubeCollider* planeColl;
 	planeColl = new CubeCollider(extentsPlane, glm::vec3(0));
@@ -15,7 +17,7 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	Texture* wall = aTextureManager->Create("wall", "wall.jpg");
 	Texture* defaultTex = aTextureManager->Create("default", "Default 1.png");
 	Mesh* cubeMesh = aMeshManager->Create("Cube", "cube.obj");
-	Mesh* fish = aMeshManager->Create("Fish", "fish.obj");
+	Mesh* fish = aMeshManager->Create("fish", "fish.obj");
 	//Mesh* quadplane = myMeshManager->Create("quadplane", "quadplane.obj");
 	myObjectManager->Create("Plane",
 		cubeMesh,
@@ -24,7 +26,7 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 		NULL()
 	);
 
-
+	
 	myObjectManager->FindAndSetProperties("Plane", glm::vec3(0.0f), glm::vec3(100.0f, 0.5f, 100.0f), glm::vec3(0.0f));
 
 	myObjectManager->CreateLight("SceneLight",
@@ -38,7 +40,9 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 
 	iSwitch = new Interactable(myObjectManager, aMeshManager, aTextureManager, aColliderManager, aPhysics);
 	player = new Player(getWindow, myObjectManager, aMeshManager, aTextureManager, aColliderManager, aRigidbodyManager, aCamManager, aTime, aPhysics);
-
+	
+	enemy = new Enemy(myObjectManager, aRigidbodyManager, aColliderManager, aMeshManager, aTextureManager);
+	
 	SphereCollider* sphere = new SphereCollider(1.0f, glm::vec3(0, 0, 0));
 	Collider* doorColl;
 	CubeCollider* cube = new CubeCollider(glm::vec3(1, 1, 1), glm::vec3(0));
@@ -49,16 +53,16 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	Door = myObjectManager->Create("Door", cubeMesh, wall, doorColl, NULL);
 	Door->Position = glm::vec3(10, 0, 0);
 	Door->Scale = glm::vec3(2, 6, 0.5);
-	FirstLevel = new Levels(aShaderManager);
+	FirstLevel = new Levels(aShaderManager, theTime);
 	FirstLevel->name = "Level one!";
 	FirstLevel->ObjectsInLevel = { player->player, iSwitch->switchObject, Door};
 	
-	SecondLevel = new Levels();
+	SecondLevel = new Levels(NULL ,theTime);
 	SecondLevel->name = "Second Level..";
 
-	ThirdLevel = new Levels();
+	ThirdLevel = new Levels(NULL, theTime);
 	ThirdLevel->name = "Third and final Level.";
-	theObjectManager = myObjectManager;
+	
 	player->aShaderManager = aShaderManager;
 	theTime = aTime;
 
@@ -81,6 +85,8 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 	player->InputMovement();
 
 	newMenu->RenderMenu();
+
+	enemy->Move();
 
 	if (iSwitch->Collided(player->playerColl) && !MainGameplayRunOnce)
 	{

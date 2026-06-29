@@ -5,6 +5,7 @@
 #include "Levels.h"
 #include "Interactable.h"
 #include "BasicMenus.h"
+#include "Enemy.h"
 #include "Managers/ObjectManager.h"
 
 //#include "Physics.h"
@@ -29,6 +30,7 @@ public:
 	Levels* ThirdLevel;
 	Time* theTime;
 	BasicMenus* newMenu;
+	Enemy* enemy;
 
 	bool MainGameplayRunOnce = false;
 };

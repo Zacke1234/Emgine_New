@@ -12,19 +12,23 @@ void BasicMenus::RenderMenu()
 
 	ImGui::Text("Select a level to play.");
 
-	for (auto& l : Levels::levelList)
+	
+	for (int l = 0; l < Levels::levelList.size(); l++)
 	{
-		if (ImGui::Button(l->name.c_str()))
+		if (ImGui::Button(Levels::levelList[l]->name.c_str()))
 		{
+			Levels::SelectedLevel = l;
 
+			//
+
+			//
+
+			// 
 		}
 	}
 	
-
 	ImGui::End();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	//glfwSwapBuffers(window);
-	//glfwPollEvents();
 }

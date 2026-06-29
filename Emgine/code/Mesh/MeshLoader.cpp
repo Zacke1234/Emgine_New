@@ -398,7 +398,7 @@ bool MeshLoader::ReadObjToBinary(std::string objPath, std::ifstream& objReadFile
 	int normalsLength = mesh->normals.size();
 	int uvLength = mesh->uvs.size();
 	int facesLength = mesh->faces.size();
-	
+	int verticesLength = mesh->vertices.size();
 	
 
 	if (!objReadFile.is_open())

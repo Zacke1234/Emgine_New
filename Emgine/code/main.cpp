@@ -97,7 +97,7 @@ int init_managers() {
 	//myShaderManager->Create("PointShader", "../Shader/PointVS.glsl", "../Shader/PointFS.glsl", "../Shader/PointGS.glsl");
 	
 	
-	myObjectManager = new ObjectManager;
+	myObjectManager = new ObjectManager();
 	myRigidbodyManager = new RigidbodyManager();
 	myCameraManager = new CameraManager();
 	myGameplay = new MainGameplay();

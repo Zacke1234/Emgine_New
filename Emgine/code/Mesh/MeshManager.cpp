@@ -86,11 +86,21 @@ Mesh* MeshManager::LoadFromMeshCache(std::string fromPath, std::string name, Mes
 			mesh->uvs = meshes.uvs;
 			mesh->faces = meshes.faces;
 			mesh->position = meshes.position;
+			mesh->vertices = meshes.vertices;
+			mesh->VBO = meshes.VBO;
+			mesh->EBO = meshes.EBO;
+			mesh->VAO = meshes.VAO;
+			mesh->indexCount = meshes.indexCount;
+			mesh->vertexbuffer = meshes.vertexbuffer;
+			mesh->vertexCount = meshes.vertexCount;
+			mesh->numberVertices = meshes.numberVertices;
+			mesh->textures = meshes.textures;
 			break;
 			
 		}
 		
 	}
+	this;
 	meshLoader->BinParser(BinaryPath, mesh);
 	
 	return mesh;
@@ -111,7 +121,7 @@ Mesh* MeshManager::Create(std::string name, std::string path_end)
 	if (std::find(MeshList.begin(), MeshList.end(), name) != MeshList.end())
 	{
 		
-		LoadFromMeshCache((path + path_end).c_str(), name, mesh);
+		mesh = LoadFromMeshCache((path + path_end).c_str(), name, mesh);
 		std::cout << "has mesh: " + name << std::endl;
 	}
 	else
