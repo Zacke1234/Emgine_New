@@ -21,7 +21,7 @@ public:
 	Object* EnemyObj;
 	Rigidbody* EnemyRB;
 	Collider* EnemyColl;
-	CubeCollider* cubeColl;
+	SphereCollider* sphereColl;
 
 	Mesh* enemyMesh;
 	Texture* enemyTexture;

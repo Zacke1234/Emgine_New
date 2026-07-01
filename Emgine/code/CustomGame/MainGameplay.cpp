@@ -78,6 +78,7 @@ void MainGameplay::Start() // runs once in the update loop
 	FirstLevel->Load();
 
 
+
 }
 
 void MainGameplay::Run() // repeatedly runs in the update loop
@@ -97,7 +98,11 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 
 	player->CheckCollision();
 	
-	
+	if (newMenu->Teleported)
+	{
+		player->player->Position = glm::vec3(1, 1, 1);
+		newMenu->Teleported = false;
+	}
 	
 
 }

@@ -27,6 +27,11 @@ void BasicMenus::RenderMenu()
 		}
 	}
 	
+	if (ImGui::Button("Teleport to start"))
+	{
+		Teleported = true;
+	}
+
 	ImGui::End();
 
 	ImGui::Render();

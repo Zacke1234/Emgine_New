@@ -7,14 +7,15 @@ Enemy::Enemy(ObjectManager* aObjectManager, RigidbodyManager* aRigidbodyManager,
 	thisColliderManager = aColliderManager;
 	thisTexManager = aTextureManager;
 	thisMeshManager = aMeshManager;
-	cubeColl = new CubeCollider(glm::vec3(2.0f), glm::vec3(0.0));
-	EnemyColl = aColliderManager->Create("EnemyCollider", cubeColl, false);
+	sphereColl = new SphereCollider(1.0f, glm::vec3(0));
+	EnemyColl = aColliderManager->Create("EnemyCollider", sphereColl, false);
 	EnemyRB = aRigidbodyManager->Create("EnemyRigidbody", 0.5, false, true);
 	EnemyColl->tag = "Enemy";
-	enemyMesh = aMeshManager->Create("fish", "fish.obj");
+	enemyMesh = aMeshManager->Create("Cube", "cube.obj");
 	enemyTexture = aTextureManager->Create("wall", "wall.jpg");
 	EnemyObj = aObjectManager->Create("Enemy", enemyMesh, enemyTexture, EnemyColl, EnemyRB);
-	EnemyObj->Position = glm::vec3(8, 2, 10);
+	EnemyObj->Position = glm::vec3(8, 3.5f, 10);
+	EnemyObj->Scale = glm::vec3(1);
 }
 
 void Enemy::Move()
@@ -44,7 +45,7 @@ void Enemy::Move()
 		break;
 
 	case 5:
-		//EnemyRB->force = glm::vec3(-1, -1, -1);
+		EnemyRB->force = glm::vec3(0, -0.5, 0);
 		break;
 	}
 }

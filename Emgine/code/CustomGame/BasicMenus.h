@@ -12,5 +12,7 @@ public:
 	void ShowMenu(GLFWwindow* window);
 
 	void RenderMenu();
+
+	bool Teleported;
 };
 

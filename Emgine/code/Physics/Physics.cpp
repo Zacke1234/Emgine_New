@@ -194,25 +194,33 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 
 	for (Collision* c : collisions)
 	{
-		//  == glm::greaterThan()
-		if (!c->rig1->isKinematic)
-		{
-			if (c->col1->name == "PlayerSphere")
-			{
-				int b = 0;
-			}
-
-			c->rig1->velocity.y *= 0;
-
-
-		}
-
-		if (!c->rig2->isKinematic)
-		{
-
-			c->rig2->velocity.y *= 0;
 		
+
+		if (c->col1->name == "PlaneColl" && c->col2->name == "PlayerSphere")
+		{
+			int b = 0;
 		}
+		//  == glm::greaterThan()
+		if (!c->rig1 == NULL)
+		{
+			if (!c->rig1->isKinematic)
+			{
+				c->rig1->velocity.y *= 0;
+
+
+			}
+		}
+		
+		if (!c->rig2 == NULL)
+		{
+			if (!c->rig2->isKinematic)
+			{
+
+				c->rig2->velocity.y *= 0;
+
+			}
+		}
+	
 		
 
 	}
@@ -324,47 +332,35 @@ std::vector<Collision*> Physics::CheckIntersections(std::vector<Collider*> colli
 
 	
 
-	for (Collider* c1 : colliders)
+	for (Object* obj1 : Object::Entities)
 	{
 		
-		for (Collider* c2 : colliders)
+		for (Object* obj2 : Object::Entities)
 		{
-			if (c1 != c2)
+			if (obj1 != obj2)
 			{
-				if (BoolCheckIntersect(c1, c2))
+				if (BoolCheckIntersect(obj1->myCollider, obj2->myCollider))
 				{
-					
-					
-					collision->col1 = c1;
-					collision->col2 = c2;
-					
-					for (Rigidbody* rb1 : rbs)
+					if (obj1->myCollider->name == "PlaneColl" && obj2->myCollider->name == "EnemyCollider")
 					{
-						for (Rigidbody* rb2 : rbs)
-						{	
-							if (rb1 != rb2)
-							{
-								collision->rig1 = rb1;
-								collision->rig2 = rb2;
-							}
-							/*else
-							{
-								Rigidbody* tempRB = new Rigidbody();
-								
-								tempRB->isKinematic = true;
-								collision->rig1 = rb1;
-								collision->rig2 = tempRB;
-							}*/
-
-						}
+						int b = 0;
 					}
+					collision->col1 = obj1->myCollider;
+					collision->col2 = obj2->myCollider;
+					
+					collision->rig1 = obj1->myRigidbody;
+					collision->rig2 = obj2->myRigidbody;
+
+
+
 
 					collisions.push_back(collision);
 				}
+				
 			}
 		}
 	}
-
+	
 	return collisions;
 }
 
