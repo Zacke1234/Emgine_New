@@ -14,5 +14,5 @@ Levels::Levels(ShaderManager* aShaderManager, Time* aTime)
 
 void Levels::Load()
 {
-	
+	levelTime = tempTime->CurrentTime;
 }

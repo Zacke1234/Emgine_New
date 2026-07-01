@@ -13,15 +13,19 @@ Time::Time()
 void Time::Run()
 {
 
-
-	LastTime = CurrentTime;
-	CurrentTime = glfwGetTime();
-	Deltatime = CurrentTime - LastTime;
+	if (!IsPaused)
+	{
+		LastTime = CurrentTime;
+		CurrentTime = glfwGetTime();
+		Deltatime = CurrentTime - LastTime;
+	}
+	
 	
 }
 
 void Time::Pause()
 {
+	CurrentTime = CurrentTime;
 	IsPaused = true;
 }
 

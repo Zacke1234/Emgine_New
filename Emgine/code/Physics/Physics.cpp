@@ -194,12 +194,7 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 
 	for (Collision* c : collisions)
 	{
-		
 
-		if (c->col1->name == "PlaneColl" && c->col2->name == "PlayerSphere")
-		{
-			int b = 0;
-		}
 		//  == glm::greaterThan()
 		if (!c->rig1 == NULL)
 		{
@@ -341,10 +336,6 @@ std::vector<Collision*> Physics::CheckIntersections(std::vector<Collider*> colli
 			{
 				if (BoolCheckIntersect(obj1->myCollider, obj2->myCollider))
 				{
-					if (obj1->myCollider->name == "PlaneColl" && obj2->myCollider->name == "EnemyCollider")
-					{
-						int b = 0;
-					}
 					collision->col1 = obj1->myCollider;
 					collision->col2 = obj2->myCollider;
 					
@@ -378,7 +369,7 @@ bool Physics::SphereSphereIntersect(SphereCollider& sphere1, SphereCollider& sph
 
 			if (dist < sphere1.radius + sphere2.radius)
 			{
-				std::cout << "Spheres are intersecting!" << std::endl;
+				//std::cout << "Spheres are intersecting!" << std::endl;
 				return true;
 			}
 			else
@@ -449,7 +440,7 @@ bool Physics::CubeCubeIntersect(CubeCollider& aCube1, CubeCollider& aCube2)
 	}
 
 	return true;
-	std::cout << "cubes are intersecting" << std::endl;
+	//std::cout << "cubes are intersecting" << std::endl;
 
 }
 

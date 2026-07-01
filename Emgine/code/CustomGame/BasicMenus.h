@@ -14,5 +14,7 @@ public:
 	void RenderMenu();
 
 	bool Teleported;
+
+	float getTime = 0.0f;
 };
 

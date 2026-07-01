@@ -27,6 +27,8 @@ void BasicMenus::RenderMenu()
 		}
 	}
 	
+	ImGui::Text("Time %.3f", getTime);
+
 	if (ImGui::Button("Teleport to start"))
 	{
 		Teleported = true;

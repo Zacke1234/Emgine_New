@@ -253,7 +253,7 @@ int main()
 		GL_CHECK(glClearColor(0.1f, 0.1f, 0.1f, 1.0f));
 		
 		
-
+		
 		myTime->Run();
 
 		//update camera

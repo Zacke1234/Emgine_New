@@ -7,6 +7,8 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	getWindow = aWindow;
 	theObjectManager = myObjectManager;
 	
+	theTime = aTime;
+
 	glm::vec3 extentsPlane = { 100, 0.5f,100 };
 	CubeCollider* planeColl;
 	planeColl = new CubeCollider(extentsPlane, glm::vec3(0));
@@ -40,7 +42,8 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 
 	iSwitch = new Interactable(myObjectManager, aMeshManager, aTextureManager, aColliderManager, aPhysics);
 	player = new Player(getWindow, myObjectManager, aMeshManager, aTextureManager, aColliderManager, aRigidbodyManager, aCamManager, aTime, aPhysics);
-	
+	player->aShaderManager = aShaderManager;
+
 	enemy = new Enemy(myObjectManager, aRigidbodyManager, aColliderManager, aMeshManager, aTextureManager);
 	
 	SphereCollider* sphere = new SphereCollider(1.0f, glm::vec3(0, 0, 0));
@@ -63,8 +66,7 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	ThirdLevel = new Levels(NULL, theTime);
 	ThirdLevel->name = "Third and final Level.";
 	
-	player->aShaderManager = aShaderManager;
-	theTime = aTime;
+	
 
 	
 }
@@ -75,7 +77,7 @@ void MainGameplay::Start() // runs once in the update loop
 	newMenu = new BasicMenus();
 
 	newMenu->ShowMenu(getWindow);
-	FirstLevel->Load();
+	
 
 
 
@@ -88,6 +90,10 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 	newMenu->RenderMenu();
 
 	enemy->Move();
+
+	FirstLevel->Load();
+
+	newMenu->getTime = FirstLevel->levelTime;
 
 	if (iSwitch->Collided(player->playerColl) && !MainGameplayRunOnce)
 	{

@@ -81,7 +81,8 @@ void Player::InputMovement()
 	if (playerController->W_KEY_RELEASE(window) && wkeyCallBack)
 	{
 		playerRB->force *= 0;
-		playerRB->velocity *= 0;
+		playerRB->velocity.x *= 0;
+		playerRB->velocity.z *= 0;
 		wkeyCallBack = false;
 	}
 	 
@@ -94,7 +95,8 @@ void Player::InputMovement()
 	if (playerController->S_KEY_RELEASE(window) && skeyCallBack)
 	{
 		playerRB->force *= 0;
-		playerRB->velocity *= 0;
+		playerRB->velocity.x *= 0;
+		playerRB->velocity.z *= 0;
 		skeyCallBack = false;
 	}
 
@@ -107,7 +109,8 @@ void Player::InputMovement()
 	if (playerController->D_KEY_RELEASE(window) && dkeyCallBack)
 	{
 		playerRB->force *= 0;
-		playerRB->velocity *= 0;
+		playerRB->velocity.x *= 0;
+		playerRB->velocity.z *= 0;
 		dkeyCallBack = false;
 	}
 
@@ -121,7 +124,8 @@ void Player::InputMovement()
 	if (playerController->A_KEY_RELEASE(window) && akeyCallBack)
 	{
 		playerRB->force *= 0;
-		playerRB->velocity *= 0;
+		playerRB->velocity.x *= 0;
+		playerRB->velocity.z *= 0;
 		akeyCallBack = false;
 	}
 
