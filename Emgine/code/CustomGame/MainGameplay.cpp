@@ -59,15 +59,11 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	Door->Scale = glm::vec3(2, 6, 0.5);
 	
 
-	FirstLevel = new Levels(aShaderManager, theTime);
-	FirstLevel->name = "Level one!";
-	FirstLevel->ObjectsInLevel = { player->player, iSwitch->getObject, Door, goal->getObject};
+	TheLevels = new Levels(aShaderManager, theTime);
+	TheLevels->name = "Level one!";
+	TheLevels->ObjectsInLevel = { player->player, iSwitch->getObject, Door, goal->getObject};
 	
-	SecondLevel = new Levels(NULL ,theTime);
-	SecondLevel->name = "Second Level..";
 
-	ThirdLevel = new Levels(NULL, theTime);
-	ThirdLevel->name = "Third and final Level.";
 	
 	
 
@@ -94,9 +90,9 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 
 	enemy->Move();
 
-	FirstLevel->Load();
+	TheLevels->Load();
 
-	newMenu->getTime = FirstLevel->levelTime;
+	newMenu->getTime = TheLevels->levelTime;
 
 	if (iSwitch->Collided(player->playerColl) && !MainGameplayRunOnce)
 	{
@@ -107,7 +103,7 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 
 	if (goal->Collided(player->playerColl))
 	{
-		FirstLevel->isLevelCompleted = true;
+		TheLevels->isLevelCompleted = true;
 	}
 
 	player->CheckCollision();

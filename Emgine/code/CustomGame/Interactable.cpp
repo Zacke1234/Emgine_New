@@ -28,7 +28,7 @@ GoalPost::GoalPost(ObjectManager* aObjectManager, MeshManager* aMeshManager, Tex
 
 	getObject = aObjectManager->Create("GoalPost", getMesh, getTexture, getCollider, NULL);
 	getPhysics = aPhysics;
-	getObject->Position = glm::vec3(4.0f, 10.0f, 8.0f);
+	getObject->Position = glm::vec3(4.0f, 7.0f, 8.0f);
 	getCollider->position = getObject->Position;
 	getCollider->transform = getObject->trans;
 }

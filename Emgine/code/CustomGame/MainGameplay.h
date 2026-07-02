@@ -24,9 +24,8 @@ public:
 	GLFWwindow* getWindow;
 	ObjectManager* theObjectManager;
 	Object* Door;
-	Levels* FirstLevel;
-	Levels* SecondLevel;
-	Levels* ThirdLevel;
+	Levels* TheLevels;
+
 	Time* theTime;
 	BasicMenus* newMenu;
 	Enemy* enemy;

@@ -20,7 +20,7 @@ void BasicMenus::RenderMenu()
 			Levels::SelectedLevel = l;
 
 			//
-
+				
 			//
 
 			// 
@@ -29,7 +29,7 @@ void BasicMenus::RenderMenu()
 	
 	ImGui::Text("Time %.3f", getTime);
 
-	if (ImGui::Button("Teleport to start"))
+	if (ImGui::Button("Restart"))
 	{
 		Teleported = true;
 	}
