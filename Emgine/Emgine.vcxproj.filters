@@ -144,9 +144,6 @@
     <ClCompile Include="code\CustomGame\Interactable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="code\CustomGame\RecordTimes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="code\CustomGame\BasicMenus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -300,9 +297,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="code\CustomGame\Interactable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="code\CustomGame\RecordTimes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="code\CustomGame\BasicMenus.h">

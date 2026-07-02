@@ -42,6 +42,7 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 
 	iSwitch = new Interactable(myObjectManager, aMeshManager, aTextureManager, aColliderManager, aPhysics);
 	player = new Player(getWindow, myObjectManager, aMeshManager, aTextureManager, aColliderManager, aRigidbodyManager, aCamManager, aTime, aPhysics);
+	goal = new GoalPost(myObjectManager, aMeshManager, aTextureManager, aColliderManager, aPhysics);
 	player->aShaderManager = aShaderManager;
 
 	enemy = new Enemy(myObjectManager, aRigidbodyManager, aColliderManager, aMeshManager, aTextureManager);
@@ -56,9 +57,11 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	Door = myObjectManager->Create("Door", cubeMesh, wall, doorColl, NULL);
 	Door->Position = glm::vec3(10, 0, 0);
 	Door->Scale = glm::vec3(2, 6, 0.5);
+	
+
 	FirstLevel = new Levels(aShaderManager, theTime);
 	FirstLevel->name = "Level one!";
-	FirstLevel->ObjectsInLevel = { player->player, iSwitch->switchObject, Door};
+	FirstLevel->ObjectsInLevel = { player->player, iSwitch->getObject, Door, goal->getObject};
 	
 	SecondLevel = new Levels(NULL ,theTime);
 	SecondLevel->name = "Second Level..";
@@ -100,6 +103,11 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 		theObjectManager->Destroy(Door);
 		MainGameplayRunOnce = true;
 		//std::cout << " switch collided" << std::endl;
+	}
+
+	if (goal->Collided(player->playerColl))
+	{
+		FirstLevel->isLevelCompleted = true;
 	}
 
 	player->CheckCollision();

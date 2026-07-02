@@ -1,6 +1,5 @@
 #pragma once
 #include "Player.h"
-#include "RecordTimes.h"
 #include "Terrain.h"
 #include "Levels.h"
 #include "Interactable.h"
@@ -31,6 +30,7 @@ public:
 	Time* theTime;
 	BasicMenus* newMenu;
 	Enemy* enemy;
+	GoalPost* goal;
 
 	bool MainGameplayRunOnce = false;
 };

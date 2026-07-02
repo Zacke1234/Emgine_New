@@ -12,20 +12,17 @@ Time::Time()
 
 void Time::Run()
 {
-
 	if (!IsPaused)
 	{
 		LastTime = CurrentTime;
-		CurrentTime = glfwGetTime();
+		//CurrentTime = glfwGetTime();
+		CurrentTime += 0.01f;
 		Deltatime = CurrentTime - LastTime;
 	}
-	
-	
 }
 
 void Time::Pause()
 {
-	CurrentTime = CurrentTime;
 	IsPaused = true;
 }
 

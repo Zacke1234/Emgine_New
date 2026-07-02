@@ -9,16 +9,30 @@
 class Interactable
 {
 public:
+
+	Interactable();
 	Interactable(ObjectManager* aObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, Physics* aPhysics);
 
 	bool Collided(Collider* PlayerColl);
 
 	
-	Physics* switchPhysics;
-	Texture* switchtexture;
-	Mesh* switchMesh;
-	Collider* switchCollider;
-	Object* switchObject;
+	Physics* getPhysics;
+	Texture* getTexture;
+	Mesh* getMesh;
+	Collider* getCollider;
+	Object* getObject;
 
 };
 
+
+class GoalPost : public Interactable
+{
+public:
+	
+	GoalPost(ObjectManager* aObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, Physics* aPhysics);
+	
+	bool Collided(Collider* PlayerColl);
+
+	//bool Collided(Collider* playerColl);
+
+};

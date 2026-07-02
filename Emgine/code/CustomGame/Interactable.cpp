@@ -1,25 +1,41 @@
 #include "Interactable.h"
 
+Interactable::Interactable()
+{
+	//
+}
+
 Interactable::Interactable(ObjectManager* aObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, Physics* aPhysics)
 {
 	CubeCollider* cubeColl = new CubeCollider(glm::vec3(1.5f, 1.5f, 1.5f), glm::vec3(0, 0, 0));
-	switchtexture = aTextureManager->Find("wall");
-	switchMesh = aMeshManager->Create("well", "well.obj");
-	switchCollider = aColliderManager->Create("switchCollider", cubeColl);
+	getTexture = aTextureManager->Find("wall");
+	getMesh = aMeshManager->Create("well", "well.obj");
+	getCollider = aColliderManager->Create("switchCollider", cubeColl);
 	
-	switchObject = aObjectManager->Create("Switch", switchMesh, switchtexture, switchCollider, NULL);
-	switchPhysics = aPhysics;
-	switchObject->Position = glm::vec3(4.0f, 10.0f, 8.0f);
-	switchCollider->position = switchObject->Position;
-	switchCollider->transform = switchObject->trans;
+	getObject = aObjectManager->Create("Switch", getMesh, getTexture, getCollider, NULL);
+	getPhysics = aPhysics;
+	getObject->Position = glm::vec3(4.0f, 10.0f, 8.0f);
+	getCollider->position = getObject->Position;
+	getCollider->transform = getObject->trans;
 }
 
-bool Interactable::Collided(Collider* PlayerColl)
+GoalPost::GoalPost(ObjectManager* aObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, Physics* aPhysics)
 {
+	CubeCollider* cubeColl = new CubeCollider(glm::vec3(1.5f, 1.5f, 1.5f), glm::vec3(0, 0, 0));
+	getTexture = aTextureManager->Find("wall");
+	getMesh = aMeshManager->Create("well", "well.obj");
+	getCollider = aColliderManager->Create("goalCollider", cubeColl);
 
-	
+	getObject = aObjectManager->Create("GoalPost", getMesh, getTexture, getCollider, NULL);
+	getPhysics = aPhysics;
+	getObject->Position = glm::vec3(4.0f, 10.0f, 8.0f);
+	getCollider->position = getObject->Position;
+	getCollider->transform = getObject->trans;
+}
 
-	if(switchPhysics->BoolCheckIntersect(switchCollider, PlayerColl))
+bool GoalPost::Collided(Collider* PlayerColl)
+{
+	if (getPhysics->BoolCheckIntersect(getCollider, PlayerColl))
 	{
 		return true;
 	}
@@ -28,3 +44,22 @@ bool Interactable::Collided(Collider* PlayerColl)
 		return false;
 	}
 }
+
+
+
+bool Interactable::Collided(Collider* PlayerColl)
+{
+
+	
+
+	if(getPhysics->BoolCheckIntersect(getCollider, PlayerColl))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+

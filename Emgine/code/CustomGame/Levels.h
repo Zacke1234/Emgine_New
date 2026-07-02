@@ -20,6 +20,8 @@ public:
 
 	float levelTime = 0.0f;
 
+	bool isLevelCompleted = false;
+
 	ShaderManager* theShaderManager;
 
 	std::vector<Object*> ObjectsInLevel;

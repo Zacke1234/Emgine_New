@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -207,7 +207,6 @@
     <ClCompile Include="code\CustomGame\Levels.cpp" />
     <ClCompile Include="code\CustomGame\Enemy.cpp" />
     <ClCompile Include="code\CustomGame\Interactable.cpp" />
-    <ClCompile Include="code\CustomGame\RecordTimes.cpp" />
     <ClCompile Include="code\CustomGame\Terrain.cpp" />
     <ClCompile Include="code\Controller\Controller.cpp" />
   </ItemGroup>
@@ -266,7 +265,6 @@
     <ClInclude Include="code\CustomGame\Levels.h" />
     <ClInclude Include="code\CustomGame\Enemy.h" />
     <ClInclude Include="code\CustomGame\Interactable.h" />
-    <ClInclude Include="code\CustomGame\RecordTimes.h" />
     <ClInclude Include="code\CustomGame\Terrain.h" />
     <ClInclude Include="code\main.h" />
     <ClInclude Include="code\Controller\Controller.h" />
