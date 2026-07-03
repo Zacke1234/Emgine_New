@@ -20,7 +20,7 @@ Player::Player(GLFWwindow* getWindow, ObjectManager* aObjectManager, MeshManager
 
 	SphereCollider* sphereColl = new SphereCollider(1.0f, glm::vec3(0, 0, 0));
 	//CubeCollider* cube = new CubeCollider(glm::vec3(1, 1, 1), glm::vec3(0));
-	playerColl = aColliderManager->Create("PlayerSphere", sphereColl);
+	playerColl = aColliderManager->Create("PlayerColl", sphereColl);
 	playerRB = aRigidbodyManager->Create("playerRB", 1.5, true, true);
 	playerController = new Controller();
 

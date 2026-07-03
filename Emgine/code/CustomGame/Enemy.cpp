@@ -8,7 +8,7 @@ Enemy::Enemy(ObjectManager* aObjectManager, RigidbodyManager* aRigidbodyManager,
 	thisTexManager = aTextureManager;
 	thisMeshManager = aMeshManager;
 	sphereColl = new SphereCollider(1.0f, glm::vec3(0));
-	EnemyColl = aColliderManager->Create("EnemyCollider", sphereColl, false);
+	EnemyColl = aColliderManager->Create("EnemyColl", sphereColl, false);
 	EnemyRB = aRigidbodyManager->Create("EnemyRigidbody", 0.5, false, true);
 	EnemyColl->tag = "Enemy";
 	enemyMesh = aMeshManager->Create("Cube", "cube.obj");

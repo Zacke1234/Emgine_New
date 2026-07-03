@@ -13,13 +13,31 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	CubeCollider* planeColl;
 	planeColl = new CubeCollider(extentsPlane, glm::vec3(0));
 
+	CubeCollider* cubeColl = new CubeCollider(glm::vec3(1), glm::vec3(0));
+	
+	Collider* WallCollider;
+	WallCollider = aColliderManager->Create("Wall", cubeColl, false);
+	WallCollider->tag = "Wall";
+
 	Collider* PlaneCollider;
 	PlaneCollider = aColliderManager->Create("PlaneColl", planeColl, true);
 
 	Texture* wall = aTextureManager->Create("wall", "wall.jpg");
 	Texture* defaultTex = aTextureManager->Create("default", "Default 1.png");
+	Texture* goalTexture = aTextureManager->Create("goal", "goal.png");
 	Mesh* cubeMesh = aMeshManager->Create("Cube", "cube.obj");
 	Mesh* fish = aMeshManager->Create("fish", "fish.obj");
+
+	Wall1 = myObjectManager->Create("Wall",
+		cubeMesh,
+		wall,
+		WallCollider,
+		NULL
+	);
+
+	Wall1->Position = glm::vec3(10, 6.3f, 3);
+	Wall1->Scale = glm::vec3(2, 6, 0.5);
+
 	//Mesh* quadplane = myMeshManager->Create("quadplane", "quadplane.obj");
 	myObjectManager->Create("Plane",
 		cubeMesh,
@@ -55,17 +73,17 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	doorColl = aColliderManager->Create("doorColl", cube);
 	doorColl->tag = "Wall";
 	Door = myObjectManager->Create("Door", cubeMesh, wall, doorColl, NULL);
-	Door->Position = glm::vec3(10, 0, 0);
+	Door->Position = glm::vec3(10, 6.3f, 0);
 	Door->Scale = glm::vec3(2, 6, 0.5);
 	
 
 	TheLevels = new Levels(aShaderManager, theTime);
 	TheLevels->name = "Level one!";
-	TheLevels->ObjectsInLevel = { player->player, iSwitch->getObject, Door, goal->getObject};
+	//TheLevels->ObjectsInLevel = { player->player, iSwitch->getObject, Door, goal->getObject};
 	
 
-	
-	
+	iSwitch->getObject->Position = glm::vec3(3, 1, 3);
+	goal->getObject->Position = glm::vec3(10, 1.5f, 1.5);
 
 	
 }

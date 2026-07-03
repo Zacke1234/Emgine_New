@@ -68,7 +68,7 @@ public:
 	bool Testgravity = true;
 
 	bool TimeTicking = true;
-	std::vector<Collision*> collisions;
+	//std::vector<Collision*> collisions;
 	std::vector<Rigidbody*> rigidbodies;
 
 

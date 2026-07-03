@@ -14,7 +14,7 @@ Interactable::Interactable(ObjectManager* aObjectManager, MeshManager* aMeshMana
 	
 	getObject = aObjectManager->Create("Switch", getMesh, getTexture, getCollider, NULL);
 	getPhysics = aPhysics;
-	getObject->Position = glm::vec3(4.0f, 10.0f, 8.0f);
+	//getObject->Position = glm::vec3(4.0f, 10.0f, 8.0f);
 	getCollider->position = getObject->Position;
 	getCollider->transform = getObject->trans;
 }
@@ -22,13 +22,13 @@ Interactable::Interactable(ObjectManager* aObjectManager, MeshManager* aMeshMana
 GoalPost::GoalPost(ObjectManager* aObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, Physics* aPhysics)
 {
 	CubeCollider* cubeColl = new CubeCollider(glm::vec3(1.5f, 1.5f, 1.5f), glm::vec3(0, 0, 0));
-	getTexture = aTextureManager->Find("wall");
-	getMesh = aMeshManager->Create("well", "well.obj");
+	getTexture = aTextureManager->Find("goal");
+	getMesh = aMeshManager->Create("cube", "cube.obj");
 	getCollider = aColliderManager->Create("goalCollider", cubeColl);
 
 	getObject = aObjectManager->Create("GoalPost", getMesh, getTexture, getCollider, NULL);
 	getPhysics = aPhysics;
-	getObject->Position = glm::vec3(4.0f, 7.0f, 8.0f);
+	//getObject->Position = glm::vec3(4.0f, 7.0f, 8.0f);
 	getCollider->position = getObject->Position;
 	getCollider->transform = getObject->trans;
 }

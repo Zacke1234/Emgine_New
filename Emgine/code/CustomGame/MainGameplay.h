@@ -24,6 +24,9 @@ public:
 	GLFWwindow* getWindow;
 	ObjectManager* theObjectManager;
 	Object* Door;
+	Object* Wall1;
+	Object* Wall2;
+	Object* Wall3;
 	Levels* TheLevels;
 
 	Time* theTime;
