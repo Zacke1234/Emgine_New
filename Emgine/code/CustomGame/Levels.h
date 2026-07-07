@@ -8,7 +8,7 @@
 class Levels
 {
 public:
-	Levels(ShaderManager* aShaderManager = NULL, Time* aTime = NULL);
+	Levels(ShaderManager* aShaderManager = NULL, Time* aTime = NULL, ObjectManager* myObjectManager = NULL);
 
 	Time* tempTime;
 
@@ -23,12 +23,15 @@ public:
 	bool isLevelCompleted = false;
 
 	ShaderManager* theShaderManager;
+	ObjectManager* theObjManager;
 
 	std::vector<Object*> ObjectsInLevel;
 	//static std::vector<Object*> Entities;
 	std::string name = "placeHolder";
 
 	void Load();
+
+	void Clear();
 
 };
 

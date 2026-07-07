@@ -194,15 +194,6 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 
 	for (Collision* c : collisions)
 	{
-		if (c->col1->name == "PlaneColl" && c->col2->name == "PlayerColl")
-		{
-			int b = 0;
-		}
-
-		if (c->col1->name == "PlaneColl" && c->col2->name == "EnemyColl")
-		{
-			int b = 0;
-		}
 		//  == glm::greaterThan()
 		if (!c->rig1 == NULL)
 		{
@@ -347,15 +338,6 @@ std::vector<Collision*> Physics::CheckIntersections(std::vector<Collider*> colli
 				
 				if (BoolCheckIntersect(obj1->myCollider, obj2->myCollider))
 				{
-					if (obj1->myCollider->name == "PlaneColl" && obj2->myCollider->name == "PlayerColl")
-					{
-						int b = 0;
-					}
-
-					if (obj1->myCollider->name == "PlaneColl" && obj2->myCollider->name == "EnemyColl")
-					{
-						int b = 0;
-					}
 					Collision* collision = new Collision;
 					collision->col1 = obj1->myCollider;
 					collision->col2 = obj2->myCollider;

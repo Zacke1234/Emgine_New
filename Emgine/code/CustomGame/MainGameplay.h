@@ -23,6 +23,7 @@ public:
 	Player* player;
 	GLFWwindow* getWindow;
 	ObjectManager* theObjectManager;
+	Object* PlaneObj;
 	Object* Door;
 	Object* Wall1;
 	Object* Wall2;

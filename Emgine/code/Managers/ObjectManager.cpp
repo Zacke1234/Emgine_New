@@ -22,9 +22,20 @@ Object* ObjectManager::Create(std::string _namn = "new_object", Mesh* Mesh = NUL
 
 void ObjectManager::Destroy(Object* thisObject) {
 	
+	int MaxSize = Object::Entities.size();
+	if (MaxSize == Object::SelectedEntity + 1)
+	{
+		Object::Entities.erase(Object::Entities.begin() + thisObject->ObjectID - 1);
+		Object::SelectedEntity -= 1;
+		delete(thisObject);
+	}
+	else
+	{
+		Object::Entities.erase(Object::Entities.begin() + thisObject->ObjectID - 1);
+		//Object::SelectedEntity += 1;
+		delete(thisObject);
+	}
 	
-	Object::Entities.erase(Object::Entities.begin() + thisObject->ObjectID - 1);
-	delete(thisObject);
 	
 }
 

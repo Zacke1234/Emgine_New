@@ -171,18 +171,21 @@ bool Player::CheckCollision()
 			{
 				onGround = true;
 
-
+				glm::vec3 VelocityOnHit = glm::vec3(0);
 				if (colls->tag != "Wall")
 				{
 					atWall = false;
 				}
 				if (colls->tag == "Wall")
 				{
+					VelocityOnHit = playerRB->force;
 					playerRB->velocity *= glm::vec3(-0.1, 0, -0.1);
+					//playerRB->velocity += -VelocityOnHit /= 10;
 					playerRB->velocity += glm::vec3(-0.5, 0, -0.5);
-
+					
 					playerRB->force *= glm::vec3(-0.1, 0, -0.1);
 					playerRB->force += glm::vec3(-0.5, 0, -0.5);
+					//playerRB->force += -VelocityOnHit /= 10;
 
 					atWall = true;
 

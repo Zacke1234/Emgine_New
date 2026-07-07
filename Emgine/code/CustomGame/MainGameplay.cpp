@@ -39,7 +39,7 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	Wall1->Scale = glm::vec3(2, 6, 0.5);
 
 	//Mesh* quadplane = myMeshManager->Create("quadplane", "quadplane.obj");
-	myObjectManager->Create("Plane",
+	PlaneObj = myObjectManager->Create("Plane",
 		cubeMesh,
 		defaultTex,
 		planeColl,
@@ -77,7 +77,14 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	Door->Scale = glm::vec3(2, 6, 0.5);
 	
 
-	TheLevels = new Levels(aShaderManager, theTime);
+	TheLevels = new Levels(aShaderManager, theTime, myObjectManager);
+	// Wall1 +  player->player + PlaneObj
+	TheLevels->ObjectsInLevel.push_back(Door);
+	TheLevels->ObjectsInLevel.push_back(player->player);
+	TheLevels->ObjectsInLevel.push_back(PlaneObj);
+	TheLevels->ObjectsInLevel.push_back(Wall1);
+	TheLevels->ObjectsInLevel.push_back(goal->getObject);
+	TheLevels->ObjectsInLevel.push_back(enemy->EnemyObj);
 	TheLevels->name = "Level one!";
 	//TheLevels->ObjectsInLevel = { player->player, iSwitch->getObject, Door, goal->getObject};
 	
@@ -122,6 +129,7 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 	if (goal->Collided(player->playerColl))
 	{
 		TheLevels->isLevelCompleted = true;
+		TheLevels->Clear();
 	}
 
 	player->CheckCollision();
