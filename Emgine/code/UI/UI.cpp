@@ -440,22 +440,27 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 			{
 				objectmanager->Destroy(Object::Entities[Object::SelectedEntity]);
 			}
-			
-			xPos = Object::Entities[Object::SelectedEntity]->Position.x; // This fixed one of the problems with deleting objects
-			yPos = Object::Entities[Object::SelectedEntity]->Position.y;
-			zPos = Object::Entities[Object::SelectedEntity]->Position.z;
 
-			xScale = Object::Entities[Object::SelectedEntity]->Scale.x;
-			yScale = Object::Entities[Object::SelectedEntity]->Scale.y;
-			zScale = Object::Entities[Object::SelectedEntity]->Scale.z;
-
-			xRot = Object::Entities[Object::SelectedEntity]->Rotation.x;
-			yRot = Object::Entities[Object::SelectedEntity]->Rotation.y;
-			zRot = Object::Entities[Object::SelectedEntity]->Rotation.z;
-			if (Object::Entities[Object::SelectedEntity]->myTexture != NULL || texture != NULL)
+			if (Object::Entities.size() > 0)
 			{
-				texture = Object::Entities[Object::SelectedEntity]->myTexture;
+				xPos = Object::Entities[Object::SelectedEntity]->Position.x; // This fixed one of the problems with deleting objects
+				yPos = Object::Entities[Object::SelectedEntity]->Position.y;
+				zPos = Object::Entities[Object::SelectedEntity]->Position.z;
+
+				xScale = Object::Entities[Object::SelectedEntity]->Scale.x;
+				yScale = Object::Entities[Object::SelectedEntity]->Scale.y;
+				zScale = Object::Entities[Object::SelectedEntity]->Scale.z;
+
+				xRot = Object::Entities[Object::SelectedEntity]->Rotation.x;
+				yRot = Object::Entities[Object::SelectedEntity]->Rotation.y;
+				zRot = Object::Entities[Object::SelectedEntity]->Rotation.z;
+				if (Object::Entities[Object::SelectedEntity]->myTexture != NULL || texture != NULL)
+				{
+					texture = Object::Entities[Object::SelectedEntity]->myTexture;
+				}
 			}
+			
+			
 			
 			//Object::SelectedEntity -= 1;
 			
