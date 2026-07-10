@@ -18,7 +18,7 @@ public:
 	void Start();
 	void Run();
 
-
+	Collider* doorColl;
 	Interactable* iSwitch;
 	Player* player;
 	GLFWwindow* getWindow;

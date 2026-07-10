@@ -197,7 +197,10 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 		//  == glm::greaterThan()
 		if (!c->rig1 == NULL)
 		{
-			
+			if (c->col2->tag == "Wall")
+			{
+				int b = 0;
+			}
 			if (!c->rig1->isKinematic)
 			{
 				c->rig1->velocity.y *= 0;
@@ -393,7 +396,7 @@ bool Physics::CubeSphereIntersect(CubeCollider& aCube1, SphereCollider& aSphere2
 
 	if (dist2 < aSphere2.radius * aSphere2.radius)
 	{
-		if (aSphere2.name == "PlayerSphere")
+		if (aCube1.tag == "Wall")
 		{
 			int b = 0;
 		}

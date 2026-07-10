@@ -23,7 +23,7 @@ private:
 	
 
 public:
-
+	~Object();
 	Object(std::string _namn, Mesh* Mesh, Texture* aTexture, Collider* coll, Rigidbody* rb);
 
 	static std::vector<Object*> Entities;

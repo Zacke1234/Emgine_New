@@ -22,6 +22,15 @@ vector<CameraObject*> CameraObject::CameraEntities;
 
 int ID = 0;
 
+Object::~Object()
+{
+	myCollider = NULL;
+	myTexture = NULL; 
+	myRigidbody = NULL;
+	myMesh = NULL;
+	namn = "";
+}
+
 Object::Object(std::string _namn = "new_object", Mesh* Mesh = NULL, Texture* aTexture = NULL, Collider* aCollider = NULL, Rigidbody* rb = NULL)
 {
 	ID++;
@@ -287,8 +296,12 @@ void Object::DrawObject(Shader* myShader)
 		UpdateTransform(myShader);
 	}
 	
-	GL_CHECK(glActiveTexture(GL_TEXTURE0)); // Activate the texture unit before binding texture
-	GL_CHECK(glBindTexture(GL_TEXTURE_2D, myTexture->TextureObject));
+	if (myTexture != NULL)
+	{
+		GL_CHECK(glActiveTexture(GL_TEXTURE0)); // Activate the texture unit before binding texture
+		GL_CHECK(glBindTexture(GL_TEXTURE_2D, myTexture->TextureObject));
+	}
+	
 
 
 	if (myTexture->myMaterial != NULL)

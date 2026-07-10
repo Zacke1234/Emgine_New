@@ -14,6 +14,7 @@ class Rigidbody;
 class Collider
 {
 public: 
+	~Collider();
 	Collider();
 	virtual void test(); // polymorphic
 	//virtual ~Collider() {};

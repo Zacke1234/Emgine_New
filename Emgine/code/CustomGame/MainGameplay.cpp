@@ -66,7 +66,7 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	enemy = new Enemy(myObjectManager, aRigidbodyManager, aColliderManager, aMeshManager, aTextureManager);
 	
 	SphereCollider* sphere = new SphereCollider(1.0f, glm::vec3(0, 0, 0));
-	Collider* doorColl;
+	
 	CubeCollider* cube = new CubeCollider(glm::vec3(1, 1, 1), glm::vec3(0));
 	
 	
@@ -121,7 +121,10 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 
 	if (iSwitch->Collided(player->playerColl) && !MainGameplayRunOnce)
 	{
-		theObjectManager->Destroy(Door);
+		Object::Entities.erase(Object::Entities.begin() + Door->ObjectID - 1);
+		delete(Door);
+		doorColl = NULL;
+		
 		MainGameplayRunOnce = true;
 		//std::cout << " switch collided" << std::endl;
 	}

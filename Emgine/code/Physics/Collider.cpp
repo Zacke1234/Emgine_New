@@ -21,7 +21,17 @@ glm::mat3 ComputeMomentOfInertiaSphere(float mass, float radius)
 //
 //}
 
-Collider::Collider() 
+Collider::~Collider()
+{
+	center = glm::vec3(0, 0, 0);
+	radius = 0.0f;
+
+	transform = Math::identity4;
+	position = glm::vec3(0, 0, 0);
+	extents = glm::vec3(0, 0, 0);
+}
+
+Collider::Collider()
 {
 	
 	center = glm::vec3(0, 0, 0);
