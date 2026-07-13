@@ -29,6 +29,7 @@ Collider::~Collider()
 	transform = Math::identity4;
 	position = glm::vec3(0, 0, 0);
 	extents = glm::vec3(0, 0, 0);
+	//CollEntities.erase(CollEntities.begin());
 }
 
 Collider::Collider()

@@ -163,34 +163,41 @@ void Player::InputMovement()
 
 bool Player::CheckCollision()
 {
-	for (auto& colls : Collider::CollEntities)
+	for (Object* obj2 : Object::Entities)
 	{
-		if (colls != playerColl)
+		if (obj2->myCollider != playerColl)
 		{
-			if (playerPhysics->BoolCheckIntersect(colls, playerColl))
+			if (playerPhysics->BoolCheckIntersect(obj2->myCollider, playerColl))
 			{
 				onGround = true;
 
-				glm::vec3 VelocityOnHit = glm::vec3(0);
-				if (colls->tag != "Wall")
+				
+				glm::vec3 ForceOnHit = glm::vec3(0);
+				int ForceAsOneDigitX = 0;
+				int ForceAsOneDigitZ = 0;
+				if (obj2->myCollider->tag != "Wall")
 				{
 					atWall = false;
 				}
-				if (colls->tag == "Wall")
+				if (obj2->myCollider->tag == "Wall")
 				{
-					VelocityOnHit = playerRB->force;
-					playerRB->velocity *= glm::vec3(-0.1, 0, -0.1);
-					//playerRB->velocity += -VelocityOnHit /= 10;
-					playerRB->velocity += glm::vec3(-0.5, 0, -0.5);
 					
-					playerRB->force *= glm::vec3(-0.1, 0, -0.1);
-					playerRB->force += glm::vec3(-0.5, 0, -0.5);
+					/*ForceOnHit = playerRB->force;
+					ForceAsOneDigitX = playerRB->force.x;
+					ForceAsOneDigitZ = playerRB->force.z;
+					int x = ForceAsOneDigitX % 3;
+					int z = ForceAsOneDigitZ % 3;*/
+					
+					
+					playerRB->force *= glm::vec3(-1.0, 0, -1.0);
+					
+					playerRB->force += glm::vec3(-1, 0, -1);
 					//playerRB->force += -VelocityOnHit /= 10;
 
 					atWall = true;
 
 				}
-				if (colls->tag == "Enemy")
+				if (obj2->myCollider->tag == "Enemy")
 				{
 					playerRB->velocity += glm::vec3(-5, 6, -5);
 					playerRB->force += glm::vec3(-5, 6, -5);

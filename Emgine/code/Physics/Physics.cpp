@@ -341,6 +341,7 @@ std::vector<Collision*> Physics::CheckIntersections(std::vector<Collider*> colli
 				
 				if (BoolCheckIntersect(obj1->myCollider, obj2->myCollider))
 				{
+					
 					Collision* collision = new Collision;
 					collision->col1 = obj1->myCollider;
 					collision->col2 = obj2->myCollider;
@@ -348,7 +349,7 @@ std::vector<Collision*> Physics::CheckIntersections(std::vector<Collider*> colli
 					collision->rig1 = obj1->myRigidbody;
 					collision->rig2 = obj2->myRigidbody;
 
-
+				
 
 
 					collisions.push_back(collision);

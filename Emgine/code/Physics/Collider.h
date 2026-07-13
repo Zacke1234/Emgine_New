@@ -51,6 +51,8 @@ public:
 	
 	static std::vector<Collider*> CollEntities;
 	
+	
+	
 };
 
 struct Collision {

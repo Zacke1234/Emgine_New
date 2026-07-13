@@ -14,6 +14,9 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	planeColl = new CubeCollider(extentsPlane, glm::vec3(0));
 
 	CubeCollider* cubeColl = new CubeCollider(glm::vec3(1), glm::vec3(0));
+	CubeCollider* cubeColl1 = new CubeCollider(glm::vec3(1), glm::vec3(0));
+	CubeCollider* cubeColl2 = new CubeCollider(glm::vec3(1), glm::vec3(0));
+	CubeCollider* cubeColl3 = new CubeCollider(glm::vec3(1), glm::vec3(0));
 	
 	Collider* WallCollider;
 	WallCollider = aColliderManager->Create("Wall", cubeColl, false);
@@ -28,15 +31,41 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	Mesh* cubeMesh = aMeshManager->Create("Cube", "cube.obj");
 	Mesh* fish = aMeshManager->Create("fish", "fish.obj");
 
-	Wall1 = myObjectManager->Create("Wall",
+	Wall1 = myObjectManager->Create("Wall_1",
 		cubeMesh,
 		wall,
-		WallCollider,
+		aColliderManager->Create("Wall1", cubeColl1, false),
 		NULL
 	);
 
+	Wall2 = myObjectManager->Create("Wall_2",
+		cubeMesh,
+		wall,
+		aColliderManager->Create("Wall2", cubeColl2, false),
+		NULL
+	);
+
+	Wall3 = myObjectManager->Create("Wall_3",
+		cubeMesh,
+		wall,
+		aColliderManager->Create("Wall3", cubeColl3, false),
+		NULL
+	);
+
+
 	Wall1->Position = glm::vec3(10, 6.3f, 3);
 	Wall1->Scale = glm::vec3(2, 6, 0.5);
+	Wall1->myCollider->tag = "Wall";
+
+	Wall2->Position = glm::vec3(12.8, 6.3f, 1.4);
+	Wall2->Scale = glm::vec3(2, 6, 0.5);
+	Wall2->Rotation = glm::vec3(glm::radians(90.0f));
+	Wall2->myCollider->tag = "Wall";
+
+	Wall3->Position = glm::vec3(7.3, 6.3f, 1.4);
+	Wall3->Scale = glm::vec3(2, 6, 0.5);
+	Wall3->Rotation = glm::vec3(glm::radians(90.0f));
+	Wall3->myCollider->tag = "Wall";
 
 	//Mesh* quadplane = myMeshManager->Create("quadplane", "quadplane.obj");
 	PlaneObj = myObjectManager->Create("Plane",
@@ -118,6 +147,21 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 	TheLevels->Load();
 
 	newMenu->getTime = TheLevels->levelTime;
+
+	if (Wall1)
+	{
+		int b = 0;
+	}
+
+	if (Wall2)
+	{
+		int b = 0;
+	}
+
+	if (Wall3)
+	{
+		int b = 0;
+	}
 
 	if (iSwitch->Collided(player->playerColl) && !MainGameplayRunOnce)
 	{
