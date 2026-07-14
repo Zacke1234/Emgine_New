@@ -69,9 +69,14 @@ void Physics::UpdateColliderProperties(std::vector<Collider*> colliders)
 	{
 		if (o->myCollider != NULL)
 		{
+			if (o->myCollider->name == "PlayerColl")
+			{
+				int b = 0;
+			}
+
 			o->myCollider->position = o->Position;
 			
-			o->myCollider->transform = o->trans;
+			
 			o->myCollider->center = glm::vec3(o->myCollider->extents.x / 2, o->myCollider->extents.y / 2, o->myCollider->extents.z / 2);
 
 			if (o->myCollider->autoColliderSize)
@@ -79,10 +84,9 @@ void Physics::UpdateColliderProperties(std::vector<Collider*> colliders)
 				o->myCollider->extents = o->Scale;
 				
 
-				
-				
 			}
 
+			o->myCollider->transform = o->trans;
 			
 		}
 		
@@ -390,16 +394,32 @@ bool Physics::SphereSphereIntersect(SphereCollider& sphere1, SphereCollider& sph
 bool Physics::CubeSphereIntersect(CubeCollider& aCube1, SphereCollider& aSphere2)
 {
 	
-	glm::vec3 sphereCenter = glm::vec3(aSphere2.transform[3]);
-	glm::vec3 localSphereCenter = glm::inverse(aCube1.transform) * glm::vec4(sphereCenter, 1.0f);
-	glm::vec3 closestPoint = glm::clamp(localSphereCenter, -aCube1.extents, aCube1.extents);
-	float dist2 = glm::length2(localSphereCenter - closestPoint);
+
+	glm::vec3 spherePosition = glm::vec3(aSphere2.position);
+	glm::vec3 localSpherePos = glm::inverse(aCube1.transform) * glm::vec4(spherePosition, 1.0f);
+	
+	glm::vec3 closestPoint = glm::clamp(localSpherePos, -aCube1.extents, aCube1.extents);
+
+	float dist2 = glm::length(localSpherePos - closestPoint);
+	
+	if (aCube1.name == "PlaneColl")
+	{
+		if (aSphere2.name == "PlayerColl")
+		{
+			int b = 0;
+		}
+
+	}
 
 	if (dist2 < aSphere2.radius * aSphere2.radius)
 	{
-		if (aCube1.tag == "Wall")
+		if (aCube1.name == "PlaneColl")
 		{
-			int b = 0;
+			if (aSphere2.name == "PlayerColl")
+			{
+				int b = 0;
+			}
+
 		}
 		return true;
 	}

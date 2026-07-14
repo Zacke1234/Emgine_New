@@ -284,16 +284,15 @@ void Object::UpdateTransform(Shader* myShader)
 
 void Object::DrawObject(Shader* myShader)
 {
+	if (IsTransformValid == false)
+	{
+		UpdateTransform(myShader);
+	}
 
 	if (!myMesh || !this)
 	{
 		//std::cout << "No mesh to draw in Object: " << namn << "\n";
 		return;
-	}
-	
-	if (IsTransformValid == false)
-	{
-		UpdateTransform(myShader);
 	}
 	
 	if (myTexture != NULL)

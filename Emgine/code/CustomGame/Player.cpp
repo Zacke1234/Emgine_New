@@ -181,17 +181,12 @@ bool Player::CheckCollision()
 				}
 				if (obj2->myCollider->tag == "Wall")
 				{
-					
-					/*ForceOnHit = playerRB->force;
-					ForceAsOneDigitX = playerRB->force.x;
-					ForceAsOneDigitZ = playerRB->force.z;
-					int x = ForceAsOneDigitX % 3;
-					int z = ForceAsOneDigitZ % 3;*/
+					float x = 0, z = 0;
 					
 					
 					playerRB->force *= glm::vec3(-1.0, 0, -1.0);
 					
-					playerRB->force += glm::vec3(-1, 0, -1);
+					playerRB->force += glm::vec3(-playerRB->forward.x, 0, -playerRB->forward.z);
 					//playerRB->force += -VelocityOnHit /= 10;
 
 					atWall = true;

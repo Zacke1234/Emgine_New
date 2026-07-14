@@ -62,7 +62,7 @@ SphereCollider::SphereCollider(const float& aRadius, glm::vec3 Apos) : Collider(
 	aCenter = glm::vec3(aRadius / 2, aRadius / 2, aRadius / 2);
 	center = aCenter;
 	radius = aRadius;
-
+	transform = Math::identity4;
 	position = Apos;
 
 	std::cout << "SphereCollider";
@@ -75,7 +75,7 @@ CubeCollider::CubeCollider(const glm::vec3& someExtents, glm::vec3 Apos) : Colli
 	center = aCenter;
 	extents = someExtents;
 	position = Apos;
-	
+	transform = Math::identity4;
 	//scale = aScale;
 	
 }
