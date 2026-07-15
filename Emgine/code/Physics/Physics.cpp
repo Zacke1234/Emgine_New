@@ -3,7 +3,7 @@
 #include "Collider.h"
 #include "Physics.h"
 #include <Time/Time.h>
-#include <math.h>
+#include <gtx/norm.inl>
 
 const glm::mat4 Math::identity4{
 	
@@ -393,30 +393,20 @@ bool Physics::SphereSphereIntersect(SphereCollider& sphere1, SphereCollider& sph
 
 bool Physics::CubeSphereIntersect(CubeCollider& aCube1, SphereCollider& aSphere2)
 {
-	
-
 	glm::vec3 spherePosition = glm::vec3(aSphere2.position);
 	glm::vec3 localSpherePos = glm::inverse(aCube1.transform) * glm::vec4(spherePosition, 1.0f);
 	
-	glm::vec3 closestPoint = glm::clamp(localSpherePos, -aCube1.extents, aCube1.extents);
+	glm::vec3 closestPoint = glm::clamp(localSpherePos, -aCube1.position, aCube1.position);
 
-	float dist2 = glm::length(localSpherePos - closestPoint);
+	float dist2 = glm::length2(localSpherePos - closestPoint);
 	
-	if (aCube1.name == "PlaneColl")
-	{
-		if (aSphere2.name == "PlayerColl")
-		{
-			int b = 0;
-		}
-
-	}
-
 	if (dist2 < aSphere2.radius * aSphere2.radius)
 	{
 		if (aCube1.name == "PlaneColl")
 		{
 			if (aSphere2.name == "PlayerColl")
 			{
+				
 				int b = 0;
 			}
 
