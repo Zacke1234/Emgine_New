@@ -391,33 +391,45 @@ bool Physics::SphereSphereIntersect(SphereCollider& sphere1, SphereCollider& sph
 	
 }
 
+//bool SphereRectCollision(Sphere& sphere, Rectangle& rect)
+//{
+//	float sphereXDistance = abs(sphere.X - rect.X);
+//	float sphereYDistance = abs(sphere.Y - rect.Y);
+//	float sphereZDistance = abs(sphere.Z - rect.Z);
+//
+//	if (sphereXDistance >= (rect.Width + sphere.Radius)) { return false; }
+//	if (sphereYDistance >= (rect.Height + sphere.Radius)) { return false; }
+//	if (sphereZDistance >= (rect.Depth + sphere.Radius)) { return false; }
+//
+//	if (sphereXDistance < (rect.Width)) { return true; }
+//	if (sphereYDistance < (rect.Height)) { return true; }
+//	if (sphereZDistance < (rect.GetDepth)) { return true; }
+//
+//	float cornerDistance_sq = ((sphereXDistance - rect.Width) * (sphereXDistance - rect.Width)) +
+//		((sphereYDistance - rect.Height) * (sphereYDistance - rect.Height) +
+//			((sphereYDistance - rect.Depth) * (sphereYDistance - rect.Depth)));
+//
+//	return (cornerDistance_sq < (sphere.Radius * sphere.Radius));
+//}
+
 bool Physics::CubeSphereIntersect(CubeCollider& aCube1, SphereCollider& aSphere2)
 {
-	glm::vec3 spherePosition = glm::vec3(aSphere2.position);
-	glm::vec3 localSpherePos = glm::inverse(aCube1.transform) * glm::vec4(spherePosition, 1.0f);
-	
-	glm::vec3 closestPoint = glm::clamp(localSpherePos, -aCube1.position, aCube1.position);
+	float sphereXDistance = abs(aSphere2.position.x - aCube1.position.x);
+	float sphereYDistance = abs(aSphere2.position.y - aCube1.position.y);
+	float sphereZDistance = abs(aSphere2.position.z - aCube1.position.z);
 
-	float dist2 = glm::length2(localSpherePos - closestPoint);
-	
-	if (dist2 < aSphere2.radius * aSphere2.radius)
-	{
-		if (aCube1.name == "PlaneColl")
-		{
-			if (aSphere2.name == "PlayerColl")
-			{
-				
-				int b = 0;
-			}
+	if (sphereXDistance >= (aCube1.extents.x + aSphere2.radius)) { return false; }
+	if (sphereYDistance >= (aCube1.extents.y + aSphere2.radius)) { return false; }
+	if (sphereZDistance >= (aCube1.extents.z + aSphere2.radius)) { return false; }
 
-		}
-		return true;
-	}
-	else
-	{
-		return false;
-		
-	}
+	if (sphereXDistance < (aCube1.extents.x)) { return true; }
+	if (sphereYDistance < (aCube1.extents.y)) { return true; }
+	if (sphereZDistance < (aCube1.extents.z)) { return true; }
+
+	float cornerDistance_squareRoot = ((sphereXDistance - aCube1.extents.x) * (sphereXDistance - aCube1.extents.x)) +
+		((sphereYDistance - aCube1.extents.y) * (sphereYDistance - aCube1.extents.y) + ((sphereYDistance - aCube1.extents.z) * (sphereYDistance - aCube1.extents.z)));
+
+	return (cornerDistance_squareRoot < (aSphere2.radius * aSphere2.radius));
 
 }
 
