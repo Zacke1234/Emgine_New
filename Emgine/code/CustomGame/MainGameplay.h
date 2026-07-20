@@ -35,6 +35,7 @@ public:
 	Enemy* enemy;
 	GoalPost* goal;
 
-	bool MainGameplayRunOnce = false;
+	bool switchColided = false;
+	bool GoalColided = false;
 };
 

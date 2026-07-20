@@ -20,18 +20,17 @@ void Levels::Load()
 
 void Levels::Clear()
 {
-	
-	/*for (int i = 0; ObjectsInLevel.size() > 0; i++)
+
+
+	/*for (int i = 0; ObjectsInLevel.size() > i; i++)
 	{
-		
-		for (Object* object : Object::Entities)
+		if (Object::Entities.size() > 0)
 		{
-			if (object->namn == ObjectsInLevel[i]->namn)
-			{
-				Object::Entities.erase(Object::Entities.begin() + i);
-			}
+
+			Object::Entities.erase(Object::Entities.begin() + i);
 		}
+
 	}*/
-	
-	
+
+
 }

@@ -13,12 +13,6 @@ Object* ObjectManager::Create(std::string _namn = "new_object", Mesh* Mesh = NUL
 	return obj;
 }
 
-//void ObjectManager::Destroy(Object* thisObject)
-//{
-//	delete(this);
-//	Object::Entities.erase(Object::Entities.begin() + thisObject->ObjectID - 1);
-//
-//}
 
 void ObjectManager::Destroy(Object* thisObject) {
 	

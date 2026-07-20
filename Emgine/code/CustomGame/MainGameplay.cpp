@@ -163,20 +163,21 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 		int b = 0;
 	}
 
-	if (iSwitch->Collided(player->playerColl) && !MainGameplayRunOnce)
+	if (iSwitch->Collided(player->playerColl) && !switchColided)
 	{
 		Object::Entities.erase(Object::Entities.begin() + Door->ObjectID - 1);
 		delete(Door);
 		doorColl = NULL;
 		
-		MainGameplayRunOnce = true;
+		switchColided = true;
 		//std::cout << " switch collided" << std::endl;
 	}
 
-	if (goal->Collided(player->playerColl))
+	if (goal->Collided(player->playerColl) && !GoalColided)
 	{
 		TheLevels->isLevelCompleted = true;
 		TheLevels->Clear();
+		GoalColided = true;
 	}
 
 	player->CheckCollision();
