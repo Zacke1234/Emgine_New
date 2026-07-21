@@ -28,7 +28,9 @@ public:
 	Object* Wall1;
 	Object* Wall2;
 	Object* Wall3;
-	Levels* TheLevels;
+	Levels* Level1;
+	Levels* Level2;
+	Levels* Level3;
 
 	Time* theTime;
 	BasicMenus* newMenu;

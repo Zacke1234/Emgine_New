@@ -39,7 +39,7 @@
 
 
 GLFWwindow* window;
-Lighting* myLighting;
+
 Camera* myCamera;
 MeshManager* myMeshManager;
 ObjectManager* myObjectManager;

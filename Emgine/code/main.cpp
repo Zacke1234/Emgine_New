@@ -114,13 +114,7 @@ int init_camera() {
 	return 0;
 }
 
-int init_lightning() {
-	//init shader/lighting
-	
-	myLighting = new Lighting();
-	
-	return 0;
-}
+
 
 int init_physics() {
 	//init physics
@@ -201,8 +195,6 @@ int main()
 	myCamera = myCameraManager->Create("SceneCamera", window);
 	
 	message_calling();
-
-	init_lightning();
 
 	init_physics();
 
