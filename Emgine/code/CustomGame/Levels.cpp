@@ -11,11 +11,19 @@ Levels::Levels(ShaderManager* aShaderManager, Time* aTime, ObjectManager* objMan
 	this->levelID += 1;
 	objManager = theObjManager;
 	levelList.push_back(this);
+
+	for (auto& objs : Object::Entities)
+	{
+		ObjectsInLevel.push_back(objs);
+	}
+	
 }
 
 void Levels::Load()
 {
 	levelTime = tempTime->CurrentTime;
+	
+	int b = 0;
 }
 
 void Levels::Clear()

@@ -104,22 +104,22 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	Door = myObjectManager->Create("Door", cubeMesh, wall, doorColl, NULL);
 	Door->Position = glm::vec3(10, 6.3f, 0);
 	Door->Scale = glm::vec3(2, 6, 0.5);
-	
-
-	Level1 = new Levels(aShaderManager, theTime, myObjectManager);
-	// Wall1 +  player->player + PlaneObj
-	Level1->ObjectsInLevel.push_back(Door);
-	Level1->ObjectsInLevel.push_back(player->player);
-	Level1->ObjectsInLevel.push_back(PlaneObj);
-	Level1->ObjectsInLevel.push_back(Wall1);
-	Level1->ObjectsInLevel.push_back(goal->getObject);
-	Level1->ObjectsInLevel.push_back(enemy->EnemyObj);
-	Level1->name = "Level one!";
-	//TheLevels->ObjectsInLevel = { player->player, iSwitch->getObject, Door, goal->getObject};
-	
-
 	iSwitch->getObject->Position = glm::vec3(3, 1, 3);
 	goal->getObject->Position = glm::vec3(10, 1.5f, 1.5);
+
+	Level1 = new Levels(aShaderManager, theTime, myObjectManager);
+	
+	Level1->name = "Level one!";
+	
+	Level2 = new Levels(aShaderManager, theTime, myObjectManager);
+
+	Level2->name = "Level two!";
+
+	Level3 = new Levels(aShaderManager, theTime, myObjectManager);
+
+	Level3->name = "Level Three!";
+
+	
 
 	
 }
@@ -148,21 +148,6 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 
 	newMenu->getTime = Level1->levelTime;
 
-	if (Wall1)
-	{
-		int b = 0;
-	}
-
-	if (Wall2)
-	{
-		int b = 0;
-	}
-
-	if (Wall3)
-	{
-		int b = 0;
-	}
-
 	if (iSwitch->Collided(player->playerColl) && !switchColided)
 	{
 		Object::Entities.erase(Object::Entities.begin() + Door->ObjectID - 1);
@@ -178,6 +163,7 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 		Level1->isLevelCompleted = true;
 		Level1->Clear();
 		GoalColided = true;
+		Level2->Load();
 	}
 
 

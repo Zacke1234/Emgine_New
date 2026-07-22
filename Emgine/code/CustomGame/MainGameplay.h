@@ -21,10 +21,14 @@ public:
 	Collider* doorColl;
 	Interactable* iSwitch;
 	Player* player;
-	GLFWwindow* getWindow;
-	ObjectManager* theObjectManager;
+	
 	Object* PlaneObj;
 	Object* Door;
+	Enemy* enemy;
+	GoalPost* goal;
+	bool switchColided = false;
+	bool GoalColided = false;
+
 	Object* Wall1;
 	Object* Wall2;
 	Object* Wall3;
@@ -32,12 +36,13 @@ public:
 	Levels* Level2;
 	Levels* Level3;
 
+	GLFWwindow* getWindow;
+	ObjectManager* theObjectManager;
+
 	Time* theTime;
 	BasicMenus* newMenu;
-	Enemy* enemy;
-	GoalPost* goal;
+	
 
-	bool switchColided = false;
-	bool GoalColided = false;
+	
 };
 

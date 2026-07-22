@@ -69,21 +69,13 @@ void Physics::UpdateColliderProperties(std::vector<Collider*> colliders)
 	{
 		if (o->myCollider != NULL)
 		{
-			if (o->myCollider->name == "PlayerColl")
-			{
-				int b = 0;
-			}
 
 			o->myCollider->position = o->Position;
-			
-			
 			o->myCollider->center = glm::vec3(o->myCollider->extents.x / 2, o->myCollider->extents.y / 2, o->myCollider->extents.z / 2);
 
 			if (o->myCollider->autoColliderSize)
 			{
 				o->myCollider->extents = o->Scale;
-				
-
 			}
 
 			o->myCollider->transform = o->trans;
