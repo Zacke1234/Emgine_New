@@ -3,37 +3,35 @@
 std::vector<Levels*> Levels::levelList;
 
 int Levels::SelectedLevel;
+int id = -1;
 
 Levels::Levels(ShaderManager* aShaderManager, Time* aTime, ObjectManager* objManager)
 {
 	theShaderManager = aShaderManager;
 	tempTime = aTime;
-	this->levelID += 1;
+	id += 1;
+	levelID = id;
 	objManager = theObjManager;
 	levelList.push_back(this);
 
-	for (auto& objs : Object::Entities)
+	/*for (auto& objs : Object::Entities)
 	{
 		ObjectsInLevel.push_back(objs);
-	}
+	}*/
 	
 }
 
-void Levels::Load()
+void Levels::GetTime()
 {
 	levelTime = tempTime->CurrentTime;
 	
-	int b = 0;
 }
 
 void Levels::Clear()
 {
 	
-	int i = -1;
-	
 	for (auto& objs : Object::Entities)
 	{
-		i++;
 		if (Object::Entities.size() <= 0)
 		{
 			return;
@@ -42,4 +40,15 @@ void Levels::Clear()
 		
 	}
 	
+}
+
+void Levels::Load()
+{
+	for (auto& objs : ObjectsInLevel)
+	{
+		Object::Entities.push_back(objs);
+	}
+
+	//std::cout >> "Load level: " + name >> std::endl;
+
 }

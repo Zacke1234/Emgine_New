@@ -19,8 +19,11 @@ void BasicMenus::RenderMenu()
 		{
 			Levels::SelectedLevel = l;
 
+			Levels::levelList[l]->Clear();
+			Levels::levelList[l]->Load();
 			//
-				
+
+
 			//
 
 			// 
@@ -32,6 +35,7 @@ void BasicMenus::RenderMenu()
 	if (ImGui::Button("Restart"))
 	{
 		Teleported = true;
+		getTime = 0.0f;
 	}
 
 	ImGui::End();

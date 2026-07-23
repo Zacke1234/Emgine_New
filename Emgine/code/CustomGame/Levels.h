@@ -29,9 +29,11 @@ public:
 	//static std::vector<Object*> Entities;
 	std::string name = "placeHolder";
 
-	void Load();
+	void GetTime();
 
 	void Clear();
+
+	void Load();
 
 };
 

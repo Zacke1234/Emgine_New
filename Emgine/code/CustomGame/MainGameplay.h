@@ -32,6 +32,7 @@ public:
 	Object* Wall1;
 	Object* Wall2;
 	Object* Wall3;
+	Object* Light;
 	Levels* Level1;
 	Levels* Level2;
 	Levels* Level3;

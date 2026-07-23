@@ -78,7 +78,7 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	
 	myObjectManager->FindAndSetProperties("Plane", glm::vec3(0.0f), glm::vec3(100.0f, 0.5f, 100.0f), glm::vec3(0.0f));
 
-	myObjectManager->CreateLight("SceneLight",
+	 Light = myObjectManager->CreateLight("SceneLight",
 		NULL,
 		NULL,
 		NULL,
@@ -109,16 +109,30 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 
 	Level1 = new Levels(aShaderManager, theTime, myObjectManager);
 	
-	Level1->name = "Level one!";
+	Level1->name = "Level one";
+
+	for (auto& objs : Object::Entities)
+	{
+		Level1->ObjectsInLevel.push_back(objs);
+	}
 	
 	Level2 = new Levels(aShaderManager, theTime, myObjectManager);
 
-	Level2->name = "Level two!";
+	Level2->name = "Level two";
+
+	Level2->ObjectsInLevel.push_back(player->player);
+	Level2->ObjectsInLevel.push_back(Light);
 
 	Level3 = new Levels(aShaderManager, theTime, myObjectManager);
 
-	Level3->name = "Level Three!";
+	Level3->name = "Level Three";
 
+	Level3->ObjectsInLevel.push_back(player->player);
+	Level3->ObjectsInLevel.push_back(Light);
+	Level3->ObjectsInLevel.push_back(PlaneObj);
+	
+
+	
 	
 
 	
@@ -144,7 +158,7 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 
 	enemy->Move();
 
-	Level1->Load();
+	Level1->GetTime();
 
 	newMenu->getTime = Level1->levelTime;
 
@@ -175,6 +189,6 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 		player->player->Position = glm::vec3(1, 1, 1);
 		newMenu->Teleported = false;
 	}
-	
+
 
 }
