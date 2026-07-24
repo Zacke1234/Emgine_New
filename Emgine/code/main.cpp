@@ -164,6 +164,11 @@ int static update_ui(UI* myUI, ShaderManager* myShader, ObjectManager* objManage
 		UIRunOnce = true;
 	}
 
+	if (Object::SelectedEntity == -1)
+	{
+		return 0;
+	}
+
 	if (Object::Entities.size() > 0) { // rework this
 		Object::Entities[Object::SelectedEntity]->Position = glm::vec3(myUI->xPos, myUI->yPos, myUI->zPos); // vector subscript out of range. Meaning something is wrong with how the selected entity is done. (FIXED)
 		Object::Entities[Object::SelectedEntity]->Rotation = glm::vec3(

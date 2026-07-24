@@ -10,7 +10,7 @@ std::mutex mtx;
 using namespace std;
 
 vector<Object*> Object::Entities;
-unsigned int Object::SelectedEntity;
+int Object::SelectedEntity;
 
 int LightObject::SelectedLightEntity;
 vector<LightObject*> LightObject::LightEntities;

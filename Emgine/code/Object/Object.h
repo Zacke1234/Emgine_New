@@ -28,7 +28,7 @@ public:
 
 	static std::vector<Object*> Entities;
 	unsigned int ObjectID = 0;
-	static unsigned int SelectedEntity;
+	static int SelectedEntity;
 
 	glm::vec3 Position;
 	glm::vec3 Scale;

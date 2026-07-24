@@ -26,12 +26,17 @@ public:
 	ObjectManager* theObjManager;
 
 	std::vector<Object*> ObjectsInLevel;
+
+	std::vector<glm::vec3> ObjectPositions;
+
 	//static std::vector<Object*> Entities;
 	std::string name = "placeHolder";
 
 	void GetTime();
 
 	void Clear();
+
+	void Init();
 
 	void Load();
 

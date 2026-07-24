@@ -122,6 +122,9 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 
 	Level2->ObjectsInLevel.push_back(player->player);
 	Level2->ObjectsInLevel.push_back(Light);
+	Level2->ObjectsInLevel.push_back(PlaneObj);
+	
+	
 
 	Level3 = new Levels(aShaderManager, theTime, myObjectManager);
 
@@ -131,9 +134,12 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	Level3->ObjectsInLevel.push_back(Light);
 	Level3->ObjectsInLevel.push_back(PlaneObj);
 	
+	Level1->Init();
 
-	
-	
+	Level2->Init();
+
+	Level3->Init();
+
 
 	
 }

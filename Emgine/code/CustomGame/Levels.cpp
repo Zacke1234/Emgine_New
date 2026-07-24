@@ -42,12 +42,31 @@ void Levels::Clear()
 	
 }
 
-void Levels::Load()
+void Levels::Init()
 {
 	for (auto& objs : ObjectsInLevel)
 	{
+		ObjectPositions.push_back(objs->Position);
+	}
+	int b = 0;
+}
+
+void Levels::Load()
+{
+
+
+	Object::SelectedEntity = -1;
+	for (auto& objs : ObjectsInLevel)
+	{
+		
+		
 		Object::Entities.push_back(objs);
 	}
+
+	/*for (auto& objsPos : ObjectPositions)
+	{
+		Object::Entities[1]->Position = objsPos;
+	}*/
 
 	//std::cout >> "Load level: " + name >> std::endl;
 

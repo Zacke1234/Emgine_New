@@ -31,7 +31,11 @@ bool selectedCamera;
 
 int boolHandler()
 {
-	
+	if (Object::SelectedEntity == -1)
+	{
+		return 0;
+	}
+
 	if (Object::Entities.size() != 0)
 	{
 		if (Object::Entities[Object::SelectedEntity]->myTexture != nullptr)
@@ -66,7 +70,11 @@ int boolHandler()
 
 int uiCameratList(UI* myUI, ObjectManager* objectmanager)
 {
-	
+
+	if (Object::SelectedEntity == -1)
+	{
+		return 0;
+	}
 	if (Object::Entities.size() > 0) {
 		
 		if (selectedCamera)
@@ -84,6 +92,10 @@ int uiLightList(UI* myUI, ObjectManager* objectmanager)
 {
 	if (Object::Entities.size() > 0) {
 		
+		if (Object::SelectedEntity == -1)
+		{
+			return 0;
+		}
 
 		if (SelectedLight && Object::Entities.size() != 0)
 		{
@@ -111,7 +123,11 @@ int uiLightList(UI* myUI, ObjectManager* objectmanager)
 int uiMaterialList(UI* myUI)
 {
 	
-	
+	if (Object::SelectedEntity == -1)
+	{
+		return 0;
+	}
+
 	if (Object::Entities.size() > 0 && Object::Entities[Object::SelectedEntity]->myTexture != nullptr) {
 		
 		if (Object::Entities[Object::SelectedEntity]->myTexture->myMaterial != nullptr)
@@ -133,7 +149,7 @@ int uiMaterialList(UI* myUI)
 int uiObjectList(UI* ui) 
 {
 	
-	
+
 	for (int i = 0; i < Object::Entities.size(); i++)
 	{
 		
