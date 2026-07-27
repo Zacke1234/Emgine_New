@@ -26,6 +26,7 @@ public:
 	Object* Door;
 	Enemy* enemy;
 	GoalPost* goal;
+	
 	bool switchColided = false;
 	bool GoalColided = false;
 
@@ -33,9 +34,11 @@ public:
 	Object* Wall2;
 	Object* Wall3;
 	Object* Light;
+	Object* Platform;
 	Levels* Level1;
 	Levels* Level2;
 	Levels* Level3;
+	
 
 	GLFWwindow* getWindow;
 	ObjectManager* theObjectManager;

@@ -28,6 +28,8 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	Texture* wall = aTextureManager->Create("wall", "wall.jpg");
 	Texture* defaultTex = aTextureManager->Create("default", "Default 1.png");
 	Texture* goalTexture = aTextureManager->Create("goal", "goal.png");
+	Texture* platformTexture = aTextureManager->Create("gul", "gul.png");
+	//Texture* enemyTexture = aTextureManager->Create("lila", "lila.png");
 	Mesh* cubeMesh = aMeshManager->Create("Cube", "cube.obj");
 	Mesh* fish = aMeshManager->Create("fish", "fish.obj");
 
@@ -52,6 +54,8 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 		NULL
 	);
 
+	
+
 
 	Wall1->Position = glm::vec3(10, 6.3f, 3);
 	Wall1->Scale = glm::vec3(2, 6, 0.5);
@@ -66,6 +70,9 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	Wall3->Scale = glm::vec3(2, 6, 0.5);
 	Wall3->Rotation = glm::vec3(glm::radians(90.0f));
 	Wall3->myCollider->tag = "Wall";
+
+	
+	
 
 	//Mesh* quadplane = myMeshManager->Create("quadplane", "quadplane.obj");
 	PlaneObj = myObjectManager->Create("Plane",
@@ -90,6 +97,7 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	iSwitch = new Interactable(myObjectManager, aMeshManager, aTextureManager, aColliderManager, aPhysics);
 	player = new Player(getWindow, myObjectManager, aMeshManager, aTextureManager, aColliderManager, aRigidbodyManager, aCamManager, aTime, aPhysics);
 	goal = new GoalPost(myObjectManager, aMeshManager, aTextureManager, aColliderManager, aPhysics);
+
 	player->aShaderManager = aShaderManager;
 
 	enemy = new Enemy(myObjectManager, aRigidbodyManager, aColliderManager, aMeshManager, aTextureManager);
@@ -107,6 +115,17 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	iSwitch->getObject->Position = glm::vec3(3, 1, 3);
 	goal->getObject->Position = glm::vec3(10, 1.5f, 1.5);
 
+	Platform = myObjectManager->Create("Box",
+		cubeMesh,
+		platformTexture,
+		aColliderManager->Create("Box", cubeColl3, false),
+		NULL
+	);
+
+	Platform->Scale = glm::vec3(1, 0.1, 1);
+	Platform->Position = glm::vec3(0, 2, 0);
+	Platform->myCollider->tag = "Box";
+
 	Level1 = new Levels(aShaderManager, theTime, myObjectManager);
 	
 	Level1->name = "Level one";
@@ -120,25 +139,33 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 
 	Level2->name = "Level two";
 
-	Level2->ObjectsInLevel.push_back(player->player);
-	Level2->ObjectsInLevel.push_back(Light);
-	Level2->ObjectsInLevel.push_back(PlaneObj);
-	
 	
 
 	Level3 = new Levels(aShaderManager, theTime, myObjectManager);
 
 	Level3->name = "Level Three";
 
+	
+	Level2->ObjectsInLevel.push_back(player->player);
+	Level2->ObjectsInLevel.push_back(Light);
+	Level2->ObjectsInLevel.push_back(PlaneObj);
+	Level2->ObjectsInLevel.push_back(goal->getObject);
+	Level2->ObjectsInLevel.push_back(Platform);
+
 	Level3->ObjectsInLevel.push_back(player->player);
 	Level3->ObjectsInLevel.push_back(Light);
 	Level3->ObjectsInLevel.push_back(PlaneObj);
+	Level3->ObjectsInLevel.push_back(enemy->EnemyObj);
+	Level3->ObjectsInLevel.push_back(goal->getObject);
 	
 	Level1->Init();
 
 	Level2->Init();
 
 	Level3->Init();
+
+
+	
 
 
 	
@@ -151,11 +178,10 @@ void MainGameplay::Start() // runs once in the update loop
 
 	newMenu->ShowMenu(getWindow);
 	
-
-
+	
 
 }
-
+int i = 0;
 void MainGameplay::Run() // repeatedly runs in the update loop
 {
 	player->InputMovement();
@@ -164,27 +190,64 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 
 	enemy->Move();
 
-	Level1->GetTime();
+	Levels::levelList[Levels::SelectedLevel]->GetTime();
 
-	newMenu->getTime = Level1->levelTime;
+	newMenu->getTime = Levels::levelList[Levels::SelectedLevel]->levelTime;
 
-	if (iSwitch->Collided(player->playerColl) && !switchColided)
+	if (iSwitch->Collided(player->playerColl) && switchColided == false)
 	{
-		Object::Entities.erase(Object::Entities.begin() + Door->ObjectID - 1);
-		delete(Door);
-		doorColl = NULL;
+		for (Object* object : Object::Entities)
+		{
+			if (object->namn == Door->namn)
+			{
+				Object::Entities.erase(Object::Entities.begin() + Door->ObjectID - 1);
+				delete(Door);
+				doorColl = NULL;
+				switchColided = true;
+			}
+		}
 		
-		switchColided = true;
+		
+		
+		
 		//std::cout << " switch collided" << std::endl;
 	}
 
-	if (goal->Collided(player->playerColl) && !GoalColided)
+	if (goal->Collided(player->playerColl))
 	{
-		Level1->isLevelCompleted = true;
-		Level1->Clear();
-		GoalColided = true;
-		Level2->Load();
+		bool completed = false;
+	
+		if (Levels::SelectedLevel == i && !completed)
+		{
+			GoalColided = true;
+			Levels::levelList[i]->isLevelCompleted = true;
+
+			Levels::levelList[i]->recordTime = Levels::levelList[i]->levelTime;
+			
+			Levels::levelList[i]->Clear();
+
+			
+			i++;
+			if (i >= 3)
+			{
+				//std::cout << "you won" << std::endl;
+				completed = true;
+				return;
+			}
+			Levels::SelectedLevel++;
+			
+			
+			
+			Levels::levelList[i]->Load();
+
+			newMenu->Teleported = true;
+		}
+	
+		
+		
 	}
+
+	
 
 
 
@@ -196,5 +259,28 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 		newMenu->Teleported = false;
 	}
 
+	if (Levels::SelectedLevel == 0 && true) // Level 1
+	{
+		goal->getObject->Position = glm::vec3(10, 1.5f, 1.5);
+		Platform->Position = glm::vec3(0, -10, 0);
+		//std::cout << "Level 1" << std::endl;
+		//false;
+	}
+
+	if (Levels::SelectedLevel == 1 && true) // Level 2
+	{
+		goal->getObject->Position = glm::vec3(7, 10, 0);
+		Platform->Position = glm::vec3(7, 2, 0);
+		//std::cout << "Level 2" << std::endl;
+		//false;
+	}
+
+	if (Levels::SelectedLevel == 2 && true) // Level 3
+	{
+		goal->getObject->Position = glm::vec3(35, 1.5f, 35);
+		Platform->Position = glm::vec3(0, -10, 0);
+		//std::cout << "Level 3" << std::endl;
+		//false;
+	}
 
 }

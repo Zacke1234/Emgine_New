@@ -20,7 +20,11 @@ public:
 
 	float levelTime = 0.0f;
 
+	float recordTime = 0.0f;
+
 	bool isLevelCompleted = false;
+
+	bool TimeReset = false;
 
 	ShaderManager* theShaderManager;
 	ObjectManager* theObjManager;

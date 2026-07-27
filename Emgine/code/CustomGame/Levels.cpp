@@ -58,7 +58,7 @@ void Levels::Load()
 	Object::SelectedEntity = -1;
 	for (auto& objs : ObjectsInLevel)
 	{
-		
+		tempTime->CurrentTime = 0.0f;
 		
 		Object::Entities.push_back(objs);
 	}

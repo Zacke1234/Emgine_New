@@ -12,7 +12,7 @@ Enemy::Enemy(ObjectManager* aObjectManager, RigidbodyManager* aRigidbodyManager,
 	EnemyRB = aRigidbodyManager->Create("EnemyRigidbody", 0.5, false, true);
 	EnemyColl->tag = "Enemy";
 	enemyMesh = aMeshManager->Create("Cube", "cube.obj");
-	enemyTexture = aTextureManager->Create("wall", "wall.jpg");
+	enemyTexture = aTextureManager->Create("lila", "lila.png");
 	EnemyObj = aObjectManager->Create("Enemy", enemyMesh, enemyTexture, EnemyColl, EnemyRB);
 	EnemyObj->Position = glm::vec3(8, 3.5f, 10);
 	EnemyObj->Scale = glm::vec3(1);
@@ -25,27 +25,27 @@ void Enemy::Move()
 	switch (randomNumber)
 	{
 	case 0:
-		EnemyRB->force = glm::vec3(1, 0, 0);
+		EnemyRB->force = glm::vec3(2, 0, 0);
 			break;
 
 	case 1:
-		EnemyRB->force = glm::vec3(0, 1, 0);
+		EnemyRB->force = glm::vec3(0, 1.2f, 0);
 		break;
 
 	case 2:
-		EnemyRB->force = glm::vec3(0, 0, 1);
+		EnemyRB->force = glm::vec3(0, 0, 2);
 		break;
 
 	case 3:
-		EnemyRB->force = glm::vec3(-1, 0, 0);
+		EnemyRB->force = glm::vec3(-2, 0, 0);
 		break;
 
 	case 4:
-		EnemyRB->force = glm::vec3(0, 0, -1);
+		EnemyRB->force = glm::vec3(0, 0, -2);
 		break;
 
 	case 5:
-		EnemyRB->force = glm::vec3(0, -0.5, 0);
+		EnemyRB->force = glm::vec3(0, -0.5f, 0);
 		break;
 	}
 }

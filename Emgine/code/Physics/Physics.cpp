@@ -249,7 +249,7 @@ void Physics::CalculateDirection()
 
 bool Physics::BoolCheckIntersect(Collider* c1, Collider* c2)
 {
-	if (!c1 || !c2)
+	if (c1 == NULL || c2 == NULL)
 	{
 		return false;
 	}
