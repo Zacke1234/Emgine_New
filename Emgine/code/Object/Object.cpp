@@ -15,7 +15,7 @@ int Object::SelectedEntity;
 int LightObject::SelectedLightEntity;
 vector<LightObject*> LightObject::LightEntities;
 vector<CameraObject*> CameraObject::CameraEntities;
-
+vector<TerrainObject*> TerrainObject::TerrainObjects;
 // Objects should hold all my meshes and lights
 // Meshes should hold meshses like teapots, fishes and cubes
 // Lighting should have lights, like directional, pointlight and spotlight etc (is that lightdata?)
@@ -181,6 +181,29 @@ CameraObject::CameraObject(std::string _namn = "new_cameraObject", Mesh* Mesh = 
 	}
 }
 
+TerrainObject::TerrainObject(std::string _name = "newTerrainObj", Terrain* terrain = NULL, Texture* aTexture = NULL, Collider* coll = NULL)
+{
+	if (_name != "newTerrainObj")
+	{
+		this->namn = _name;
+	}
+	if (terrain)
+	{
+		SetTerrain(*terrain);
+		myMesh = terrain->terrainMesh;
+	}
+
+	if (aTexture)
+	{
+		SetTexture(*aTexture);
+	}
+
+	if (coll)
+	{
+		SetCollider(*coll);
+	}
+}
+
 void Object::SetMesh(Mesh& mesh)
 {
 	myMesh = &mesh;
@@ -284,11 +307,14 @@ void Object::UpdateTransform(Shader* myShader)
 
 void Object::DrawObject(Shader* myShader)
 {
+	
+
 	if (IsTransformValid == false)
 	{
 		UpdateTransform(myShader);
 	}
 
+	
 	if (!myMesh || !this)
 	{
 		//std::cout << "No mesh to draw in Object: " << namn << "\n";
@@ -311,6 +337,12 @@ void Object::DrawObject(Shader* myShader)
 		myShader->SetVec3("material.objectColor", myTexture->myMaterial->color);
 	}
 	
+	if (myMesh->isTerrain)
+	{
+		IsTransformValid = false;
+		myTerrain->Render();
+		return;
+	}
 	
 	GL_CHECK(glBindVertexArray(myMesh->VAO));
 	GL_CHECK(glDrawElements(GL_TRIANGLES, myMesh->elements.size(), GL_UNSIGNED_INT, (void*)0));
@@ -320,3 +352,7 @@ void Object::DrawObject(Shader* myShader)
 	IsTransformValid = false;
 }
 
+void TerrainObject::SetTerrain(Terrain& terr)
+{
+	myTerrain = &terr;
+}

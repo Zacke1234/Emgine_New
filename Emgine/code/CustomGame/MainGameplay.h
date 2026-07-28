@@ -1,6 +1,5 @@
 #pragma once
 #include "Player.h"
-#include "Terrain.h"
 #include "Levels.h"
 #include "Interactable.h"
 #include "BasicMenus.h"
@@ -38,6 +37,7 @@ public:
 	Levels* Level1;
 	Levels* Level2;
 	Levels* Level3;
+	Object* Terrain;
 	
 
 	GLFWwindow* getWindow;

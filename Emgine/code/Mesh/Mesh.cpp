@@ -5,6 +5,10 @@ std::vector<Mesh*> Mesh::MeshEntities;
 
 void Mesh::InitialiseMesh()
 {
+	if (this->name == "Terrain")
+	{
+		int b = 0;
+	}
 	GL_CHECK(glGenVertexArrays(1, &VAO));
 	GL_CHECK(glGenBuffers(1, &VBO));
 	GL_CHECK(glGenBuffers(1, &EBO));

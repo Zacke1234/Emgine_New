@@ -78,6 +78,24 @@ CameraObject* ObjectManager::CreateCamera(std::string aName = "new_cameraObject"
 	return cameraObj;
 }
 
+TerrainObject* ObjectManager::CreateTerrain(std::string aName = "newTerrainObject", Terrain* terr = NULL, Texture* aTexture = NULL, Collider* aCollider = NULL)
+{
+	if (terr == NULL)
+	{
+		terr = new Terrain();
+	}
+	
+	TerrainObject* terrObj = new TerrainObject(aName, terr, aTexture, aCollider);
+	terr->terrainMesh->isTerrain = true;
+	/*terr->terrainMesh->InitialiseMesh();
+	MeshManager::MeshList.push_back(terrObj->namn);
+	MeshManager::MeshCache.push_back(*terr->terrainMesh);*/
+	 
+	Object::Entities.push_back(terrObj);
+	TerrainObject::TerrainObjects.push_back(terrObj);
+	return terrObj;
+}
+
 Object* ObjectManager::FindAndSetProperties(std::string aName, glm::vec3 aPos, glm::vec3 aScale, glm::vec3 aRot)
 {
 	for (Object* object : Object::Entities)

@@ -92,6 +92,8 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 		aLightingManager->Create("SceneLight", aShaderManager->DefaultShader, aLightingManager->DefaultLighting),
 		NULL);
 
+	 Terrain = myObjectManager->CreateTerrain("Terrain", NULL, defaultTex, NULL);
+
 	myObjectManager->FindAndSetProperties("SceneLight", glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(glm::radians(45.0f), glm::radians(45.0f), 0.0f));
 
 	iSwitch = new Interactable(myObjectManager, aMeshManager, aTextureManager, aColliderManager, aPhysics);
@@ -115,16 +117,16 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	iSwitch->getObject->Position = glm::vec3(3, 1, 3);
 	goal->getObject->Position = glm::vec3(10, 1.5f, 1.5);
 
-	Platform = myObjectManager->Create("Box",
+	Platform = myObjectManager->Create("Platform",
 		cubeMesh,
 		platformTexture,
-		aColliderManager->Create("Box", cubeColl3, false),
+		aColliderManager->Create("Platform", cubeColl3, false),
 		NULL
 	);
 
 	Platform->Scale = glm::vec3(1, 0.1, 1);
-	Platform->Position = glm::vec3(0, 2, 0);
-	Platform->myCollider->tag = "Box";
+	Platform->Position = glm::vec3(0, -10, 0);
+	Platform->myCollider->tag = "Platform";
 
 	Level1 = new Levels(aShaderManager, theTime, myObjectManager);
 	
@@ -166,7 +168,7 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 
 
 	
-
+	
 
 	
 }
@@ -184,6 +186,7 @@ void MainGameplay::Start() // runs once in the update loop
 int i = 0;
 void MainGameplay::Run() // repeatedly runs in the update loop
 {
+	
 	player->InputMovement();
 
 	newMenu->RenderMenu();

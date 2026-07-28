@@ -18,6 +18,8 @@ public:
 
 	virtual CameraObject* CreateCamera(std::string aName, Mesh* Mesh , Texture* aTexture ,Collider* aCollider , Camera* aCamera , Rigidbody* rb);
 
+	virtual TerrainObject* CreateTerrain(std::string aName, Terrain* terr, Texture* aTexture, Collider* aCollider);
+
 	virtual Object* FindAndSetProperties(std::string name, glm::vec3 aPos, glm::vec3 aScale, glm::vec3 aRot);
 
 	void Attach(Observer* observer) override {

@@ -101,6 +101,7 @@ int init_managers() {
 	myRigidbodyManager = new RigidbodyManager();
 	myCameraManager = new CameraManager();
 	myGameplay = new MainGameplay();
+	//myTerrain = new Terrain();
 	return 0;
 } 
 
@@ -260,11 +261,15 @@ int main()
 		}
 
 		if (myTime->IsPaused == true)
+
 		{
 			update_camera(myCamera, myUI, window);
 		}
 		
-		
+	/*	for (auto& terrainObjs : TerrainObject::TerrainObjects)
+		{
+			myTerrain->Render();
+		}*/
 		
 
 		// shadow pass 
@@ -293,6 +298,10 @@ int main()
 		glCullFace(GL_FRONT);
 		for (auto& o : Object::Entities)
 		{
+			if (o->namn == "Terrain")
+			{
+				int b = 0;
+			}
 			o->Draw(directionalShader); // Draws and binds the texture and sends the transform to the shader
 		}
 		//myModel->Draw(*directionalShader);

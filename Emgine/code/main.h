@@ -40,6 +40,7 @@
 
 GLFWwindow* window;
 
+//Terrain* myTerrain;
 Camera* myCamera;
 MeshManager* myMeshManager;
 ObjectManager* myObjectManager;

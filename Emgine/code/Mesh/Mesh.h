@@ -32,7 +32,7 @@ public:
 	std::vector<glm::vec3> position;
 	std::vector<glm::vec3> normals;
 	
-	
+	bool isTerrain = false;
 	std::vector<Face> faces;
 	std::vector<float> data;
 

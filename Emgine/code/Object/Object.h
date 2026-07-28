@@ -9,6 +9,7 @@
 #include "MeshManager.h"
 #include "GLChecking.h"
 #include <Rigidbody.h>
+#include <CustomGame/Terrain.h>
 
 struct Mesh;
 struct LightData;
@@ -57,7 +58,8 @@ public:
 	Texture* myTexture;
 	Camera* myCamera;
 	LightData* myLightData;
-	
+	Terrain* myTerrain;
+
 	void SetCube(Cube& aCube); 
 	void SetMesh(Mesh& mesh);
 	void SetTexture(Texture& aTexture);
@@ -103,4 +105,16 @@ public:
 
 	void SetCamera(Camera& cam);
 	
+};
+
+class TerrainObject : public Object
+{
+public:
+	TerrainObject(std::string _name, Terrain* terrain, Texture* aTexture, Collider* coll);
+
+	
+
+	static std::vector<TerrainObject*> TerrainObjects;
+
+	void SetTerrain(Terrain& terr);
 };
