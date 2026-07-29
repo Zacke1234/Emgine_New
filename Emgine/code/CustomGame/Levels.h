@@ -24,6 +24,8 @@ public:
 
 	bool isLevelCompleted = false;
 
+	bool ChangedLevel = false;
+
 	bool TimeReset = false;
 
 	ShaderManager* theShaderManager;

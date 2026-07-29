@@ -25,10 +25,10 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	Collider* PlaneCollider;
 	PlaneCollider = aColliderManager->Create("PlaneColl", planeColl, true);
 
-	Texture* wall = aTextureManager->Create("wall", "wall.jpg");
-	Texture* defaultTex = aTextureManager->Create("default", "Default 1.png");
-	Texture* goalTexture = aTextureManager->Create("goal", "goal.png");
-	Texture* platformTexture = aTextureManager->Create("gul", "gul.png");
+	wall = aTextureManager->Create("wall", "wall.jpg");
+	defaultTex = aTextureManager->Create("default", "Default 1.png");
+	goalTexture = aTextureManager->Create("goal", "goal.png");
+	platformTexture = aTextureManager->Create("gul", "gul.png");
 	//Texture* enemyTexture = aTextureManager->Create("lila", "lila.png");
 	Mesh* cubeMesh = aMeshManager->Create("Cube", "cube.obj");
 	Mesh* fish = aMeshManager->Create("fish", "fish.obj");
@@ -92,7 +92,7 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 		aLightingManager->Create("SceneLight", aShaderManager->DefaultShader, aLightingManager->DefaultLighting),
 		NULL);
 
-	 Terrain = myObjectManager->CreateTerrain("Terrain", NULL, defaultTex, NULL);
+	 
 
 	myObjectManager->FindAndSetProperties("SceneLight", glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(glm::radians(45.0f), glm::radians(45.0f), 0.0f));
 
@@ -109,6 +109,7 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	CubeCollider* cube = new CubeCollider(glm::vec3(1, 1, 1), glm::vec3(0));
 	
 	
+
 	doorColl = aColliderManager->Create("doorColl", cube);
 	doorColl->tag = "Wall";
 	Door = myObjectManager->Create("Door", cubeMesh, wall, doorColl, NULL);
@@ -228,7 +229,7 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 			Levels::levelList[i]->recordTime = Levels::levelList[i]->levelTime;
 			
 			Levels::levelList[i]->Clear();
-
+			
 			
 			i++;
 			if (i >= 3)
@@ -262,28 +263,31 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 		newMenu->Teleported = false;
 	}
 
-	if (Levels::SelectedLevel == 0 && true) // Level 1
+	if (Levels::SelectedLevel == 0 && true && Level1->ChangedLevel) // Level 1
 	{
 		goal->getObject->Position = glm::vec3(10, 1.5f, 1.5);
 		Platform->Position = glm::vec3(0, -10, 0);
+		Level1->ChangedLevel = false;
 		//std::cout << "Level 1" << std::endl;
 		//false;
 	}
 
-	if (Levels::SelectedLevel == 1 && true) // Level 2
+	if (Levels::SelectedLevel == 1 && true & Level2->ChangedLevel) // Level 2
 	{
 		goal->getObject->Position = glm::vec3(7, 10, 0);
 		Platform->Position = glm::vec3(7, 2, 0);
+		Terrain = theObjectManager->CreateTerrain("Terrain", NULL, wall, NULL);
+		Terrain->Position = glm::vec3(90, -9, 0);
 		//std::cout << "Level 2" << std::endl;
-		//false;
+		Level2->ChangedLevel = false;
 	}
 
-	if (Levels::SelectedLevel == 2 && true) // Level 3
+	if (Levels::SelectedLevel == 2 && true && Level3->ChangedLevel) // Level 3
 	{
 		goal->getObject->Position = glm::vec3(35, 1.5f, 35);
 		Platform->Position = glm::vec3(0, -10, 0);
 		//std::cout << "Level 3" << std::endl;
-		//false;
+		Level3->ChangedLevel = false;
 	}
 
 }

@@ -8,6 +8,8 @@ layout (location = 3) uniform sampler2D shadowMapTex;
 
 out vec4 FragColor;
 
+in float Height;
+
 uniform sampler2D ourTexture;
 uniform sampler2D depthMap;
 uniform samplerCube depthCubeMap;
@@ -255,6 +257,8 @@ uniform Material material;
 
 void main()
 {
+    float h = (Height + 16)/32.0f;
+
     vec3 viewDir = normalize(viewPos - FragPos); // the viewer is always at (0,0,0) in view-space, so viewDir is (0,0,0) - Position => -Position
    
     vec3 lighting = vec3(0);

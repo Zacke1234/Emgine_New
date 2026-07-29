@@ -53,7 +53,7 @@ void Levels::Init()
 
 void Levels::Load()
 {
-
+	ChangedLevel = true;
 
 	Object::SelectedEntity = -1;
 	for (auto& objs : ObjectsInLevel)

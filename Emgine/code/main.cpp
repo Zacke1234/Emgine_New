@@ -348,6 +348,10 @@ int main()
 		//Drawcall objects
 		for (auto& o : Object::Entities)
 		{
+			if (o->namn == "Terrain")
+			{
+				int b = 0;
+			}
 			o->Draw(myShaderManager->DefaultShader);
 
 		}

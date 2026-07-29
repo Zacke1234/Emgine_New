@@ -359,6 +359,9 @@
     <Image Include="resource\textures\Default 1.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="resource\textures\iceland_heightmap.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="resource\bins\TestFile.txt" />

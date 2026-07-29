@@ -24,45 +24,46 @@ Terrain::Terrain()
     }
 
     // vertex generation
-    std::vector<float> vertices;
+    
+    float yScale = 64.0f / 256.0f, yShift = 16.0f;
     int rez = 1;
-    float yScale = 64.0f / 256.0f, yShift = 16.0f;  // apply a scale+shift to the height data
-    for (unsigned int i = 0; i < height; i++)
+    unsigned bytePerPixel = channels;
+    for (int i = 0; i < height; i++)
     {
-        for (unsigned int j = 0; j < width; j++)
+        for (int j = 0; j < width; j++)
         {
-            // retrieve texel for (i,j) tex coord
-            unsigned char* texel = data + (j + width * i) * channels;
-            // raw height at coordinate
-            unsigned char y = texel[0];
+            unsigned char* pixelOffset = data + (j + width * i) * bytePerPixel;
+            unsigned char y = pixelOffset[0];
 
             // vertex
-            vertices.push_back(-height / 2.0f + height*i/(float)height);        // v.x
-            vertices.push_back((int)y * yScale - yShift); // v.y
-            vertices.push_back(-width / 2.0f + width*j/(float)width);        // v.z
+            vertices.push_back(-height / 2.0f + height * i / (float)height);   // vx
+            vertices.push_back((int)y * yScale - yShift);   // vy
+            vertices.push_back(-width / 2.0f + width * j / (float)width);   // vz
         }
     }
 
     stbi_image_free(data);
 
     // index generation
-    std::vector<unsigned int> indices;
-    for (unsigned int i = 0; i < height - 1; i++)       // for each row a.k.a. each strip
+   
+    
+    for (unsigned i = 0; i < height - 1; i += rez)
     {
-        for (unsigned int j = 0; j < width; j++)      // for each column
+        for (unsigned j = 0; j < width; j += rez)
         {
-            for (unsigned int k = 0; k < 2; k++)      // for each side of the strip
+            for (unsigned k = 0; k < 2; k++)
             {
-                indices.push_back(j + width * (i + k*rez));
+                indices.push_back(j + width * (i + k * rez));
             }
         }
     }
 
     NUM_STRIPS = (height - 1) / rez;
-    NUM_VERTS_PER_STRIP = (width * 2) * 2-2;
+    NUM_VERTS_PER_STRIP = (width / rez) * 2 - 2;
+ 
 
    
-     
+    
 
     // register VAO
    
@@ -107,14 +108,16 @@ void Terrain::Render()
     // draw mesh
     GL_CHECK(glBindVertexArray(terrainVAO));
     // render the mesh triangle strip by triangle strip - each row at a time
-    for (unsigned int strip = 0; strip < NUM_STRIPS; ++strip)
+    for (unsigned strip = 0; strip < NUM_STRIPS; strip++)
     {
         glDrawElements(GL_TRIANGLE_STRIP,   // primitive type
-            NUM_VERTS_PER_STRIP, // number of indices to render
+            NUM_VERTS_PER_STRIP + 2,   // number of indices to render
             GL_UNSIGNED_INT,     // index data type
-            (void*)(sizeof(unsigned int)
-                * NUM_VERTS_PER_STRIP
-                * strip)); // offset to starting index
+            (void*)(sizeof(unsigned) * (NUM_VERTS_PER_STRIP + 2) * strip)); // offset to starting index
     }
-    
+
+   /* glDeleteVertexArrays(1, &terrainVAO);
+    glDeleteBuffers(1, &terrainVBO);
+    glDeleteBuffers(1, &terrainEBO);*/
+
 }

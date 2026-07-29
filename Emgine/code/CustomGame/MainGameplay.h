@@ -28,6 +28,7 @@ public:
 	
 	bool switchColided = false;
 	bool GoalColided = false;
+	
 
 	Object* Wall1;
 	Object* Wall2;
@@ -38,6 +39,11 @@ public:
 	Levels* Level2;
 	Levels* Level3;
 	Object* Terrain;
+
+	Texture* wall; // = aTextureManager->Create("wall", "wall.jpg");
+	Texture* defaultTex; // = aTextureManager->Create("default", "Default 1.png");
+	Texture* goalTexture;// = aTextureManager->Create("goal", "goal.png");
+	Texture* platformTexture; // = aTextureManager->Create("gul", "gul.png");
 	
 
 	GLFWwindow* getWindow;

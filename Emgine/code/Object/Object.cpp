@@ -337,7 +337,7 @@ void Object::DrawObject(Shader* myShader)
 		myShader->SetVec3("material.objectColor", myTexture->myMaterial->color);
 	}
 	
-	if (myMesh->isTerrain)
+	if (namn == "Terrain")
 	{
 		IsTransformValid = false;
 		myTerrain->Render();

@@ -13,6 +13,7 @@ out vec2 TexCoord;
 out vec3 Normal;
 out vec4 FragPosLightSpace;
 out mat3 TBN;
+out float Height;
 
 uniform mat4 view;
 uniform mat4 transform;
@@ -22,7 +23,10 @@ uniform mat4 lightSpaceMatrix;
 uniform bool reverse_normals;
 
 void main()
-{ 
+{
+
+    Height = aPos.y;
+
      // normal mapping
      vec3 T = normalize(vec3(transform * vec4(aTangent, 0.0)));
      vec3 B = normalize(vec3(transform * vec4(aBitangent, 0.0)));

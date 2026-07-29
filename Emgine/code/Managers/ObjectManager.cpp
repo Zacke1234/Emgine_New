@@ -86,6 +86,7 @@ TerrainObject* ObjectManager::CreateTerrain(std::string aName = "newTerrainObjec
 	}
 	
 	TerrainObject* terrObj = new TerrainObject(aName, terr, aTexture, aCollider);
+	terrObj->Scale = glm::vec3(1, 1, 1);
 	terr->terrainMesh->isTerrain = true;
 	/*terr->terrainMesh->InitialiseMesh();
 	MeshManager::MeshList.push_back(terrObj->namn);
