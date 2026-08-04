@@ -18,8 +18,12 @@ public:
 	void Run();
 
 	Collider* doorColl;
+	Collider* TerrainCollider;
+	MeshCollider* meshColl;
+	
 	Interactable* iSwitch;
 	Player* player;
+	
 	
 	Object* PlaneObj;
 	Object* Door;
@@ -48,6 +52,7 @@ public:
 
 	GLFWwindow* getWindow;
 	ObjectManager* theObjectManager;
+	ColliderManager* theColliderManager;
 
 	Time* theTime;
 	BasicMenus* newMenu;

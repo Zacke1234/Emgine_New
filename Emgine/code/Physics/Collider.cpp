@@ -77,8 +77,11 @@ CubeCollider::CubeCollider(const glm::vec3& someExtents, glm::vec3 Apos) : Colli
 	position = Apos;
 	transform = Math::identity4;
 	//scale = aScale;
+
 	
 }
+
+
 
 void Collider::SetTheCollision()
 {
@@ -95,4 +98,9 @@ Collision::Collision()
 	point = glm::vec3(0, 0, 0);
 	normal1 = glm::vec3(0, 0, 0);
 	normal2 = glm::vec3(0, 0, 0);
+}
+
+MeshCollider::MeshCollider(const std::vector<glm::vec3> aPoints)
+{
+	points = aPoints;
 }

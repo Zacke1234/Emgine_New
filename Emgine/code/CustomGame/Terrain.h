@@ -17,10 +17,16 @@ public:
 
 	int width, height, channels;
 
+	int TERRAIN_HEIGHT;
+
 	unsigned int NUM_STRIPS;
 	unsigned int NUM_VERTS_PER_STRIP;
 	
+	int GetHeight[];
+
+	float GetHeightInterpolated(int x, int z);
 
 	void Render();
+	
 };
 

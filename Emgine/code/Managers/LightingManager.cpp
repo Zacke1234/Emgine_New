@@ -241,6 +241,10 @@ LightData* LightingManager::SetDirectional(LightData* aLightData)
 		std::cout << "dir light!" << std::endl;
 
 	}
+	else
+	{
+		return NULL;
+	}
 
 	aLightData->lightDir = { 0,0,0 };
 	aLightData->ambient = { 0.6,0.6,0.6 };
@@ -279,6 +283,10 @@ LightData* LightingManager::SetPoint(LightData* aLightData)
 	if (aLightData->LightVar != 1)
 	{
 		Lighting::pointLights.push_back(aLightData);
+	}
+	else
+	{
+		return NULL;
 	}
 
 	Lighting::pointLightPositions.push_back(&aLightData->lightPos);
@@ -325,6 +333,10 @@ LightData* LightingManager::SetSpot(LightData* aLightData)
 	if (aLightData->LightVar != 3)
 	{
 		Lighting::spotLights.push_back(aLightData);
+	}
+	else
+	{
+		return NULL;
 	}
 
 	aLightData->lightDir = { 0,0,0 };

@@ -6,8 +6,12 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 {
 	getWindow = aWindow;
 	theObjectManager = myObjectManager;
+	theColliderManager = aColliderManager;
 	
 	theTime = aTime;
+
+	std::vector<glm::vec3> test = { glm::vec3(0) };
+	meshColl = new MeshCollider(test);
 
 	glm::vec3 extentsPlane = { 100, 0.5f,100 };
 	CubeCollider* planeColl;
@@ -17,6 +21,9 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	CubeCollider* cubeColl1 = new CubeCollider(glm::vec3(1), glm::vec3(0));
 	CubeCollider* cubeColl2 = new CubeCollider(glm::vec3(1), glm::vec3(0));
 	CubeCollider* cubeColl3 = new CubeCollider(glm::vec3(1), glm::vec3(0));
+	//Ray* rayColl = new Ray(glm::vec3(0), glm::vec3(0));
+	//RayHit* rayHit = new RayHit(glm::vec3(0), player->playerColl, 5);
+	//Ray* rayHitColl = new Ray
 	
 	Collider* WallCollider;
 	WallCollider = aColliderManager->Create("Wall", cubeColl, false);
@@ -24,6 +31,9 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 
 	Collider* PlaneCollider;
 	PlaneCollider = aColliderManager->Create("PlaneColl", planeColl, true);
+
+	
+	//TerrainCollider = aColliderManager->Create("TerrainColl", rayHit, true);
 
 	wall = aTextureManager->Create("wall", "wall.jpg");
 	defaultTex = aTextureManager->Create("default", "Default 1.png");
@@ -151,9 +161,9 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	
 	Level2->ObjectsInLevel.push_back(player->player);
 	Level2->ObjectsInLevel.push_back(Light);
-	Level2->ObjectsInLevel.push_back(PlaneObj);
 	Level2->ObjectsInLevel.push_back(goal->getObject);
 	Level2->ObjectsInLevel.push_back(Platform);
+	//Level2->ObjectsInLevel.push_back(Terrain);
 
 	Level3->ObjectsInLevel.push_back(player->player);
 	Level3->ObjectsInLevel.push_back(Light);
@@ -259,7 +269,7 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 	
 	if (newMenu->Teleported)
 	{
-		player->player->Position = glm::vec3(1, 1, 1);
+		player->player->Position = glm::vec3(-2, 4, -2);
 		newMenu->Teleported = false;
 	}
 
@@ -268,6 +278,8 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 		goal->getObject->Position = glm::vec3(10, 1.5f, 1.5);
 		Platform->Position = glm::vec3(0, -10, 0);
 		Level1->ChangedLevel = false;
+		player->player->Position = glm::vec3(-2, 4, -2);
+		
 		//std::cout << "Level 1" << std::endl;
 		//false;
 	}
@@ -276,8 +288,27 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 	{
 		goal->getObject->Position = glm::vec3(7, 10, 0);
 		Platform->Position = glm::vec3(7, 2, 0);
-		Terrain = theObjectManager->CreateTerrain("Terrain", NULL, wall, NULL);
+
+		
+		int b = 0;
+		TerrainCollider = theColliderManager->Create("TerrainColl", meshColl, true);
+		Terrain = theObjectManager->CreateTerrain("Terrain", NULL, wall, TerrainCollider);
+
+		//int b = Terrain->myTerrain->GetHeightInterpolated(Terrain->myTerrain->width, Terrain->myTerrain->height);
+
+		for (int i = 0; i < Terrain->myTerrain->NUM_STRIPS; i++)
+		{
+				
+			meshColl->points.push_back(glm::vec3(Terrain->myTerrain->vertices[i], Terrain->myTerrain->vertices[i+1], Terrain->myTerrain->vertices[i+2]));
+			//
+			// 
+			
+			int a = 0;
+		}
+		
+		
 		Terrain->Position = glm::vec3(90, -9, 0);
+		player->player->Position = glm::vec3(-2, 4, -2);
 		//std::cout << "Level 2" << std::endl;
 		Level2->ChangedLevel = false;
 	}
@@ -286,6 +317,7 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 	{
 		goal->getObject->Position = glm::vec3(35, 1.5f, 35);
 		Platform->Position = glm::vec3(0, -10, 0);
+		player->player->Position = glm::vec3(-2, 4, -2);
 		//std::cout << "Level 3" << std::endl;
 		Level3->ChangedLevel = false;
 	}

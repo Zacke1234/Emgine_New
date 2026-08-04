@@ -5,6 +5,7 @@
 #include <iostream>
 #include <GLChecking.h>
 
+
 GLuint terrainVAO, terrainVBO, terrainEBO;
 
 Terrain::Terrain()
@@ -34,7 +35,7 @@ Terrain::Terrain()
         {
             unsigned char* pixelOffset = data + (j + width * i) * bytePerPixel;
             unsigned char y = pixelOffset[0];
-
+            //TERRAIN_HEIGHT = vertices[i];
             // vertex
             vertices.push_back(-height / 2.0f + height * i / (float)height);   // vx
             vertices.push_back((int)y * yScale - yShift);   // vy
@@ -42,6 +43,7 @@ Terrain::Terrain()
         }
     }
 
+   
     stbi_image_free(data);
 
     // index generation
@@ -92,7 +94,8 @@ Terrain::Terrain()
 
     terrainMesh = new Mesh();
     terrainMesh->name = "Terrain";
-  
+    terrainMesh->data = vertices;
+    terrainMesh->elements = indices;
 
 }
 
@@ -101,6 +104,31 @@ Terrain::~Terrain()
     /*glDeleteVertexArrays(1, &terrainVAO);
     glDeleteBuffers(1, &terrainVBO);
     glDeleteBuffers(1, &terrainIBO);*/
+}
+
+
+float Terrain::GetHeightInterpolated(int x, int z)
+{
+    float X0Z0Height = GetHeight[(int)x, (int)z];
+
+    if (((int)x + 1 >= TERRAIN_HEIGHT) || ((int)z + 1 >= TERRAIN_HEIGHT)) {
+        return X0Z0Height;
+    }
+
+    float X1Z0Height = GetHeight[(int)x + 1, (int)z];
+    float X0Z1Height = GetHeight[(int)x, (int)z + 1];
+    float X1Z1Height = GetHeight[(int)x + 1, (int)z + 1];
+
+    float FactorX = x - floorf(x);
+
+    float InterpolatedBottom = (X1Z0Height - X0Z0Height) * FactorX + X0Z0Height;
+    float InterpolatedTop = (X1Z1Height - X0Z1Height) * FactorX + X0Z1Height;
+
+    float FactorZ = z - floorf(z);
+
+    float FinalHeight = (InterpolatedTop - InterpolatedBottom) * FactorZ + InterpolatedBottom;
+
+    return FinalHeight;
 }
 
 void Terrain::Render()
@@ -121,3 +149,27 @@ void Terrain::Render()
     glDeleteBuffers(1, &terrainEBO);*/
 
 }
+
+//float Terrain::GetHeightInterpolated(float x, float z) const
+//{
+//    float X0Z0Height = GetHeight((int)x, (int)z);
+//
+//    if (((int)x + 1 >= NUM_STRIPS) || ((int)z + 1 >= NUM_STRIPS)) {
+//        return X0Z0Height;
+//    }
+//
+//    float X1Z0Height = GetHeight((int)x + 1, (int)z);
+//    float X0Z1Height = GetHeight((int)x, (int)z + 1);
+//    float X1Z1Height = GetHeight((int)x + 1, (int)z + 1);
+//
+//    float FactorX = x - floorf(x);
+//
+//    float InterpolatedBottom = (X1Z0Height - X0Z0Height) * FactorX + X0Z0Height;
+//    float InterpolatedTop = (X1Z1Height - X0Z1Height) * FactorX + X0Z1Height;
+//
+//    float FactorZ = z - floorf(z);
+//
+//    float FinalHeight = (InterpolatedTop - InterpolatedBottom) * FactorZ + InterpolatedBottom;
+//
+//    return FinalHeight;
+//}

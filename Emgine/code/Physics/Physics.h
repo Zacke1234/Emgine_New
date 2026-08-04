@@ -48,6 +48,8 @@ public:
 	bool SphereSphereIntersect(SphereCollider& c1, SphereCollider& c2);
 	bool CubeSphereIntersect(CubeCollider& aCube1, SphereCollider& aSpher2);
 	bool CubeCubeIntersect(CubeCollider& aCube1, CubeCollider& aCube2);
+	bool MeshSphereIntersect(MeshCollider& aMesh, SphereCollider& aSpher2);
+	bool MeshCubeIntersect(MeshCollider& aMesh, CubeCollider& aCube2);
 
 	bool RayCast(Ray& aRay, RayHit& aHit);
 
@@ -57,6 +59,11 @@ public:
 	bool RaySphereIntersect(Ray& aRay, SphereCollider aSphere);
 
 	bool RayOBBIntersect(Ray& aRay, CubeCollider& aCube);
+
+	//float m_heightMap[2];
+
+	//float GetHeightInterpolated(float x, float z) const;
+	//float GetHeight(int x, int z) const { return m_heightMap[x, z]; }
 
 	float float_lerp(float a, float b, float t)
 	{

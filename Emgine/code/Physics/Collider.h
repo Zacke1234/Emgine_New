@@ -25,7 +25,7 @@ public:
 	bool isOf() { return (dynamic_cast<T*>(this) != NULL); };
 
 	enum ColliderType {
-		Null = 0, Sphere, Cube, Raycast
+		Null = 0, Sphere, Cube, Ray, RayHit
 	};
 
 	// Determines if the collider will automatically scale with the object
@@ -49,6 +49,10 @@ public:
 	
 	void SetTheCollision();
 	
+	std::vector<glm::vec3> points;
+
+	glm::vec3 point;
+
 	static std::vector<Collider*> CollEntities;
 	
 	
@@ -88,7 +92,15 @@ public:
 	
 };
 
-class Ray {
+class MeshCollider : public Collider
+{
+public:
+	std::vector<glm::vec3> points;
+	MeshCollider(const std::vector<glm::vec3> aPoints);
+	
+};
+
+class Ray : public Collider {
 public:
 	Ray(const glm::vec3& anOrigin, const glm::vec3& aDirection)
 	{
@@ -99,7 +111,7 @@ public:
 	glm::vec3 direction;
 };
 
-class RayHit {
+class RayHit : public Collider {
 public:
 	RayHit(glm::vec3 aPoint, Collider* aCollider, float aDistance) {
 		point = aPoint;
@@ -107,7 +119,7 @@ public:
 		distance = aDistance;
 	};
 
-	glm::vec3 point;
+	
 	Collider* collider;
 	float distance;
 };

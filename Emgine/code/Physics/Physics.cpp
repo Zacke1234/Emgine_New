@@ -79,6 +79,10 @@ void Physics::UpdateColliderProperties(std::vector<Collider*> colliders)
 			}
 
 			o->myCollider->transform = o->trans;
+
+			
+		
+		
 			
 		}
 		
@@ -279,8 +283,23 @@ bool Physics::BoolCheckIntersect(Collider* c1, Collider* c2)
 		//std::cout << "check with cubes intersect";
 		CubeCollider* cube1 = dynamic_cast<CubeCollider*>(c1);
 		CubeCollider* cube2 = dynamic_cast<CubeCollider*>(c2);
+		
 		return CubeCubeIntersect(*cube1, *cube2);
 		
+	}
+
+	if (c1->isOf<MeshCollider>() && c2->isOf<CubeCollider>())
+	{
+		MeshCollider* mesh1 = dynamic_cast<MeshCollider*>(c1);
+		CubeCollider* cube2 = dynamic_cast<CubeCollider*>(c2);
+		return MeshCubeIntersect(*mesh1, *cube2);
+	}
+
+	if (c1->isOf<MeshCollider>() && c2->isOf<SphereCollider>())
+	{
+		MeshCollider* mesh1 = dynamic_cast<MeshCollider*>(c1);
+		SphereCollider* sphere2 = dynamic_cast<SphereCollider*>(c2);
+		return MeshSphereIntersect(*mesh1, *sphere2);
 	}
 
 	
@@ -383,27 +402,6 @@ bool Physics::SphereSphereIntersect(SphereCollider& sphere1, SphereCollider& sph
 	
 }
 
-//bool SphereRectCollision(Sphere& sphere, Rectangle& rect)
-//{
-//	float sphereXDistance = abs(sphere.X - rect.X);
-//	float sphereYDistance = abs(sphere.Y - rect.Y);
-//	float sphereZDistance = abs(sphere.Z - rect.Z);
-//
-//	if (sphereXDistance >= (rect.Width + sphere.Radius)) { return false; }
-//	if (sphereYDistance >= (rect.Height + sphere.Radius)) { return false; }
-//	if (sphereZDistance >= (rect.Depth + sphere.Radius)) { return false; }
-//
-//	if (sphereXDistance < (rect.Width)) { return true; }
-//	if (sphereYDistance < (rect.Height)) { return true; }
-//	if (sphereZDistance < (rect.GetDepth)) { return true; }
-//
-//	float cornerDistance_sq = ((sphereXDistance - rect.Width) * (sphereXDistance - rect.Width)) +
-//		((sphereYDistance - rect.Height) * (sphereYDistance - rect.Height) +
-//			((sphereYDistance - rect.Depth) * (sphereYDistance - rect.Depth)));
-//
-//	return (cornerDistance_sq < (sphere.Radius * sphere.Radius));
-//}
-
 bool Physics::CubeSphereIntersect(CubeCollider& aCube1, SphereCollider& aSphere2)
 {
 	float sphereXDistance = abs(aSphere2.position.x - aCube1.position.x);
@@ -465,6 +463,32 @@ bool Physics::CubeCubeIntersect(CubeCollider& aCube1, CubeCollider& aCube2)
 
 }
 
+
+
+bool Physics::MeshSphereIntersect(MeshCollider& aMesh, SphereCollider& aSphere2) // Really only for terrain
+{
+	float MeshPointHeight = 0;
+	float MeshPointWidth = 0;
+	glm::vec3 spherePosition = aSphere2.position;
+
+	for (int i = 0; i < aMesh.points.size(); i++)
+	{
+		glm::vec3 pointPlace = aMesh.points[i];
+	}
+		
+	
+		
+		// if im at a points position then look if i collide with it, if i don't. go to the next point in the vector.
+		
+	
+	return false;
+}
+
+bool Physics::MeshCubeIntersect(MeshCollider& aMesh, CubeCollider& aCube2)
+{
+	return false;
+}
+
 bool Physics::RayCast(Ray& aRay, RayHit& aHit)
 {
 	
@@ -477,7 +501,7 @@ bool Physics::RayCast(Ray& aRay, RayHit& aHit)
 		if (CheckRayIntersect(aRay, c))
 		{
 			aHit.collider = c;
-			aHit.point = glm::vec3(0, 0, 0);
+			//aHit.point = glm::vec3(0, 0, 0);
 			aHit.distance = 10;
 			return true;
 		}
@@ -563,3 +587,5 @@ bool Physics::RayOBBIntersect(Ray& aRay, CubeCollider& aCube)
 	Ray localRay(localOrigin, localDirection);
 	return RayCubeIntersect(localRay, localCube);
 }
+
+
