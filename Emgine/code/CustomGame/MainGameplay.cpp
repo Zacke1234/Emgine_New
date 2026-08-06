@@ -1,7 +1,5 @@
 #include "MainGameplay.h"
 
-
-
 void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager, CameraManager* aCamManager, Time* aTime, ShaderManager* aShaderManager, Physics* aPhysics, LightingManager* aLightingManager) // runs once when initialising the game
 {
 	getWindow = aWindow;
@@ -261,7 +259,8 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 		
 	}
 
-	
+
+
 
 
 
@@ -293,22 +292,24 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 		int b = 0;
 		TerrainCollider = theColliderManager->Create("TerrainColl", meshColl, true);
 		Terrain = theObjectManager->CreateTerrain("Terrain", NULL, wall, TerrainCollider);
-
-		//int b = Terrain->myTerrain->GetHeightInterpolated(Terrain->myTerrain->width, Terrain->myTerrain->height);
-
-		for (int i = 0; i < Terrain->myTerrain->NUM_STRIPS; i++)
-		{
-				
-			meshColl->points.push_back(glm::vec3(Terrain->myTerrain->vertices[i], Terrain->myTerrain->vertices[i+1], Terrain->myTerrain->vertices[i+2]));
-			//
-			// 
-			
-			int a = 0;
-		}
-		
-		
+		Terrain->myTexture->myMaterial->diffuse = 0;
+		Terrain->myTexture->myMaterial->shininess = 0;
+		Terrain->myTexture->myMaterial->specular = 0;
 		Terrain->Position = glm::vec3(90, -9, 0);
 		player->player->Position = glm::vec3(-2, 4, -2);
+
+		
+		
+		/*for (int i = 0; i < Terrain->myTerrain->NUM_STRIPS; i++)
+		{
+			meshColl->points.push_back(Terrain->myTerrain->points[i]);
+			int b = 0;
+		}*/
+		
+		//int b = Terrain->myTerrain->GetHeightInterpolated(Terrain->myTerrain->width, Terrain->myTerrain->height);
+			
+		
+		
 		//std::cout << "Level 2" << std::endl;
 		Level2->ChangedLevel = false;
 	}
@@ -321,5 +322,30 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 		//std::cout << "Level 3" << std::endl;
 		Level3->ChangedLevel = false;
 	}
+	if (Levels::SelectedLevel == 1)
+	{
+		float yHeight = Terrain->myTerrain->GetHeightInterporlated(player->player->Position.x, player->player->Position.y);
+		player->player->Position.y = yHeight;
+		int b = 0;
+	}
+}
 
+void MainGameplay::TranslateTerrainVertices()
+{
+	//// 1. Define your terrain's local vertex
+	//glm::vec4 localVertex(Terrain->myTerrain->vertices, Terrain->myTerrain->vertices, Terrain->myTerrain->vertices, 1.0f);
+
+	//// 2. Build your Model Matrix (Translation, Rotation, Scale)
+	//glm::mat4 model = glm::mat4(1.0f);
+	//model = glm::translate(model, glm::vec3(Terrain->Position.x, Terrain->Position.y, Terrain->Position.z)); // Move terrain in world
+	//model = glm::scale(model, glm::vec3(Terrain->Scale.x, Terrain->Scale.y, Terrain->Scale.z));         // Scale terrain size/height
+
+	//// 3. Transform to world space coordinate
+	//glm::vec4 worldVertex = model * localVertex;
+
+	//// Extract final world X, Y, Z
+	//float worldX = worldVertex.x;
+	//float worldY = worldVertex.y;
+	//float worldZ = worldVertex.z;
+	//int b = 0;
 }

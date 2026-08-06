@@ -204,6 +204,7 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 			if (!c->rig1->isKinematic)
 			{
 				c->rig1->velocity.y *= 0;
+				
 
 
 			}
@@ -215,7 +216,7 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 			{
 
 				c->rig2->velocity.y *= 0;
-
+				
 			}
 		}
 	
@@ -467,14 +468,48 @@ bool Physics::CubeCubeIntersect(CubeCollider& aCube1, CubeCollider& aCube2)
 
 bool Physics::MeshSphereIntersect(MeshCollider& aMesh, SphereCollider& aSphere2) // Really only for terrain
 {
-	float MeshPointHeight = 0;
-	float MeshPointWidth = 0;
 	glm::vec3 spherePosition = aSphere2.position;
 
-	for (int i = 0; i < aMesh.points.size(); i++)
-	{
-		glm::vec3 pointPlace = aMesh.points[i];
-	}
+
+	/*The absolutely simplest way of doing collisions is to simply figure out which quad we are inside,
+		then use the height value closest vertex as the floor at that point.
+		If we are below that height value, we snap the character up to that point. (if implementing physics
+			based movement, velocity needs to be modified too).
+		To not allow climbing steep terrain, we can set a limit on how high we allow this snap to be.This
+		same feature is what allows stairs to function in many games.And is usually what step height
+		refers to internally in many engines.*/
+
+	
+	//for (int i = 0; i < aMesh.points.size(); i++)
+	//{
+	//	
+	//	glm::vec3 pointPlace = aMesh.points[i];
+	//	glm::vec3 localPos = glm::vec3(aMesh.transform * glm::vec4(pointPlace, 1.0));
+	//	if (localPos.x < spherePosition.x)
+	//	{
+	//		if (localPos.z > spherePosition.z)
+	//		{
+	//			if (localPos.y > spherePosition.y)
+	//			{
+
+	//				int b = 0;
+	//				return true;
+	//			}
+	//		}
+	//	}
+	//	
+
+
+	//	//int arr[3] = { localPos.x, localPos.y, localPos.z };
+	//	//int n = sizeof(arr) / sizeof(arr[0]);
+
+	//	////// Finding lower bound for value 35 in array arr
+	//	//int* findX = std::lower_bound(arr, arr + n, spherePosition.x);
+	//	//int* findY = std::lower_bound(arr, arr + n, spherePosition.y);
+	//	//int* findZ = std::lower_bound(arr, arr + n, spherePosition.z);
+	//	
+	//	int b = 0;
+	//}
 		
 	
 		

@@ -1,11 +1,13 @@
 #pragma once
 #include <vector>
 #include "MeshManager.h"
+
+
 struct Mesh;
 class Terrain
 {
 public:
-
+	
 	Terrain();
 
 	~Terrain();
@@ -17,16 +19,17 @@ public:
 
 	int width, height, channels;
 
-	int TERRAIN_HEIGHT;
-
 	unsigned int NUM_STRIPS;
 	unsigned int NUM_VERTS_PER_STRIP;
-	
-	int GetHeight[];
+	int fileSize = 0;
+	int terrainSize = 0;
+	float heightMap[256];
 
-	float GetHeightInterpolated(int x, int z);
+	float TerrainX, TerrainZ;
 
 	void Render();
+	float GetHeightInterporlated(float x, float z);
 	
 };
 
+// How would I get the x, y, z values from the terrain and translate it into the world space.

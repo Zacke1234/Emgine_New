@@ -16,6 +16,7 @@ public:
 	void Initialise(GLFWwindow* getWindow, ObjectManager* myObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager, CameraManager* aCamManager, Time* aTime, ShaderManager* aShaderManager, Physics* aPhysics, LightingManager* aLightingManager);
 	void Start();
 	void Run();
+	void TranslateTerrainVertices();
 
 	Collider* doorColl;
 	Collider* TerrainCollider;

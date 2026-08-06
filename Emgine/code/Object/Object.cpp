@@ -307,7 +307,10 @@ void Object::UpdateTransform(Shader* myShader)
 
 void Object::DrawObject(Shader* myShader)
 {
-	
+	if (this->namn == "Terrain")
+	{
+		int b = 0;
+	}
 
 	if (IsTransformValid == false)
 	{
