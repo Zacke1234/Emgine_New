@@ -291,6 +291,7 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 		
 		int b = 0;
 		TerrainCollider = theColliderManager->Create("TerrainColl", meshColl, true);
+		
 		Terrain = theObjectManager->CreateTerrain("Terrain", NULL, wall, TerrainCollider);
 		Terrain->myTexture->myMaterial->diffuse = 0;
 		Terrain->myTexture->myMaterial->shininess = 0;
@@ -324,8 +325,21 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 	}
 	if (Levels::SelectedLevel == 1)
 	{
-		float yHeight = Terrain->myTerrain->GetHeightInterporlated(player->player->Position.x, player->player->Position.y);
-		player->player->Position.y = yHeight;
+		/*for (int i = 0; i < Terrain->myTerrain->heightMap[0][i]; i++)
+		{
+			float multipliedByTransformx = Terrain->Position.x * Terrain->myTerrain->heightMap[0][i];
+			float multipliedByTransformz = Terrain->Position.z * Terrain->myTerrain->heightMap[1][i];
+
+		}*/
+
+		glm::vec3 localPosition = inverse(Terrain->trans) * glm::vec4(glm::vec3(0), 1);
+		
+		float yHeight = Terrain->myTerrain->GetHeightInterporlated(player->player->Position.x, player->player->Position.y, Terrain->myTerrain->heightMap);
+		if (player->player->Position.y < yHeight)
+		{
+			player->player->Position.y = yHeight;
+		}
+		
 		int b = 0;
 	}
 }

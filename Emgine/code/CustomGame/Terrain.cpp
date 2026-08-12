@@ -26,7 +26,7 @@ Terrain::Terrain()
         std::cout << "Failed to load texture" << std::endl;
     }
     terrainSize = (int)sqrtf((float)fileSize / (float)sizeof(float));
-    heightMap[256] += terrainSize, data;
+
     // vertex generation
     
     float yScale = 64.0f / 256.0f, yShift = 16.0f;
@@ -34,8 +34,11 @@ Terrain::Terrain()
     unsigned bytePerPixel = channels;
     for (int i = 0; i < height; i++)
     {
+        int c = 0;
+      //  c += 1;
         for (int j = 0; j < width; j++)
         {
+            
             unsigned char* pixelOffset = data + (j + width * i) * bytePerPixel;
             unsigned char y = pixelOffset[0];
             //TERRAIN_HEIGHT = vertices[i];
@@ -43,16 +46,20 @@ Terrain::Terrain()
             vertices.push_back(-height / 2.0f + height * i / (float)height);   // vx
             vertices.push_back((int)y * yScale - yShift);   // vy
             vertices.push_back(-width / 2.0f + width * j / (float)width);   // vz
+            //heightMap +=  {-height / 2.0f + height * i / (float)height} ;
             /*points.push_back(glm::vec3(-height / 2.0f + height * i / (float)height, 
                 (int)y * yScale - yShift,
                 -width / 2.0f + width * j / (float)width));*/
-            
-            
+            c = 0;
+            heightMap[i][c] = -height / 2.0f + height * i / (float)height;
+            c++;
+            heightMap[i][c] = -width / 2.0f + width * i / (float)width;
            
         }
     }
 
-   
+    //terrainTransform;
+    //heightMap2;
     stbi_image_free(data);
 
     // index generation
@@ -69,7 +76,7 @@ Terrain::Terrain()
             }
         }
     }
-
+   
     NUM_STRIPS = (height - 1) / rez;
     NUM_VERTS_PER_STRIP = (width / rez) * 2 - 2;
 
@@ -138,27 +145,44 @@ void Terrain::Render()
 
 }
 
-float Terrain::GetHeightInterporlated(float x, float z)
+float Terrain::GetHeightInterporlated(float x, float z, float heights[256][2])
 {
-    float X0Z0Height = (x, z);
+   
+    float gridSquareLength = height / ((float)width - 1);
+    int gridX = (int)std::floor(x - 1 / gridSquareLength);
+    int gridZ = (int)std::floor(z - 1 / gridSquareLength);
 
-    if (((int)x + 1 >= width) || ((int)z + 1 >= width)) {
-        return X0Z0Height;
+    if (gridX >= width - 1 || gridZ >= height - 1 || gridX < 0 || gridZ < 0)
+    {
+        return 0;
+    }
+    float xCoord = std::fmod(x - 1, gridSquareLength) / gridSquareLength;
+    float zCoord = std::fmod(z - 1, gridSquareLength) / gridSquareLength;
+    float answer = 0.0;
+
+    if (xCoord <= (1 - zCoord))
+    {
+        answer = barryCentric(glm::vec3(0, heights[gridX][gridZ], 0),
+            glm::vec3(1, heights[gridX + 1][gridZ], 0), glm::vec3(0, heights[gridX][gridZ + 1], 1),
+            glm::vec2(xCoord, zCoord));
     }
 
-    float X1Z0Height = (x + 1, z);
-    float X0Z1Height = (x, z + 1);
-    float X1Z1Height = (x + 1, z + 1); 
+    else
+    {
+        answer = barryCentric(glm::vec3(1, heights[gridX + 1][gridZ], 0),
+            glm::vec3(1, heights[gridX + 1][gridZ + 1], 1), glm::vec3(0, heights[gridX][gridZ + 1], 1),
+            glm::vec2(xCoord, zCoord));
+    }
 
-    float FactorX = x - floorf(x);
+    return answer;
+}
 
-    float InterpolatedBottom = (X1Z0Height - X0Z0Height) * FactorX + X0Z0Height;
-    float InterpolatedTop = (X1Z1Height - X0Z1Height) * FactorX + X0Z1Height;
-
-    float FactorZ = z - floorf(z);
-
-    float FinalHeight = (InterpolatedTop - InterpolatedBottom) * FactorZ + InterpolatedBottom;
-
-    return FinalHeight;
+float Terrain::barryCentric(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, glm::vec2 pos)
+{
+    float det = (p2.z - p3.z) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.z - p3.z);
+    float l1 = ((p2.z - p3.z) * (pos.x - p3.x) + (p3.x - p2.x) * (pos.y - p3.z)) / det;
+    float l2 = ((p3.z - p1.z) * (pos.x - p3.x) + (p1.x - p3.x) * (pos.y - p3.z)) / det;
+    float l3 = 1.0f - l1 - l2;
+    return l1 * p1.y + l2 * p2.y + l3 * p3.y;
 }
 

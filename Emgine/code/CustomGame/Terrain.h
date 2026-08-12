@@ -2,7 +2,7 @@
 #include <vector>
 #include "MeshManager.h"
 
-
+//glm::mat4 terrainTransform;
 struct Mesh;
 class Terrain
 {
@@ -23,12 +23,16 @@ public:
 	unsigned int NUM_VERTS_PER_STRIP;
 	int fileSize = 0;
 	int terrainSize = 0;
-	float heightMap[256];
+	float heightMap[256][2];
 
+	//float heightMap2[256][2];
 	float TerrainX, TerrainZ;
 
+	
+
 	void Render();
-	float GetHeightInterporlated(float x, float z);
+	float GetHeightInterporlated(float x, float z, float heights[256][2]);
+	float barryCentric(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, glm::vec2 pos);
 	
 };
 
