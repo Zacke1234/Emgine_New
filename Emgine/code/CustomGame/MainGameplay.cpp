@@ -296,7 +296,7 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 		Terrain->myTexture->myMaterial->diffuse = 0;
 		Terrain->myTexture->myMaterial->shininess = 0;
 		Terrain->myTexture->myMaterial->specular = 0;
-		Terrain->Position = glm::vec3(90, -9, 0);
+		
 		player->player->Position = glm::vec3(-2, 4, -2);
 
 		
@@ -325,16 +325,8 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 	}
 	if (Levels::SelectedLevel == 1)
 	{
-		/*for (int i = 0; i < Terrain->myTerrain->heightMap[0][i]; i++)
-		{
-			float multipliedByTransformx = Terrain->Position.x * Terrain->myTerrain->heightMap[0][i];
-			float multipliedByTransformz = Terrain->Position.z * Terrain->myTerrain->heightMap[1][i];
-
-		}*/
-
-		glm::vec3 localPosition = inverse(Terrain->trans) * glm::vec4(glm::vec3(0), 1);
 		
-		float yHeight = Terrain->myTerrain->GetHeightInterporlated(player->player->Position.x, player->player->Position.y, Terrain->myTerrain->heightMap);
+		float yHeight = Terrain->myTerrain->GetHeightInterporlated(player->player->Position.x, player->player->Position.z, Terrain->Position.x, Terrain->Position.z, Terrain->myTerrain->heightMap);
 		if (player->player->Position.y < yHeight)
 		{
 			player->player->Position.y = yHeight;
@@ -346,20 +338,5 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 
 void MainGameplay::TranslateTerrainVertices()
 {
-	//// 1. Define your terrain's local vertex
-	//glm::vec4 localVertex(Terrain->myTerrain->vertices, Terrain->myTerrain->vertices, Terrain->myTerrain->vertices, 1.0f);
 
-	//// 2. Build your Model Matrix (Translation, Rotation, Scale)
-	//glm::mat4 model = glm::mat4(1.0f);
-	//model = glm::translate(model, glm::vec3(Terrain->Position.x, Terrain->Position.y, Terrain->Position.z)); // Move terrain in world
-	//model = glm::scale(model, glm::vec3(Terrain->Scale.x, Terrain->Scale.y, Terrain->Scale.z));         // Scale terrain size/height
-
-	//// 3. Transform to world space coordinate
-	//glm::vec4 worldVertex = model * localVertex;
-
-	//// Extract final world X, Y, Z
-	//float worldX = worldVertex.x;
-	//float worldY = worldVertex.y;
-	//float worldZ = worldVertex.z;
-	//int b = 0;
 }

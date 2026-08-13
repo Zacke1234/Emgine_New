@@ -31,7 +31,7 @@ public:
 	
 
 	void Render();
-	float GetHeightInterporlated(float x, float z, float heights[256][2]);
+	float GetHeightInterporlated(float x, float z, float terrainx, float terrainz, float heights[256][2]);
 	float barryCentric(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, glm::vec2 pos);
 	
 };

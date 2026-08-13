@@ -50,10 +50,10 @@ Terrain::Terrain()
             /*points.push_back(glm::vec3(-height / 2.0f + height * i / (float)height, 
                 (int)y * yScale - yShift,
                 -width / 2.0f + width * j / (float)width));*/
-            c = 0;
+            /*c = 0;
             heightMap[i][c] = -height / 2.0f + height * i / (float)height;
             c++;
-            heightMap[i][c] = -width / 2.0f + width * i / (float)width;
+            heightMap[i][c] = -width / 2.0f + width * i / (float)width;*/
            
         }
     }
@@ -67,14 +67,24 @@ Terrain::Terrain()
     
     for (unsigned i = 0; i < height - 1; i += rez)
     {
+       
         for (unsigned j = 0; j < width; j += rez)
         {
+           
             for (unsigned k = 0; k < 2; k++)
             {
                 indices.push_back(j + width * (i + k * rez));
-                //points.push_back(glm::vec3(j + width * (i + k * rez))); 
+               
+
             }
         }
+        
+
+        
+        int u = i + 1;
+        heightMap[i][0] = i;
+        heightMap[i][1] = u;
+        
     }
    
     NUM_STRIPS = (height - 1) / rez;
@@ -145,19 +155,22 @@ void Terrain::Render()
 
 }
 
-float Terrain::GetHeightInterporlated(float x, float z, float heights[256][2])
+float Terrain::GetHeightInterporlated(float x, float z, float worldX, float worldZ, float heights[256][2])
 {
-   
+   // glm::translate(trans, Position);
+    float terrainX = worldX - x;
+    float terrainZ = worldZ - z;
+
     float gridSquareLength = height / ((float)width - 1);
-    int gridX = (int)std::floor(x - 1 / gridSquareLength);
-    int gridZ = (int)std::floor(z - 1 / gridSquareLength);
+    int gridX = (int)std::floor(terrainX / gridSquareLength);
+    int gridZ = (int)std::floor(terrainZ / gridSquareLength);
 
     if (gridX >= width - 1 || gridZ >= height - 1 || gridX < 0 || gridZ < 0)
     {
         return 0;
     }
-    float xCoord = std::fmod(x - 1, gridSquareLength) / gridSquareLength;
-    float zCoord = std::fmod(z - 1, gridSquareLength) / gridSquareLength;
+    float xCoord = std::fmod(terrainX, gridSquareLength) / gridSquareLength;
+    float zCoord = std::fmod(terrainZ, gridSquareLength) / gridSquareLength;
     float answer = 0.0;
 
     if (xCoord <= (1 - zCoord))
