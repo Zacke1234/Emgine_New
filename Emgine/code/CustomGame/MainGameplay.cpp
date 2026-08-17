@@ -326,11 +326,25 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 	if (Levels::SelectedLevel == 1)
 	{
 		
-		float yHeight = Terrain->myTerrain->GetHeightInterporlated(player->player->Position.x, player->player->Position.z, Terrain->Position.x, Terrain->Position.z, Terrain->myTerrain->heightMap);
-		if (player->player->Position.y < yHeight)
-		{
-			player->player->Position.y = yHeight;
+		/*float yHeight = Terrain->myTerrain->GetHeightInterporlated(player->player->Position.x, player->player->Position.z, Terrain->Position.x, Terrain->Position.z, Terrain->myTerrain->heightMap);*/
+		int count = 0;
+		for (int i = 0; i < Terrain->myTerrain->height; i++)
+		{	
+			
+			if (player->player->Position.x >= Terrain->myTerrain->xMap[i] && player->player->Position.z <= Terrain->myTerrain->zMap[i])
+			{
+				std::cout << "touching xz terrain" << std::endl;
+				if (player->player->Position.y < Terrain->myTerrain->yMap[i])
+				{
+					player->player->Position.y = Terrain->myTerrain->yMap[i];
+				}
+				
+			}
+			// 
+			
+
 		}
+		
 		
 		int b = 0;
 	}

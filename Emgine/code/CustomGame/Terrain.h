@@ -23,8 +23,13 @@ public:
 	unsigned int NUM_VERTS_PER_STRIP;
 	int fileSize = 0;
 	int terrainSize = 0;
-	float heightMap[256][2];
 
+	std::vector<float> yMap;
+
+	std::vector<float> xMap;
+
+	std::vector<float> zMap;
+	
 	//float heightMap2[256][2];
 	float TerrainX, TerrainZ;
 

@@ -29,13 +29,11 @@ Terrain::Terrain()
 
     // vertex generation
     
-    float yScale = 64.0f / 256.0f, yShift = 16.0f;
+    float yScale = 64.0f / 256.0f, yShift = 0.0f;
     int rez = 1;
     unsigned bytePerPixel = channels;
     for (int i = 0; i < height; i++)
     {
-        int c = 0;
-      //  c += 1;
         for (int j = 0; j < width; j++)
         {
             
@@ -46,44 +44,36 @@ Terrain::Terrain()
             vertices.push_back(-height / 2.0f + height * i / (float)height);   // vx
             vertices.push_back((int)y * yScale - yShift);   // vy
             vertices.push_back(-width / 2.0f + width * j / (float)width);   // vz
-            //heightMap +=  {-height / 2.0f + height * i / (float)height} ;
-            /*points.push_back(glm::vec3(-height / 2.0f + height * i / (float)height, 
-                (int)y * yScale - yShift,
-                -width / 2.0f + width * j / (float)width));*/
-            /*c = 0;
-            heightMap[i][c] = -height / 2.0f + height * i / (float)height;
-            c++;
-            heightMap[i][c] = -width / 2.0f + width * i / (float)width;*/
+            yMap.push_back((int)y * yScale - yShift);
            
         }
     }
 
-    //terrainTransform;
-    //heightMap2;
     stbi_image_free(data);
 
     // index generation
    
     
-    for (unsigned i = 0; i < height - 1; i += rez)
+    for (int i = 0; i < height - 1; i += rez)
     {
        
-        for (unsigned j = 0; j < width; j += rez)
+        for (int j = 0; j < width; j += rez)
         {
            
-            for (unsigned k = 0; k < 2; k++)
-            {
+            for (int k = 0; k < 2; k++)
+            { 
                 indices.push_back(j + width * (i + k * rez));
                
-
+                int u = j + 1;
+                xMap.push_back(j);
+                zMap.push_back(u);
+                
             }
         }
         
-
         
-        int u = i + 1;
-        heightMap[i][0] = i;
-        heightMap[i][1] = u;
+        
+
         
     }
    
