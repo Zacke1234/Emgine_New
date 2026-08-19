@@ -2,7 +2,7 @@
 
 #include "imgui.h"
 #include <iostream>
-#include "gl.h"
+#include "../gl.h"
 #include "Shader.h"
 #include "Camera.h"
 #include "Lighting.h"
@@ -19,18 +19,18 @@
 #include "Collider.h"
 #include "Message.h"
 #include "Threading.h"
-#include "Observer.h"
+#include "Patterns/Observer/Observer.h"
 #include <thread>
 #include <mutex>
-#include <ColliderManager.h>
-#include <ShaderManager.h>
+#include <Managers/ColliderManager.h>
+#include <Managers/ShaderManager.h>
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-#include <ObjectManager.h>
-#include <TextureManager.h>
-#include <LightingManager.h>
-#include <RigidbodyManager.h>
-#include <CameraManager.h>
+#include <Managers/ObjectManager.h>
+#include <Managers/TextureManager.h>
+#include <Managers/LightingManager.h>
+#include <Managers/RigidbodyManager.h>
+#include <Managers/CameraManager.h>
 #include <Time/Time.h>
 #include <glfw3.h>
 #include <CustomGame/MainGameplay.h>

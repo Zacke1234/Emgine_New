@@ -1,10 +1,10 @@
 #include "Rigidbody.h"
 #include "Collider.h"
 #include "Object.h"
-#include "ColliderManager.h"
-#include "RigidbodyManager.h"
-#include "ObjectManager.h"
-#include "TextureManager.h"
+#include "Managers/ColliderManager.h"
+#include "Managers/RigidbodyManager.h"
+#include "Managers/ObjectManager.h"
+#include "Managers/TextureManager.h"
 #include "cstdlib"
 
 #pragma once

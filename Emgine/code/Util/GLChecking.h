@@ -1,6 +1,6 @@
 #pragma once
 #include <stdio.h>
-#include "gl.h"
+#include "../gl.h"
 #define STB_IMAGE_IMPLEMENTATION
 inline void CheckOpenGLError(const char* stmt, const char* fname, int line)
 {

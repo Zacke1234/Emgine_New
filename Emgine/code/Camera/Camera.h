@@ -5,7 +5,7 @@
 //#include <glfw3.h>
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-#include "Controller.h"
+#include "Controller/Controller.h"
 #include <Shader.h>
 
 class Camera

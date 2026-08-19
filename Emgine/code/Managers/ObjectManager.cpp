@@ -1,5 +1,5 @@
-#include "ObjectManager.h"
-#include <ShaderManager.h>
+#include "Managers/ObjectManager.h"
+#include <Managers/ShaderManager.h>
 
 
 

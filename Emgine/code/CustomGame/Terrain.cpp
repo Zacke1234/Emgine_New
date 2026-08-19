@@ -1,5 +1,5 @@
 #include "Terrain.h"
-#include <gl.h>
+#include <../gl.h>
 #include <string>
 #include <stb_image.h>
 #include <iostream>

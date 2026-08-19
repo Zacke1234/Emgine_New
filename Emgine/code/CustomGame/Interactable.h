@@ -1,7 +1,7 @@
 #include <Collider.h>
-#include <ObjectManager.h>
-#include <TextureManager.h>
-#include <ColliderManager.h>
+#include <Managers/ObjectManager.h>
+#include <Managers/TextureManager.h>
+#include <Managers/ColliderManager.h>
 #include <Physics.h>
 #include <Object.h>
 

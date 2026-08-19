@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "ObjectManager.h"
-#include "ShaderManager.h"
+#include "Managers/ObjectManager.h"
+#include "Managers/ShaderManager.h"
 #include "Time/Time.h"
 
 class Levels

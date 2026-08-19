@@ -1,11 +1,11 @@
 
-#include <ObjectManager.h>
-#include <TextureManager.h>
-#include <ColliderManager.h>
-#include <RigidbodyManager.h>
-#include <CameraManager.h>
+#include <Managers/ObjectManager.h>
+#include <Managers/TextureManager.h>
+#include <Managers/ColliderManager.h>
+#include <Managers/RigidbodyManager.h>
+#include <Managers/CameraManager.h>
 #include <Time/Time.h>
-#include <ShaderManager.h>
+#include <Managers/ShaderManager.h>
 #include <Physics.h>
 
 class Player 

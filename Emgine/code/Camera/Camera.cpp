@@ -104,7 +104,7 @@ void Camera::ProcessInput(float& deltatime)
 	if (CameraController->SHIFT_KEY(window))
 	{
 		//std::cout << "shift" << "\n";
-		cameraSpeed = 9.0f * 0.5;
+		cameraSpeed = 9.0f * 0.5f;
 	}
 
 	if (CameraController->SHIFT_KEY_RELEASE(window))

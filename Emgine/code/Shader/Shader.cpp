@@ -1,6 +1,6 @@
 #include <iostream>
 #include <glm.hpp>
-#include "gl.h"
+#include "../gl.h"
  
 #include "Shader.h"
 #include <fstream>
