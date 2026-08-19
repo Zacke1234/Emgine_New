@@ -287,8 +287,8 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 
 	if (Levels::SelectedLevel == 1 && true & Level2->ChangedLevel) // Level 2
 	{
-		goal->getObject->Position = glm::vec3(7, 10, 0);
-		Platform->Position = glm::vec3(7, 2, 0);
+		goal->getObject->Position = glm::vec3(20, 1, 20);
+		Platform->Position = glm::vec3(10, -10, 10);
 
 		
 		int b = 0;
