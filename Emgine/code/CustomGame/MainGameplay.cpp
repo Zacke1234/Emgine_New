@@ -1,10 +1,12 @@
 #include "MainGameplay.h"
 
+
 void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManager, MeshManager* aMeshManager, TextureManager* aTextureManager, ColliderManager* aColliderManager, RigidbodyManager* aRigidbodyManager, CameraManager* aCamManager, Time* aTime, ShaderManager* aShaderManager, Physics* aPhysics, LightingManager* aLightingManager) // runs once when initialising the game
 {
 	getWindow = aWindow;
 	theObjectManager = myObjectManager;
 	theColliderManager = aColliderManager;
+	theLightManager = aLightingManager;
 	
 	theTime = aTime;
 
@@ -297,19 +299,13 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 		Terrain->myTexture->myMaterial->shininess = 0;
 		Terrain->myTexture->myMaterial->specular = 0;
 		
-		player->player->Position = glm::vec3(-2, 4, -2);
+		player->player->Position = glm::vec3(2, 4, 2);
 
+		/*Light->myLightData->PointLight;
+		theLightManager->SetPoint(Light->myLightData);*/
 		
 		
-		/*for (int i = 0; i < Terrain->myTerrain->NUM_STRIPS; i++)
-		{
-			meshColl->points.push_back(Terrain->myTerrain->points[i]);
-			int b = 0;
-		}*/
-		
-		//int b = Terrain->myTerrain->GetHeightInterpolated(Terrain->myTerrain->width, Terrain->myTerrain->height);
-			
-		
+
 		
 		//std::cout << "Level 2" << std::endl;
 		Level2->ChangedLevel = false;
@@ -325,28 +321,43 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 	}
 	if (Levels::SelectedLevel == 1)
 	{
+		/*int width, height, channels;
+		unsigned char* data = stbi_load("resource\\textures\\iceland_heightmap.png",
+			&width, &height, &channels,
+			0);
+		float yScale = 64.0f / 256.0f, yShift = 0.0f;
+		int rez = 1;
+		unsigned bytePerPixel = channels;*/
+
 		
-		/*float yHeight = Terrain->myTerrain->GetHeightInterporlated(player->player->Position.x, player->player->Position.z, Terrain->Position.x, Terrain->Position.z, Terrain->myTerrain->heightMap);*/
-		int count = 0;
-		for (int i = 0; i < Terrain->myTerrain->height; i++)
-		{	
-			
-			if (player->player->Position.x >= Terrain->myTerrain->xMap[i] && player->player->Position.z <= Terrain->myTerrain->zMap[i])
+		for (int i = 0; i < Terrain->myTerrain->width * Terrain->myTerrain->height; i++)
+		{
+			/*unsigned char* pixelOffset = data + (j + width * i) * bytePerPixel;
+			unsigned char yPix = pixelOffset[0];*/
+
+			int y = Terrain->myTerrain->yMap[i];
+
+			int x = Terrain->myTerrain->xMap[i];
+			int z = Terrain->myTerrain->zMap[i];
+
+			if ((int)player->player->Position.z == z && (int)player->player->Position.x == x) // inside the x and z points
 			{
-				std::cout << "touching xz terrain" << std::endl;
-				if (player->player->Position.y < Terrain->myTerrain->yMap[i])
+				//std::cout << "touching xz terrain" << std::endl;
+				if (player->player->Position.y < y + 1) // below the y points
 				{
-					player->player->Position.y = Terrain->myTerrain->yMap[i];
+					player->player->Position.y = y;
+					player->playerRB->velocity *= 0;
+
 				}
-				
+
+
 			}
 			// 
-			
+
 
 		}
 		
 		
-		int b = 0;
 	}
 }
 

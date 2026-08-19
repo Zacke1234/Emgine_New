@@ -479,37 +479,18 @@ bool Physics::MeshSphereIntersect(MeshCollider& aMesh, SphereCollider& aSphere2)
 		same feature is what allows stairs to function in many games.And is usually what step height
 		refers to internally in many engines.*/
 
+	/*for (int i = 0; i < aMesh.points.size(); i++)
+	{
+		if (spherePosition.x >= aMesh.points[i].x && spherePosition.z <= aMesh.points[i].z)
+		{
+			if (spherePosition.y < aMesh.points[i].y)
+			{
+				aSphere2
+				return true;
+			}
+		}
+	}*/
 	
-	//for (int i = 0; i < aMesh.points.size(); i++)
-	//{
-	//	
-	//	glm::vec3 pointPlace = aMesh.points[i];
-	//	glm::vec3 localPos = glm::vec3(aMesh.transform * glm::vec4(pointPlace, 1.0));
-	//	if (localPos.x < spherePosition.x)
-	//	{
-	//		if (localPos.z > spherePosition.z)
-	//		{
-	//			if (localPos.y > spherePosition.y)
-	//			{
-
-	//				int b = 0;
-	//				return true;
-	//			}
-	//		}
-	//	}
-	//	
-
-
-	//	//int arr[3] = { localPos.x, localPos.y, localPos.z };
-	//	//int n = sizeof(arr) / sizeof(arr[0]);
-
-	//	////// Finding lower bound for value 35 in array arr
-	//	//int* findX = std::lower_bound(arr, arr + n, spherePosition.x);
-	//	//int* findY = std::lower_bound(arr, arr + n, spherePosition.y);
-	//	//int* findZ = std::lower_bound(arr, arr + n, spherePosition.z);
-	//	
-	//	int b = 0;
-	//}
 		
 	
 		

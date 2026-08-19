@@ -54,6 +54,7 @@ public:
 	GLFWwindow* getWindow;
 	ObjectManager* theObjectManager;
 	ColliderManager* theColliderManager;
+	LightingManager* theLightManager;
 
 	Time* theTime;
 	BasicMenus* newMenu;

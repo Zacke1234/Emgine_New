@@ -28,7 +28,11 @@ public:
 
 	std::vector<float> xMap;
 
+	std::vector<float> xyMap;
+
 	std::vector<float> zMap;
+
+	std::vector<float> zyMap;
 	
 	//float heightMap2[256][2];
 	float TerrainX, TerrainZ;

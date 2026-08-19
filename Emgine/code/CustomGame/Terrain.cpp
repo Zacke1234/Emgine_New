@@ -32,8 +32,12 @@ Terrain::Terrain()
     float yScale = 64.0f / 256.0f, yShift = 0.0f;
     int rez = 1;
     unsigned bytePerPixel = channels;
+
+
     for (int i = 0; i < height; i++)
     {
+      
+         // vx
         for (int j = 0; j < width; j++)
         {
             
@@ -41,14 +45,20 @@ Terrain::Terrain()
             unsigned char y = pixelOffset[0];
             //TERRAIN_HEIGHT = vertices[i];
             // vertex
-            vertices.push_back(-height / 2.0f + height * i / (float)height);   // vx
-            vertices.push_back((int)y * yScale - yShift);   // vy
-            vertices.push_back(-width / 2.0f + width * j / (float)width);   // vz
-            yMap.push_back((int)y * yScale - yShift);
-           
+          
+            vertices.push_back(2.0f + i);
+            vertices.push_back((float)y * yScale);   // vy
+            vertices.push_back(2.0f + j );   // vz
+          
+            xMap.push_back(2.0f + i);
+
+            yMap.push_back((float)y * yScale);
+            
+            zMap.push_back(2.0f + j);
         }
     }
 
+   
     stbi_image_free(data);
 
     // index generation
@@ -64,19 +74,20 @@ Terrain::Terrain()
             { 
                 indices.push_back(j + width * (i + k * rez));
                
-                int u = j + 1;
-                xMap.push_back(j);
-                zMap.push_back(u);
+                
                 
             }
+         
         }
         
-        
-        
+        /*int u = i + 1;
+        xMap.push_back(i);
+        zMap.push_back(u);
+        */
 
         
     }
-   
+
     NUM_STRIPS = (height - 1) / rez;
     NUM_VERTS_PER_STRIP = (width / rez) * 2 - 2;
 
