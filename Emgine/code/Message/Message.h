@@ -12,7 +12,7 @@ class Message : public Subject
 {
 public:
 	Message();
-	~Message();
+	
 
 private:
 	std::vector<Observer*> observers;

@@ -1,7 +1,7 @@
 #include "Camera.h"
 
 glm::vec3 WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
-float lastX = 400, lastY = 300;
+double lastX = 400, lastY = 300;
 Camera* Camera::Instance;
 int Entered;
 

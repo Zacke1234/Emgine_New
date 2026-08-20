@@ -11,14 +11,8 @@ Levels::Levels(ShaderManager* aShaderManager, Time* aTime, ObjectManager* objMan
 	tempTime = aTime;
 	id += 1;
 	levelID = id;
-	objManager = theObjManager;
+	theObjManager = objManager;
 	levelList.push_back(this);
-
-	/*for (auto& objs : Object::Entities)
-	{
-		ObjectsInLevel.push_back(objs);
-	}*/
-	
 }
 
 void Levels::GetTime()
