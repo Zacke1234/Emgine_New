@@ -1,5 +1,6 @@
 To download, simply click the Code <> green button and click Download Zip, (it should appear in your downloads folder in your computer) then extract the file by right clicking it, In the dropdown menu (Extract all).
 To run and play. simply open the game folder. and double click on the Emgine (.exe) file.
+Note: don't move out the exe file or the Shader/resource files, it will prevent the objects and shaders from loading. You can make a shortcut on your desktop if you wish.
 
 Controls: Esc = To allow camera movement
 Tab = to regain control of the user interface
