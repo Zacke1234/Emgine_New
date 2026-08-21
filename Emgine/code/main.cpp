@@ -83,34 +83,25 @@ int init_managers() {
 	myShaderManager = new ShaderManager();
 	myLightingManager = new LightingManager();
 	myMeshManager = new MeshManager;
-	//myCubeMap = new Cubemap;
 	
 	myTextureManager = new TextureManager();
 	MyColliderManager = new ColliderManager();
 	
-	
-	//myModel = new Model();
 	myLightingManager->InitDefaultLighting();
 	myShaderManager->InitDefaultShader();
 
-	// remove the ../ for release. add back the ../ for visual studio debugging
 	myShaderManager->Create("depthShader", "Shader/DepthQuadVS.glsl", "Shader/DepthQuadFS.glsl");
 	
 	myShaderManager->Create("DirectionalShader", "Shader/DirectionalVS.glsl", "Shader/DirectionalFS.glsl");
-	
-	//myShaderManager->Create("PointShader", "../Shader/PointVS.glsl", "../Shader/PointFS.glsl", "../Shader/PointGS.glsl");
-	
 	
 	myObjectManager = new ObjectManager();
 	myRigidbodyManager = new RigidbodyManager();
 	myCameraManager = new CameraManager();
 	myGameplay = new MainGameplay();
-	//myTerrain = new Terrain();
 	return 0;
 } 
 
 int init_camera() {
-	//init camera
 	
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CENTER_CURSOR);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -122,10 +113,8 @@ int init_camera() {
 
 
 int init_physics() {
-	//init physics
 	Phys = new Physics();
 	
-
 	return 0;
 }
 
@@ -135,7 +124,6 @@ int init_physics() {
 int static update_camera(Camera* cam, UI* myUI, GLFWwindow* window)
 {
 	cam->ProcessInput(myTime->Deltatime);
-	//cam->CameraUpdate();
 	
 	cam->fieldOfView = myUI->fov;
 	cam->sensitivity = myUI->sens;
@@ -174,7 +162,7 @@ int static update_ui(UI* myUI, ShaderManager* myShader, ObjectManager* objManage
 		return 0;
 	}
 
-	if (Object::Entities.size() > 0) { // rework this
+	if (Object::Entities.size() > 0) {
 		Object::Entities[Object::SelectedEntity]->Position = glm::vec3(myUI->xPos, myUI->yPos, myUI->zPos); // vector subscript out of range. Meaning something is wrong with how the selected entity is done. (FIXED)
 		Object::Entities[Object::SelectedEntity]->Rotation = glm::vec3(
 			glm::radians(myUI->xRot),
@@ -221,12 +209,11 @@ int main()
 	
 	
 
-	// whatever is first in the list (being selected) can't be changed by the find and set properties function when initialising
 	
 
 	Shader* depthShader = myShaderManager->Find("depthShader");
 	Shader* directionalShader = myShaderManager->Find("DirectionalShader");
-	//Shader* pointShader = myShaderManager->Find("PointShader");
+
 
 	myLightingManager->InitDepthMapping();
 
@@ -240,8 +227,6 @@ int main()
 
 	myShaderManager->DefaultShader->SetInt("depthMap", 1);
 	myShaderManager->DefaultShader->SetInt("depthCubeMap", 1);
-
-	//LightObject* lightobject = LightObject::LightEntities[0];
 
 	bool OnceCheck = false;
 	
@@ -295,7 +280,7 @@ int main()
 		{
 			o->Draw(directionalShader); // Draws and binds the texture and sends the transform to the shader
 		}
-		//myModel->Draw(*directionalShader);
+
 		glCullFace(GL_BACK);
 		// Bind default frameBuffer
 		GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
@@ -377,6 +362,7 @@ int main()
 	  
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyPlatformWindows();
 	ImGui::DestroyContext();
 	
 	glfwTerminate();

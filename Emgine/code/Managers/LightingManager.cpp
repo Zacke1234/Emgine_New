@@ -238,22 +238,31 @@ LightData* LightingManager::RemoveLightfromList(Object* obj)
 	{
 
 	case 1: // point
-		Lighting::pointLights.erase(Lighting::pointLights.begin() + LightObject::SelectedLightEntity);
-		DeleteLightVariables("Point");
+		
+		if (Lighting::pointLights.size() != 0)
+		{
+			Lighting::pointLights.erase(Lighting::pointLights.begin() + LightObject::SelectedLightEntity);
+		}
+		
 
 
 		break;
 	case 2: // dir
 
-		Lighting::dirLights.erase(Lighting::dirLights.begin() + LightObject::SelectedLightEntity);
-		DeleteLightVariables("Directional");
+		if (Lighting::dirLights.size() != 0)
+		{
+			Lighting::dirLights.erase(Lighting::dirLights.begin() + LightObject::SelectedLightEntity);
+		}
+		
 
 		break;
 
 	case 3: // spot
-		//if (!Lighting::pointLights.empty())
-		Lighting::spotLights.erase(Lighting::spotLights.begin() + LightObject::SelectedLightEntity);
-		DeleteLightVariables("Spot");
+		if (Lighting::spotLights.size() != 0)
+		{
+			Lighting::spotLights.erase(Lighting::spotLights.begin() + LightObject::SelectedLightEntity);
+		}
+		
 
 		break;
 	}

@@ -183,6 +183,7 @@ CameraObject::CameraObject(std::string _namn = "new_cameraObject", Mesh* Mesh = 
 
 TerrainObject::TerrainObject(std::string _name = "newTerrainObj", Terrain* terrain = NULL, Texture* aTexture = NULL, Collider* coll = NULL)
 {
+	ObjType = Type_Mesh;
 	if (_name != "newTerrainObj")
 	{
 		this->namn = _name;

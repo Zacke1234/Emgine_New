@@ -14,14 +14,9 @@ ShaderManager::~ShaderManager()
 Shader* ShaderManager::InitDefaultShader()
 {
 
-	// remove the ../ for release. add back the ../ for visual studio debugging
+	
 	DefaultShader = new Shader("Shader/VertexShader.glsl", "Shader/FragmentShader.glsl");
-	/*if (DefaultShader->notLoaded == true)
-	{
-		DefaultShader = new Shader("/Shader/VertexShader.glsl", "/Shader/FragmentShader.glsl");
-	}*/
-	// "depthShader", "../Shader/ShadowMappingVS.glsl", "../Shader/ShadowMappingFS.glsl"
-	// "debugQuadShader", "../Shader/debugDepthQuadVS.glsl", "../Shader/debugDepthQuadFS.glsl"
+
 	DefaultShader->shaderName = "defaultShader";
 	Shader::shaderList.push_back(DefaultShader);
 	return DefaultShader;

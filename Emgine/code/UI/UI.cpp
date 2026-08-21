@@ -514,24 +514,27 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 	}
 	if (ImGui::Button("Change Light type"))
 	{
-		lightMang->RemoveLightfromList(Object::Entities[Object::SelectedEntity]);
-		switch (light)
+		if (Object::Entities[Object::SelectedEntity]->ObjType == 1)
 		{
-		case 1:
-			//lightMang->ClearLightSetting(newLightData);
-			//lightMang->Destroy(shader->DefaultShader, Object::Entities[Object::SelectedEntity]);
 			
-			lightMang->SetDirectional(newLightData);
-			break;
-		case 2:
-			
-			lightMang->SetPoint(newLightData);
-			break;
-		case 3:
-			
-			lightMang->SetSpot(newLightData);
-			break;
+			switch (light)
+			{
+			case 1:
+				
+				lightMang->RemoveLightfromList(Object::Entities[Object::SelectedEntity]);
+				lightMang->SetDirectional(newLightData);
+				break;
+			case 2:
+				lightMang->RemoveLightfromList(Object::Entities[Object::SelectedEntity]);
+				lightMang->SetPoint(newLightData);
+				break;
+			case 3:
+				lightMang->RemoveLightfromList(Object::Entities[Object::SelectedEntity]);
+				lightMang->SetSpot(newLightData);
+				break;
+			}
 		}
+		
 	}
 
 		// How do I check if the selected entity is the same as the selected light entity, Cause I want to know when the user is selecting the Light object:: SOLVED
