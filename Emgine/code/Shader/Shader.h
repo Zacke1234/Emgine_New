@@ -28,7 +28,14 @@ public:
 
 	std::string shaderName;
 
+	bool notLoaded = true;
+
 	static std::vector<Shader*> shaderList;
+
+	/*static const char* vs_source;
+
+	static const char* fs_source;*/
+
  private:
 	
 };

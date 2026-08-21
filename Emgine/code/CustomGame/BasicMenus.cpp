@@ -8,7 +8,7 @@ void BasicMenus::ShowMenu(GLFWwindow* window)
 
 void BasicMenus::RenderMenu()
 {
-	
+
 	ImGui::Begin("Level Select");                          // Create a window called "Hello, world!" and append into it.
 
 	ImGui::Text("Select a level to play.");
@@ -17,14 +17,15 @@ void BasicMenus::RenderMenu()
 	
 	for (int l = 0; l < Levels::levelList.size(); l++)
 	{
-		
+		int b = l - 1;
 		if (ImGui::Button(Levels::levelList[l]->name.c_str()))
 		{
 			Levels::SelectedLevel = l;
 
 			Levels::levelList[l]->Clear();
-			
+
 			Levels::levelList[l]->Load();
+			
 			
 			//
 

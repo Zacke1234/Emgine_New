@@ -103,11 +103,14 @@ Shader::Shader(const char* VertexPath, const char* FragmantPath, const char* Geo
 	{
 		GL_CHECK(glGetShaderInfoLog(fragmantShader, 512, NULL, Log));
 		std::cout << "Failed to compile fragment shader \n" << Log << std::endl;
+		return;
 	}
+
 	if (!vertexResult)
 	{
 		GL_CHECK(glGetShaderInfoLog(vertexShader, 512, NULL, Log));
 		std::cout << "Failed to compile vertex shader \n" << Log << std::endl;
+		return;
 	}
 	if (GeometryPath != nullptr)
 	{
@@ -115,10 +118,12 @@ Shader::Shader(const char* VertexPath, const char* FragmantPath, const char* Geo
 		{
 			GL_CHECK(glGetShaderInfoLog(geometryShader, 512, NULL, Log)); 
 			std::cout << "Failed to compile geometry shader \n" << Log << std::endl;
+			return;
 		}
 	
 	}
 	
+	notLoaded = false;
 	glDetachShader(ShaderProgram, fragmantShader);
 	glDeleteShader(fragmantShader);
 	glDetachShader(ShaderProgram, vertexShader);

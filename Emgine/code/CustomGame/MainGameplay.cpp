@@ -21,9 +21,6 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	CubeCollider* cubeColl1 = new CubeCollider(glm::vec3(1), glm::vec3(0));
 	CubeCollider* cubeColl2 = new CubeCollider(glm::vec3(1), glm::vec3(0));
 	CubeCollider* cubeColl3 = new CubeCollider(glm::vec3(1), glm::vec3(0));
-	//Ray* rayColl = new Ray(glm::vec3(0), glm::vec3(0));
-	//RayHit* rayHit = new RayHit(glm::vec3(0), player->playerColl, 5);
-	//Ray* rayHitColl = new Ray
 	
 	Collider* WallCollider;
 	WallCollider = aColliderManager->Create("Wall", cubeColl, false);

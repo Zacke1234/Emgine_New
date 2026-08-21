@@ -57,11 +57,4 @@ void Levels::Load()
 		Object::Entities.push_back(objs);
 	}
 
-	/*for (auto& objsPos : ObjectPositions)
-	{
-		Object::Entities[1]->Position = objsPos;
-	}*/
-
-	//std::cout >> "Load level: " + name >> std::endl;
-
 }

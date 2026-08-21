@@ -92,8 +92,12 @@ int init_managers() {
 	//myModel = new Model();
 	myLightingManager->InitDefaultLighting();
 	myShaderManager->InitDefaultShader();
-	myShaderManager->Create("depthShader", "../Shader/DepthQuadVS.glsl", "../Shader/DepthQuadFS.glsl");
-	myShaderManager->Create("DirectionalShader", "../Shader/DirectionalVS.glsl", "../Shader/DirectionalFS.glsl");
+
+	// remove the ../ for release. add back the ../ for visual studio debugging
+	myShaderManager->Create("depthShader", "Shader/DepthQuadVS.glsl", "Shader/DepthQuadFS.glsl");
+	
+	myShaderManager->Create("DirectionalShader", "Shader/DirectionalVS.glsl", "Shader/DirectionalFS.glsl");
+	
 	//myShaderManager->Create("PointShader", "../Shader/PointVS.glsl", "../Shader/PointFS.glsl", "../Shader/PointGS.glsl");
 	
 	
