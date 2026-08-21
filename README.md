@@ -13,3 +13,4 @@ To begin playing. find the "Play" button in the user interface.
 
 Hint: The well is a switch to open a door.
 the purple vibrating box is an enemy, don't get close.
+the blue and red boxes are your goal, there are three levels.
