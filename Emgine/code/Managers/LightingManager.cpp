@@ -130,8 +130,16 @@ int LightShaderSetting(Shader* shader, std::string lightType) // why does this s
 	return 0;
 }
 
-int ClearLightSetting(LightData* aLightData)
+void LightingManager::ClearLightSetting(LightData* aLightData)
 {
+	if (aLightData == NULL)
+	{
+		aLightData = Object::Entities[Object::SelectedEntity]->myLightData;
+		if (aLightData == NULL)
+		{
+			return;
+		}
+	}
 	aLightData->lightDir = { 0,0,0 };
 	aLightData->ambient = { 0.0,0.0,0.0 };
 	aLightData->diffuse = { 0.0,0.0,0.0 };
@@ -151,7 +159,7 @@ int ClearLightSetting(LightData* aLightData)
 	Lighting::constants.push_back(&aLightData->constant);
 	Lighting::quadtrics.push_back(&aLightData->quadtric);
 	Lighting::linears.push_back(&aLightData->linear);
-	return 0;
+
 }
 
 
@@ -201,6 +209,7 @@ LightData* LightingManager::Destroy(Shader* aShader, Object* obj)
 	case 1: // point
 		Lighting::pointLights.erase(Lighting::pointLights.begin() + LightObject::SelectedLightEntity); 
 		DeleteLightVariables("Point");
+		
 
 		break;
 	case 2: // dir
@@ -220,6 +229,34 @@ LightData* LightingManager::Destroy(Shader* aShader, Object* obj)
 	
 	LightObject::LightEntities.erase(LightObject::LightEntities.begin() + LightObject::SelectedLightEntity);
 	delete(obj);
+	return nullptr;
+}
+
+LightData* LightingManager::RemoveLightfromList(Object* obj)
+{
+	switch (obj->myLightData->LightVar)
+	{
+
+	case 1: // point
+		Lighting::pointLights.erase(Lighting::pointLights.begin() + LightObject::SelectedLightEntity);
+		DeleteLightVariables("Point");
+
+
+		break;
+	case 2: // dir
+
+		Lighting::dirLights.erase(Lighting::dirLights.begin() + LightObject::SelectedLightEntity);
+		DeleteLightVariables("Directional");
+
+		break;
+
+	case 3: // spot
+		//if (!Lighting::pointLights.empty())
+		Lighting::spotLights.erase(Lighting::spotLights.begin() + LightObject::SelectedLightEntity);
+		DeleteLightVariables("Spot");
+
+		break;
+	}
 	return nullptr;
 }
 

@@ -17,6 +17,7 @@ public:
 	LightData* InitDefaultLighting();
 	LightData* Create(std::string name = "newLight", Shader* shader = NULL, LightData* light = NULL);
 	LightData* Destroy(Shader* aShader, Object* obj);
+	LightData* RemoveLightfromList(Object* obj);
 	LightData* RunLightData(Shader* shader);
 
 	Lighting* UseShadowDepth(Shader* shader, LightData* lightData);
@@ -36,7 +37,8 @@ public:
 	Lighting* BindDepthTexture();
 	Lighting* Viewport();	
 	
-	
+	void ClearLightSetting(LightData* aLightData);
+
 	std::vector<glm::mat4> shadowTransforms;
 	unsigned int SCR_WIDTH = 1024;
 	unsigned int SCR_HEIGHT = 1024;

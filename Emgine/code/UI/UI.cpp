@@ -514,15 +514,21 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 	}
 	if (ImGui::Button("Change Light type"))
 	{
+		lightMang->RemoveLightfromList(Object::Entities[Object::SelectedEntity]);
 		switch (light)
 		{
 		case 1:
+			//lightMang->ClearLightSetting(newLightData);
+			//lightMang->Destroy(shader->DefaultShader, Object::Entities[Object::SelectedEntity]);
+			
 			lightMang->SetDirectional(newLightData);
 			break;
 		case 2:
+			
 			lightMang->SetPoint(newLightData);
 			break;
 		case 3:
+			
 			lightMang->SetSpot(newLightData);
 			break;
 		}

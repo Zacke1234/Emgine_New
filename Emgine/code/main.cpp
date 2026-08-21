@@ -270,26 +270,17 @@ int main()
 			update_camera(myCamera, myUI, window);
 		}
 		
-	/*	for (auto& terrainObjs : TerrainObject::TerrainObjects)
-		{
-			myTerrain->Render();
-		}*/
-		
-
 		// shadow pass 
 		directionalShader->UseShader();
 		
-
 		// View port 
 		myLightingManager->Viewport();
 		// Bind shadow frameBuffer 
 		myLightingManager->BindFrameBuffer();		
 		GL_CHECK(glClear(GL_DEPTH_BUFFER_BIT));
-		// bind frame buffer texture to the depth cube map
-		//myLightingManager->FrameBufferTexture();
+
 		myLightingManager->ActiveTextureDepth();
 
-		// Clear depth
 		
 		// Configure shader and lightspacematrix
 		for (auto& l : LightObject::LightEntities)
@@ -302,10 +293,6 @@ int main()
 		glCullFace(GL_FRONT);
 		for (auto& o : Object::Entities)
 		{
-			if (o->namn == "Terrain")
-			{
-				int b = 0;
-			}
 			o->Draw(directionalShader); // Draws and binds the texture and sends the transform to the shader
 		}
 		//myModel->Draw(*directionalShader);
@@ -352,15 +339,9 @@ int main()
 		//Drawcall objects
 		for (auto& o : Object::Entities)
 		{
-			if (o->namn == "Terrain")
-			{
-				int b = 0;
-			}
 			o->Draw(myShaderManager->DefaultShader);
 
 		}
-
-		//myModel->Draw(*myShaderManager->DefaultShader);
 
 		depthShader->UseShader();
 		depthShader->SetInt("depthMap", 0);
@@ -370,11 +351,8 @@ int main()
 			myLightingManager->UseShadowDepth(depthShader, l->myLightData);
 		}
 		
-
 		Phys->Simulate(myTime->Deltatime, myTime);
 		
-		
-
 		// render UI (after/ON TOP OF drawcall)
 		update_ui(myUI, myShaderManager, myObjectManager);
 
@@ -387,9 +365,7 @@ int main()
 		if (myTime->IsPaused == false)
 		{
 			myGameplay->Run();
-			//Object::SelectedEntity = -1;
 		}
-		
 		
 
 		// swaps front and back buffers
