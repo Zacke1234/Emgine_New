@@ -25,6 +25,7 @@ Collider::~Collider()
 {
 	center = glm::vec3(0, 0, 0);
 	radius = 0.0f;
+	friction = 0.0f;
 
 	transform = Math::identity4;
 	position = glm::vec3(0, 0, 0);

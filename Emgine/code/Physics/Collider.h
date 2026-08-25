@@ -31,8 +31,8 @@ public:
 	// Determines if the collider will automatically scale with the object
 	bool autoColliderSize = false;
 
-	
-	
+
+	float friction;
 	glm::vec3 extents;
 	
 	glm::vec3 center;

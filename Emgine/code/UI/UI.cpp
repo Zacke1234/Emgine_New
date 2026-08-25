@@ -129,8 +129,13 @@ int uiRigibodiesList(UI* myUI)
 	if (Object::Entities.size() > 0 && Object::Entities[Object::SelectedEntity]->myRigidbody != nullptr)
 	{
 		Object::Entities[Object::SelectedEntity]->myRigidbody->gravity = myUI->gravity;
+		
 	}
 
+	if (Object::Entities.size() > 0 && Object::Entities[Object::SelectedEntity]->myCollider != nullptr)
+	{
+		Object::Entities[Object::SelectedEntity]->myCollider->friction = myUI->friction;
+	}
 	return 0;
 }
 
@@ -238,9 +243,13 @@ int uiObjectList(UI* ui)
 			{
 				ui->check = Object::Entities[Object::SelectedEntity]->myRigidbody->isKinematic;
 				ui->gravity = Object::Entities[Object::SelectedEntity]->myRigidbody->gravity;
+				
 				//Object::Entities[Object::SelectedEntity]->myRigidbody->isKinematic = check;
 			}
-
+			if (Object::Entities[Object::SelectedEntity]->myCollider != nullptr)
+			{
+				ui->friction = Object::Entities[Object::SelectedEntity]->myCollider->friction;
+			}
 			
 		}
 		//ui->objHasGravity = true;
@@ -610,6 +619,8 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 	//ImGui::InputText("texture file", buf, sizeof(buf) - 1);
 
 	ImGui::DragFloat("Gravity", &gravity, step, step_fast);
+
+	ImGui::DragFloat("Friction", &friction, step, step_fast);
 
 	ImGui::Text("");
 

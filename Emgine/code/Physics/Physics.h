@@ -31,7 +31,7 @@ public:
 	void ApplyGravity(std::vector<Rigidbody*> rbs, float dt);
 	void ApplyForce(std::vector<Rigidbody*> rbs, float dt);
 
-	void HandleCollisions(std::vector<Collision*> collisions, std::vector<Rigidbody*> rbs);
+	void HandleCollisions(std::vector<Collision*> collisions, std::vector<Rigidbody*> rbs, float dt);
 	
 	void CalculateDirection();
 

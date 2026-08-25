@@ -10,7 +10,7 @@ public:
 	glm::vec3 velocity;
 	
 	glm::vec3 position;
-	float friction;
+	
 	float mass;
 	float gravity;
 	static std::vector<Rigidbody*> rbEntities;

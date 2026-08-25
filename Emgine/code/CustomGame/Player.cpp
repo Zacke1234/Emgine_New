@@ -171,6 +171,10 @@ bool Player::CheckCollision()
 			{
 				onGround = true;
 
+				if (player->myRigidbody->isKinematic)
+				{
+					return false;
+				}
 				
 				glm::vec3 ForceOnHit = glm::vec3(0);
 				int ForceAsOneDigitX = 0;

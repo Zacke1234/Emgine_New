@@ -49,7 +49,7 @@ void Physics::Simulate(const float& aDeltaTime, Time* physicsTime)
 
 		CalculateDirection();
 
-		HandleCollisions(collisions, rigidbodies);
+		HandleCollisions(collisions, rigidbodies, aDeltaTime);
 
 		ApplyVelocity(rigidbodies, aDeltaTime);
 
@@ -142,11 +142,13 @@ void Physics::ApplyVelocity(std::vector<Rigidbody*> rbs, float dt)
 	// std::vector<Collider*> colliders
 	for (Rigidbody* r : rbs)
 	{
-		if (!r->isKinematic)
+		if (r->hasGravity)
 		{
 			glm::vec3 pos = glm::vec3(r->transform[3]);
+
 			pos += r->velocity * dt;
 			r->position = pos;
+			
 			r->transform[3] = glm::vec4(pos, 1.0f);
 			
 			int b = 0;
@@ -161,7 +163,7 @@ void Physics::ApplyGravity(std::vector<Rigidbody*> rbs, float dt)
 	
 	for (Rigidbody* r : rbs)
 	{
-		if (r->hasGravity && !r->isKinematic)
+		if (r->hasGravity)
 		{
 			r->velocity += glm::vec3(0, -r->gravity, 0) * dt;
 			int b = 0;
@@ -174,21 +176,17 @@ void Physics::ApplyForce(std::vector<Rigidbody*> rbs, float dt)
 {
 	for (Rigidbody* r : rbs)
 	{
-		if (r->force != glm::vec3(0))
-		{
-			glm::vec3 pos = glm::vec3(r->transform[3]);
-			
-			pos += r->force * dt;
-			r->position = pos;
-			r->transform[3] = glm::vec4(pos, 1.0f);
-			
-			
-		}
+		glm::vec3 pos = glm::vec3(r->transform[3]);
+
+		pos += r->force * dt;
+		r->position = pos;
+		
+		r->transform[3] = glm::vec4(pos, 1.0f);
 		
 	}
 }
 
-void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<Rigidbody*> rbs)
+void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<Rigidbody*> rbs, float dt)
 {
 	
 
@@ -197,16 +195,15 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 		//  == glm::greaterThan()
 		if (!c->rig1 == NULL)
 		{
-			if (c->col2->tag == "Wall")
-			{
-				int b = 0;
-			}
 			if (!c->rig1->isKinematic)
 			{
 				c->rig1->velocity.y *= 0;
 				
+				c->rig1->velocity.x *= -c->col1->friction * dt;
+				c->rig1->velocity.x *= -c->col2->friction * dt;
 
-
+				c->rig1->velocity.z *= -c->col1->friction * dt;
+				c->rig1->velocity.z *= -c->col2->friction * dt;
 			}
 		}
 		
@@ -216,7 +213,12 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 			{
 
 				c->rig2->velocity.y *= 0;
-				
+
+				c->rig2->velocity.x *= -c->col1->friction * dt;
+				c->rig2->velocity.x *= -c->col2->friction * dt;
+
+				c->rig2->velocity.z *= -c->col1->friction * dt;
+				c->rig2->velocity.z *= -c->col2->friction * dt;
 			}
 		}
 	
