@@ -120,6 +120,20 @@ int uiLightList(UI* myUI, ObjectManager* objectmanager)
 	return 0;
 }
 
+int uiRigibodiesList(UI* myUI)
+{
+	if (Object::SelectedEntity == -1)
+	{
+		return 0;
+	}
+	if (Object::Entities.size() > 0 && Object::Entities[Object::SelectedEntity]->myRigidbody != nullptr)
+	{
+		Object::Entities[Object::SelectedEntity]->myRigidbody->gravity = myUI->gravity;
+	}
+
+	return 0;
+}
+
 int uiMaterialList(UI* myUI)
 {
 	
@@ -223,6 +237,7 @@ int uiObjectList(UI* ui)
 			if (Object::Entities[Object::SelectedEntity]->myRigidbody != nullptr)
 			{
 				ui->check = Object::Entities[Object::SelectedEntity]->myRigidbody->isKinematic;
+				ui->gravity = Object::Entities[Object::SelectedEntity]->myRigidbody->gravity;
 				//Object::Entities[Object::SelectedEntity]->myRigidbody->isKinematic = check;
 			}
 
@@ -387,6 +402,8 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 	}
 	uiCameratList(this, objectmanager);
 	uiMaterialList(this);
+	uiRigibodiesList(this);
+
 	if(Object::Entities.size() > 0)
 	{
 		ImGui::Text("Material properties");
@@ -544,10 +561,10 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 	
 
    //ImGui::Text("IsKinematic", &check);
-	if (ImGui::Checkbox("Is kinematic", &check)) // a bit jank
+	if (ImGui::Checkbox("Is kinematic", &check)) 
 	{
 		Object::Entities[Object::SelectedEntity]->myRigidbody->isKinematic = check;
-		//virtobj->Entities[Object::SelectedEntity]->myCollider->isKinematic;
+		
 	}
 
 	if(ImGui::Button("Change Mesh"))
@@ -591,6 +608,8 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 		uiObjectList(this);
 
 	//ImGui::InputText("texture file", buf, sizeof(buf) - 1);
+
+	ImGui::DragFloat("Gravity", &gravity, step, step_fast);
 
 	ImGui::Text("");
 

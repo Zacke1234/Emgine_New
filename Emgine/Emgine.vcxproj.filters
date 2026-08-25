@@ -314,6 +314,9 @@
     <ClInclude Include="code\Controller\Controller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="code\Mesh\Structs\VertRef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\Dependencies\GLFW\lib-vc2022\glfw3.lib" />

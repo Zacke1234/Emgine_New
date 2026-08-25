@@ -232,6 +232,7 @@
     <ClInclude Include="code\Enums\E_MeshLoadStage.h" />
     <ClInclude Include="code\Managers\CameraManager.h" />
     <ClInclude Include="code\Camera\Camera.h" />
+    <ClInclude Include="code\Mesh\Structs\VertRef.h" />
     <ClInclude Include="code\Physics\Collider.h" />
     <ClInclude Include="code\Shader\Lighting.h" />
     <ClInclude Include="code\Util\Memory.h" />

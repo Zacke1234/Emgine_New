@@ -63,7 +63,9 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 		}
 		if (prefix == "f")
 		{
-			
+			std::vector<VertRef> ref;
+
+
 			Face face;
 			int vertexIndex = 0;
 			std::string newFace;
@@ -83,7 +85,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 			iss >> newFace;
 		
 			temp_faces.push_back(face);
-			mesh.faces.push_back(face);
+			mesh.faces.push_back(face);	
 			
 		}
 		if (prefix == "vt") 
@@ -123,11 +125,8 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 	for (int i = 0; i < temp_faces.size(); i++) 
 	{
 		Vertex vertices[3];
-		
-
-		//Vertex vertex = temp_vertices[i];
+	
 		Face face = temp_faces[i];
-		//vertices = temp_vertices(position, normal, uv);
 
 		for (int e = 0; e < 3; e++)
 		{
@@ -137,7 +136,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 			if (index != -1)
 			{
 				v.position = temp_position[index - 1];
-
+				
 			}
 
 			index = face.normalIndices[e];
@@ -200,6 +199,8 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 			
 			mesh.elements.push_back(mesh.numberVertices);
 			temp_elements.push_back(mesh.numberVertices);
+
+			
 			
 			//temp_vertices.push_back(vertices);
 

@@ -1,5 +1,6 @@
 #include "Mesh.h"
 #include <Object.h>
+#include <gl/GL.h>
 
 std::vector<Mesh*> Mesh::MeshEntities;
 
@@ -25,6 +26,7 @@ void Mesh::InitialiseMesh()
 
 	GL_CHECK(glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->elements.size() * sizeof(unsigned int), &this->elements[0], GL_STATIC_DRAW));
 
+	
 
 	GL_CHECK(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 14 * sizeof(float), (void*)0));
 	GL_CHECK(glEnableVertexAttribArray(0)); // pos

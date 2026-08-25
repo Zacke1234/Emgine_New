@@ -10,8 +10,8 @@
 #include "Mesh/Mesh.h"
 #include "Structs/Face.h"
 #include "Structs/Vertex.h"
+#include "Structs/VertRef.h";
 #include "Enums/E_MeshLoadStage.h"
-
 
 
 
@@ -22,7 +22,7 @@ public:
 	std::string name;
 	std::string type;
 
-	std::vector <Vertex> tmp;
+	std::vector<Vertex> tmp;
 	std::vector<unsigned int> temp_elements;
 	std::vector<Vertex> temp_vertices;
 	std::vector<glm::vec2> temp_uvs;
