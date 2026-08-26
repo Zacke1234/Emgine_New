@@ -274,7 +274,7 @@ void Object::SetName(std::string name)
 void Object::SetRigidbody(Rigidbody& rb)
 {
 	myRigidbody = &rb;
-	myRigidbody->isKinematic = false;
+	
 }
 
 void CameraObject::SetCamera(Camera& cam)

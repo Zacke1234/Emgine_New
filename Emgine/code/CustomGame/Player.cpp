@@ -165,13 +165,13 @@ bool Player::CheckCollision()
 {
 	for (Object* obj2 : Object::Entities)
 	{
-		if (obj2->myCollider != playerColl)
+		if (obj2->myCollider != playerColl && obj2->myCollider != NULL)
 		{
 			if (playerPhysics->BoolCheckIntersect(obj2->myCollider, playerColl))
 			{
 				onGround = true;
 
-				if (player->myRigidbody->isKinematic)
+				if (player->myCollider->isKinematic)
 				{
 					return false;
 				}

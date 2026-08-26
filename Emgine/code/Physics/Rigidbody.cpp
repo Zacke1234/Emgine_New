@@ -13,7 +13,7 @@ Rigidbody::Rigidbody()
 	transform = Math::identity4;
 	angularVelocity = glm::vec3(0, 0, 0);
 	position = glm::vec3(0, 0, 0);
-	isKinematic = false;
+	
 	hasGravity = true;
 	velocity = glm::vec3(0, 0, 0);
 	mass = 0.0f;

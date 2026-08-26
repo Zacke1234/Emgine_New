@@ -20,7 +20,7 @@ public:
 	glm::vec3 angularVelocity;
 
 	bool hasGravity;
-	bool isKinematic;
+	
 	glm::mat4 transform;
 
 	

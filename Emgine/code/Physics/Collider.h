@@ -30,7 +30,7 @@ public:
 
 	// Determines if the collider will automatically scale with the object
 	bool autoColliderSize = false;
-
+	bool isKinematic;
 
 	float friction;
 	glm::vec3 extents;

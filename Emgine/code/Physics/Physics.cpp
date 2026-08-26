@@ -193,32 +193,24 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 	for (Collision* c : collisions)
 	{
 		//  == glm::greaterThan()
-		if (!c->rig1 == NULL)
+		if (!c->col1 == NULL)
 		{
-			if (!c->rig1->isKinematic)
+			if (!c->col1->isKinematic && c->rig1 != NULL)
 			{
 				c->rig1->velocity.y *= 0;
-				
-				c->rig1->velocity.x *= -c->col1->friction * dt;
-				c->rig1->velocity.x *= -c->col2->friction * dt;
-
-				c->rig1->velocity.z *= -c->col1->friction * dt;
-				c->rig1->velocity.z *= -c->col2->friction * dt;
+				c->rig1->velocity.x *= c->col1->friction;
+				c->rig1->velocity.z *= c->col1->friction;
 			}
 		}
 		
-		if (!c->rig2 == NULL)
+		if (!c->col2 == NULL)
 		{
-			if (!c->rig2->isKinematic)
+			if (!c->col2->isKinematic && c->rig2 != NULL)
 			{
 
 				c->rig2->velocity.y *= 0;
-
-				c->rig2->velocity.x *= -c->col1->friction * dt;
-				c->rig2->velocity.x *= -c->col2->friction * dt;
-
-				c->rig2->velocity.z *= -c->col1->friction * dt;
-				c->rig2->velocity.z *= -c->col2->friction * dt;
+				c->rig2->velocity.x *= c->col2->friction;
+				c->rig2->velocity.z *= c->col2->friction;
 			}
 		}
 	

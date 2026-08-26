@@ -241,7 +241,7 @@ int uiObjectList(UI* ui)
 			}
 			if (Object::Entities[Object::SelectedEntity]->myRigidbody != nullptr)
 			{
-				ui->check = Object::Entities[Object::SelectedEntity]->myRigidbody->isKinematic;
+				
 				ui->gravity = Object::Entities[Object::SelectedEntity]->myRigidbody->gravity;
 				
 				//Object::Entities[Object::SelectedEntity]->myRigidbody->isKinematic = check;
@@ -249,6 +249,7 @@ int uiObjectList(UI* ui)
 			if (Object::Entities[Object::SelectedEntity]->myCollider != nullptr)
 			{
 				ui->friction = Object::Entities[Object::SelectedEntity]->myCollider->friction;
+				ui->check = Object::Entities[Object::SelectedEntity]->myCollider->isKinematic;
 			}
 			
 		}
@@ -572,7 +573,7 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
    //ImGui::Text("IsKinematic", &check);
 	if (ImGui::Checkbox("Is kinematic", &check)) 
 	{
-		Object::Entities[Object::SelectedEntity]->myRigidbody->isKinematic = check;
+		Object::Entities[Object::SelectedEntity]->myCollider->isKinematic = check;
 		
 	}
 

@@ -207,11 +207,14 @@ void MainGameplay::Run() // repeatedly runs in the update loop
 
 	if (iSwitch->Collided(player->playerColl) && switchColided == false)
 	{
+		int b = 0;
 		for (Object* object : Object::Entities)
 		{
+			
+			b++;
 			if (object->namn == Door->namn)
 			{
-				Object::Entities.erase(Object::Entities.begin() + Door->ObjectID - 1);
+				Object::Entities.erase(Object::Entities.begin() + b - 1);
 				delete(Door);
 				doorColl = NULL;
 				switchColided = true;
