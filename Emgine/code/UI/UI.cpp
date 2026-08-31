@@ -619,9 +619,9 @@ void UI::RenderUI(ShaderManager* shader, ObjectManager* objectmanager, Time* gam
 
 	//ImGui::InputText("texture file", buf, sizeof(buf) - 1);
 
-	ImGui::DragFloat("Gravity", &gravity, step, step_fast);
+	ImGui::DragFloat("Gravity", &gravity, step);
 
-	ImGui::DragFloat("Friction", &friction, step, step_fast);
+	ImGui::DragFloat("Friction", &friction, 0.001, 0.0f, 1.0f);
 
 	ImGui::Text("");
 

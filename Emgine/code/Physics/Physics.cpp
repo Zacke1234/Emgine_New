@@ -198,8 +198,10 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 			if (!c->col1->isKinematic && c->rig1 != NULL)
 			{
 				c->rig1->velocity.y *= 0;
-				c->rig1->velocity.x *= c->col1->friction;
-				c->rig1->velocity.z *= c->col1->friction;
+				float test = c->col1->friction + 1;
+				float test2 = c->col1->friction / 10;
+
+				c->rig1->force *= c->col1->friction;
 			}
 		}
 		
@@ -207,10 +209,14 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 		{
 			if (!c->col2->isKinematic && c->rig2 != NULL)
 			{
+				// 1 - 0.4 = 0.6
+
+
+				float test = 1 - c->col2->friction;
+				float test2 = test / -test;
 
 				c->rig2->velocity.y *= 0;
-				c->rig2->velocity.x *= c->col2->friction;
-				c->rig2->velocity.z *= c->col2->friction;
+				c->rig2->force *= test;
 			}
 		}
 	
