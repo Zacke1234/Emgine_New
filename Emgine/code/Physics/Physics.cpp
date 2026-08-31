@@ -200,9 +200,9 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 				c->rig1->velocity.y *= 0;
 
 				float sum = 1 - c->col1->friction;
-				float divided = sum / -sum;
+				
 
-				c->rig1->force *= divided;
+				c->rig1->force *= sum;
 			}
 		}
 		
@@ -212,12 +212,12 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 			{
 				// 1 - 0.4 = 0.6
 
-
-				float sum = 1 - c->col2->friction;
-				float divided = sum / -sum;
-
 				c->rig2->velocity.y *= 0;
-				c->rig2->force *= divided;
+				float sum = 1 - c->col2->friction;
+				
+				 
+				
+				c->rig2->force *= sum;
 			}
 		}
 	
