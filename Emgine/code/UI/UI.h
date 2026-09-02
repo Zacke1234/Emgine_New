@@ -47,7 +47,7 @@ public:
 	bool objHasGravity;
 
 	float gravity = 0;
-	float friction = 1;
+	float friction = 0;
 
 	// POSITION AND ROTATION
 	glm::vec3 position;
