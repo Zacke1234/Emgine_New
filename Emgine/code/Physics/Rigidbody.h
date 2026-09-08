@@ -18,6 +18,7 @@ public:
 	glm::mat3 momentOfInertia;
 	glm::mat3 inverseMomentOfInertia;
 	glm::vec3 angularVelocity;
+	glm::vec3 kineticEnergy;
 
 	bool hasGravity;
 	

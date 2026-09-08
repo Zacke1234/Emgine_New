@@ -3,7 +3,7 @@
 #include "Collider.h"
 #include "Physics.h"
 #include <Time/Time.h>
-#include <gtx/norm.inl>
+#include "cmath"
 
 const glm::mat4 Math::identity4{
 	
@@ -163,6 +163,7 @@ void Physics::ApplyGravity(std::vector<Rigidbody*> rbs, float dt)
 	
 	for (Rigidbody* r : rbs)
 	{
+
 		if (r->hasGravity)
 		{
 			r->velocity += glm::vec3(0, -r->gravity, 0) * dt;
@@ -181,6 +182,7 @@ void Physics::ApplyForce(std::vector<Rigidbody*> rbs, float dt)
 		pos += r->force * dt;
 		r->position = pos;
 		
+		
 		r->transform[3] = glm::vec4(pos, 1.0f);
 		
 	}
@@ -192,9 +194,11 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 
 	for (Collision* c : collisions)
 	{
+		
 		//  == glm::greaterThan()
 		if (!c->col1 == NULL)
 		{
+
 			if (!c->col1->isKinematic && c->rig1 != NULL)
 			{
 				c->rig1->velocity.y *= 0;
@@ -208,6 +212,7 @@ void Physics::HandleCollisions(std::vector<Collision*> collisions, std::vector<R
 		
 		if (!c->col2 == NULL)
 		{
+
 			if (!c->col2->isKinematic && c->rig2 != NULL)
 			{
 				// 1 - 0.4 = 0.6
@@ -259,6 +264,16 @@ bool Physics::BoolCheckIntersect(Collider* c1, Collider* c2)
 	{
 		return false;
 	}
+
+	if (c1->name == "CubeColl")
+	{
+		int b = 1;
+	}
+
+	if (c2->name == "CubeColl")
+	{
+		int b = 0;
+	}
 	//CheckIntersect(c1, c2);
 	if (c1->isOf<SphereCollider>() && c2->isOf<SphereCollider>())
 	{
@@ -290,21 +305,6 @@ bool Physics::BoolCheckIntersect(Collider* c1, Collider* c2)
 		
 	}
 
-	if (c1->isOf<MeshCollider>() && c2->isOf<CubeCollider>())
-	{
-		MeshCollider* mesh1 = dynamic_cast<MeshCollider*>(c1);
-		CubeCollider* cube2 = dynamic_cast<CubeCollider*>(c2);
-		return MeshCubeIntersect(*mesh1, *cube2);
-	}
-
-	if (c1->isOf<MeshCollider>() && c2->isOf<SphereCollider>())
-	{
-		MeshCollider* mesh1 = dynamic_cast<MeshCollider*>(c1);
-		SphereCollider* sphere2 = dynamic_cast<SphereCollider*>(c2);
-		return MeshSphereIntersect(*mesh1, *sphere2);
-	}
-
-	
 }
 
 std::vector<Collider*> Physics::UpdateCollidersScene()
@@ -355,7 +355,7 @@ std::vector<Collision*> Physics::CheckIntersections(std::vector<Collider*> colli
 			
 			if (obj1 != obj2)
 			{
-				
+
 				if (BoolCheckIntersect(obj1->myCollider, obj2->myCollider))
 				{
 					
@@ -427,83 +427,64 @@ bool Physics::CubeSphereIntersect(CubeCollider& aCube1, SphereCollider& aSphere2
 
 bool Physics::CubeCubeIntersect(CubeCollider& aCube1, CubeCollider& aCube2)
 {
-	// static_assert failed: ''abs' only accept floating-point and integer scalar or vector inputs'
-
+	if (aCube1.name == "CubeColl" || aCube2.name == "CubeColl")
+	{
+		int b = 0;
+	}
 	glm::mat3 rotation1 = glm::mat3(aCube1.transform);
 	glm::mat3 rotation2 = glm::mat3(aCube2.transform);
+
 	glm::vec3 translation = glm::vec3(aCube2.transform[3]) - glm::vec3(aCube1.transform[3]);
 	translation = glm::transpose(rotation1) * translation;
 
 	glm::mat3 rotation = glm::transpose(rotation1) * rotation2;
 	
-	glm::mat3 absRotation; // = glm::abs(rotation) + glm::mat3(0.0001f); // this just won't compile! 
-	glm::vec3 vectorAbsRotation = glm::abs(translation);
-	//glm::vec3 absRotation2 = glm::abs(translation) + glm::vec3(0.0001f);
 
-
-
- 	glm::vec3 halfSize1 = aCube1.extents * 0.5f;
+	glm::vec3 halfSize1 = aCube1.extents * 0.5f;
 	glm::vec3 halfSize2 = aCube2.extents * 0.5f;
+	glm::mat3 absRotation;
 
-	// SAT (seperating axis theorem
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < 3; i++)
 	{
+		if (i == 0)
+		{
+			absRotation = glm::abs(rotation[i].x) + glm::mat3(0.0001f);
+		}
+		
+		if (i == 1)
+		{
+			absRotation = glm::abs(rotation[i].y) + glm::mat3(0.0001f);
+		}
+		if (i == 2)
+		{
+			absRotation = glm::abs(rotation[i].z) + glm::mat3(0.0001f);
+		}
+		
 		float ra = halfSize1[i];
-		float rb  = glm::dot(absRotation[i], halfSize2);	
-		if (glm::cos(translation[i]) > ra + rb) return false;
+		float rb = glm::dot(absRotation[i], halfSize2);
+		if (glm::abs(translation[i]) > ra + rb) return false;
+
 	}
 
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < 3; i++)
 	{
+		if (i == 0)
+		{
+			absRotation = glm::abs(rotation[i].x) + glm::mat3(0.0001f);
+		}
+		if (i == 1)
+		{
+			absRotation = glm::abs(rotation[i].y) + glm::mat3(0.0001f);
+		}
+		if (i == 2)
+		{
+			absRotation = glm::abs(rotation[i].z) + glm::mat3(0.0001f);
+		}
 		float ra = glm::dot(absRotation[i], halfSize1);
 		float rb = halfSize2[i];
-		if (glm::cos(glm::dot(rotation[i], translation)) > ra + rb) return false;
+		if (glm::abs(glm::dot(rotation[i], translation)) > ra + rb) return false;
 	}
-
 	return true;
-	//std::cout << "cubes are intersecting" << std::endl;
-
-}
-
-
-
-bool Physics::MeshSphereIntersect(MeshCollider& aMesh, SphereCollider& aSphere2) // Really only for terrain
-{
-	glm::vec3 spherePosition = aSphere2.position;
-
-
-	/*The absolutely simplest way of doing collisions is to simply figure out which quad we are inside,
-		then use the height value closest vertex as the floor at that point.
-		If we are below that height value, we snap the character up to that point. (if implementing physics
-			based movement, velocity needs to be modified too).
-		To not allow climbing steep terrain, we can set a limit on how high we allow this snap to be.This
-		same feature is what allows stairs to function in many games.And is usually what step height
-		refers to internally in many engines.*/
-
-	/*for (int i = 0; i < aMesh.points.size(); i++)
-	{
-		if (spherePosition.x >= aMesh.points[i].x && spherePosition.z <= aMesh.points[i].z)
-		{
-			if (spherePosition.y < aMesh.points[i].y)
-			{
-				aSphere2
-				return true;
-			}
-		}
-	}*/
-	
-		
-	
-		
-		// if im at a points position then look if i collide with it, if i don't. go to the next point in the vector.
-		
-	
-	return false;
-}
-
-bool Physics::MeshCubeIntersect(MeshCollider& aMesh, CubeCollider& aCube2)
-{
-	return false;
 }
 
 bool Physics::RayCast(Ray& aRay, RayHit& aHit)

@@ -8,6 +8,7 @@ Rigidbody* RigidbodyManager::Create(std::string name, float gravity, bool isKine
 	
 	rb->hasGravity = hasGrav;
 	rb->mass = 1;
+	
 	Rigidbody::rbEntities.push_back(rb);
 
 	return rb;

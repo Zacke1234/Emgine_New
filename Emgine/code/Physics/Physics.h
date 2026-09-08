@@ -2,7 +2,6 @@
 #include <vector>
 #include "Collider.h"
 #include "Rigidbody.h"
-#include <Object.h>
 #include "Time/Time.h"
 
 
@@ -48,8 +47,6 @@ public:
 	bool SphereSphereIntersect(SphereCollider& c1, SphereCollider& c2);
 	bool CubeSphereIntersect(CubeCollider& aCube1, SphereCollider& aSpher2);
 	bool CubeCubeIntersect(CubeCollider& aCube1, CubeCollider& aCube2);
-	bool MeshSphereIntersect(MeshCollider& aMesh, SphereCollider& aSpher2);
-	bool MeshCubeIntersect(MeshCollider& aMesh, CubeCollider& aCube2);
 
 	bool RayCast(Ray& aRay, RayHit& aHit);
 
