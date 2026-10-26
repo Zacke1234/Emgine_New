@@ -25,6 +25,7 @@ public:
 	Interactable* iSwitch;
 	Player* player;
 	
+	Object* fbxObj;
 	
 	Object* PlaneObj;
 	Object* Door;

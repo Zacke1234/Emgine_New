@@ -173,7 +173,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 			Vertex& v = vertices[e];
 			
 
-			mesh.data.push_back(v.position.x);
+			mesh.data.push_back(v.position.x); // Important
 			mesh.data.push_back(v.position.y);
 			mesh.data.push_back(v.position.z);
 				
@@ -195,7 +195,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 
 			mesh.data.push_back(v.binormal.x);
 			mesh.data.push_back(v.binormal.y);
-			mesh.data.push_back(v.binormal.z);
+			mesh.data.push_back(v.binormal.z); // Important
 			
 			mesh.elements.push_back(mesh.numberVertices);
 			temp_elements.push_back(mesh.numberVertices);
@@ -388,6 +388,133 @@ void MeshLoader::CalculateTangent(Vertex& A, const Vertex& B, const Vertex& C)
 	A.binormal = Bn;
 
 
+}
+
+bool MeshLoader::FbxParser(std::string fileName, Mesh* mesh)
+{
+
+	
+	
+	FbxInit(SdkManager, PScene);
+
+	FbxNode* rootNode;// = PScene->GetRootNode();
+	
+	const char* charFileName = fileName.c_str();
+	if (SdkManager)
+	{
+		int IFileFormat = -1;
+		
+		Importer = FbxImporter::Create(SdkManager, "");
+		if (!SdkManager->GetIOPluginRegistry()->DetectReaderFileFormat(charFileName, IFileFormat))
+		{
+			IFileFormat = SdkManager->GetIOPluginRegistry()->FindReaderIDByDescription("FBX binary (*.fbx)");;
+		}
+
+		if (Importer->Initialize(charFileName, IFileFormat) == true)
+		{
+			std::cout << "Importing file: ";
+			std::cout << charFileName << std::endl;
+			std::cout << "Loading " << std::endl;
+		}
+		else
+		{
+			std::cout << "Unable to open file: ";
+			std::cout << charFileName << std::endl;
+			std::cout << "Error: ";
+			std::cout << Importer->GetStatus().GetErrorString();
+			
+		}
+	}
+	else
+	{
+		std::cout << "Unable to parse fbx file";
+		return false;
+	}
+
+	Importer->Import(PScene);
+	Importer->Destroy();
+
+	rootNode = PScene->GetRootNode();
+
+	if (rootNode)
+	{
+		GetFBXInfo(rootNode, mesh);
+	}
+	
+	return true;
+}
+
+void MeshLoader::FbxInit(FbxManager*& pManager, FbxScene*& pScene)
+{
+	pManager = FbxManager::Create();
+	
+	if (!pManager)
+	{
+		FBXSDK_printf("Error: unable to create fbx manager\n");
+		exit(1);
+	}
+	else FBXSDK_printf("AutoDesk FBX SDK version %s\n", pManager->GetVersion());
+	
+	
+
+	FbxIOSettings* ios = FbxIOSettings::Create(pManager, IOSROOT);
+	pManager->SetIOSettings(ios);
+
+	FbxString _1Path = FbxGetApplicationDirectory();
+	pManager->LoadPluginsDirectory(_1Path.Buffer());
+
+	pScene = FbxScene::Create(pManager, "My Scene");
+	if (!pScene)
+	{
+		FBXSDK_printf("Error: Unable to create FBX scene \n");
+		exit(1);
+	}
+}
+
+bool MeshLoader::GetFBXInfo(FbxNode* pNode, Mesh* myMesh)
+{
+	int nodeChildren = pNode->GetChildCount();
+	FbxNode* childNode = 0;
+	int numVertices = 0;
+	for (int i = 0; i < nodeChildren; i++)
+	{
+		childNode = pNode->GetChild(i);
+		FbxMesh* mesh = childNode->GetMesh();
+			
+		if (mesh != NULL)
+		{
+			int numbVerts = mesh->GetControlPointsCount();
+			for (int j = 0; j < numbVerts; j++)
+			{
+				FbxVector4 vert = mesh->GetControlPointAt(j);
+				
+
+				myMesh->data.push_back((float)vert.mData[0]); // position
+				myMesh->data.push_back((float)vert.mData[1]);
+				myMesh->data.push_back((float)vert.mData[2]);
+				
+				// normal
+				//myMesh->normals.push_back(glm::vec3(mesh->GetElementNormal(0),mesh->GetElementNormal(1), mesh->GetElementNormal(2)));
+				//myMesh->normals.push_back((float)vert);
+
+				// uv
+				//myMesh->uvs.push_back(glm::vec2(mesh->GetElementUV(0), mesh->GetElementUV(1)));
+				// tangent
+				//myMesh->faces.push_back()
+				// binormal
+
+			}
+				
+			int* indices = mesh->GetPolygonVertices();
+			myMesh->elements.push_back(mesh->GetPolygonVertexCount());
+				
+		
+
+			}
+			
+	}
+		
+	return true;
 }
 
 bool MeshLoader::ReadObjToBinary(std::string objPath, std::ifstream& objReadFile, Mesh* mesh) // read

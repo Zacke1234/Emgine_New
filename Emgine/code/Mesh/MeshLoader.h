@@ -10,11 +10,13 @@
 #include "Mesh/Mesh.h"
 #include "Structs/Face.h"
 #include "Structs/Vertex.h"
-#include "Structs/VertRef.h";
+#include "Structs/VertRef.h"
 #include "Enums/E_MeshLoadStage.h"
+#include <fbxsdk/fbxsdk.h>
 
 
-
+//#include "lib\include\fbxsdk.h"
+// $(SolutionDir)Dependencies\lib\libfbxsdk-mt.lib
 
 class MeshLoader
 {
@@ -33,6 +35,13 @@ public:
 
 	MeshLoadStage stage;
 
+	FbxManager* SdkManager;
+	FbxScene* PScene;
+	FbxImporter* Importer;
+	FbxAnimLayer* CurrentAnimLayer;
+	FbxNode* SelectedNode;
+	FbxMesh* Pmesh;
+
 	MeshLoader();
 	~MeshLoader();
 
@@ -42,11 +51,12 @@ public:
 	bool BinParser(std::string fileName, Mesh* mesh);
 	void ParseFaceIndices(const std::string& string, Face& face, int vertexIndex);
 	void CalculateTangent(Vertex& A, const Vertex&  B, const Vertex& C);
-	
+	bool FbxParser(std::string fileName, Mesh* mesh);
+	void FbxInit(FbxManager*& pManager, FbxScene*& pScene);
 
+	bool GetFBXInfo(FbxNode* node, Mesh* mesh);
 	
-	
-	
+	std::string temp_fileName;
 };
 
 

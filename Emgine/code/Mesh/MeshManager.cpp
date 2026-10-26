@@ -46,6 +46,20 @@ Mesh* MeshManager::LoadMesh(std::string objPath, std::string name, Mesh* mesh)
 
 	Mesh::MeshEntities.push_back(mesh);
 
+	std::string tempPath = objPath;
+	for (int i = 0; i < objPath.size(); i++)
+	{
+		tempPath.erase(tempPath.begin());
+		if (tempPath == ".fbx")
+		{
+			meshLoader->FbxParser(objPath, mesh);
+			mesh->InitialiseMesh();
+			return mesh;
+			//return mesh;
+		} 
+	}
+	
+
 	meshLoader->ReadObjToBinary(objPath, readObj, mesh);
 	if (meshLoader->WriteObjToBinary(writeBin, objPath, mesh))
 	{
