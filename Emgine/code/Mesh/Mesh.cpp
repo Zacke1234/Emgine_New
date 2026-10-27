@@ -6,7 +6,7 @@ std::vector<Mesh*> Mesh::MeshEntities;
 
 void Mesh::InitialiseMesh()
 {
-	if (this->name == "Terrain")
+	if (this->name == "fbxCube")
 	{
 		int b = 0;
 	}

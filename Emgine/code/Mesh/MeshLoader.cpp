@@ -487,30 +487,56 @@ bool MeshLoader::GetFBXInfo(FbxNode* pNode, Mesh* myMesh)
 			for (int j = 0; j < numbVerts; j++)
 			{
 				FbxVector4 vert = mesh->GetControlPointAt(j);
-				
-
-				myMesh->data.push_back((float)vert.mData[0]); // position
+				int* fbx_triangle_vertices = mesh->GetPolygonVertices();
+				FbxGeometryElementNormal* normalElement = mesh->GetElementNormal();
+				myMesh->data.push_back((float)vert.mData[0]);
 				myMesh->data.push_back((float)vert.mData[1]);
 				myMesh->data.push_back((float)vert.mData[2]);
 				
-				// normal
-				//myMesh->normals.push_back(glm::vec3(mesh->GetElementNormal(0),mesh->GetElementNormal(1), mesh->GetElementNormal(2)));
-				//myMesh->normals.push_back((float)vert);
+				//myMesh->data.push_back((float)normalElement->GetDirectArray().GetAt(j));
+				int polygonCount = mesh->GetPolygonCount();
 
-				// uv
-				//myMesh->uvs.push_back(glm::vec2(mesh->GetElementUV(0), mesh->GetElementUV(1)));
-				// tangent
-				//myMesh->faces.push_back()
-				// binormal
+				if (normalElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex) { // Gets all the normals via reading the polygons and magic
+					int index = 0;
+					for (int polyIdx = 0; polyIdx < polygonCount; ++polyIdx) {
+						int polySize = mesh->GetPolygonSize(polyIdx);
+						for (int vertIdx = 0; vertIdx < polySize; ++vertIdx) {
+							FbxVector4 normal;
+							if (normalElement->GetReferenceMode() == FbxGeometryElement::eDirect) {
+								normal = normalElement->GetDirectArray().GetAt(index);
+							}
+							else if (normalElement->GetReferenceMode() == FbxGeometryElement::eIndexToDirect) {
+								int normIndex = normalElement->GetIndexArray().GetAt(index);
+								normal = normalElement->GetDirectArray().GetAt(normIndex);
+							}
+							
+							index++;
+							myMesh->data.push_back((float)index);
+						}
+					}
+				}
+
+				
+				//get UV
+			
+				int uvIndex = -1;
+
+
+
 
 			}
-				
-			int* indices = mesh->GetPolygonVertices();
-			myMesh->elements.push_back(mesh->GetPolygonVertexCount());
-				
+			
 		
+			int* indices = mesh->GetPolygonVertices();
+			int numIndices = mesh->GetPolygonVertexCount();
 
+			for (int i = 0; i < numIndices; i++)
+			{
+				myMesh->elements.push_back(i);
 			}
+			int b = 0;
+
+		}
 			
 	}
 		

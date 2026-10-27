@@ -81,7 +81,7 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	Wall3->Scale = glm::vec3(2, 6, 0.5);
 	Wall3->Rotation = glm::vec3(glm::radians(90.0f));
 	Wall3->myCollider->tag = "Wall";
-
+	//fbxObj->Position = glm::vec3(8.3, 8.3f, 4.4);
 	
 	
 

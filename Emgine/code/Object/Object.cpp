@@ -290,6 +290,10 @@ void Object::Draw(Shader* myShader)
 
 void Object::UpdateTransform(Shader* myShader)
 {
+	if (this->namn == "FbxCube")
+	{
+		int b = 0;
+	}
 	trans = Math::identity4;
 
 	trans = glm::translate(trans, Position);
@@ -308,10 +312,7 @@ void Object::UpdateTransform(Shader* myShader)
 
 void Object::DrawObject(Shader* myShader)
 {
-	if (this->namn == "Terrain")
-	{
-		int b = 0;
-	}
+	
 
 	if (IsTransformValid == false)
 	{
