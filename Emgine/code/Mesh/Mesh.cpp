@@ -4,9 +4,15 @@
 
 std::vector<Mesh*> Mesh::MeshEntities;
 
+
+
 void Mesh::InitialiseMesh()
 {
 	if (this->name == "fbxCube")
+	{
+		int b = 0;
+	}
+	if (this->name == "Cube")
 	{
 		int b = 0;
 	}

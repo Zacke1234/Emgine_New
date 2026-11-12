@@ -42,6 +42,8 @@ public:
 	FbxNode* SelectedNode;
 	FbxMesh* Pmesh;
 
+	bool ignore = false;
+
 	MeshLoader();
 	~MeshLoader();
 
@@ -53,8 +55,18 @@ public:
 	void CalculateTangent(Vertex& A, const Vertex&  B, const Vertex& C);
 	bool FbxParser(std::string fileName, Mesh* mesh);
 	void FbxInit(FbxManager*& pManager, FbxScene*& pScene);
+	void GetNormal(FbxNode* pNode, Mesh* myMesh);
+	//void SmoothingNormal(FbxManager* pSdkManager, FbxNode* pNode, bool pCompute = false, bool pConvertToSmoothingGroup = false, Mesh* mymesh = NULL);
+	void GetUv(FbxNode* pNode, Mesh* myMesh, FbxMesh* pMesh);
+	void SaveUvInfo(FbxNode* pNode, Mesh* myMesh, FbxMesh* pMesh);
+	void GetBinormal(FbxNode* pNode, Mesh* myMesh);
+	void GetTangent(FbxNode* pNode, Mesh* myMesh);
+
+	void GetFaces(FbxNode* pNode, Mesh* myMesh, FbxMesh* mesh);
 
 	bool GetFBXInfo(FbxNode* node, Mesh* mesh);
+
+	void GetFbxMesh(FbxNode* node, std::vector<Mesh>& meshes);
 	
 	std::string temp_fileName;
 };

@@ -8,6 +8,7 @@
 #include "MeshManager.h"
 #include <bitset>
 #include <cassert>
+#include <gl/GL.h>
 using namespace std;
 
 // do breakpoints
@@ -39,7 +40,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 	
 	std::string line;
 	
-	if (!file.is_open())
+	if (!file.is_open() && ignore == false)
 	{
 		std::cerr <<  "Failed to open file: " << fileName << std::endl;
 		return false;
@@ -122,40 +123,53 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 	file.close();
 	
 	
-	for (int i = 0; i < temp_faces.size(); i++) 
+	for (int i = 0; i < mesh.faces.size(); i++)
 	{
 		Vertex vertices[3];
 	
-		Face face = temp_faces[i];
+		Face face = mesh.faces[i];
 
 		for (int e = 0; e < 3; e++)
 		{
 			int index = face.positionIndices[e];
 			Vertex& v = vertices[e];
 
-			if (index != -1)
+			if (index != -1 && index != 0)
 			{
-				v.position = temp_position[index - 1];
+				v.position = mesh.position[index - 1];
 				
+			}
+
+			if (index == 0)
+			{
+				v.position = mesh.position[index];
 			}
 
 			index = face.normalIndices[e];
 
-			if (index != -1)
+			if (index != -1 && index != 0)
 			{
-				v.normal = temp_normals[index - 1];
+				v.normal = mesh.normals[index - 1];
 
 
 
 			}
+			if (index == 0)
+			{
+				v.position = mesh.position[index];
+			}
 
 			index = face.uvIndices[e];
 
-			if (index != -1)
+			if (index != -1 && index != 0)
 			{
 
-				v.uv = temp_uvs[index - 1];
+				v.uv = mesh.uvs[index - 1];
 
+			}
+			if (index == 0)
+			{
+				v.position = mesh.position[index];
 			}
 
 
@@ -199,7 +213,7 @@ bool MeshLoader::ObjParser(std::string fileName, Mesh* INmesh)
 			
 			mesh.elements.push_back(mesh.numberVertices);
 			temp_elements.push_back(mesh.numberVertices);
-
+			
 			
 			
 			//temp_vertices.push_back(vertices);
@@ -322,7 +336,7 @@ static inline std::vector<std::string> SplitString(const std::string& str, char 
 
 }
 
-void MeshLoader::ParseFaceIndices(const std::string& string, Face& face, int vertexIndex)
+void MeshLoader::ParseFaceIndices(const std::string& string, Face& face, int vertexIndex) 
 {
 	
 	/*auto foundIndex = string.find('/');
@@ -464,6 +478,8 @@ void MeshLoader::FbxInit(FbxManager*& pManager, FbxScene*& pScene)
 	pManager->LoadPluginsDirectory(_1Path.Buffer());
 
 	pScene = FbxScene::Create(pManager, "My Scene");
+
+	
 	if (!pScene)
 	{
 		FBXSDK_printf("Error: Unable to create FBX scene \n");
@@ -471,11 +487,391 @@ void MeshLoader::FbxInit(FbxManager*& pManager, FbxScene*& pScene)
 	}
 }
 
+void MeshLoader::GetNormal(FbxNode* pNode, Mesh* myMesh)
+{
+	if (!pNode)
+		return;
+
+	//get mesh
+	FbxMesh* lMesh = pNode->GetMesh();
+	if (lMesh)
+	{
+		//print mesh node name
+		printf("current mesh node: %s\n", pNode->GetName());
+
+		//get the normal element
+		FbxGeometryElementNormal* lNormalElement = lMesh->GetElementNormal();
+		FbxVector4 lNormal;
+		
+		if (lNormalElement)
+		{
+			//mapping mode is by control points. The mesh should be smooth and soft.
+			//we can get normals by retrieving each control point
+			if (lNormalElement->GetMappingMode() == FbxGeometryElement::eByControlPoint)
+			{
+				//Let's get normals of each vertex, since the mapping mode of normal element is by control point
+				for (int lVertexIndex = 0; lVertexIndex < lMesh->GetControlPointsCount(); lVertexIndex++)
+				{
+					int lNormalIndex = 0;
+					//reference mode is direct, the normal index is same as vertex index.
+					//get normals by the index of control vertex
+					if (lNormalElement->GetReferenceMode() == FbxGeometryElement::eDirect)
+						lNormalIndex = lVertexIndex;
+
+					//reference mode is index-to-direct, get normals by the index-to-direct
+					if (lNormalElement->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
+						lNormalIndex = lNormalElement->GetIndexArray().GetAt(lVertexIndex);
+
+					//Got normals of each vertex.
+					lNormal = lNormalElement->GetDirectArray().GetAt(lNormalIndex);
+					printf("normals for vertex[%d]: %f %f %f %f \n", lVertexIndex, lNormal[0], lNormal[1], lNormal[2], lNormal[3]);
+					
+					myMesh->normals.push_back(glm::vec3(lNormal.mData[0], lNormal.mData[1], lNormal.mData[2]));
+
+					for (int ln = 0; ln < 3; ln++)
+					{
+						myMesh->data.push_back(lNormal.mData[ln]);
+					}
+					
+					
+					
+					//add your custom code here, to output normals or get them into a list, such as KArrayTemplate<KFbxVector4>
+					//. . .
+				}//end for lVertexIndex
+			}//end eBY_CONTROL_POINT
+			//mapping mode is by polygon-vertex.
+			//we can get normals by retrieving polygon-vertex.
+			else if (lNormalElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
+			{
+				int lIndexByPolygonVertex = 0;
+				int PolygonCount = lMesh->GetPolygonCount();
+				//Let's get normals of each polygon, since the mapping mode of normal element is by polygon-vertex.
+				for (int lPolygonIndex = 0; lPolygonIndex < lMesh->GetPolygonCount(); lPolygonIndex++)
+				{
+					//get polygon size, you know how many vertices in current polygon.
+					int lPolygonSize = lMesh->GetPolygonSize(lPolygonIndex);
+					//retrieve each vertex of current polygon.
+					for (int i = 0; i < lPolygonSize; i++)
+					{
+						int lNormalIndex = 0;
+						//reference mode is direct, the normal index is same as lIndexByPolygonVertex.
+						if (lNormalElement->GetReferenceMode() == FbxGeometryElement::eDirect)
+							lNormalIndex = lIndexByPolygonVertex;
+
+						//reference mode is index-to-direct, get normals by the index-to-direct
+						if (lNormalElement->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
+							lNormalIndex = lNormalElement->GetIndexArray().GetAt(lIndexByPolygonVertex);
+
+						//Got normals of each polygon-vertex.
+						lNormal = lNormalElement->GetDirectArray().GetAt(lNormalIndex);
+						printf("normals for polygon[%d]vertex[%d]: %f %f %f %f \n",
+							lPolygonIndex, i, lNormal[0], lNormal[1], lNormal[2], lNormal[3]);
+
+						myMesh->normals.push_back(glm::vec3(lNormal.mData[0], lNormal.mData[1], lNormal.mData[2]));
+						for (int ln = 0; ln < 3; ln++)
+						{
+							myMesh->data.push_back(lNormal.mData[ln]);
+						}
+						
+						
+						//add your custom code here, to output normals or get them into a list, such as KArrayTemplate<KFbxVector4>
+						//. . .
+
+						lIndexByPolygonVertex++;
+					}//end for i //lPolygonSize
+				}//end for lPolygonIndex //PolygonCount
+
+			}//end eBY_POLYGON_VERTEX
+		}//end if lNormalElement
+
+		for (int b = 0; b < 3; b++)
+		{
+			myMesh->data.push_back(lNormal.mData[b]);
+		}
+	}//end if lMesh
+
+	
+
+	//recursively traverse each node in the scene
+	int i, lCount = pNode->GetChildCount();
+	for (i = 0; i < lCount; i++)
+	{
+		GetNormal(pNode->GetChild(i), myMesh);
+	}
+}
+
+
+void MeshLoader::GetUv(FbxNode* pNode, Mesh* myMesh, FbxMesh* pMesh)
+{
+	//get all UV set names
+	FbxStringList lUVSetNameList;
+	pMesh->GetUVSetNames(lUVSetNameList);
+	FbxVector2 lUVValue;
+	//iterating over all uv sets
+	for (int lUVSetIndex = 0; lUVSetIndex < lUVSetNameList.GetCount(); lUVSetIndex++)
+	{
+		//get lUVSetIndex-th uv set
+		const char* lUVSetName = lUVSetNameList.GetStringAt(lUVSetIndex);
+		const FbxGeometryElementUV* lUVElement = pMesh->GetElementUV(lUVSetName);
+
+		if (!lUVElement)
+			continue;
+
+		// only support mapping mode eBY_POLYGON_VERTEX and eBY_CONTROL_POINT
+		if (lUVElement->GetMappingMode() != FbxGeometryElement::eByPolygonVertex &&
+			lUVElement->GetMappingMode() != FbxGeometryElement::eByControlPoint)
+			return;
+
+		//direct array, where holds the actual uv data
+		const int lDataCount = lUVElement->GetDirectArray().GetCount();
+
+		//index array, where holds the index referenced to the uv data
+		const bool lUseIndex = lUVElement->GetReferenceMode() != FbxGeometryElement::eDirect;
+		const int lIndexCount = (lUseIndex) ? lUVElement->GetIndexArray().GetCount() : 0;
+
+		//iterating through the data by polygon
+		const int lPolyCount = pMesh->GetPolygonCount();
+
+		if (lUVElement->GetMappingMode() == FbxGeometryElement::eByControlPoint)
+		{
+			for (int lPolyIndex = 0; lPolyIndex < lPolyCount; ++lPolyIndex)
+			{
+				// build the max index array that we need to pass into MakePoly
+				const int lPolySize = pMesh->GetPolygonSize(lPolyIndex);
+				for (int lVertIndex = 0; lVertIndex < lPolySize; ++lVertIndex)
+				{
+					
+
+					//FbxGeometryElementNormal* lNormalElement = pMesh->GetElementNormal();
+
+					//get the index of the current vertex in control points array
+					int lPolyVertIndex = pMesh->GetPolygonVertex(lPolyIndex, lVertIndex);
+
+					//the UV index depends on the reference mode
+					int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(lPolyVertIndex) : lPolyVertIndex;
+
+					lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
+					myMesh->uvs.push_back(glm::vec2(lUVValue.mData[0], lUVValue.mData[1]));
+					for (int b = 0; b < 2; b++)
+					{
+						myMesh->data.push_back(lUVValue.mData[b]);
+					}
+					//User TODO:
+					//Print out the value of UV(lUVValue) or log it to a file
+					//myMesh->data.push_back(lUVValue.mData[lVertIndex]);
+				}
+			}
+		}
+		else if (lUVElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
+		{
+			int lPolyIndexCounter = 0;
+			for (int lPolyIndex = 0; lPolyIndex < lPolyCount; ++lPolyIndex)
+			{
+				// build the max index array that we need to pass into MakePoly
+				const int lPolySize = pMesh->GetPolygonSize(lPolyIndex);
+				for (int lVertIndex = 0; lVertIndex < lPolySize; ++lVertIndex)
+				{
+					if (lPolyIndexCounter < lIndexCount)
+					{
+						
+						
+
+						//the UV index depends on the reference mode
+						int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(lPolyIndexCounter) : lPolyIndexCounter;
+
+						lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
+
+						//User TODO:
+						//Print out the value of UV(lUVValue) or log it to a file
+						myMesh->uvs.push_back(glm::vec2(lUVValue.mData[0], lUVValue.mData[1]));
+						for (int b = 0; b < 2; b++)
+						{
+							myMesh->data.push_back(lUVValue.mData[b]);
+						}
+						//myMesh->data.push_back();
+						lPolyIndexCounter++;
+					}
+				}
+			}
+		}
+	}
+}
+
+void MeshLoader::SaveUvInfo(FbxNode* pNode, Mesh* myMesh, FbxMesh* pMesh)
+{
+}
+
+void MeshLoader::GetBinormal(FbxNode* pNode, Mesh* myMesh)
+{
+	FbxMesh* pMesh = pNode->GetMesh();
+}
+
+void MeshLoader::GetTangent(FbxNode* pNode, Mesh* myMesh)
+{
+	FbxMesh* pMesh = pNode->GetMesh();
+	for (int i = 0; i < myMesh->faces.size(); i++)
+	{
+		Vertex vertices[3];
+
+		Face face = myMesh->faces[i];
+
+		for (int e = 0; e < 3; e++)
+		{
+			int index = face.positionIndices[e];
+			Vertex& v = vertices[e];
+
+			if (index != -1)
+			{
+				v.position = myMesh->position[index - 1];
+
+			}
+
+			
+
+			index = face.normalIndices[e];
+
+			if (index != -1)
+			{
+				v.normal = myMesh->normals[index - 1];
+
+
+
+			}
+		
+
+			index = face.uvIndices[e];
+
+			if (index != -1)
+			{
+
+				v.uv = myMesh->uvs[index - 1];
+
+			}
+
+		}
+		// calculate tangents
+
+		CalculateTangent(vertices[0], vertices[1], vertices[2]);
+		CalculateTangent(vertices[1], vertices[0], vertices[2]);
+		CalculateTangent(vertices[2], vertices[1], vertices[0]);
+		
+		for (int e = 0; e < 3; e++)
+		{
+			Vertex& v = vertices[e];
+
+
+			//myMesh->data.push_back(v.position.x); // Important
+			//myMesh->data.push_back(v.position.y);
+			//myMesh->data.push_back(v.position.z);
+
+
+			//myMesh->data.push_back(v.normal.x);
+			//myMesh->data.push_back(v.normal.y);
+			//myMesh->data.push_back(v.normal.z);
+
+
+			//myMesh->data.push_back(v.uv.x);
+			//myMesh->data.push_back(v.uv.y);
+
+
+			//myMesh->data.push_back(v.tangent.x);
+			//myMesh->data.push_back(v.tangent.y);
+			//myMesh->data.push_back(v.tangent.z);
+
+			//myMesh->data.push_back(v.binormal.x);
+			//myMesh->data.push_back(v.binormal.y);
+			//myMesh->data.push_back(v.binormal.z); // Important
+			
+
+		}
+		
+
+	}
+}
+
+void MeshLoader::GetFaces(FbxNode* pNode, Mesh* myMesh, FbxMesh* mesh)
+{
+	
+	Face face;
+	int b = 0;
+	int bf = 0;
+	std::string indice1 = "";
+	std::string total = "";
+	if (mesh != NULL) {
+		int polygonCount = mesh->GetPolygonCount();
+		std::cout << "Mesh: " << pNode->GetName() << " has " << polygonCount << " polygons.\n";
+
+		for (int i = 0; i < polygonCount; i++) {
+			int polygonSize = mesh->GetPolygonSize(i);
+			std::vector<int> vertexIndices;
+
+			for (int j = 0; j < polygonSize; j++) {
+				int vertexIndex = mesh->GetPolygonVertex(i, j);
+				vertexIndices.push_back(vertexIndex);
+
+				
+			}
+
+			//
+			
+			
+			// Output face vertex indices
+			std::cout << "Face " << i << ": ";
+			//Face face = {}
+			int c = 0;
+			for (int idx : vertexIndices) {
+				std::cout << idx << " ";
+				// Work on this more
+				
+				
+				
+				
+			}
+			total = "";
+			for (int k = 0; k <= 3; k++) // remove all the zeroes and fill it in with a different indice value
+			{
+
+				indice1 = to_string(vertexIndices[k]);
+				if (indice1 == "0")
+				{
+					k++;
+					indice1 = to_string(vertexIndices[k]);
+				}
+				total += indice1 + '/';
+			}
+
+
+			//face.normalIndices =
+			ParseFaceIndices(total, face, b);
+			b++;
+			if (b == 3)
+			{
+				myMesh->faces.push_back(face);
+				b = 0;
+			}
+			
+			
+			std::cout << "\n";
+		}
+		
+	}
+	
+}
+
 bool MeshLoader::GetFBXInfo(FbxNode* pNode, Mesh* myMesh)
 {
+	Vertex vertices[3];
+
 	int nodeChildren = pNode->GetChildCount();
 	FbxNode* childNode = 0;
 	int numVertices = 0;
+
+	for (int e = 0; e < 3; e++)
+	{
+		//int index = face.positionIndices[e];
+		Vertex& v = vertices[e];
+
+	}
 	for (int i = 0; i < nodeChildren; i++)
 	{
 		childNode = pNode->GetChild(i);
@@ -487,60 +883,65 @@ bool MeshLoader::GetFBXInfo(FbxNode* pNode, Mesh* myMesh)
 			for (int j = 0; j < numbVerts; j++)
 			{
 				FbxVector4 vert = mesh->GetControlPointAt(j);
+				//FbxVector2 vert2 = mesh->GetNormals();
 				int* fbx_triangle_vertices = mesh->GetPolygonVertices();
-				FbxGeometryElementNormal* normalElement = mesh->GetElementNormal();
+				//FbxGeometryElementNormal* normalElement = mesh->GetElementNormal();
+
+				
 				myMesh->data.push_back((float)vert.mData[0]);
 				myMesh->data.push_back((float)vert.mData[1]);
 				myMesh->data.push_back((float)vert.mData[2]);
+				/*myMesh->data.push_back((float)vert.mData[1]);
+				myMesh->data.push_back((float)vert.mData[2]);*/
+
+				myMesh->position.push_back(glm::vec3(vert.mData[0], vert.mData[1], vert.mData[2]));
 				
-				//myMesh->data.push_back((float)normalElement->GetDirectArray().GetAt(j));
-				int polygonCount = mesh->GetPolygonCount();
-
-				if (normalElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex) { // Gets all the normals via reading the polygons and magic
-					int index = 0;
-					for (int polyIdx = 0; polyIdx < polygonCount; ++polyIdx) {
-						int polySize = mesh->GetPolygonSize(polyIdx);
-						for (int vertIdx = 0; vertIdx < polySize; ++vertIdx) {
-							FbxVector4 normal;
-							if (normalElement->GetReferenceMode() == FbxGeometryElement::eDirect) {
-								normal = normalElement->GetDirectArray().GetAt(index);
-							}
-							else if (normalElement->GetReferenceMode() == FbxGeometryElement::eIndexToDirect) {
-								int normIndex = normalElement->GetIndexArray().GetAt(index);
-								normal = normalElement->GetDirectArray().GetAt(normIndex);
-							}
-							
-							index++;
-							myMesh->data.push_back((float)index);
-						}
-					}
-				}
-
 				
-				//get UV
-			
-				int uvIndex = -1;
-
+				
+				// etc, remember to push it to the mesh->data
 
 
 
 			}
-			
-		
+
+			GetNormal(pNode, myMesh);
+			//SmoothingNormal(SdkManager, pNode, false, false);
+			GetUv(pNode, myMesh, mesh);
+
+			GetFaces(pNode, myMesh, mesh);
+
 			int* indices = mesh->GetPolygonVertices();
-			int numIndices = mesh->GetPolygonVertexCount();
-
-			for (int i = 0; i < numIndices; i++)
+			float numIndices = mesh->GetPolygonVertexCount();
+			for (int e = 0; e < numIndices; e++)
 			{
-				myMesh->elements.push_back(i);
+				myMesh->elements.push_back(indices[e]);
+				
 			}
-			int b = 0;
+			myMesh->indexCount = numIndices;
+			myMesh->numberVertices = numIndices;
+		
+			GetTangent(pNode, myMesh);
 
 		}
 			
 	}
-		
+
+	
+	
+	this->ignore = true;
+	//ObjParser(myMesh->name, myMesh);
 	return true;
+}
+
+void MeshLoader::GetFbxMesh(FbxNode* node, std::vector<Mesh>& meshes)
+{
+	//assert(node);
+
+	////if (FbxMesh * fbx_mesh)
+
+	//FbxGeometryConverter gc{ SdkManager };
+
+	//Mesh m;
 }
 
 bool MeshLoader::ReadObjToBinary(std::string objPath, std::ifstream& objReadFile, Mesh* mesh) // read

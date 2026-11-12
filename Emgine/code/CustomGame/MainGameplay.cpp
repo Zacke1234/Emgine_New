@@ -39,7 +39,7 @@ void MainGameplay::Initialise(GLFWwindow* aWindow, ObjectManager* myObjectManage
 	//Texture* enemyTexture = aTextureManager->Create("lila", "lila.png");
 	Mesh* cubeMesh = aMeshManager->Create("Cube", "cube.obj");
 	Mesh* fish = aMeshManager->Create("fish", "fish.obj");
-	Mesh* fbxCube = aMeshManager->Create("fbxCube", "cube.fbx");
+	Mesh* fbxCube = aMeshManager->Create("fbxCube", "Untitled.fbx");
 
 	fbxObj = myObjectManager->Create("FbxCube", fbxCube, wall, NULL, NULL);
 	//fbxObj = myObjectManager->Create("FBXOBJ", fbxCube, wall, NULL, NULL);
